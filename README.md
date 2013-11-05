@@ -1,15 +1,15 @@
 # Taaspace.js
 
-A zooming user interface library for web apps.
+A zooming user interface library for web apps. Very much under development.
 
-# Dependencies
+## Dependencies
 
 - jQuery (MIT License)
 - Move.js (MIT License)
 - Hammer.js (MIT License)
 - Underscore.js (MIT License)
 
-# TODO
+## TODO
 
 - Mouse wheel binding
 - Key bindings
@@ -21,6 +21,6 @@ A zooming user interface library for web apps.
 - Documentation
 - Testing
 
-# License
+## License
 
 MIT License
