@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Taaspace Panning Example</title>
+    
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        
+        background: white;
+    }
+    
+    .container {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .meta {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 38.2%;
+        padding: 1em;
+        color: #333333;
+    }
+    
+    .space {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div id="space" class="space"></div>
+
+        <div class="meta">
+            <div class="page-title">Taaspace</div>
+            <div class="page-description">Panning example.</div>
+        </div>
+    </div>
+
+    <script src="../includes/jquery/js/jquery.min.js"></script>
+    <script src="../includes/move/js/move.js"></script>
+    <script src="../includes/underscore/js/underscore.js"></script>
+    <script src="../includes/hammer/js/hammer.js"></script>
+    
+    <script src="../src/taaspace/js/index.js"></script>
+    <script src="../src/taaspace/js/element.js"></script>
+    <script src="../src/taaspace/js/viewport.js"></script>
+    <script src="../src/taaspace/js/text.js"></script>
+    <script src="../src/taaspace/js/image.js"></script>
+    <script src="../src/taaspace/js/group.js"></script>
+    <script src="../src/taaspace/js/network.js"></script>
+    <script src="../src/taaspace/js/custom.js"></script>
+    
+    <script>
+      $(document).ready(function() {
+        
+        var space = Taaspace.create();
+        var vp = space.createViewport('#space');
+        
+        space.createImage('http://img.dev.taataa.at/1.jpg');
+        var uni = space.createText('Hello universe.');
+        var eni = space.createText('Mellow enipurse.').moveBy(420, 42);
+        
+        vp.scalable().draggable();
+        
+        eni.on('tap', vp, function () {
+          console.log('Tapped the whole universe.');
+        });
+        
+        var prevdx, prevdy;
+        vp.on('dragstart', function () {
+          prevdx = 0;
+          prevdy = 0;
+        });
+        vp.on('drag', function (ev) {
+          ev.gesture.preventDefault();
+          
+          var dx = vp.toSpaceDistance(ev.gesture.deltaX);
+          var dy = vp.toSpaceDistance(ev.gesture.deltaY);
+          
+          vp.moveBy(prevdx - dx, prevdy - dy);
+          prevdx = dx;
+          prevdy = dy;
+        });
+      });
+    </script>
+</body>
+</html>
