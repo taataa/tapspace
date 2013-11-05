@@ -20,6 +20,7 @@ A zooming user interface library for web apps. Very much under development.
 - Gruntfile
 - Documentation
 - Testing
+- package.json
 
 ## License
 
