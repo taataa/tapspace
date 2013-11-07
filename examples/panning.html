@@ -75,9 +75,9 @@
         var space = Taaspace.create();
         var vp = space.createViewport('#space');
         
-        space.createImage('http://img.dev.taataa.at/1.jpg');
         var uni = space.createText('Hello universe.');
         var eni = space.createText('Mellow enipurse.').moveBy(420, 42);
+        var img = space.createImage('assets/Lenna.png').moveBy(200, 200);
         
         vp.scalable().draggable();
         
@@ -85,21 +85,6 @@
           console.log('Tapped the whole universe.');
         });
         
-        var prevdx, prevdy;
-        vp.on('dragstart', function () {
-          prevdx = 0;
-          prevdy = 0;
-        });
-        vp.on('drag', function (ev) {
-          ev.gesture.preventDefault();
-          
-          var dx = vp.toSpaceDistance(ev.gesture.deltaX);
-          var dy = vp.toSpaceDistance(ev.gesture.deltaY);
-          
-          vp.moveBy(prevdx - dx, prevdy - dy);
-          prevdx = dx;
-          prevdy = dy;
-        });
       });
     </script>
 </body>

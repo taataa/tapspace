@@ -59,7 +59,14 @@ var Taaspace = (function () {
   
   Space.prototype.createImage = function (src, options) {
     // Add an image to the space.
-    return {};
+    
+    var im = Taaspace.Image.create(this, src, options);
+    
+    im._id = String(this._elemIdCounter);
+    this._elemIdCounter += 1;
+    
+    this._addElement(im);
+    return im;
   };
   
   Space.prototype.createText = function (string, options) {

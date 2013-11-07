@@ -27,10 +27,9 @@ Taaspace.Element = (function () {
   
   var Elem = function () {
     this._space = null;
-    this._el = null;
-    this._x = null;
-    this._y = null;
-    this._z = null;
+    this._x = 0;
+    this._y = 0;
+    this._z = 0;
   };
   
   exports.create = function () {
@@ -208,11 +207,11 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
-    this.x += dx;
-    this.y += dy;
-    this.z += dz;
+    this._x += dx;
+    this._y += dy;
+    this._z += dz;
     
-    this.space._elementMoved(this, options);
+    this._space._elementMoved(this, options);
     
     return this;
   };
@@ -277,7 +276,7 @@ Taaspace.Element = (function () {
     // Attach to all viewports.
     if (typeof callback === 'undefined' && typeof viewport === 'function') {
       callback = viewport;
-      this.space._listenDomElements(this, type, callback);
+      this._space._listenDomElements(this, type, callback);
       return;
     } // else
     
@@ -294,14 +293,26 @@ Taaspace.Element = (function () {
   
   
   
-  // Abstract Pseudo-private mutators
+  // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._domAppend = function () {
     throw "Abstract function. Must be implemented by the instance.";
   };
   
-  Elem.prototype._domMove = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+  Elem.prototype._domMove = function (domElem, fromSpace, options) {
+    // Move the element on screen.
+    // 
+    // Can be reimplemented in the child prototype.
+    // 
+    // Element knows its position in space and uses viewports fromSpace
+    // function to find out position on screen.
+    
+    var xy = fromSpace(this._x, this._y, this._z);
+    
+    domElem.css({
+      left: xy.x + 'px',
+      top: xy.y + 'px'
+    });
   };
   
   Elem.prototype._domScale = function () {
@@ -312,12 +323,22 @@ Taaspace.Element = (function () {
     throw "Abstract function. Must be implemented by the instance.";
   };
   
-  Elem.prototype._domRemove = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+  Elem.prototype._domRemove = function (domElem, options) {
+    // Remove the DOMElement from DOM
+    // 
+    // Can be overridden in the child prototype.
+    // 
+    // Parameter
+    //   options
+    //     ease?
+    //     duration?
+    //     delay?
+    domElem.remove();
   };
   
-  Elem.prototype._domListen = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+  Elem.prototype._domListen = function (domElem, eventType, callback) {
+    // Attach a function to a Hammer event on the element.
+    Hammer(domElem[0]).on(eventType, callback);
   };
   
   

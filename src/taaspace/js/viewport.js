@@ -53,6 +53,9 @@ Taaspace.Viewport = (function () {
     // Mapping from element ids to (elem, DOMElement) pairs.
     this._domMap = {};
     
+    // Model for draggability. Defined in draggable().
+    this._draggable = {}
+    
     // fromSpace is commonly passed to functions in other modules, e.g.
     // to be used in dom operations.
     // Here we make a function that does not depend on the context and
@@ -324,7 +327,7 @@ Taaspace.Viewport = (function () {
     //     True to turn draggability on (default).
     //     False to turn draggability off.
     //   options (optional)
-    //     Panning limits in space coordinates.
+    //     Object, Panning limits in space coordinates.
     // 
     // Return
     //   this
@@ -332,6 +335,64 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
+    
+    // Handle parameters
+    if (typeof onoff === 'object') {
+      options = onoff;
+      onoff = true;
+    } else if (typeof onoff !== 'boolean') { // e.g. undefined
+      onoff = true;
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    if (!this._draggable.hasOwnProperty('status')) {
+      // Draggability not yet initialized
+      
+      // Capture difference between events
+      var prevdx = 0;
+      var prevdy = 0;
+      
+      var that = this;
+      this._draggable = {
+        status: false,
+        ondragstart: function () {
+          // Reset difference
+          prevdx = 0;
+          prevdy = 0;
+        },
+        ondrag: function (ev) {
+          ev.gesture.preventDefault();
+          
+          var dx = that.toSpaceDistance(ev.gesture.deltaX);
+          var dy = that.toSpaceDistance(ev.gesture.deltaY);
+          
+          that.moveBy(prevdx - dx, prevdy - dy);
+          prevdx = dx;
+          prevdy = dy;
+        }
+      };
+    }
+    
+    if (onoff === false) {
+      // Turn draggability off
+      this._draggable.status = false;
+      this.off('dragstart', this._draggable.ondragstart);
+      this.off('drag', this._draggable.ondrag);
+      return this;
+    } // else
+    
+    // Avoid doubles
+    if (this._draggable.status === true) {
+      return this;
+    } // else
+    
+    // Turn draggability off
+    this._draggable.status = true;
+    this.on('dragstart', this._draggable.ondragstart);
+    this.on('drag', this._draggable.ondrag);
+        
     return this;
   };
   
