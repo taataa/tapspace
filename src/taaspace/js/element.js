@@ -27,9 +27,14 @@ Taaspace.Element = (function () {
   
   var Elem = function () {
     this._space = null;
+    
+    // Location of left top corner
     this._x = 0;
     this._y = 0;
-    this._z = 0;
+    
+    // Origo i.e. pivot point
+    this._ox = 0;
+    this._oy = 0;
   };
   
   exports.create = function () {
@@ -126,13 +131,13 @@ Taaspace.Element = (function () {
   
   // Mutators
   
-  Elem.prototype.origo = function (xyz) {
+  Elem.prototype.origo = function (xy) {
     // Move the fixed point, the pivot point.
     // The point to moveTo and rotate around.
     // Does not move the element in relation to the space origo.
     // 
     // Parameter
-    //   xyz
+    //   xy
     //     Place for new origo in relation to the current origo in space units.
     // 
     // Priority
@@ -174,12 +179,12 @@ Taaspace.Element = (function () {
     //   low
   };
   
-  Elem.prototype.moveTo = function (x, y, z, options) {
+  Elem.prototype.moveTo = function (x, y, options) {
     // Move the element so that the origo of the element
-    // will be at x y z in space.
+    // will be at x y in space.
     // 
     // Parameter
-    //   x, y, z
+    //   x, y
     //     New place in space
     //   options (optional)
     //     See Animation Options
@@ -192,11 +197,11 @@ Taaspace.Element = (function () {
     //   medium
   };
   
-  Elem.prototype.moveBy = function (dx, dy, dz, options) {
+  Elem.prototype.moveBy = function (dx, dy, options) {
     // Move the element by distance specified in space coordinates.
     // 
     // Parameter
-    //   dx, dy, dz
+    //   dx, dy
     //     Distance in space
     //   options (optional)
     //     See Animation Options
@@ -209,7 +214,6 @@ Taaspace.Element = (function () {
     //   medium
     this._x += dx;
     this._y += dy;
-    this._z += dz;
     
     this._space._elementMoved(this, options);
     
@@ -307,7 +311,7 @@ Taaspace.Element = (function () {
     // Element knows its position in space and uses viewports fromSpace
     // function to find out position on screen.
     
-    var xy = fromSpace(this._x, this._y, this._z);
+    var xy = fromSpace(this._x, this._y);
     
     domElem.css({
       left: xy.x + 'px',

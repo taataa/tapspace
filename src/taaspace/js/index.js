@@ -36,21 +36,21 @@ var Taaspace = (function () {
   
   // Mutators
   
-  Space.prototype.origo = function (xyz_or_viewport) {
+  Space.prototype.origo = function (xy_or_viewport) {
     // Move the location of the space origo so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
-    // If no parameters specified, return 0,0,0
-    var xyz = xyz_or_viewport;
+    // If no parameters specified, return 0,0
+    var xy = xy_or_viewport;
     
-    if (typeof xyz === 'undefined') {
-      return {x:0, y:0, z:0};
+    if (typeof xy === 'undefined') {
+      return {x:0, y:0};
     }
     
-    if ('pivot' in xyz && typeof xyz.pivot === 'function') {
-        xyz = xyz.pivot();
+    if ('pivot' in xy && typeof xy.pivot === 'function') {
+        xy = xy.pivot();
     }
     
-    this._moveElemsBy(xyz);
+    this._moveElemsBy(xy);
   };
   
   Space.prototype.remove = function (elem) {
@@ -143,15 +143,14 @@ var Taaspace = (function () {
   };
   
   /* DEPRECATED ?
-  Space.prototype._moveElemsBy = function (x, y, z) {
+  Space.prototype._moveElemsBy = function (x, y) {
     // Move the coordinates of everything same amount.
     if (typeof x === 'object') {
-      z = x.z;
       y = x.y;
       x = x.x;
     }
     _.each(this._elems, function (elem) {
-      elem.moveBy(x, y, z);
+      elem.moveBy(x, y);
     });
   };
   */

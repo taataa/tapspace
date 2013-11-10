@@ -40,12 +40,14 @@ Taaspace.Viewport = (function () {
     // The location of the left-top corner in space.
     this._x = 0;
     this._y = 0;
-    this._z = 0;
     
     // The location of viewport origo in space.
     this._ox = 0;
     this._oy = 0;
-    this._oz = 0;
+    
+    // The unit scale. Answers to the question:
+    // How many units there are on the viewport for one unit in space.
+    this._scale = 1;
     
     // Initialize Hammer instance where handlers can be attached to.
     this._hammertime = Hammer(this._container);
@@ -133,19 +135,19 @@ Taaspace.Viewport = (function () {
     // Translate point on screen to point in space.
     // 
     // Return
-    //   xyz_in_space
+    //   xy_in_space
     // 
     // Priority
     //   high
-    return {x: 0, y: 0, z: 0}; // dummy
+    return {x: 0, y: 0}; // dummy
   };
   
-  View.prototype.fromSpace = function (x, y, z) {
+  View.prototype.fromSpace = function (x, y) {
     // Translate point in space to point on screen.
     // 
     // Usage
-    //   fromSpace(12, 2, -2.1) // {x: 200, y: 400}
-    //   fromSpace({x: 12, y: 2, z: -2.1}) // {x: 200, y: 400}
+    //   fromSpace(12, -2.1) // {x: 200, y: 400}
+    //   fromSpace({x: 12, y: -2.1}) // {x: 200, y: 400}
     // 
     // Return
     //   xy_on_screen
@@ -155,7 +157,6 @@ Taaspace.Viewport = (function () {
     
     // Normalize
     if (typeof x === 'object') {
-      z = x.z;
       y = x.y;
       x = x.x;
     }
@@ -195,41 +196,38 @@ Taaspace.Viewport = (function () {
   
   // Mutators
   
-  View.prototype.origo = function (x, y, z) {
-    // Move the fixed point, the pivot point.
-    // The point to moveTo and rotate around.
+  View.prototype.origo = function (x, y) {
+    // Move the point to moveTo and rotate around.
     // Does not move the view in relation to the space origo.
     // 
     // Parameter
-    //   xyz (optional)
+    //   xy (optional)
     //     Place for new origo in space units.
     // 
     // Return
-    //   xyz of the current origo if no new origo specified.
-    //   xyz of the previous origo if new origo specified.
+    //   xy of the current origo if no new origo specified.
+    //   xy of the previous origo if new origo specified.
     // 
     // Priority
     //   medium
     if (typeof x === 'object') {
-      z = x.z;
       y = x.y;
       x = x.x;
     } else {
       if (typeof x === 'undefined') {
-        return {x: this._ox, y: this._oy, z: this._oz};
+        return {x: this._ox, y: this._oy};
       } // else
     }
     
     // Update the origo
     this._ox = x;
     this._oy = y;
-    this._oz = z;
     
     return {};
   };
   
   View.prototype.scale = function (multiplier, options) {
-    // Is same thing than moving on z.
+    
   };
   
   View.prototype.rotate = function (angle, options) {
@@ -249,12 +247,12 @@ Taaspace.Viewport = (function () {
     //   low
   };
   
-  View.prototype.moveTo = function (x, y, z, options) {
+  View.prototype.moveTo = function (x, y, options) {
     // Priority
     //   high
   };
   
-  View.prototype.moveBy = function (dx, dy, dz, options) {
+  View.prototype.moveBy = function (dx, dy, options) {
     // Move the viewport by ...
     // 
     // Return
@@ -265,23 +263,21 @@ Taaspace.Viewport = (function () {
     //   high
     
     if (typeof dx === 'object') {
-      dz = dx.z;
+      
+      if (typeof dy === 'object') {
+        options = dy;
+      }
+      
       dy = dx.y;
       dx = dx.x;
+      
     }
     
-    if (typeof dz === 'object') {
-      options = dz;
-      dz = 0;
-    } else if (typeof dz === 'undefined') {
-      dz = 0;
-    }
     this._x += dx;
     this._y += dy;
-    this._z += dz;
+    
     this._ox += dx;
     this._oy += dy;
-    this._oz += dz;
     
     this._moveEachDomElement(options);
     
