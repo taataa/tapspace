@@ -46,6 +46,20 @@ Taaspace.Text = (function () {
   };
   
   
+  Text.prototype._domScale = function (domElem, fromSpace, scale, options) {
+    
+    var nw = fromSpace(this._x, this._y);
+    var se = fromSpace(this._x + this._w, this._y + this._h);
+    
+    domElem.css({
+      'font-size': scale + 'em',
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
+    });
+  };
+  
   
   ///////////////
   return exports;

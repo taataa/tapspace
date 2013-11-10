@@ -28,9 +28,13 @@ Taaspace.Element = (function () {
   var Elem = function () {
     this._space = null;
     
-    // Location of left top corner
+    // Location of left top corner in space
     this._x = 0;
     this._y = 0;
+    
+    // Width in space
+    this._w = 0;
+    this._h = 0;
     
     // Origo i.e. pivot point
     this._ox = 0;
@@ -50,6 +54,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   high
+    return this._w;
   };
   
   Elem.prototype.height = function () {
@@ -57,7 +62,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   high
-    
+    return this._h;
   };
   
   Elem.prototype.center = function () {
@@ -145,6 +150,42 @@ Taaspace.Element = (function () {
     return {};
   };
   
+  Elem.prototype.size = function (width, height) {
+    
+    // Parameter
+    //   width
+    //     in space
+    //   height
+    //     in space
+    //  OR
+    //   wh
+    //     {width: <width_in_space>, height: <height_in_space>}
+    //  OR
+    //   <nothing>
+    //     Returns the current {width, height} of the element
+    // 
+    // Return
+    //   {width, height} if no parameters
+    //  OR
+    //   this for chaining
+    if (typeof width === 'object') {
+      height = width.height;
+      width = width.width;
+    } else if (typeof width === 'undefined') {
+      return {
+        width: this._w,
+        height: this._h
+      };
+    }
+    
+    this._w = width;
+    this._h = height;
+    
+    this._space._scaleDomElement(this);
+    
+    return this;
+  };
+  
   Elem.prototype.scale = function (multiplier, options) {
     // Resize the element so that origo does not move.
     // 
@@ -212,10 +253,19 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
+    
+    if (typeof dx === 'object') {
+      if (typeof dy === 'object') {
+        options = dy;
+      }
+      dy = dx.y;
+      dx = dx.x;
+    }
+    
     this._x += dx;
     this._y += dy;
     
-    this._space._elementMoved(this, options);
+    this._space._moveDomElement(this, options);
     
     return this;
   };
@@ -319,8 +369,18 @@ Taaspace.Element = (function () {
     });
   };
   
-  Elem.prototype._domScale = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+  Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
+    // Can be reimplemented in the child prototype.
+    
+    var nw = fromSpace(this._x, this._y);
+    var se = fromSpace(this._x + this._w, this._y + this._h);
+    
+    domElem.css({
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
+    });
   };
   
   Elem.prototype._domRotate = function () {

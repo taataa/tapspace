@@ -17,6 +17,19 @@ Taaspace.Image = (function () {
   var Img = function (space, src, options) {
     this._space = space;
     this._src = src;
+    
+    this._w = 100;
+    this._h = 100;
+    
+    if (typeof options === 'object') {
+      if (options.hasOwnProperty('width')) {
+        this._w = options.width;
+      }
+      
+      if (options.hasOwnProperty('height')) {
+        this._h = options.height;
+      }
+    }
   };
   
   exports.create = function (space, src, options) {
@@ -36,7 +49,9 @@ Taaspace.Image = (function () {
     var domElem = $(document.createElement('img'));
     domElem.attr('src', this._src);
     domElem.css({
-      position: 'absolute'
+      position: 'absolute',
+      width: this._w + 'px',
+      height: this._h + 'px'
     });
     
     $(container).append(domElem);

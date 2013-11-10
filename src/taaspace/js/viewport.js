@@ -139,7 +139,17 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    return {x: 0, y: 0}; // dummy
+    
+    // Normalize
+    if (typeof x === 'object') {
+      y = x.y;
+      x = x.x;
+    }
+    
+    return {
+      x: this._x + (x / this._scale),
+      y: this._y + (y / this._scale)
+    };
   };
   
   View.prototype.fromSpace = function (x, y) {
@@ -162,8 +172,8 @@ Taaspace.Viewport = (function () {
     }
     
     return {
-      x: x - this._x,
-      y: y - this._y
+      x: (x - this._x) * this._scale,
+      y: (y - this._y) * this._scale
     };
   };
   
@@ -175,7 +185,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    return d; // dummy
+    return d / this._scale; // dummy
   };
   
   View.prototype.fromSpaceDistance = function (d) {
@@ -189,7 +199,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    return d; // dummy
+    return d * this._scale; // dummy
   };
   
   
@@ -227,7 +237,18 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype.scale = function (multiplier, options) {
+    // Multiply scale
+    // 
+    // Return
+    //   this
+    // 
+    // Priority 
+    //   high
+    this._scale *= multiplier;
     
+    this._scaleEachDomElement(options);
+    
+    return this;
   };
   
   View.prototype.rotate = function (angle, options) {
@@ -471,6 +492,21 @@ Taaspace.Viewport = (function () {
     var fs = this._fromSpace;
     this._eachDomPair(function (pair) {
       pair.elem._domMove(pair.dom, fs);
+    });
+  };
+  
+  View.prototype._scaleDomElement = function (elem, options) {
+    // Called from Space.
+    
+    var domElem = this._getDomPair(elem._id).dom;
+    elem._domScale(domElem, this._fromSpace, this._scale);
+  };
+  
+  View.prototype._scaleEachDomElement = function (options) {
+    var fs = this._fromSpace;
+    var sc = this._scale;
+    this._eachDomPair(function (pair) {
+      pair.elem._domScale(pair.dom, fs, sc);
     });
   };
   

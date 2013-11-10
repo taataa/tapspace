@@ -30,7 +30,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 38.2%;
+        width: 10%;
         padding: 1em;
         color: #333333;
     }
@@ -75,14 +75,30 @@
         var space = Taaspace.create();
         var vp = space.createViewport('#space');
         
-        var uni = space.createText('Hello universe.');
-        var eni = space.createText('Mellow enipurse.').moveBy(420, 42);
-        var img = space.createImage('assets/Lenna.png').moveBy(200, 200);
+        var lennaText = space.createText('Lenna').size(150, 100).moveBy(200, 150);
+        var dropsText = space.createText('Fruit Drops').size(150, 100).moveBy(400, 150);
+        var whiteText = space.createText('Water Lily').size(150, 100).moveBy(600, 150);
+        
+        var lenna = space.createImage('assets/Lenna-512x512.png', {
+          width: 150,
+          height: 150
+        }).moveBy({x: 200, y: 200});
+        var drops = space.createImage('assets/fruit-flavoured-gumdrops-812x768.jpg')
+          .size(100, 90)
+          .moveBy({x: 400, y: 200});
+        var white = space.createImage('assets/white-water-lily-667x1000.jpg')
+          .size(100, 150)
+          .moveBy({x: 600, y: 200});
         
         vp.scalable().draggable();
         
-        eni.on('tap', vp, function () {
-          console.log('Tapped the whole universe.');
+        lenna.on('tap', vp, function () {
+          console.log('scale half');
+          vp.scale(0.5);
+        });
+        white.on('tap', function () {
+          console.log('scale double');
+          vp.scale(2);
         });
         
       });

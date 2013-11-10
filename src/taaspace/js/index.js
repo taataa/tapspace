@@ -126,10 +126,17 @@ var Taaspace = (function () {
     });
   };
   
-  Space.prototype._elementMoved = function (elem, options) {
+  Space.prototype._moveDomElement = function (elem, options) {
     // Called from Element when element moves.
     _.each(this._vps, function (vp) {
       vp._moveDomElement(elem, options);
+    });
+  };
+  
+  Space.prototype._scaleDomElement = function (elem, options) {
+    // Called from Element when element is scaled
+    _.each(this._vps, function (vp) {
+      vp._scaleDomElement(elem, options);
     });
   };
   
