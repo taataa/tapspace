@@ -31,6 +31,7 @@ A zooming user interface (ZUI) library for HTML/CSS/JS. Very much under developm
 
 - [Modernizr](http://modernizr.com/) (MIT License)
 - [jQuery](http://jquery.com/) (MIT License)
+- [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) (MIT License)
 - [Move.js](http://visionmedia.github.io/move.js/) (MIT License)
 - [Hammer.js](http://eightmedia.github.io/hammer.js/) (MIT License)
 - [Underscore.js](http://underscorejs.org/) (MIT License)

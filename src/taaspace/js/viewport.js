@@ -431,12 +431,18 @@ Taaspace.Viewport = (function () {
   
   // Events
   
-  View.prototype.on = function (gesture, handler) {
+  View.prototype.on = function (eventType, handler) {
     // Attach an event to the viewport
     // 
     // Priority
     //   high
-    this._hammertime.on(gesture, handler);
+    if (eventType === 'mousewheel') {
+      $(this._container).mousewheel(function(event, delta, deltaX, deltaY) {
+          handler(delta);
+      });
+    } else {
+      this._hammertime.on(eventType, handler);
+    }
   };
   
   View.prototype.off = function (gesture, handler) {

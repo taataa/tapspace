@@ -401,8 +401,14 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype._domListen = function (domElem, eventType, callback) {
-    // Attach a function to a Hammer event on the element.
-    Hammer(domElem[0]).on(eventType, callback);
+    if (eventType === 'mousewheel') {
+      domElem.mousewheel(function(event, delta, deltaX, deltaY) {
+          callback(delta);
+      });
+    } else {
+      // Attach a function to a Hammer event on the element.
+      Hammer(domElem[0]).on(eventType, callback);
+    }
   };
   
   
