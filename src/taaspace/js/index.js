@@ -30,6 +30,9 @@ var Taaspace = (function () {
     // Make elements referencable by id to be stored in objects.
     // Makes implementing collections easy.
     this._elemIdCounter = 0;
+    
+    // Maps keyboard events to selected objects.
+    this._keyboardManager = Taaspace.KeyboardManager.create();
   };
   
   
@@ -102,6 +105,16 @@ var Taaspace = (function () {
     return vp;
   };
   
+  Space.prototype.select = function (elementOrViewport) {
+    // Selected elements' keyboard event handler are enabled.
+    this._keyboardManager.select(elementOrViewport);
+  };
+  
+  Space.prototype.deselect = function (elementOrViewport) {
+    // Deselected elements' keyboard event handlers will not fire.
+    this._keyboardManager.deselect(elementOrViewport);
+  };
+  
   
   
   // Pseudo-private mutators
@@ -147,6 +160,15 @@ var Taaspace = (function () {
     _.each(this._vps, function (vp) {
       vp._listenDomElement(elem, type, callback);
     });
+  };
+  
+  Space.prototype._onKey = function (code, elementOrViewport, handler) {
+    // Attach jwerty key combination to element or viewport
+    this._keyboardManager.on(code, elementOrViewport, handler);
+  };
+  
+  Space.prototype._offKey = function (code, elementOrViewport, handler) {
+    this._keyboardManager.off(code, elementOrViewport, handler);
   };
   
   /* DEPRECATED ?

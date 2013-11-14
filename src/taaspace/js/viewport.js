@@ -56,7 +56,10 @@ Taaspace.Viewport = (function () {
     this._domMap = {};
     
     // Model for draggability. Defined in draggable().
-    this._draggable = {}
+    this._draggable = {};
+    
+    // Model for scalability. Defined in scalable().
+    this._scalable = {};
     
     // fromSpace is commonly passed to functions in other modules, e.g.
     // to be used in dom operations.
@@ -66,6 +69,7 @@ Taaspace.Viewport = (function () {
     this._fromSpace = function () {
       return that.fromSpace.apply(that, arguments);
     };
+    
   };
   
   
@@ -76,6 +80,8 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
+    var screenW = $(this._container).width();
+    return this.toSpaceDistance(screenW);
   };
   
   View.prototype.height = function () {
@@ -83,7 +89,8 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    
+    var screenH = $(this._container).height();
+    return this.toSpaceDistance(screenH);
   };
   
   View.prototype.center = function () {
@@ -91,6 +98,12 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
+    
+    // Naive, does not count rotation
+    return {
+      x: this._x + this.width() / 2,
+      y: this._y + this.height() / 2
+    }
   };
   
   View.prototype.northwest = function () {
@@ -215,8 +228,8 @@ Taaspace.Viewport = (function () {
     //     Place for new origo in space units.
     // 
     // Return
-    //   xy of the current origo if no new origo specified.
-    //   xy of the previous origo if new origo specified.
+    //   xy of the current origo, if no new origo specified.
+    //   this, if new origo specified.
     // 
     // Priority
     //   medium
@@ -233,18 +246,33 @@ Taaspace.Viewport = (function () {
     this._ox = x;
     this._oy = y;
     
-    return {};
+    return this;
   };
   
   View.prototype.scale = function (multiplier, options) {
-    // Multiply scale
+    // Multiply scale so that origo stays still.
     // 
     // Return
     //   this
     // 
     // Priority 
     //   high
+    
+    // Origo on screen before scaling
+    var ob = this.fromSpace(this._ox, this._oy);
+    
+    // Scaling
     this._scale *= multiplier;
+    
+    // Origo on screen after scaling
+    var oa = this.fromSpace(this._ox, this._oy);
+    
+    // Move space so that origo stays in the same space
+    var dx = this.toSpaceDistance(oa.x - ob.x);
+    var dy = this.toSpaceDistance(oa.y - ob.y);
+    this.moveBy(dx, dy, {
+      disableDomUpdate: true
+    });
     
     this._scaleEachDomElement(options);
     
@@ -276,6 +304,19 @@ Taaspace.Viewport = (function () {
   View.prototype.moveBy = function (dx, dy, options) {
     // Move the viewport by ...
     // 
+    // Parameter
+    //   dx
+    //   dy
+    //   options (optional)
+    //  OR
+    //   dxdy
+    //   options (optional)
+    // 
+    // Options
+    //   disableDomUpdate
+    //     Set true to skip updating the position of the DOM elements
+    //     after the move.
+    // 
     // Return
     //   this
     //     for chaining
@@ -294,13 +335,19 @@ Taaspace.Viewport = (function () {
       
     }
     
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
     this._x += dx;
     this._y += dy;
     
     this._ox += dx;
     this._oy += dy;
     
-    this._moveEachDomElement(options);
+    if (!('disableDomUpdate' in options && options.disableDomUpdate === true)) {
+      this._moveEachDomElement(options);
+    }
     
     return this;
   };
@@ -321,12 +368,74 @@ Taaspace.Viewport = (function () {
     //   options (optional)
     //     Scaling limits.
     // 
+    // Options
+    //   disableKeys, not implemented yet
+    //   invertKeys, not implemented yet
+    // 
     // Return
     //   this
     //     for chaining
     // 
     // Priority
     //   high
+    
+    // Handle parameters
+    if (typeof onoff === 'object') {
+      options = onoff;
+      onoff = true;
+    } else if (typeof onoff !== 'boolean') { // e.g. undefined
+      onoff = true;
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    var op = this._scalable;
+    
+    if (!op.hasOwnProperty('status')) {
+      // Scalability not yet initialized
+      
+      var that = this;
+      op.status = false;
+      op.onmousewheel = function (event, delta, deltax, deltay) {
+        
+        // Origo to mouse position
+        var spaceOrigo = that.toSpace(event.pageX, event.pageY);
+        that.origo(spaceOrigo);
+        
+        if (delta > 0) {
+          that.scale(1.25);
+        } else {
+          that.scale(1/1.25);
+        }
+      };
+      op.onkeyplus = function () {
+        that.origo(that.center()).scale(1.25);
+      };
+      op.onkeyminus = function () {
+        that.origo(that.center()).scale(1/1.25);
+      };
+    }
+    
+    if (onoff === false) {
+      // Turn scalablity off
+      op.status = false;
+      this.off('mousewheel', op.onmousewheel);
+      this.off('key-plus', op.onkeyplus);
+      this.off('key-subtract', op.onkeyminus);
+      return this;
+    } // else
+    
+    // Avoid doubles
+    if (op.status === true) {
+      return this;
+    } // else
+    
+    // Turn draggability on
+    op.status = true;
+    this.on('mousewheel', op.onmousewheel);
+    this.on('key-plus', op.onkeyplus);
+    this.on('key-subtract', op.onkeyminus);
     return this;
   };
   
@@ -346,6 +455,10 @@ Taaspace.Viewport = (function () {
     //   options (optional)
     //     Object, Panning limits in space coordinates.
     // 
+    // Options
+    //   disableKeys, not implemented yet
+    //   invertKeys, not implemented yet
+    //   
     // Return
     //   this
     //     for chaining
@@ -388,6 +501,18 @@ Taaspace.Viewport = (function () {
           that.moveBy(prevdx - dx, prevdy - dy);
           prevdx = dx;
           prevdy = dy;
+        },
+        onkeyup: function () {
+          that.moveBy(0,-50);
+        },
+        onkeydown: function () {
+          that.moveBy(0,+50);
+        },
+        onkeyleft: function () {
+          that.moveBy(-50,0);
+        },
+        onkeyright: function () {
+          that.moveBy(+50,0);
         }
       };
     }
@@ -397,6 +522,10 @@ Taaspace.Viewport = (function () {
       this._draggable.status = false;
       this.off('dragstart', this._draggable.ondragstart);
       this.off('drag', this._draggable.ondrag);
+      this.off('key-up', this._draggable.onkeyup);
+      this.off('key-down', this._draggable.onkeydown);
+      this.off('key-left', this._draggable.onkeyleft);
+      this.off('key-right', this._draggable.onkeyright);
       return this;
     } // else
     
@@ -405,11 +534,14 @@ Taaspace.Viewport = (function () {
       return this;
     } // else
     
-    // Turn draggability off
+    // Turn draggability on
     this._draggable.status = true;
     this.on('dragstart', this._draggable.ondragstart);
     this.on('drag', this._draggable.ondrag);
-        
+    this.on('key-up', this._draggable.onkeyup);
+    this.on('key-down', this._draggable.onkeydown);
+    this.on('key-left', this._draggable.onkeyleft);
+    this.on('key-right', this._draggable.onkeyright);
     return this;
   };
   
@@ -437,20 +569,34 @@ Taaspace.Viewport = (function () {
     // Priority
     //   high
     if (eventType === 'mousewheel') {
-      $(this._container).mousewheel(function(event, delta, deltaX, deltaY) {
-          handler(delta);
-      });
+      // Mousewheel event
+      $(this._container).on('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._onKey(jwertyCode, this, handler);
     } else {
+      // Mouse or touch event
       this._hammertime.on(eventType, handler);
     }
   };
   
-  View.prototype.off = function (gesture, handler) {
+  View.prototype.off = function (eventType, handler) {
     // Detach an event from the viewport
     // 
     // Priority
     //   medium
-    this._hammertime.off(gesture, handler);
+    if (eventType === 'mousewheel') {
+      // Mousewheel event
+      $(this._container).off('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._offKey(jwertyCode, this, handler);
+    } else {
+      // Mouse or touch event
+      this._hammertime.off(eventType, handler);
+    }
   };
   
   

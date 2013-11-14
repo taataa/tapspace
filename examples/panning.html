@@ -60,6 +60,7 @@
     <script src="../includes/move/js/move.js"></script>
     <script src="../includes/underscore/js/underscore.js"></script>
     <script src="../includes/hammer/js/hammer.js"></script>
+    <script src="../includes/jwerty/js/jwerty.js"></script>
     
     <script src="../src/taaspace/js/index.js"></script>
     <script src="../src/taaspace/js/element.js"></script>
@@ -69,6 +70,7 @@
     <script src="../src/taaspace/js/group.js"></script>
     <script src="../src/taaspace/js/network.js"></script>
     <script src="../src/taaspace/js/custom.js"></script>
+    <script src="../src/taaspace/js/keyboardmanager.js"></script>
     
     <script>
       $(document).ready(function() {
@@ -92,6 +94,7 @@
           .moveBy({x: 600, y: 200});
         
         vp.scalable().draggable();
+        space.select(vp);
         
         lenna.on('tap', vp, function () {
           console.log('scale half');
@@ -102,18 +105,8 @@
           vp.scale(2);
         });
         
-        drops.on('mousewheel', function (delta) {
-          console.log('mouse wheel', delta);
-        });
-        
-        vp.on('mousewheel', function (delta) {
-          if (delta > 0) {
-            vp.scale(1.25);
-          } else {
-            vp.scale(1/1.25);
-          }
-        });
       });
+      
     </script>
 </body>
 </html>
