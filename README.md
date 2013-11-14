@@ -15,17 +15,17 @@ A zooming user interface (ZUI) library for HTML/CSS/JS. Very much under developm
 
 ## TODO
 
-- Mouse wheel binding
-- Key bindings
-- Rotation
-- Animations and easing
-- Grouping
 - Networks
+- Animations and easing
+- Box element type
 - Extendability
+- package.json
 - Build tools i.e. Gruntfile
+- Panning and zooming limits
+- Grouping
+- Rotation
 - Documentation
 - Testing
-- package.json
 
 ## Dependencies
 
