@@ -37,6 +37,7 @@ module.exports = function(grunt) {
           banner: '<%= meta.banner %>'
         },
         src: [
+          'src/taaspace/js/intro.js',
           'src/taaspace/js/index.js',
           'src/taaspace/js/element.js',
           'src/taaspace/js/viewport.js',
@@ -45,7 +46,8 @@ module.exports = function(grunt) {
           'src/taaspace/js/group.js',
           'src/taaspace/js/network.js',
           'src/taaspace/js/custom.js',
-          'src/taaspace/js/keyboardmanager.js'
+          'src/taaspace/js/keyboardmanager.js',
+          'src/taaspace/js/outro.js'
         ],
         dest: 'taaspace.js'
       }
@@ -66,24 +68,45 @@ module.exports = function(grunt) {
     },
     
     // Check for optimisations and errors
+    // http://www.jshint.com/docs/options/
     jshint: {
       options: {
+        // Enforcing options
+        camelcase: true,
         curly: true,
-        expr: true,
-        newcap: true,
+        eqeqeq: true,
+        forin: true,
+        freeze: true,
+        immed: true,
+        //indent: 2,
+        maxlen: 80,
+        newcap: false,
+        noarg: true,
+        //noempty: true,
+        nonew: true,
+        plusplus: true,
         quotmark: 'single',
-        regexdash: true,
-        trailing: true,
         undef: true,
-        unused: true,
-        maxerr: 100,
-        eqnull: true,
-        sub: false,
-        browser: true,
-        node: true,
+        //unused: true, // warn about unused variables
         strict: true,
-        laxcomma: true,
+        trailing: true,
+        
+        // Relaxing options, supresses warnings
+        //asi: true, missing semicolons
+        //boss: true, assignments in weird places
+        //eqnull: true,
+        //evil: true,
+        //expr: true, // expressions in weird places
+        
+        // Environment options
+        browser: true,
+        jquery: true,
+        node: true,
+        
         globals: {
+          '_': false,
+          'jwerty': false,
+          'Hammer': true,
           define: false
         }
       },
