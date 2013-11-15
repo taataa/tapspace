@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         },
         src: [
           'src/taaspace/js/intro.js',
-          'src/taaspace/js/index.js',
+          'src/taaspace/js/space.js',
           'src/taaspace/js/element.js',
           'src/taaspace/js/viewport.js',
           'src/taaspace/js/text.js',
