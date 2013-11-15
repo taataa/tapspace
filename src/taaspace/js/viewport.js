@@ -24,7 +24,26 @@ Taaspace.Viewport = (function () {
   // Constructor
   
   var View = function (space, container, options) {
+    // Parameter
+    //   space
+    //     The space wanted to be displayed by the viewport
+    //   container
+    //     selector string, DOMElement or jQuery element
+    //   options (optional)
+    //     object of options
+    // 
+    // Options
+    //   width
+    //     Sets width of the container element. E.g. 120, '240px' or '100%'
+    //   height
+    //     Sets height. See width.
     
+    // Normalize parameters
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Viewport to the space
     this._space = space;
     
     // Find type of container
@@ -38,6 +57,33 @@ Taaspace.Viewport = (function () {
         this._container = container;
       }
     }
+    
+    // Requires style
+    $(this._container).css({
+      // Absolutely positioned elements have their position in relation
+      // to the parent element if the parent has position relative.
+      position: 'relative',
+      
+      // There will be lots of elements outside of the container element.
+      // The will be hidden by setting overflow to hidden.
+      overflow: 'hidden'
+    });
+    
+    // Set width and height of the viewport
+    if (options.hasOwnProperty('width')) {
+      // Normalize to css string with unit. Default to pixels
+      if (typeof options.width === 'number') {
+        options.width = options.width + 'px';
+      }
+      $(this._container).css('width', options.width);
+    }
+    if (options.hasOwnProperty('height')) {
+      if (typeof options.height === 'number') {
+        options.height = options.height + 'px';
+      }
+      $(this._container).css('height', options.height);
+    }
+    
     
     // The location of the left-top corner in space.
     this._x = 0;
@@ -74,8 +120,8 @@ Taaspace.Viewport = (function () {
     
   };
   
-  exports.create = function (space, container, options) {
-    return new View(space, container, options);
+  exports.create = function (space, containerEl, options) {
+    return new View(space, containerEl, options);
   };
   
   
@@ -151,7 +197,7 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype.toSpace = function (x, y) {
-    // Translate point on screen to point in space.
+    // Translate point on the container DOMElement to point in space.
     // 
     // Return
     //   xy_in_space
@@ -172,7 +218,7 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype.fromSpace = function (x, y) {
-    // Translate point in space to point on screen.
+    // Translate point in space to point on the container DOMElement.
     // 
     // Usage
     //   fromSpace(12, -2.1) // {x: 200, y: 400}
@@ -405,8 +451,13 @@ Taaspace.Viewport = (function () {
       op.status = false;
       op.onmousewheel = function (event, delta, deltax, deltay) {
         
+        // Convert a page point to a point container DOMElement
+        var offset = $(that._container).offset();
+        var cx = event.pageX - offset.left;
+        var cy = event.pageY - offset.top;
+        
         // Origo to mouse position
-        var spaceOrigo = that.toSpace(event.pageX, event.pageY);
+        var spaceOrigo = that.toSpace(cx, cy);
         that.origo(spaceOrigo);
         
         if (delta > 0) {

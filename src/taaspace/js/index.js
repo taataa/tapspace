@@ -105,9 +105,9 @@ var Taaspace = (function () {
     return {};
   };
   
-  Space.prototype.createViewport = function (containerEl) {
+  Space.prototype.createViewport = function (containerEl, options) {
     // Create a new view to the space. Kind of a window to the garden.
-    var vp = Taaspace.Viewport.create(this, containerEl);
+    var vp = Taaspace.Viewport.create(this, containerEl, options);
     this._addViewport(vp);
     return vp;
   };
