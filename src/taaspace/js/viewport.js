@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Viewport = (function () {
   //
   // Viewport into the space.
@@ -20,6 +18,10 @@ Taaspace.Viewport = (function () {
   // 
   var exports = {};
   /////////////////
+  
+  
+  
+  // Constructor
   
   var View = function (space, container, options) {
     
@@ -72,6 +74,10 @@ Taaspace.Viewport = (function () {
     
   };
   
+  exports.create = function (space, container, options) {
+    return new View(space, container, options);
+  };
+  
   
   // Accessors
   
@@ -103,7 +109,7 @@ Taaspace.Viewport = (function () {
     return {
       x: this._x + this.width() / 2,
       y: this._y + this.height() / 2
-    }
+    };
   };
   
   View.prototype.northwest = function () {
@@ -545,14 +551,14 @@ Taaspace.Viewport = (function () {
     return this;
   };
   
-  View.prototype.hideElement = function (taa_element) {
+  View.prototype.hideElement = function (element) {
     // Hide an element from the viewport
     // 
     // Priority
     //   low
   };
   
-  View.prototype.showElement = function (taa_element) {
+  View.prototype.showElement = function (element) {
     // Show a hidden element.
     // 
     // Priority
@@ -668,11 +674,6 @@ Taaspace.Viewport = (function () {
   };
   
   
-  // Constructor
-  
-  exports.create = function (space, container, options) {
-      return new View(space, container, options);
-  };
   
   ///////////////
   return exports;

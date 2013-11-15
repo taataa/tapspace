@@ -1,5 +1,3 @@
-'use strict';
-
 var Taaspace = (function () {
   //
   // Methods
@@ -9,6 +7,10 @@ var Taaspace = (function () {
   //
   var exports = {};
   /////////////////
+  
+  
+  
+  // Constructor
   
   var Space = function (el) {
     if (typeof el === 'undefined') {
@@ -35,22 +37,26 @@ var Taaspace = (function () {
     this._keyboardManager = Taaspace.KeyboardManager.create();
   };
   
+  exports.create = function () {
+    return new Space();
+  };
+  
   
   
   // Mutators
   
-  Space.prototype.origo = function (xy_or_viewport) {
+  Space.prototype.origo = function (xyOrViewport) {
     // Move the location of the space origo so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
     // If no parameters specified, return 0,0
-    var xy = xy_or_viewport;
+    var xy = xyOrViewport;
     
     if (typeof xy === 'undefined') {
       return {x:0, y:0};
     }
     
     if ('pivot' in xy && typeof xy.pivot === 'function') {
-        xy = xy.pivot();
+      xy = xy.pivot();
     }
     
     this._moveElemsBy(xy);
@@ -99,8 +105,9 @@ var Taaspace = (function () {
     return {};
   };
   
-  Space.prototype.createViewport = function (container_el) {
-    var vp = Taaspace.Viewport.create(this, container_el);
+  Space.prototype.createViewport = function (containerEl) {
+    // Create a new view to the space. Kind of a window to the garden.
+    var vp = Taaspace.Viewport.create(this, containerEl);
     this._addViewport(vp);
     return vp;
   };
@@ -171,26 +178,8 @@ var Taaspace = (function () {
     this._keyboardManager.off(code, elementOrViewport, handler);
   };
   
-  /* DEPRECATED ?
-  Space.prototype._moveElemsBy = function (x, y) {
-    // Move the coordinates of everything same amount.
-    if (typeof x === 'object') {
-      y = x.y;
-      x = x.x;
-    }
-    _.each(this._elems, function (elem) {
-      elem.moveBy(x, y);
-    });
-  };
-  */
   
   
-  
-  // Constructor
-  
-  exports.create = function () {
-      return new Space();
-  };
   
   ///////////////
   return exports;

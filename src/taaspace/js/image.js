@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Image = (function () {
   //
   // An image element.

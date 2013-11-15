@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Custom = (function () {
   //
   // A custom element.

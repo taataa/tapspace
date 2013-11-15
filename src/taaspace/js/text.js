@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Text = (function () {
   //
   // Methods

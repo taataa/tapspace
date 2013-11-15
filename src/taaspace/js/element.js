@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Element = (function () {
   //
   // Abstract prototype for all objects floating in the space.
@@ -42,7 +40,7 @@ Taaspace.Element = (function () {
   };
   
   exports.create = function () {
-      return new Elem();
+    return new Elem();
   };
   
   
@@ -350,7 +348,7 @@ Taaspace.Element = (function () {
   // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._domAppend = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+    throw 'Abstract function. Must be implemented by the instance.';
   };
   
   Elem.prototype._domMove = function (domElem, fromSpace, options) {
@@ -384,7 +382,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype._domRotate = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+    throw 'Abstract function. Must be implemented by the instance.';
   };
   
   Elem.prototype._domRemove = function (domElem, options) {

@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.KeyboardManager = (function () {
   var exports = {};
   /////////////////
@@ -96,7 +94,8 @@ Taaspace.KeyboardManager = (function () {
     if (pairSetAdded) {
     
       // Attach key listener
-      // https://github.com/keithamus/jwerty/blob/master/README-DETAILED.md#jwertykey
+      // https://github.com/keithamus/jwerty/blob/master/
+      // README-DETAILED.md#jwertykey
       jwerty.key(jwertyCode, function () {
         var pairset = this._pairs[jwertyCode];
         
@@ -130,7 +129,7 @@ Taaspace.KeyboardManager = (function () {
     // 
     // Priority
     //   low
-    throw "not yet implemented"
+    throw 'not yet implemented';
   };
   
   

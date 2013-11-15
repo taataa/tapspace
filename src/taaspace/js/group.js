@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Group = (function () {
   //
   // A set of elements.

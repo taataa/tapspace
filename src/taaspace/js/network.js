@@ -1,5 +1,3 @@
-'use strict';
-
 Taaspace.Network = (function () {
   //
   // A network of elements.
