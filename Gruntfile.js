@@ -37,17 +37,17 @@ module.exports = function(grunt) {
           banner: '<%= meta.banner %>'
         },
         src: [
-          'src/taaspace/js/intro.js',
-          'src/taaspace/js/space.js',
-          'src/taaspace/js/element.js',
-          'src/taaspace/js/viewport.js',
-          'src/taaspace/js/text.js',
-          'src/taaspace/js/image.js',
-          'src/taaspace/js/group.js',
-          'src/taaspace/js/network.js',
-          'src/taaspace/js/custom.js',
-          'src/taaspace/js/keyboardmanager.js',
-          'src/taaspace/js/outro.js'
+          'src/intro.js',
+          'src/space.js',
+          'src/element.js',
+          'src/viewport.js',
+          'src/text.js',
+          'src/image.js',
+          'src/group.js',
+          'src/network.js',
+          'src/custom.js',
+          'src/keyboardmanager.js',
+          'src/outro.js'
         ],
         dest: 'taaspace.js'
       }
