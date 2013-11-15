@@ -2,9 +2,11 @@
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
- * Licensed under the  license */
+ * Licensed under the MIT license */
 
-'use strict';
+(function(window, undefined) {
+  'use strict';
+
 
 var Taaspace = (function () {
   //
@@ -15,6 +17,10 @@ var Taaspace = (function () {
   //
   var exports = {};
   /////////////////
+  
+  
+  
+  // Constructor
   
   var Space = function (el) {
     if (typeof el === 'undefined') {
@@ -41,22 +47,26 @@ var Taaspace = (function () {
     this._keyboardManager = Taaspace.KeyboardManager.create();
   };
   
+  exports.create = function () {
+    return new Space();
+  };
+  
   
   
   // Mutators
   
-  Space.prototype.origo = function (xy_or_viewport) {
+  Space.prototype.origo = function (xyOrViewport) {
     // Move the location of the space origo so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
     // If no parameters specified, return 0,0
-    var xy = xy_or_viewport;
+    var xy = xyOrViewport;
     
     if (typeof xy === 'undefined') {
       return {x:0, y:0};
     }
     
     if ('pivot' in xy && typeof xy.pivot === 'function') {
-        xy = xy.pivot();
+      xy = xy.pivot();
     }
     
     this._moveElemsBy(xy);
@@ -105,8 +115,9 @@ var Taaspace = (function () {
     return {};
   };
   
-  Space.prototype.createViewport = function (container_el) {
-    var vp = Taaspace.Viewport.create(this, container_el);
+  Space.prototype.createViewport = function (containerEl) {
+    // Create a new view to the space. Kind of a window to the garden.
+    var vp = Taaspace.Viewport.create(this, containerEl);
     this._addViewport(vp);
     return vp;
   };
@@ -177,33 +188,13 @@ var Taaspace = (function () {
     this._keyboardManager.off(code, elementOrViewport, handler);
   };
   
-  /* DEPRECATED ?
-  Space.prototype._moveElemsBy = function (x, y) {
-    // Move the coordinates of everything same amount.
-    if (typeof x === 'object') {
-      y = x.y;
-      x = x.x;
-    }
-    _.each(this._elems, function (elem) {
-      elem.moveBy(x, y);
-    });
-  };
-  */
   
   
-  
-  // Constructor
-  
-  exports.create = function () {
-      return new Space();
-  };
   
   ///////////////
   return exports;
 }());
 
-
-'use strict';
 
 Taaspace.Element = (function () {
   //
@@ -247,7 +238,7 @@ Taaspace.Element = (function () {
   };
   
   exports.create = function () {
-      return new Elem();
+    return new Elem();
   };
   
   
@@ -555,7 +546,7 @@ Taaspace.Element = (function () {
   // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._domAppend = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+    throw 'Abstract function. Must be implemented by the instance.';
   };
   
   Elem.prototype._domMove = function (domElem, fromSpace, options) {
@@ -589,7 +580,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype._domRotate = function () {
-    throw "Abstract function. Must be implemented by the instance.";
+    throw 'Abstract function. Must be implemented by the instance.';
   };
   
   Elem.prototype._domRemove = function (domElem, options) {
@@ -623,8 +614,6 @@ Taaspace.Element = (function () {
 }());
 
 
-'use strict';
-
 Taaspace.Viewport = (function () {
   //
   // Viewport into the space.
@@ -645,6 +634,10 @@ Taaspace.Viewport = (function () {
   // 
   var exports = {};
   /////////////////
+  
+  
+  
+  // Constructor
   
   var View = function (space, container, options) {
     
@@ -697,6 +690,10 @@ Taaspace.Viewport = (function () {
     
   };
   
+  exports.create = function (space, container, options) {
+    return new View(space, container, options);
+  };
+  
   
   // Accessors
   
@@ -728,7 +725,7 @@ Taaspace.Viewport = (function () {
     return {
       x: this._x + this.width() / 2,
       y: this._y + this.height() / 2
-    }
+    };
   };
   
   View.prototype.northwest = function () {
@@ -1170,14 +1167,14 @@ Taaspace.Viewport = (function () {
     return this;
   };
   
-  View.prototype.hideElement = function (taa_element) {
+  View.prototype.hideElement = function (element) {
     // Hide an element from the viewport
     // 
     // Priority
     //   low
   };
   
-  View.prototype.showElement = function (taa_element) {
+  View.prototype.showElement = function (element) {
     // Show a hidden element.
     // 
     // Priority
@@ -1293,18 +1290,11 @@ Taaspace.Viewport = (function () {
   };
   
   
-  // Constructor
-  
-  exports.create = function (space, container, options) {
-      return new View(space, container, options);
-  };
   
   ///////////////
   return exports;
 }());
 
-
-'use strict';
 
 Taaspace.Text = (function () {
   //
@@ -1371,8 +1361,6 @@ Taaspace.Text = (function () {
   return exports;
 }());
 
-
-'use strict';
 
 Taaspace.Image = (function () {
   //
@@ -1443,8 +1431,6 @@ Taaspace.Image = (function () {
 }());
 
 
-'use strict';
-
 Taaspace.Group = (function () {
   //
   // A set of elements.
@@ -1479,8 +1465,6 @@ Taaspace.Group = (function () {
   return exports;
 }());
 
-
-'use strict';
 
 Taaspace.Network = (function () {
   //
@@ -1517,8 +1501,6 @@ Taaspace.Network = (function () {
 }());
 
 
-'use strict';
-
 Taaspace.Custom = (function () {
   //
   // A custom element.
@@ -1553,8 +1535,6 @@ Taaspace.Custom = (function () {
   return exports;
 }());
 
-
-'use strict';
 
 Taaspace.KeyboardManager = (function () {
   var exports = {};
@@ -1652,7 +1632,8 @@ Taaspace.KeyboardManager = (function () {
     if (pairSetAdded) {
     
       // Attach key listener
-      // https://github.com/keithamus/jwerty/blob/master/README-DETAILED.md#jwertykey
+      // https://github.com/keithamus/jwerty/blob/master/
+      // README-DETAILED.md#jwertykey
       jwerty.key(jwertyCode, function () {
         var pairset = this._pairs[jwertyCode];
         
@@ -1686,7 +1667,7 @@ Taaspace.KeyboardManager = (function () {
     // 
     // Priority
     //   low
-    throw "not yet implemented"
+    throw 'not yet implemented';
   };
   
   
@@ -1773,3 +1754,14 @@ Taaspace.KeyboardManager = (function () {
   //////////////
   return exports;
 }());
+
+
+  if(typeof module === 'object' && typeof module.exports === 'object') {
+    // Common JS
+    // http://wiki.commonjs.org/wiki/Modules/1.1
+    module.exports = Taaspace;
+  } else {
+    // Browsers
+    window.Taaspace = Taaspace;
+  }
+})(this);
