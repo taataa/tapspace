@@ -1,6 +1,6 @@
 # Taaspace.js
 
-A zooming user interface (ZUI) library for HTML/CSS/JS. Very much under development.
+A javascript library for zooming user interfaces. Very much under development.
 
 ## Features
 
@@ -19,8 +19,6 @@ A zooming user interface (ZUI) library for HTML/CSS/JS. Very much under developm
 - Animations and easing
 - Box element type
 - Extendability
-- package.json
-- Build tools i.e. Gruntfile
 - Panning and zooming limits
 - Grouping
 - Rotation
