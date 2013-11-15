@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Taaspace Panning Example</title>
+    <title>Taaspace Example / Basic Usage</title>
     
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     
@@ -47,8 +47,8 @@
         <div id="space" class="space"></div>
 
         <div class="meta">
-            <div class="page-title">Taaspace</div>
-            <div class="page-description">Panning example.</div>
+            <div class="page-title">Taaspace.js</div>
+            <div class="page-description">Basic usage example.</div>
         </div>
     </div>
     
@@ -66,6 +66,10 @@
         
         var space = Taaspace.create();
         var vp = space.createViewport('#space');
+        
+        var helpText = space.createText('You can zoom in by mouse wheel. Let it roll!')
+          .size(200, 400)
+          .moveBy(200, 100);
         
         var lennaText = space.createText('Lenna').size(150, 100).moveBy(200, 150);
         var dropsText = space.createText('Fruit Drops').size(150, 100).moveBy(400, 150);
