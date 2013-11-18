@@ -29,8 +29,8 @@ Taaspace.Text = (function () {
     // Called by viewports.
     // Appends element into DOM.
     
-    var domElem = $(document.createElement('div'));
-    domElem.html(this._string);
+    var domElem = $(document.createElement('p'));
+    domElem.text(this._string);
     domElem.css({
       position: 'absolute'
     });

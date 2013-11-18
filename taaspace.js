@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.2 - 2013-11-15
+/*! taaspace - v0.0.2 - 2013-11-18
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -10,10 +10,8 @@
 
 var Taaspace = (function () {
   //
-  // Methods
-  //   create(el)
-  //     el
-  //       DOM element or query string, e.g. '#space'. Defaults to body
+  // Usage
+  //   var space = Taaspace.create()
   //
   var exports = {};
   /////////////////
@@ -22,22 +20,13 @@ var Taaspace = (function () {
   
   // Constructor
   
-  var Space = function (el) {
-    if (typeof el === 'undefined') {
-      el = document.body;
-    } else if (typeof el === 'string') {
-      el = document.querySelector(el);
-    }
+  var Space = function () {
     
     // Elements, like Texts and Images in space
     this._elems = [];
     
     // Viewports to the space
     this._vps = [];
-    
-    // Deviation before _updatePositions
-    this._dx = 0;
-    this._dy = 0;
     
     // Make elements referencable by id to be stored in objects.
     // Makes implementing collections easy.
@@ -55,25 +44,31 @@ var Taaspace = (function () {
   
   // Mutators
   
-  Space.prototype.origo = function (xyOrViewport) {
-    // Move the location of the space origo so that the relations between
+  Space.prototype.pivot = function (xyOrViewportOrElement) {
+    // Move the location of the space pivot so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
     // If no parameters specified, return 0,0
-    var xy = xyOrViewport;
+    
+    var xy = xyOrViewportOrElement;
     
     if (typeof xy === 'undefined') {
       return {x:0, y:0};
     }
     
+    // If is viewport or element
     if ('pivot' in xy && typeof xy.pivot === 'function') {
       xy = xy.pivot();
     }
     
-    this._moveElemsBy(xy);
+    // Should move all the elements accordingly and set the scaling.
+    throw 'Not implemented';
+    //this._moveElemsBy(xy);
   };
   
   Space.prototype.remove = function (elem) {
+    // Remove the element from the space.
     this._elems = _.reject(this._elems, function (i) { return elem === i; });
+    throw 'Not implemented'; // Should remove the DOMElements too.
   };
   
   Space.prototype.createImage = function (src, options) {
@@ -102,17 +97,17 @@ var Taaspace = (function () {
   
   Space.prototype.createCustom = function (el, options) {
     // Add custom element to the space.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createNetwork = function () {
     // Attach a network to be visualised. Define position of root.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createGroup = function () {
     // Create a group for space elements.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createViewport = function (containerEl, options) {
@@ -180,11 +175,12 @@ var Taaspace = (function () {
   };
   
   Space.prototype._onKey = function (code, elementOrViewport, handler) {
-    // Attach jwerty key combination to element or viewport
+    // Attach jwerty key combination event to element or viewport
     this._keyboardManager.on(code, elementOrViewport, handler);
   };
   
   Space.prototype._offKey = function (code, elementOrViewport, handler) {
+    // Detach jwerty key combination
     this._keyboardManager.off(code, elementOrViewport, handler);
   };
   
@@ -200,8 +196,8 @@ Taaspace.Element = (function () {
   //
   // Abstract prototype for all objects floating in the space.
   // 
-  // Methods
-  //   create(space, string, options)
+  // Usage
+  //   MyElemType.prototype = Taaspace.Element.create()
   //
   // Animation options
   //   ease (optional, default none)
@@ -232,9 +228,9 @@ Taaspace.Element = (function () {
     this._w = 0;
     this._h = 0;
     
-    // Origo i.e. pivot point
-    this._ox = 0;
-    this._oy = 0;
+    // Pivot point
+    this._px = 0;
+    this._py = 0;
   };
   
   exports.create = function () {
@@ -266,47 +262,21 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
-  Elem.prototype.northwest = function () {
-    // Top left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.northeast = function () {
-    // Top right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.southwest = function () {
-    // Bottom left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.southeast = function () {
-    // Bottom right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.rect = function () {
-    // Rectangle of element in space
+  Elem.prototype.box = function () {
+    // Bounding box of the element in the space.
     // 
     // Return
     //   {x0, y0, x1, y1}
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
-  Elem.prototype.inside = function (rect) {
+  Elem.prototype.isInside = function (rect) {
     // Return
     //   true
     //     if obj inside given rectangle
@@ -315,9 +285,10 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
-  Elem.prototype.outside = function (rect) {
+  Elem.prototype.isOutside = function (rect) {
     // Return
     //   true
     //     if obj outside given rectangle
@@ -326,24 +297,25 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   
   
   // Mutators
   
-  Elem.prototype.origo = function (xy) {
-    // Move the fixed point, the pivot point.
-    // The point to moveTo and rotate around.
-    // Does not move the element in relation to the space origo.
+  Elem.prototype.pivot = function (xy) {
+    // Set or get the pivot point.
+    // The point to moveTo, scale and rotate around.
+    // Does not move the element in relation to the space pivot.
     // 
     // Parameter
     //   xy
-    //     Place for new origo in relation to the current origo in space units.
+    //     Place for new pivot in relation to the current pivot in space units.
     // 
     // Priority
     //   medium
-    return {};
+    throw 'Not implemented';
   };
   
   Elem.prototype.size = function (width, height) {
@@ -383,7 +355,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.scale = function (multiplier, options) {
-    // Resize the element so that origo does not move.
+    // Resize the element so that pivot does not move.
     // 
     // Parameter
     //   multiplier
@@ -400,7 +372,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.rotate = function (angle, options) {
-    // Rotate the element around its origo.
+    // Rotate the element around its pivot.
     // 
     // Parameter
     //   angle
@@ -417,7 +389,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.moveTo = function (x, y, options) {
-    // Move the element so that the origo of the element
+    // Move the element so that the pivot of the element
     // will be at x y in space.
     // 
     // Parameter
@@ -480,12 +452,15 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
-    return this;
+    throw 'Not implemented';
   };
   
   Elem.prototype.rotatable = function (onoff, options) {
+    // Make element rotatable by pinch gesture
+    // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   Elem.prototype.draggable = function (onoff, options) {
@@ -502,7 +477,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
-    return this;
+    throw 'Not implemented';
   };
   
   Elem.prototype.remove = function () {
@@ -510,6 +485,7 @@ Taaspace.Element = (function () {
     //
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
   
@@ -539,6 +515,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
+    throw 'Not implemented';
   };
   
   
@@ -566,7 +543,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
-    // Can be reimplemented in the child prototype.
+    // Can be overridden in the child prototype.
     
     var nw = fromSpace(this._x, this._y);
     var se = fromSpace(this._x + this._w, this._y + this._h);
@@ -705,9 +682,9 @@ Taaspace.Viewport = (function () {
     this._x = 0;
     this._y = 0;
     
-    // The location of viewport origo in space.
-    this._ox = 0;
-    this._oy = 0;
+    // The location of viewport pivot in space.
+    this._px = 0;
+    this._py = 0;
     
     // The unit scale. Answers to the question:
     // How many units there are on the viewport for one unit in space.
@@ -717,7 +694,7 @@ Taaspace.Viewport = (function () {
     this._hammertime = Hammer(this._container);
     
     // Mapping from element ids to (elem, DOMElement) pairs.
-    this._domMap = {};
+    this._domPairs = {};
     
     // Model for draggability. Defined in draggable().
     this._draggable = {};
@@ -727,8 +704,8 @@ Taaspace.Viewport = (function () {
     
     // fromSpace is commonly passed to functions in other modules, e.g.
     // to be used in dom operations.
-    // Here we make a function that does not depend on the context and
-    // therefore can easily be passed.
+    // Here we make a function that does not depend on the context, i.e.
+    // value of 'this' and therefore can easily be passed.
     var that = this;
     this._fromSpace = function () {
       return that.fromSpace.apply(that, arguments);
@@ -774,36 +751,8 @@ Taaspace.Viewport = (function () {
     };
   };
   
-  View.prototype.northwest = function () {
-    // Top left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  View.prototype.northeast = function () {
-    // Top right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  View.prototype.southwest = function () {
-    // Bottom left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  View.prototype.southeast = function () {
-    // Bottom right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  View.prototype.rect = function () {
-    // Rectangle in space
+  View.prototype.box = function () {
+    // Viewport borders in space.
     // 
     // Return
     //   {x0, y0, x1, y1}
@@ -841,7 +790,7 @@ Taaspace.Viewport = (function () {
     //   fromSpace({x: 12, y: -2.1}) // {x: 200, y: 400}
     // 
     // Return
-    //   xy_on_screen
+    //   xyOnDom
     // 
     // Priority
     //   high
@@ -887,17 +836,17 @@ Taaspace.Viewport = (function () {
   
   // Mutators
   
-  View.prototype.origo = function (x, y) {
-    // Move the point to moveTo and rotate around.
-    // Does not move the view in relation to the space origo.
+  View.prototype.pivot = function (x, y) {
+    // Move the point to moveTo, scale in and rotate around.
+    // Does not move the view in relation to the space pivot.
     // 
     // Parameter
     //   xy (optional)
-    //     Place for new origo in space units.
+    //     Place for new pivot in space units.
     // 
     // Return
-    //   xy of the current origo, if no new origo specified.
-    //   this, if new origo specified.
+    //   xy of the current pivot, if no new pivot specified.
+    //   this, if new pivot specified.
     // 
     // Priority
     //   medium
@@ -906,19 +855,19 @@ Taaspace.Viewport = (function () {
       x = x.x;
     } else {
       if (typeof x === 'undefined') {
-        return {x: this._ox, y: this._oy};
+        return {x: this._px, y: this._py};
       } // else
     }
     
-    // Update the origo
-    this._ox = x;
-    this._oy = y;
+    // Update the pivot
+    this._px = x;
+    this._py = y;
     
     return this;
   };
   
   View.prototype.scale = function (multiplier, options) {
-    // Multiply scale so that origo stays still.
+    // Multiply scale so that pivot stays still.
     // 
     // Return
     //   this
@@ -926,16 +875,16 @@ Taaspace.Viewport = (function () {
     // Priority 
     //   high
     
-    // Origo on screen before scaling
-    var ob = this.fromSpace(this._ox, this._oy);
+    // Pivot on screen before scaling
+    var ob = this.fromSpace(this._px, this._py);
     
     // Scaling
     this._scale *= multiplier;
     
-    // Origo on screen after scaling
-    var oa = this.fromSpace(this._ox, this._oy);
+    // Pivot on screen after scaling
+    var oa = this.fromSpace(this._px, this._py);
     
-    // Move space so that origo stays in the same space
+    // Move space so that pivot stays in the same space
     var dx = this.toSpaceDistance(oa.x - ob.x);
     var dy = this.toSpaceDistance(oa.y - ob.y);
     this.moveBy(dx, dy, {
@@ -948,7 +897,7 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype.rotate = function (angle, options) {
-    // Rotate the viewport around its origo.
+    // Rotate the viewport around its pivot.
     // 
     // Parameter
     //   angle
@@ -962,11 +911,13 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   View.prototype.moveTo = function (x, y, options) {
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
   View.prototype.moveBy = function (dx, dy, options) {
@@ -1010,8 +961,8 @@ Taaspace.Viewport = (function () {
     this._x += dx;
     this._y += dy;
     
-    this._ox += dx;
-    this._oy += dy;
+    this._px += dx;
+    this._py += dy;
     
     if (!('disableDomUpdate' in options && options.disableDomUpdate === true)) {
       this._moveEachDomElement(options);
@@ -1023,6 +974,7 @@ Taaspace.Viewport = (function () {
   View.prototype.focusTo = function (taa, options) {
     // Priority
     //   medium
+    throw 'Not implemented';
   };
   
   View.prototype.scalable = function (onoff, options) {
@@ -1072,9 +1024,9 @@ Taaspace.Viewport = (function () {
         var cx = event.pageX - offset.left;
         var cy = event.pageY - offset.top;
         
-        // Origo to mouse position
-        var spaceOrigo = that.toSpace(cx, cy);
-        that.origo(spaceOrigo);
+        // pivot to mouse position
+        var spacePivot = that.toSpace(cx, cy);
+        that.pivot(spacePivot);
         
         if (delta > 0) {
           that.scale(1.25);
@@ -1083,10 +1035,10 @@ Taaspace.Viewport = (function () {
         }
       };
       op.onkeyplus = function () {
-        that.origo(that.center()).scale(1.25);
+        that.pivot(that.center()).scale(1.25);
       };
       op.onkeyminus = function () {
-        that.origo(that.center()).scale(1/1.25);
+        that.pivot(that.center()).scale(1/1.25);
       };
     }
     
@@ -1115,7 +1067,7 @@ Taaspace.Viewport = (function () {
   View.prototype.rotatable = function (onoff, options) {
     // Priority
     //   low
-    return this;
+    throw 'Not implemented';
   };
   
   View.prototype.draggable = function (onoff, options) {
@@ -1223,6 +1175,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   View.prototype.showElement = function (element) {
@@ -1230,6 +1183,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   
@@ -1277,8 +1231,8 @@ Taaspace.Viewport = (function () {
   // Pseudo-private mutators
   
   View.prototype._getDomPair = function (id) {
-    if (this._domMap.hasOwnProperty(id)) {
-      return this._domMap[id];
+    if (this._domPairs.hasOwnProperty(id)) {
+      return this._domPairs[id];
     } else {
       throw {
         name: 'UnknownElementError',
@@ -1288,9 +1242,9 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype._eachDomPair = function (iterator) {
-    for (var id in this._domMap) {
-      if (this._domMap.hasOwnProperty(id)) {
-        iterator(this._domMap[id]);
+    for (var id in this._domPairs) {
+      if (this._domPairs.hasOwnProperty(id)) {
+        iterator(this._domPairs[id]);
       }
     }
   };
@@ -1300,7 +1254,7 @@ Taaspace.Viewport = (function () {
     
     // Limit access to viewport by handing only the stuff needed.
     var domElem = elem._domAppend(this._container, this._fromSpace);
-    this._domMap[elem._id] = {
+    this._domPairs[elem._id] = {
       elem: elem,
       dom: domElem
     };
@@ -1378,8 +1332,8 @@ Taaspace.Text = (function () {
     // Called by viewports.
     // Appends element into DOM.
     
-    var domElem = $(document.createElement('div'));
-    domElem.html(this._string);
+    var domElem = $(document.createElement('p'));
+    domElem.text(this._string);
     domElem.css({
       position: 'absolute'
     });

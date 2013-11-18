@@ -475,7 +475,6 @@ Taaspace.Viewport = (function () {
     // Priority
     //   low
     throw 'Not implemented';
-    return this;
   };
   
   View.prototype.draggable = function (onoff, options) {
