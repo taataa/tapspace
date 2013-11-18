@@ -2,8 +2,8 @@ Taaspace.Element = (function () {
   //
   // Abstract prototype for all objects floating in the space.
   // 
-  // Methods
-  //   create(space, string, options)
+  // Usage
+  //   MyElemType.prototype = Taaspace.Element.create()
   //
   // Animation options
   //   ease (optional, default none)
@@ -34,9 +34,9 @@ Taaspace.Element = (function () {
     this._w = 0;
     this._h = 0;
     
-    // Origo i.e. pivot point
-    this._ox = 0;
-    this._oy = 0;
+    // Pivot point
+    this._px = 0;
+    this._py = 0;
   };
   
   exports.create = function () {
@@ -68,47 +68,21 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
-  Elem.prototype.northwest = function () {
-    // Top left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.northeast = function () {
-    // Top right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.southwest = function () {
-    // Bottom left corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.southeast = function () {
-    // Bottom right corner
-    // 
-    // Priority
-    //   medium
-  };
-  
-  Elem.prototype.rect = function () {
-    // Rectangle of element in space
+  Elem.prototype.box = function () {
+    // Bounding box of the element in the space.
     // 
     // Return
     //   {x0, y0, x1, y1}
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
-  Elem.prototype.inside = function (rect) {
+  Elem.prototype.isInside = function (rect) {
     // Return
     //   true
     //     if obj inside given rectangle
@@ -117,9 +91,10 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
-  Elem.prototype.outside = function (rect) {
+  Elem.prototype.isOutside = function (rect) {
     // Return
     //   true
     //     if obj outside given rectangle
@@ -128,24 +103,25 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   
   
   // Mutators
   
-  Elem.prototype.origo = function (xy) {
-    // Move the fixed point, the pivot point.
-    // The point to moveTo and rotate around.
-    // Does not move the element in relation to the space origo.
+  Elem.prototype.pivot = function (xy) {
+    // Set or get the pivot point.
+    // The point to moveTo, scale and rotate around.
+    // Does not move the element in relation to the space pivot.
     // 
     // Parameter
     //   xy
-    //     Place for new origo in relation to the current origo in space units.
+    //     Place for new pivot in relation to the current pivot in space units.
     // 
     // Priority
     //   medium
-    return {};
+    throw 'Not implemented';
   };
   
   Elem.prototype.size = function (width, height) {
@@ -185,7 +161,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.scale = function (multiplier, options) {
-    // Resize the element so that origo does not move.
+    // Resize the element so that pivot does not move.
     // 
     // Parameter
     //   multiplier
@@ -202,7 +178,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.rotate = function (angle, options) {
-    // Rotate the element around its origo.
+    // Rotate the element around its pivot.
     // 
     // Parameter
     //   angle
@@ -219,7 +195,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.moveTo = function (x, y, options) {
-    // Move the element so that the origo of the element
+    // Move the element so that the pivot of the element
     // will be at x y in space.
     // 
     // Parameter
@@ -282,12 +258,15 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
-    return this;
+    throw 'Not implemented';
   };
   
   Elem.prototype.rotatable = function (onoff, options) {
+    // Make element rotatable by pinch gesture
+    // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   Elem.prototype.draggable = function (onoff, options) {
@@ -304,7 +283,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
-    return this;
+    throw 'Not implemented';
   };
   
   Elem.prototype.remove = function () {
@@ -312,6 +291,7 @@ Taaspace.Element = (function () {
     //
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
   
@@ -341,6 +321,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
+    throw 'Not implemented';
   };
   
   
@@ -368,7 +349,7 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
-    // Can be reimplemented in the child prototype.
+    // Can be overridden in the child prototype.
     
     var nw = fromSpace(this._x, this._y);
     var se = fromSpace(this._x + this._w, this._y + this._h);

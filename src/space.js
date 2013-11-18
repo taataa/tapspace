@@ -1,9 +1,7 @@
 var Taaspace = (function () {
   //
-  // Methods
-  //   create(el)
-  //     el
-  //       DOM element or query string, e.g. '#space'. Defaults to body
+  // Usage
+  //   var space = Taaspace.create()
   //
   var exports = {};
   /////////////////
@@ -12,22 +10,13 @@ var Taaspace = (function () {
   
   // Constructor
   
-  var Space = function (el) {
-    if (typeof el === 'undefined') {
-      el = document.body;
-    } else if (typeof el === 'string') {
-      el = document.querySelector(el);
-    }
+  var Space = function () {
     
     // Elements, like Texts and Images in space
     this._elems = [];
     
     // Viewports to the space
     this._vps = [];
-    
-    // Deviation before _updatePositions
-    this._dx = 0;
-    this._dy = 0;
     
     // Make elements referencable by id to be stored in objects.
     // Makes implementing collections easy.
@@ -45,25 +34,31 @@ var Taaspace = (function () {
   
   // Mutators
   
-  Space.prototype.origo = function (xyOrViewport) {
-    // Move the location of the space origo so that the relations between
+  Space.prototype.pivot = function (xyOrViewportOrElement) {
+    // Move the location of the space pivot so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
     // If no parameters specified, return 0,0
-    var xy = xyOrViewport;
+    
+    var xy = xyOrViewportOrElement;
     
     if (typeof xy === 'undefined') {
       return {x:0, y:0};
     }
     
+    // If is viewport or element
     if ('pivot' in xy && typeof xy.pivot === 'function') {
       xy = xy.pivot();
     }
     
-    this._moveElemsBy(xy);
+    // Should move all the elements accordingly and set the scaling.
+    throw 'Not implemented';
+    //this._moveElemsBy(xy);
   };
   
   Space.prototype.remove = function (elem) {
+    // Remove the element from the space.
     this._elems = _.reject(this._elems, function (i) { return elem === i; });
+    throw 'Not implemented'; // Should remove the DOMElements too.
   };
   
   Space.prototype.createImage = function (src, options) {
@@ -92,17 +87,17 @@ var Taaspace = (function () {
   
   Space.prototype.createCustom = function (el, options) {
     // Add custom element to the space.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createNetwork = function () {
     // Attach a network to be visualised. Define position of root.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createGroup = function () {
     // Create a group for space elements.
-    return {};
+    throw 'Not implemented';
   };
   
   Space.prototype.createViewport = function (containerEl, options) {
@@ -170,11 +165,12 @@ var Taaspace = (function () {
   };
   
   Space.prototype._onKey = function (code, elementOrViewport, handler) {
-    // Attach jwerty key combination to element or viewport
+    // Attach jwerty key combination event to element or viewport
     this._keyboardManager.on(code, elementOrViewport, handler);
   };
   
   Space.prototype._offKey = function (code, elementOrViewport, handler) {
+    // Detach jwerty key combination
     this._keyboardManager.off(code, elementOrViewport, handler);
   };
   
