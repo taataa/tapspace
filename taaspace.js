@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.2 - 2013-11-18
+/*! taaspace - v0.0.2 - 2013-11-19
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -537,8 +537,8 @@ Taaspace.Element = (function () {
     var xy = fromSpace(this._x, this._y);
     
     domElem.css({
-      left: xy.x + 'px',
-      top: xy.y + 'px'
+      left: xy.x + 'em',
+      top: xy.y + 'em'
     });
   };
   
@@ -549,10 +549,10 @@ Taaspace.Element = (function () {
     var se = fromSpace(this._x + this._w, this._y + this._h);
     
     domElem.css({
-      left: nw.x + 'px',
-      top: nw.y + 'px',
-      width: (se.x - nw.x) + 'px',
-      height: (se.y - nw.y) + 'px'
+      left: nw.x + 'em',
+      top: nw.y + 'em',
+      width: (se.x - nw.x) + 'em',
+      height: (se.y - nw.y) + 'em'
     });
   };
   
@@ -659,7 +659,10 @@ Taaspace.Viewport = (function () {
       
       // There will be lots of elements outside of the container element.
       // The will be hidden by setting overflow to hidden.
-      overflow: 'hidden'
+      overflow: 'hidden',
+      
+      // To use em units default font size should be defined.
+      'font-size': '1px'
     });
     
     // Set width and height of the viewport
@@ -1314,8 +1317,22 @@ Taaspace.Text = (function () {
   // Constructor
   
   var Text = function (space, string, options) {
+    
+    // Normalize parameters
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
     this._space = space;
     this._string = string;
+    
+    // Font size
+    if (options.hasOwnProperty('fontSize')) {
+        this._fontSize = options.fontSize;
+    } else {
+        this._fontSize = 1;
+    }
+    
   };
   
   exports.create = function (space, string, options) {
@@ -1326,40 +1343,71 @@ Taaspace.Text = (function () {
   
   
   
+  // Mutators
+  
+  Text.prototype.fontSize = function (newSize, options) {
+    // Parameter
+    //   Options
+    //     Animation
+    // 
+    // Return
+    //   this
+    //     for chaining
+    this._fontSize = newSize;
+    this._space._scaleDomElement(this, options);
+    return this;
+  };
+  
+  Text.prototype.fontScale = function (multiplier, options) {
+    // Scale font size by multiplier. Do not affect to element width.
+    // 
+    // Parameter
+    //   Options
+    //     Animation
+    throw 'Not implemented';
+  };
+  
+  
+  
   // Pseudo-private mutators
   
   Text.prototype._domAppend = function (container, fromSpace, options) {
     // Called by viewports.
     // Appends element into DOM.
     
-    var domElem = $(document.createElement('p'));
-    domElem.text(this._string);
-    domElem.css({
-      position: 'absolute'
+    var p = $(document.createElement('p'));
+    var span = $(document.createElement('span'));
+    p.append(span);
+    span.text(this._string);
+    p.css({
+      position: 'absolute',
     });
     
-    $(container).append(domElem);
+    $(container).append(p);
     
     // Init position
-    this._domMove(domElem, fromSpace, options);
+    this._domMove(p, fromSpace, options);
     
-    return domElem;
+    return p;
   };
-  
   
   Text.prototype._domScale = function (domElem, fromSpace, scale, options) {
     
     var nw = fromSpace(this._x, this._y);
     var se = fromSpace(this._x + this._w, this._y + this._h);
     
+    // :/ We should have direct reference to the child element to
+    // make things fast
+    
+    domElem.children().css('font-size', (this._fontSize * scale) + 'em');
     domElem.css({
-      'font-size': scale + 'em',
-      left: nw.x + 'px',
-      top: nw.y + 'px',
-      width: (se.x - nw.x) + 'px',
-      height: (se.y - nw.y) + 'px'
+      left: nw.x + 'em',
+      top: nw.y + 'em',
+      width: (se.x - nw.x) + 'em',
+      height: (se.y - nw.y) + 'em'
     });
   };
+  
   
   
   ///////////////

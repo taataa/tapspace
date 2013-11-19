@@ -6,15 +6,20 @@
     
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
     <style>
     html, body {
         margin: 0;
         padding: 0;
-        font-size: 16px;
         width: 100%;
         height: 100%;
-        
-        background: white;
+    }
+    
+    body {
+        font-size: 16px;
+        background: #222;
+        font-family: sans-serif;
+        color: white;
     }
     
     .container {
@@ -25,12 +30,7 @@
     }
     
     .meta {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 10%;
-        padding: 1em;
-        color: #333333;
+        display: none;
     }
     
     .space {
@@ -38,6 +38,10 @@
         padding: 0;
         width: 100%;
         height: 100%;
+    }
+    
+    img {
+        box-shadow: 0px 0px 15px #050505;
     }
     </style>
 </head>
@@ -67,37 +71,49 @@
         var space = Taaspace.create();
         var vp = space.createViewport('#space');
         
-        var helpText = space.createText('You can zoom in by mouse wheel. Let it roll!')
-          .size(200, 400)
-          .moveBy(200, 100);
+        var wheelText = space.createText('Zoom in by using your mouse wheel. Let\'s roll!')
+          .size(633, 400)
+          .fontSize(100)
+          .moveBy(558, 0);
         
-        var lennaText = space.createText('Lenna').size(150, 100).moveBy(200, 150);
-        var dropsText = space.createText('Fruit Drops').size(150, 100).moveBy(400, 150);
-        var whiteText = space.createText('Water Lily').size(150, 100).moveBy(600, 150);
+        var numpadText = space.createText('Numpad minus \'-\' and plus \'+\' work too.')
+          .size(250, 200)
+          .fontSize(46)
+          .moveBy(558, 1070);
         
-        var lenna = space.createImage('assets/Lenna-512x512.png', {
-          width: 150,
-          height: 150
-        }).moveBy({x: 200, y: 200});
-        var drops = space.createImage('assets/fruit-flavoured-gumdrops-812x768.jpg')
-          .size(100, 90)
-          .moveBy({x: 400, y: 200});
-        var white = space.createImage('assets/white-water-lily-667x1000.jpg')
-          .size(100, 150)
-          .moveBy({x: 600, y: 200});
+        var numpadText = space.createText('What about arrow keys?')
+          .moveBy(1236, 1433)
+          .size(10, 20)
+          .fontSize(10);
+          
+        var lennaText = space.createText('She\'s Lena, a Playboy model whose picture has become most widely used test image for all kinds of image processing algorithms since early 1970\'s.')
+          .moveBy(1450, 1582)
+          .size(10, 10)
+          .fontSize(1);
+        
+        var moreText = space.createText('Still want some more?')
+          .moveBy(1450, 1593)
+          .size(2, 1)
+          .fontSize(0.1);
+        
+        var otherText = space.createText('Go look at the other examples!')
+          .moveBy(1450, 1593.10)
+          .size(2, 1)
+          .fontSize(0.023);
+        
+        var valley = space.createImage('assets/valley-512x1024.jpg').size(512, 1024).moveBy(0,0);
+        var purpleflower = space.createImage('assets/purpleflower-1024x512.jpg').size(633, 316).moveBy(558,708);
+        var spiral = space.createImage('assets/spiral-512x512.jpg').size(316, 316).moveBy(874, 1070);
+        var blackletter = space.createImage('assets/blackletter-512x512.jpg').size(195, 195).moveBy(994, 1433);
+        var castle = space.createImage('assets/castle-512x512.jpg').size(121, 121).moveBy(1236, 1507);
+        var lenna = space.createImage('assets/Lenna-512x512.png').size(46, 46).moveBy(1403, 1582);
+        
         
         vp.scalable().draggable();
         space.select(vp);
         
-        lenna.on('tap', vp, function () {
-          console.log('scale half');
-          vp.scale(0.5);
-        });
-        white.on('tap', function () {
-          console.log('scale double');
-          vp.scale(2);
-        });
-        
+        vp.pivot(vp.center());
+        vp.scale(0.5);
       });
       
     </script>

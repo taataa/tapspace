@@ -66,7 +66,10 @@ Taaspace.Viewport = (function () {
       
       // There will be lots of elements outside of the container element.
       // The will be hidden by setting overflow to hidden.
-      overflow: 'hidden'
+      overflow: 'hidden',
+      
+      // To use em units default font size should be defined.
+      'font-size': '1px'
     });
     
     // Set width and height of the viewport
