@@ -38,7 +38,44 @@ var Taaspace = (function () {
   Space.prototype.box = function () {
     // The bounding box for all the elements in the space. Can be used
     // to focus to all the elements.
-    throw 'Not implemented';
+    // 
+    // Return
+    //   {x0, y0, x1, y1}
+    
+    // Slow implementation but easier to handle for now.
+    // Improve from O(n) to O(1) by checking boxes during adding
+    // or removing.
+    
+    var minx = 0;
+    var miny = 0;
+    var maxx = 0;
+    var maxy = 0;
+    var i, b;
+    if (this._elems.length > 0) {
+      // If space is not empty we cannot give zero values as defaults.
+      // First
+      b = this._elems[0].box();
+      minx = b.x0;
+      miny = b.y0;
+      maxx = b.x1;
+      maxy = b.y1;
+      
+      // Rest
+      for (i = 1; i < this._elems.length; i += 1) {
+        b = this._elems[i].box();
+        minx = Math.min(minx, b.x0);
+        miny = Math.min(miny, b.y0);
+        maxx = Math.max(maxx, b.x1);
+        maxy = Math.max(maxy, b.y1);
+      }
+    }
+    
+    return {
+      x0: minx,
+      y0: miny,
+      x1: maxx,
+      y1: maxy
+    };
   };
   
   

@@ -161,6 +161,7 @@ Taaspace.Viewport = (function () {
     };
   };
   
+  
   View.prototype.box = function () {
     // Viewport borders in space.
     // 
@@ -171,6 +172,7 @@ Taaspace.Viewport = (function () {
     //   high
     throw 'Not implemented';
   };
+  
   
   View.prototype.toSpace = function (x, y) {
     // Translate point on the container DOMElement to point in space.
@@ -192,6 +194,7 @@ Taaspace.Viewport = (function () {
       y: this._y + (y / this._scale)
     };
   };
+  
   
   View.prototype.fromSpace = function (x, y) {
     // Translate point in space to point on the container DOMElement.
@@ -218,6 +221,7 @@ Taaspace.Viewport = (function () {
     };
   };
   
+  
   View.prototype.toSpaceDistance = function (d) {
     // Translate distance on screen to distance in space.
     // 
@@ -228,6 +232,7 @@ Taaspace.Viewport = (function () {
     //   high
     return d / this._scale; // dummy
   };
+  
   
   View.prototype.fromSpaceDistance = function (d) {
     // Translate distance in space to distance on screen.
@@ -277,6 +282,92 @@ Taaspace.Viewport = (function () {
     return this;
   };
   
+  
+  View.prototype.moveTo = function (x, y, options) {
+    // Move the viewport so that pivot will be at x, y in space.
+    // 
+    // Parameter
+    //   x
+    //   y
+    //   options
+    //  OR
+    //   xy
+    //   options
+    // 
+    // Options
+    //   disableDomUpdate
+    //     Set true to skip updating the position of the DOM elements
+    //     after the move.
+    // 
+    // Priority
+    //   high
+    
+    // Normalize params
+    if (typeof x === 'object') {
+      if (typeof y === 'object') {
+        options = y;
+      }
+      y = x.y;
+      x = x.x;
+    }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    
+    this.moveBy(x - this._px, y - this._py, options);
+  };
+  
+  
+  View.prototype.moveBy = function (dx, dy, options) {
+    // Move the viewport by ...
+    // 
+    // Parameter
+    //   dx
+    //   dy
+    //   options (optional)
+    //  OR
+    //   dxdy
+    //   options (optional)
+    // 
+    // Options
+    //   disableDomUpdate
+    //     Set true to skip updating the position of the DOM elements
+    //     after the move.
+    // 
+    // Return
+    //   this
+    //     for chaining
+    // 
+    // Priority
+    //   high
+    
+    // Normalize params
+    if (typeof dx === 'object') {
+      if (typeof dy === 'object') {
+        options = dy;
+      }
+      dy = dx.y;
+      dx = dx.x;
+    }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    this._x += dx;
+    this._y += dy;
+    
+    this._px += dx;
+    this._py += dy;
+    
+    if (!('disableDomUpdate' in options && options.disableDomUpdate === true)) {
+      this._moveEachDomElement(options);
+    }
+    
+    return this;
+  };
+  
+  
   View.prototype.scale = function (multiplier, options) {
     // Multiply scale so that pivot stays still.
     // 
@@ -307,6 +398,7 @@ Taaspace.Viewport = (function () {
     return this;
   };
   
+  
   View.prototype.rotate = function (angle, options) {
     // Rotate the viewport around its pivot.
     // 
@@ -325,62 +417,6 @@ Taaspace.Viewport = (function () {
     throw 'Not implemented';
   };
   
-  View.prototype.moveTo = function (x, y, options) {
-    // Priority
-    //   high
-    throw 'Not implemented';
-  };
-  
-  View.prototype.moveBy = function (dx, dy, options) {
-    // Move the viewport by ...
-    // 
-    // Parameter
-    //   dx
-    //   dy
-    //   options (optional)
-    //  OR
-    //   dxdy
-    //   options (optional)
-    // 
-    // Options
-    //   disableDomUpdate
-    //     Set true to skip updating the position of the DOM elements
-    //     after the move.
-    // 
-    // Return
-    //   this
-    //     for chaining
-    // 
-    // Priority
-    //   high
-    
-    if (typeof dx === 'object') {
-      
-      if (typeof dy === 'object') {
-        options = dy;
-      }
-      
-      dy = dx.y;
-      dx = dx.x;
-      
-    }
-    
-    if (typeof options === 'undefined') {
-      options = {};
-    }
-    
-    this._x += dx;
-    this._y += dy;
-    
-    this._px += dx;
-    this._py += dy;
-    
-    if (!('disableDomUpdate' in options && options.disableDomUpdate === true)) {
-      this._moveEachDomElement(options);
-    }
-    
-    return this;
-  };
   
   View.prototype.focusTo = function (box, coverage, options) {
     // Move viewport so that the box is visible, middle of the viewport
@@ -389,18 +425,57 @@ Taaspace.Viewport = (function () {
     // Parameter
     //   box
     //     A box object or an object with box() property.
-    //   coverage
+    //   coverage (optional, default 0.8)
     //     Positive number
     //     0 = Box will be so small it can not be seen.
     //     1 = Box fits in the viewport fully i.e. no margins.
     //     1.5 = Scale the 1 by 1.5, duh.
-    //   options
+    //   options (optional)
     //     Animation options
     // 
     // Priority
     //   medium
-    throw 'Not implemented';
+    
+    // Normalize param
+    if (typeof coverage === 'undefined') {
+      coverage = 0.8;
+    } else {
+      if (typeof coverage === 'object') {
+        options = coverage;
+        coverage = 0.8;
+      } // else coverage is coverage
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    if ('box' in box && typeof box.box === 'function') {
+      box = box.box();
+    }
+    
+    // Move to center
+    this.pivot(this.center());
+    var bcx = (box.x0 + box.x1) / 2;
+    var bcy = (box.y0 + box.y1) / 2;
+    this.moveTo(bcx, bcy, {
+      disableDomUpdate: true
+    });
+    
+    // Scale. How many times box should be multiplied.
+    var bw = box.x1 - box.x0;
+    var bh = box.y1 - box.y0;
+    
+    var scalex = 1;
+    var scaley = 1;
+    if (bw !== 0 && bh !== 0) {
+      // Equation: scalex * bw = this._w
+      scalex = this.width() / bw;
+      scaley = this.height() / bh;
+    }
+    var s = Math.min(scalex, scaley);
+    
+    this.scale(s * coverage, options);
   };
+  
   
   View.prototype.scalable = function (onoff, options) {
     // Make viewport scalable i.e. zoomable.

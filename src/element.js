@@ -78,8 +78,13 @@ Taaspace.Element = (function () {
     //   {x0, y0, x1, y1}
     // 
     // Priority
-    //   low
-    throw 'Not implemented';
+    //   medium
+    return {
+      x0: this._x,
+      y0: this._y,
+      x1: this._x + this._w,
+      y1: this._y + this._h
+    };
   };
   
   Elem.prototype.isInside = function (rect) {
