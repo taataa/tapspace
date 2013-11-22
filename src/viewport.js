@@ -382,7 +382,21 @@ Taaspace.Viewport = (function () {
     return this;
   };
   
-  View.prototype.focusTo = function (taa, options) {
+  View.prototype.focusTo = function (box, coverage, options) {
+    // Move viewport so that the box is visible, middle of the viewport
+    // and covers the viewport in some degree.
+    // 
+    // Parameter
+    //   box
+    //     A box object or an object with box() property.
+    //   coverage
+    //     Positive number
+    //     0 = Box will be so small it can not be seen.
+    //     1 = Box fits in the viewport fully i.e. no margins.
+    //     1.5 = Scale the 1 by 1.5, duh.
+    //   options
+    //     Animation options
+    // 
     // Priority
     //   medium
     throw 'Not implemented';

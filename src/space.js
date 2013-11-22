@@ -37,7 +37,7 @@ var Taaspace = (function () {
   
   Space.prototype.box = function () {
     // The bounding box for all the elements in the space. Can be used
-    // to focus to all the content.
+    // to focus to all the elements.
     throw 'Not implemented';
   };
   
