@@ -169,6 +169,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
+    throw 'Not implemented';
   };
   
   View.prototype.toSpace = function (x, y) {

@@ -32,6 +32,18 @@ var Taaspace = (function () {
   
   
   
+  
+  // Accessors
+  
+  Space.prototype.box = function () {
+    // The bounding box for all the elements in the space. Can be used
+    // to focus to all the content.
+    throw 'Not implemented';
+  };
+  
+  
+  
+  
   // Mutators
   
   Space.prototype.pivot = function (xyOrViewportOrElement) {
