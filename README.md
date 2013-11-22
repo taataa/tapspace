@@ -2,6 +2,10 @@
 
 A javascript library for zooming user interfaces. Very much under development.
 
+## Example
+
+- [Basic](https://rawgithub.com/taataa/taaspace/master/examples/basic.html)
+
 ## Features
 
 - Scalable, rotatable and draggable infinite space for HTML elements
