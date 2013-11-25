@@ -330,6 +330,21 @@ Taaspace.Element = (function () {
     };
   };
   
+  Elem.prototype.visibilityRatio = function (viewport) {
+    // See Viewport.visibilityRatioOf
+    return viewport.visibilityRatioOf(this);
+  };
+  
+  Elem.prototype.distanceRatio = function (viewport) {
+    // See Viewport.distanceRatioOf
+    return viewport.distanceRatioOf(this);
+  };
+  
+  Elem.prototype.focusRatio = function (viewport) {
+    // See Viewport.focusRatioOf
+    return viewport.focusRatioOf(this);
+  };
+  
   Elem.prototype.isInside = function (rect) {
     // Return
     //   true
@@ -821,6 +836,35 @@ Taaspace.Viewport = (function () {
   };
   
   
+  View.prototype.visibilityRatioOf = function (boxOrElem) {
+    // Visible area of the box divided by the area of the viewport.
+    // 
+    // Return
+    //   number
+    //     In range [0, 1]
+    throw 'Not implemented';
+  };
+  
+  View.prototype.distanceRatioOf = function (boxOrElem) {
+    // A distance measure of the box independent of the size of the viewport.
+    // To be more specific, the distance to the center of the box
+    // from the center of the viewport
+    // divided by the distance to the nearest border of the viewport
+    // from the center of the viewport.
+    //
+    // Return
+    //   number
+    //     in range [0, Inf)
+    throw 'Not implemented';
+  };
+  
+  View.prototype.focusRatioOf = function (boxOrElem) {
+    // A heuristic mixture of visibilityRatio and distanceRatio.
+    // Tells how focused the box is currently.
+    throw 'Not implemented';
+  };
+  
+  
   View.prototype.toSpace = function (x, y) {
     // Translate point on the container DOMElement to point in space.
     // 
@@ -978,6 +1022,8 @@ Taaspace.Viewport = (function () {
     //   options (optional)
     // 
     // Options
+    //   silent (default false)
+    //     Set true to disable firing 'moved' event.
     //   disableDomUpdate
     //     Set true to skip updating the position of the DOM elements
     //     after the move.
@@ -1018,8 +1064,13 @@ Taaspace.Viewport = (function () {
   View.prototype.scale = function (multiplier, options) {
     // Multiply scale so that pivot stays still.
     // 
+    // Option
+    //   silent (default false)
+    //     Set true to disable firing 'scaled' event.
+    // 
     // Return
     //   this
+    //     for chaining
     // 
     // Priority 
     //   high
@@ -1055,6 +1106,10 @@ Taaspace.Viewport = (function () {
     //   options
     //     See Animation Options
     // 
+    // Option
+    //   silent (default false)
+    //     Set true to disable firing 'rotated' event.
+    // 
     // Return
     //   this
     //     for chaining
@@ -1079,6 +1134,10 @@ Taaspace.Viewport = (function () {
     //     1.5 = Scale the 1 by 1.5, duh.
     //   options (optional)
     //     Animation options
+    // 
+    // Option
+    //   silent (default false)
+    //     Set true to disable firing 'focused' event.
     // 
     // Priority
     //   medium

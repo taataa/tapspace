@@ -87,6 +87,21 @@ Taaspace.Element = (function () {
     };
   };
   
+  Elem.prototype.visibilityRatio = function (viewport) {
+    // See Viewport.visibilityRatioOf
+    return viewport.visibilityRatioOf(this);
+  };
+  
+  Elem.prototype.distanceRatio = function (viewport) {
+    // See Viewport.distanceRatioOf
+    return viewport.distanceRatioOf(this);
+  };
+  
+  Elem.prototype.focusRatio = function (viewport) {
+    // See Viewport.focusRatioOf
+    return viewport.focusRatioOf(this);
+  };
+  
   Elem.prototype.isInside = function (rect) {
     // Return
     //   true
