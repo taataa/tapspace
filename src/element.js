@@ -363,8 +363,8 @@ Taaspace.Element = (function () {
     var xy = fromSpace(this._x, this._y);
     
     domElem.css({
-      left: xy.x + 'em',
-      top: xy.y + 'em'
+      left: xy.x + 'px',
+      top: xy.y + 'px'
     });
   };
   
@@ -375,10 +375,10 @@ Taaspace.Element = (function () {
     var se = fromSpace(this._x + this._w, this._y + this._h);
     
     domElem.css({
-      left: nw.x + 'em',
-      top: nw.y + 'em',
-      width: (se.x - nw.x) + 'em',
-      height: (se.y - nw.y) + 'em'
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
     });
   };
   

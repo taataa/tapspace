@@ -85,8 +85,6 @@ Taaspace.Text = (function () {
     }
     
     var p = $(document.createElement('p'));
-    var span = $(document.createElement('span'));
-    p.append(span);
     
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
@@ -94,7 +92,7 @@ Taaspace.Text = (function () {
         method = 'text';
       }
     }
-    span[method](this._string);
+    p[method](this._string);
     
     p.css({
       position: 'absolute',
@@ -116,12 +114,12 @@ Taaspace.Text = (function () {
     // :/ We should have direct reference to the child element to
     // make things fast
     
-    domElem.children().css('font-size', (this._fontSize * scale) + 'em');
     domElem.css({
-      left: nw.x + 'em',
-      top: nw.y + 'em',
-      width: (se.x - nw.x) + 'em',
-      height: (se.y - nw.y) + 'em'
+      'font-size': (this._fontSize * scale) + 'px',
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
     });
   };
   

@@ -606,8 +606,8 @@ Taaspace.Element = (function () {
     var xy = fromSpace(this._x, this._y);
     
     domElem.css({
-      left: xy.x + 'em',
-      top: xy.y + 'em'
+      left: xy.x + 'px',
+      top: xy.y + 'px'
     });
   };
   
@@ -618,10 +618,10 @@ Taaspace.Element = (function () {
     var se = fromSpace(this._x + this._w, this._y + this._h);
     
     domElem.css({
-      left: nw.x + 'em',
-      top: nw.y + 'em',
-      width: (se.x - nw.x) + 'em',
-      height: (se.y - nw.y) + 'em'
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
     });
   };
   
@@ -729,9 +729,6 @@ Taaspace.Viewport = (function () {
       // There will be lots of elements outside of the container element.
       // The will be hidden by setting overflow to hidden.
       overflow: 'hidden',
-      
-      // To use em units default font size should be defined.
-      'font-size': '1px'
     });
     
     // Set width and height of the viewport
@@ -1601,8 +1598,6 @@ Taaspace.Text = (function () {
     }
     
     var p = $(document.createElement('p'));
-    var span = $(document.createElement('span'));
-    p.append(span);
     
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
@@ -1610,7 +1605,7 @@ Taaspace.Text = (function () {
         method = 'text';
       }
     }
-    span[method](this._string);
+    p[method](this._string);
     
     p.css({
       position: 'absolute',
@@ -1632,12 +1627,12 @@ Taaspace.Text = (function () {
     // :/ We should have direct reference to the child element to
     // make things fast
     
-    domElem.children().css('font-size', (this._fontSize * scale) + 'em');
     domElem.css({
-      left: nw.x + 'em',
-      top: nw.y + 'em',
-      width: (se.x - nw.x) + 'em',
-      height: (se.y - nw.y) + 'em'
+      'font-size': (this._fontSize * scale) + 'px',
+      left: nw.x + 'px',
+      top: nw.y + 'px',
+      width: (se.x - nw.x) + 'px',
+      height: (se.y - nw.y) + 'px'
     });
   };
   
