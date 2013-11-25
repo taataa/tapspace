@@ -107,6 +107,7 @@ module.exports = function(grunt) {
           '_': false,
           'jwerty': false,
           'Hammer': true,
+          'move': true, // any effect being true or false?
           define: false
         }
       },
