@@ -1,148 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Taaspace Example / Basic Usage</title>
-    
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    
-    <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-    <style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
+  <meta charset="utf-8">
+  <title>Taaspace Example / Basic Usage</title>
+  
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style>
+    html, body, .space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
     }
     
     body {
-        font-size: 16px;
-        background: #222;
-        font-family: sans-serif;
-        color: white;
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
     }
     
-    .container {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .meta {
-        display: none;
-    }
-    
-    .space {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
+    p {
+      padding: 0px;
+      margin: 0px;
     }
     
     img {
-        box-shadow: 0px 0px 15px #050505;
+      box-shadow: 0px 0px 15px #050505;
+      padding: 0px;
+      margin: 0px;
     }
-    </style>
+  </style>
 </head>
 <body>
-    <div class="container">
-
-        <div id="space" class="space"></div>
-
-        <div class="meta">
-            <div class="page-title">Taaspace.js</div>
-            <div class="page-description">Basic usage example.</div>
-        </div>
-    </div>
+  <div id="space" class="space"></div>
+  
+  <script src="../includes/jquery/js/jquery.min.js"></script>
+  <script src="../includes/jquery/js/jquery.mousewheel.js"></script>
+  <script src="../includes/move/js/move.js"></script>
+  <script src="../includes/underscore/js/underscore.js"></script>
+  <script src="../includes/hammer/js/hammer.js"></script>
+  <script src="../includes/jwerty/js/jwerty.js"></script>
+  
+  <script src="../taaspace.js"></script>
+  
+  <script>
+    var space = Taaspace.create();
     
-    <script src="../includes/jquery/js/jquery.min.js"></script>
-    <script src="../includes/jquery/js/jquery.mousewheel.js"></script>
-    <script src="../includes/move/js/move.js"></script>
-    <script src="../includes/underscore/js/underscore.js"></script>
-    <script src="../includes/hammer/js/hammer.js"></script>
-    <script src="../includes/jwerty/js/jwerty.js"></script>
+    // Lets have a viewport to the space. Like a window to a new universe.
+    var vp = space.createViewport('#space');
     
-    <script src="../taaspace.js"></script>
+    // Lets then add a number of elements to the space.
     
-    <script>
-      $(document).ready(function() {
-        
-        var space = Taaspace.create();
-        var vp = space.createViewport('#space');
-        
-        var wheelText = space.createText('Zoom in by using your mouse wheel. Let\'s roll!')
-          .size(633, 400)
-          .fontSize(100)
-          .moveBy(558, 0);
-        
-        var numpadText = space.createText('Numpad minus \'-\' and plus \'+\' work too.')
-          .size(250, 200)
-          .fontSize(46)
-          .moveBy(558, 1070);
-        
-        var numpadText = space.createText('What about arrow keys?')
-          .moveBy(1236, 1433)
-          .size(10, 20)
-          .fontSize(10);
-          
-        var lennaText = space.createText('She\'s Lena, a Playboy model whose picture has become most widely used test image for all kinds of image processing algorithms since early 1970\'s.')
-          .moveBy(1450, 1582)
-          .size(10, 10)
-          .fontSize(1);
-        
-        var moreText = space.createText('Still want some more?')
-          .moveBy(1450, 1593)
-          .size(2, 1)
-          .fontSize(0.1);
-        
-        var otherText = space.createText('Go look at the <a href="https://github.com/taataa/taaspace/tree/master/examples">other examples</a>!')
-          .moveBy(1450, 1593.10)
-          .size(2, 1)
-          .fontSize(0.023);
-        
-        var backText = space.createText('BTW, tapping the background throws you back where you started.')
-          .moveBy(1450, 1593.132)
-          .size(0.1, 0.1)
-          .fontSize(0.010);
-        
-        var valley = space.createImage('assets/valley-512x1024.jpg')
-          .size(512, 1024)
-          .moveBy(0,0);
-        var purpleflower = space.createImage('assets/purpleflower-1024x512.jpg')
-          .size(633, 316)
-          .moveBy(558,708);
-        var spiral = space.createImage('assets/spiral-512x512.jpg')
-          .size(316, 316)
-          .moveBy(874, 1070);
-        var blackletter = space.createImage('assets/blackletter-512x512.jpg')
-          .size(195, 195)
-          .moveBy(994, 1433);
-        var castle = space.createImage('assets/castle-512x512.jpg')
-          .size(121, 121).moveBy(1236, 1507);
-        var lenna = space.createImage('assets/Lenna-512x512.png')
-          .size(46, 46).moveBy(1403, 1582);
-        
-        
-        // Make the viewport scalable with common input methods
-        // for zooming like mouse wheel and pinch zoom and
-        // movable by drag.
-        vp.scalable().draggable();
-        
-        // Allow the viewport receive keyboard events.
-        space.select(vp);
-        
-        // By default, scale the viewport so that all the elements in
-        // the space are visible.
-        vp.focusTo(space.box());
-        
-        // Tapping the background of viewport focuses the viewport back to
-        // the initial state.
-        vp.on('tap', function () {
-          vp.focusTo(space);
-        });
-      });
+    var wheelText = space.createText('Zoom in by using your mouse wheel. Let\'s roll!')
+      .size(633, 400) // Size of text block in the space.
+      .fontSize(100) // Size of the font in the space
+      .moveBy(558, 0); // Position of the text in the space. Default is (0, 0)
+    
+    var numpadText = space.createText('Numpad minus \'-\' and plus \'+\' work too.')
+      .size(250, 200)
+      .fontSize(46)
+      .moveBy(558, 1070);
+    
+    var numpadText = space.createText('What about arrow keys?')
+      .moveBy(1236, 1433)
+      .size(10, 20)
+      .fontSize(10);
       
-    </script>
+    var lennaText = space.createText('She\'s Lena, a Playboy model whose picture has become most widely used test image for all kinds of image processing algorithms since early 1970\'s.')
+      .moveBy(1450, 1582)
+      .size(10, 10)
+      .fontSize(1);
+    
+    var moreText = space.createText('Still want some more?')
+      .moveBy(1450, 1593)
+      .size(2, 1)
+      .fontSize(0.1);
+    
+    var otherText = space.createText('Go look at the <a href="https://github.com/taataa/taaspace/tree/master/examples">other examples</a>!')
+      .moveBy(1450, 1593.10)
+      .size(2, 1)
+      .fontSize(0.023);
+    
+    var backText = space.createText('BTW, tapping the background throws you back where you started.')
+      .moveBy(1450, 1593.132)
+      .size(0.1, 0.1)
+      .fontSize(0.010);
+    
+    var valley = space.createImage('assets/valley-512x1024.jpg')
+      .size(512, 1024)
+      .moveBy(0,0);
+    
+    var purpleflower = space.createImage('assets/purpleflower-1024x512.jpg')
+      .size(633, 316)
+      .moveBy(558,708);
+    
+    var spiral = space.createImage('assets/spiral-512x512.jpg')
+      .size(316, 316)
+      .moveBy(874, 1070);
+    
+    var blackletter = space.createImage('assets/blackletter-512x512.jpg')
+      .size(195, 195)
+      .moveBy(994, 1433);
+    
+    var castle = space.createImage('assets/castle-512x512.jpg')
+      .size(121, 121)
+      .moveBy(1236, 1507);
+    
+    var lenna = space.createImage('assets/Lenna-512x512.png')
+      .size(46, 46)
+      .moveBy(1403, 1582);
+    
+    
+    // Make the viewport scalable with common input methods
+    // for zooming like mouse wheel and pinch zoom and
+    // movable by drag.
+    vp.scalable().draggable();
+    
+    // Selected viewports and elements receive keyboard events.
+    space.select(vp);
+    
+    // By default, scale the viewport so that all the elements in
+    // the space are visible.
+    vp.focusTo(space.box());
+    
+    // Tapping the background of viewport focuses the viewport back to
+    // the initial state.
+    vp.on('tap', function () {
+      vp.focusTo(space);
+      // As you can see, focusTo accepts also objects with box() property.
+    });
+    
+  </script>
 </body>
 </html>
