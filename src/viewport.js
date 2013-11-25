@@ -609,6 +609,8 @@ Taaspace.Viewport = (function () {
   };
   
   View.prototype.rotatable = function (onoff, options) {
+    // Make viewport rotatable by touch gestures.
+    // 
     // Priority
     //   low
     throw 'Not implemented';
