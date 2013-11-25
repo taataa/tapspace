@@ -9,8 +9,10 @@ Taaspace.Viewport = (function () {
   //   ease (optional, default none)
   //     "in", "out", "in-out", "snap", "none"
   //   duration (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //   delay (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //
   // Priority
@@ -812,13 +814,13 @@ Taaspace.Viewport = (function () {
     // Called from Space.
     
     var domElem = this._getDomPair(elem._id).dom;
-    elem._domMove(domElem, this._fromSpace);
+    elem._domMove(domElem, this._fromSpace, options);
   };
   
   View.prototype._moveEachDomElement = function (options) {
     var fs = this._fromSpace;
     this._eachDomPair(function (pair) {
-      pair.elem._domMove(pair.dom, fs);
+      pair.elem._domMove(pair.dom, fs, options);
     });
   };
   
@@ -826,14 +828,14 @@ Taaspace.Viewport = (function () {
     // Called from Space.
     
     var domElem = this._getDomPair(elem._id).dom;
-    elem._domScale(domElem, this._fromSpace, this._scale);
+    elem._domScale(domElem, this._fromSpace, this._scale, options);
   };
   
   View.prototype._scaleEachDomElement = function (options) {
     var fs = this._fromSpace;
     var sc = this._scale;
     this._eachDomPair(function (pair) {
-      pair.elem._domScale(pair.dom, fs, sc);
+      pair.elem._domScale(pair.dom, fs, sc, options);
     });
   };
   

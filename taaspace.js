@@ -6,6 +6,7 @@
 
 (function(window, undefined) {
   'use strict';
+  
 
 
 var Taaspace = (function () {
@@ -252,8 +253,10 @@ Taaspace.Element = (function () {
   //   ease (optional, default none)
   //     "in", "out", "in-out", "snap", "none"
   //   duration (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //   delay (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //
   // Priority
@@ -280,6 +283,10 @@ Taaspace.Element = (function () {
     // Pivot point
     this._px = 0;
     this._py = 0;
+    
+    // Is animation currently playing
+    // Makes possible to cancel animations.
+    this._animation = null;
   };
   
   exports.create = function () {
@@ -479,10 +486,14 @@ Taaspace.Element = (function () {
     // Move the element by distance specified in space coordinates.
     // 
     // Parameter
-    //   dx, dy
+    //   dx
+    //   dy
     //     Distance in space
     //   options (optional)
     //     See Animation Options
+    //  OR
+    //   dxdy
+    //   options (optional)
     // 
     // Return
     //   this
@@ -603,12 +614,53 @@ Taaspace.Element = (function () {
     // Element knows its position in space and uses viewports fromSpace
     // function to find out position on screen.
     
+    // Normalize
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
     var xy = fromSpace(this._x, this._y);
     
-    domElem.css({
-      left: xy.x + 'px',
-      top: xy.y + 'px'
-    });
+    
+    if (options.hasOwnProperty('ease')) {
+      // Use animation by Move.js
+      
+      this._animation = move(domElem.get(0))
+        .set('left', xy.x)
+        .set('top', xy.y);
+      
+      if (options.hasOwnProperty('duration')) {
+        this._animation = this._animation.duration(options.duration);
+      }
+      
+      if (options.hasOwnProperty('delay')) {
+        this._animation = this._animation.delay(options.delay);
+      }
+      
+      // Exec
+      var that = this;
+      this._animation.end(function () {
+        that._animation = null;
+      });
+    } else {
+      
+      if (this._animation !== null) {
+        // Stop ongoing animation
+        move(domElem.get(0))
+          .set('left', xy.x)
+          .set('top', xy.y)
+          .duration('0s')
+          .end();
+        this._animation = null;
+      } else {
+      
+        // Feels quite raw after Move.js :)
+        domElem.css({
+          left: xy.x + 'px',
+          top: xy.y + 'px'
+        });
+      }
+    }
   };
   
   Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
@@ -671,8 +723,10 @@ Taaspace.Viewport = (function () {
   //   ease (optional, default none)
   //     "in", "out", "in-out", "snap", "none"
   //   duration (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //   delay (optional, default 0)
+  //       Requires ease to be set.
   //       e.g. "2s"
   //
   // Priority
@@ -1474,13 +1528,13 @@ Taaspace.Viewport = (function () {
     // Called from Space.
     
     var domElem = this._getDomPair(elem._id).dom;
-    elem._domMove(domElem, this._fromSpace);
+    elem._domMove(domElem, this._fromSpace, options);
   };
   
   View.prototype._moveEachDomElement = function (options) {
     var fs = this._fromSpace;
     this._eachDomPair(function (pair) {
-      pair.elem._domMove(pair.dom, fs);
+      pair.elem._domMove(pair.dom, fs, options);
     });
   };
   
@@ -1488,14 +1542,14 @@ Taaspace.Viewport = (function () {
     // Called from Space.
     
     var domElem = this._getDomPair(elem._id).dom;
-    elem._domScale(domElem, this._fromSpace, this._scale);
+    elem._domScale(domElem, this._fromSpace, this._scale, options);
   };
   
   View.prototype._scaleEachDomElement = function (options) {
     var fs = this._fromSpace;
     var sc = this._scale;
     this._eachDomPair(function (pair) {
-      pair.elem._domScale(pair.dom, fs, sc);
+      pair.elem._domScale(pair.dom, fs, sc, options);
     });
   };
   
