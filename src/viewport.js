@@ -259,7 +259,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    return d / this._scale; // dummy
+    return d / this._scale;
   };
   
   
@@ -274,7 +274,7 @@ Taaspace.Viewport = (function () {
     // 
     // Priority
     //   high
-    return d * this._scale; // dummy
+    return d * this._scale;
   };
   
   
@@ -656,6 +656,11 @@ Taaspace.Viewport = (function () {
       var prevdy = 0;
       
       var that = this;
+      var delta = function () {
+        // Make key moves relative to scale.
+        return 50 / that._scale; // same as toSpaceDistance
+      };
+      
       this._draggable = {
         status: false,
         ondragstart: function () {
@@ -674,16 +679,16 @@ Taaspace.Viewport = (function () {
           prevdy = dy;
         },
         onkeyup: function () {
-          that.moveBy(0,-50);
+          that.moveBy(0,-delta());
         },
         onkeydown: function () {
-          that.moveBy(0,+50);
+          that.moveBy(0,delta());
         },
         onkeyleft: function () {
-          that.moveBy(-50,0);
+          that.moveBy(-delta(),0);
         },
         onkeyright: function () {
-          that.moveBy(+50,0);
+          that.moveBy(delta(),0);
         }
       };
     }
