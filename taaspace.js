@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.2 - 2013-11-22
+/*! taaspace - v0.0.2 - 2013-11-25
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -630,7 +630,7 @@ Taaspace.Element = (function () {
   Elem.prototype._domListen = function (domElem, eventType, callback) {
     if (eventType === 'mousewheel') {
       domElem.mousewheel(function(event, delta, deltaX, deltaY) {
-          callback(delta);
+        callback(delta);
       });
     } else {
       // Attach a function to a Hammer event on the element.
@@ -1518,11 +1518,34 @@ Taaspace.Text = (function () {
   Text.prototype._domAppend = function (container, fromSpace, options) {
     // Called by viewports.
     // Appends element into DOM.
+    // 
+    // Parameter
+    //   container
+    //     DOMElement to append to
+    //   fromSpace
+    //     A function to convert space coordinates to screen coordinates.
+    //   options (optional)
+    // 
+    // Option
+    //   disableHTML
+    
+    // Normalize params
+    if (typeof options !== 'object') {
+      options = {};
+    }
     
     var p = $(document.createElement('p'));
     var span = $(document.createElement('span'));
     p.append(span);
-    span.text(this._string);
+    
+    var method = 'html';
+    if (options.hasOwnProperty('disableHTML')) {
+      if (options.disableHTML === true) {
+        method = 'text';
+      }
+    }
+    span[method](this._string);
+    
     p.css({
       position: 'absolute',
     });

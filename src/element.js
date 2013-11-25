@@ -387,7 +387,7 @@ Taaspace.Element = (function () {
   Elem.prototype._domListen = function (domElem, eventType, callback) {
     if (eventType === 'mousewheel') {
       domElem.mousewheel(function(event, delta, deltaX, deltaY) {
-          callback(delta);
+        callback(delta);
       });
     } else {
       // Attach a function to a Hammer event on the element.
