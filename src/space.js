@@ -20,8 +20,7 @@ var Taaspace = (function () {
     
     // Make elements and viewports referencable by id to be stored in objects.
     // Makes implementing collections easy.
-    this._spaceElementIdCounter = 0;
-    this._vpIdCounter = 0;
+    this._idCounter = 0;
     
     // Maps keyboard events to selected objects.
     this._keyboardManager = Taaspace.KeyboardManager.create();
@@ -125,17 +124,15 @@ var Taaspace = (function () {
     //     };
     //     ...
     
-    pluginElement._id = String(this._spaceElementIdCounter);
-    this._spaceElementIdCounter += 1;
-    
     // Becomes SpaceElement after having _id.
-    var spaceElement = pluginElement;
+    var spaceElement = this._identify(pluginElement);
     
     // Store SpaceElement into space. Why?
     this._elems.push(spaceElement);
     
     // Append SpaceElement to all viewports to be visible.
     _.each(this._vps, function (vp) {
+      // Future: spaceElement._appendHtml(viewport);
       vp._createDomElement(spaceElement);
     });
     
@@ -147,6 +144,8 @@ var Taaspace = (function () {
   Space.prototype.createViewport = function (containerEl, options) {
     // Create a new view to the space. Kind of a window to the garden.
     var vp = Taaspace.Viewport.create(this, containerEl, options);
+    
+    var spaceViewport = this._identify(vp);
     this._addViewport(vp);
     return vp;
   };
@@ -164,6 +163,14 @@ var Taaspace = (function () {
   
   
   // Pseudo-private mutators
+  
+  Space.prototype._identify = function (obj) {
+    // Extends the object with unique _id property.
+    // Used to SpaceViewports and SpaceElements.
+    obj._id = String(this._idCounter);
+    this._idCounter += 1;
+    return obj;
+  };
   
   Space.prototype._addViewport = function (vp) {
     // New viewport to space.
