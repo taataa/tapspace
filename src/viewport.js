@@ -615,7 +615,15 @@ Taaspace.Viewport = (function () {
     throw 'Not implemented';
   };
   
-  View.prototype.draggable = function (onoff, options) {
+  View.prototype.draggable = function () {
+    // DEPRECATED, alias to View.movable
+    /* jshint multistr: true */
+    console.warn('Viewport.draggable is deprecated. \
+Use Viewport.movable instead.');
+    return this.movable.apply(this, arguments);
+  };
+  
+  View.prototype.movable = function (onoff, options) {
     // Make viewport draggable aka pannable aka translateable.
     // 
     // Parameter

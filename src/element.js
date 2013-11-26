@@ -299,7 +299,15 @@ Taaspace.Element = (function () {
     throw 'Not implemented';
   };
   
-  Elem.prototype.draggable = function (onoff, options) {
+  Elem.prototype.draggable = function () {
+    // DEPRECATED, alias to Elem.movable
+    /* jshint multistr: true */
+    console.warn('Element.draggable is deprecated. \
+Use Element.movable instead.');
+    return this.movable.apply(this, arguments);
+  };
+  
+  Elem.prototype.movable = function (onoff, options) {
     // Make element movable by dragging with pointer or finger.
     // 
     // Parameter

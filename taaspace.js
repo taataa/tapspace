@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.2 - 2013-11-25
+/*! taaspace - v0.0.2 - 2013-11-26
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -543,7 +543,15 @@ Taaspace.Element = (function () {
     throw 'Not implemented';
   };
   
-  Elem.prototype.draggable = function (onoff, options) {
+  Elem.prototype.draggable = function () {
+    // DEPRECATED, alias to Elem.movable
+    /* jshint multistr: true */
+    console.warn('Element.draggable is deprecated. \
+Use Element.movable instead.');
+    return this.movable.apply(this, arguments);
+  };
+  
+  Elem.prototype.movable = function (onoff, options) {
     // Make element movable by dragging with pointer or finger.
     // 
     // Parameter
@@ -1329,7 +1337,15 @@ Taaspace.Viewport = (function () {
     throw 'Not implemented';
   };
   
-  View.prototype.draggable = function (onoff, options) {
+  View.prototype.draggable = function () {
+    // DEPRECATED, alias to View.movable
+    /* jshint multistr: true */
+    console.warn('Viewport.draggable is deprecated. \
+Use Viewport.movable instead.');
+    return this.movable.apply(this, arguments);
+  };
+  
+  View.prototype.movable = function (onoff, options) {
     // Make viewport draggable aka pannable aka translateable.
     // 
     // Parameter
