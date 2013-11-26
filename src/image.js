@@ -30,11 +30,16 @@ Taaspace.Image = (function () {
     }
   };
   
-  exports.create = function (space, src, options) {
-      return new Img(space, src, options);
+  // Inherit from SpaceElement
+  Img.prototype = Taaspace.Element.create();
+  
+  // Extend Taaspace
+  Taaspace.extension.createImage = function (src, options) {
+    var image = new Img(this, src, options);
+    return this.importSpaceElement(image);
   };
   
-  Img.prototype = Taaspace.Element.create();
+  
   
   
   

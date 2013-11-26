@@ -18,9 +18,10 @@ var Taaspace = (function () {
     // Viewports to the space
     this._vps = [];
     
-    // Make elements referencable by id to be stored in objects.
+    // Make elements and viewports referencable by id to be stored in objects.
     // Makes implementing collections easy.
-    this._elemIdCounter = 0;
+    this._spaceElementIdCounter = 0;
+    this._vpIdCounter = 0;
     
     // Maps keyboard events to selected objects.
     this._keyboardManager = Taaspace.KeyboardManager.create();
@@ -30,7 +31,9 @@ var Taaspace = (function () {
     return new Space();
   };
   
-  
+  // For extendability.
+  // Usage: Taaspace.extension.createMyElement = function (...) {...};
+  exports.extension = Space.prototype;
   
   
   // Accessors
@@ -110,44 +113,36 @@ var Taaspace = (function () {
     throw 'Not implemented'; // Should remove the DOMElements too.
   };
   
-  Space.prototype.createImage = function (src, options) {
-    // Add an image to the space.
+  Space.prototype.importSpaceElement = function (pluginElement) {
+    // Call this in the extension constructor of the plugin element.
+    // 
+    // Usage
+    //   myelement.js
+    //     ...
+    //     Taaspace.extension.createMyElement = function (arg1, arg2) {
+    //       var myelem = MyElement.create(this, arg1, arg2);
+    //       return this.importSpaceElement(myelem);
+    //     };
+    //     ...
     
-    var im = Taaspace.Image.create(this, src, options);
+    pluginElement._id = String(this._spaceElementIdCounter);
+    this._spaceElementIdCounter += 1;
     
-    im._id = String(this._elemIdCounter);
-    this._elemIdCounter += 1;
+    // Becomes SpaceElement after having _id.
+    var spaceElement = pluginElement;
     
-    this._addElement(im);
-    return im;
+    // Store SpaceElement into space. Why?
+    this._elems.push(spaceElement);
+    
+    // Append SpaceElement to all viewports to be visible.
+    _.each(this._vps, function (vp) {
+      vp._createDomElement(spaceElement);
+    });
+    
+    return spaceElement;
   };
   
-  Space.prototype.createText = function (string, options) {
-    // Add a block of text to the space.
-    
-    var t = Taaspace.Text.create(this, string, options);
-    
-    t._id = String(this._elemIdCounter);
-    this._elemIdCounter += 1;
-    
-    this._addElement(t);
-    return t;
-  };
   
-  Space.prototype.createCustom = function (el, options) {
-    // Add custom element to the space.
-    throw 'Not implemented';
-  };
-  
-  Space.prototype.createNetwork = function () {
-    // Attach a network to be visualised. Define position of root.
-    throw 'Not implemented';
-  };
-  
-  Space.prototype.createGroup = function () {
-    // Create a group for space elements.
-    throw 'Not implemented';
-  };
   
   Space.prototype.createViewport = function (containerEl, options) {
     // Create a new view to the space. Kind of a window to the garden.
@@ -170,16 +165,6 @@ var Taaspace = (function () {
   
   // Pseudo-private mutators
   
-  Space.prototype._addElement = function (elem) {
-    // New element into space.
-    this._elems.push(elem);
-    
-    // Append element to all viewports
-    _.each(this._vps, function (vp) {
-      vp._createDomElement(elem);
-    });
-  };
-  
   Space.prototype._addViewport = function (vp) {
     // New viewport to space.
     this._vps.push(vp);
@@ -190,6 +175,15 @@ var Taaspace = (function () {
     });
   };
   
+  ///?????????
+  Space.prototype._eachDomElement = function (elem, fn, args) {
+    // Execute function fn for each domElement of elem
+    _.each(this._vps, function (vp) {
+      vp._applyDomElement(elem, fn, args);
+    });
+  };
+  
+  ///?????????
   Space.prototype._moveDomElement = function (elem, options) {
     // Called from Element when element moves.
     _.each(this._vps, function (vp) {
@@ -197,6 +191,7 @@ var Taaspace = (function () {
     });
   };
   
+  ///?????????
   Space.prototype._scaleDomElement = function (elem, options) {
     // Called from Element when element is scaled
     _.each(this._vps, function (vp) {
@@ -204,6 +199,7 @@ var Taaspace = (function () {
     });
   };
   
+  ///?????????
   Space.prototype._listenDomElements = function (elem, type, callback) {
     // Listen all the instances of element in the viewports.
     

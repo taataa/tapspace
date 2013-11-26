@@ -839,6 +839,25 @@ Use Viewport.movable instead.');
     };
   };
   
+  ///?????????
+  View.prototype._applyDomElement = function (elem, fn, args) {
+    // Execute the function fn for the dom element of elem object.
+    // 
+    // Parameter
+    //   elem
+    //     The element whose dom element is retrieved.
+    //   fn
+    //     The function to be executed
+    //   args
+    //     List of additional arguments.
+    // Called from space.
+    var domElem = this._getDomPair(elem._id).dom;
+    // Copy array (slice(0)) to keep original unmodified.
+    var extendedArgs = args.slice(0).unshift(domElem);
+    fn.apply(elem, extendedArgs);
+  };
+  
+  ///?????????
   View.prototype._moveDomElement = function (elem, options) {
     // Called from Space.
     
@@ -846,6 +865,7 @@ Use Viewport.movable instead.');
     elem._domMove(domElem, this._fromSpace, options);
   };
   
+  ///?????????
   View.prototype._moveEachDomElement = function (options) {
     var fs = this._fromSpace;
     this._eachDomPair(function (pair) {
@@ -853,6 +873,7 @@ Use Viewport.movable instead.');
     });
   };
   
+  ///?????????
   View.prototype._scaleDomElement = function (elem, options) {
     // Called from Space.
     
@@ -860,6 +881,7 @@ Use Viewport.movable instead.');
     elem._domScale(domElem, this._fromSpace, this._scale, options);
   };
   
+  ///?????????
   View.prototype._scaleEachDomElement = function (options) {
     var fs = this._fromSpace;
     var sc = this._scale;
@@ -868,6 +890,7 @@ Use Viewport.movable instead.');
     });
   };
   
+  ///?????????
   View.prototype._listenDomElement = function (elem, type, callback) {
     var domElem = this._getDomPair(elem._id).dom;
     elem._domListen(domElem, type, callback);

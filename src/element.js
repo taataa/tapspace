@@ -269,7 +269,7 @@ Taaspace.Element = (function () {
     this._x += dx;
     this._y += dy;
     
-    this._space._moveDomElement(this, options);
+    this._space._moveDomElement(this, options); ///?????????
     
     return this;
   };
@@ -332,6 +332,13 @@ Use Element.movable instead.');
     throw 'Not implemented';
   };
   
+  //?????
+  Elem.prototype.attr = function () {
+    // Set attributes of the DOMElement.
+    // Interface matches jQuery .attr().
+    // http://api.jquery.com/attr/
+    throw 'Not implemented';
+  };
   
   
   // Events

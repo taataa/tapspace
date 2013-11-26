@@ -29,11 +29,14 @@ Taaspace.Text = (function () {
     
   };
   
-  exports.create = function (space, string, options) {
-      return new Text(space, string, options);
-  };
-  
+  // Inherit from SpaceElement
   Text.prototype = Taaspace.Element.create();
+  
+  // Extend Taaspace
+  Taaspace.extension.createText = function (string, options) {
+    var txt = new Text(this, string, options);
+    return this.importSpaceElement(txt);
+  };
   
   
   
