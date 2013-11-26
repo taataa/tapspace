@@ -827,8 +827,8 @@ Taaspace.Viewport = (function () {
     // Mapping from element ids to (elem, DOMElement) pairs.
     this._domPairs = {};
     
-    // Model for draggability. Defined in draggable().
-    this._draggable = {};
+    // Model for movability. Defined in movable().
+    this._movable = {};
     
     // Model for scalability. Defined in scalable().
     this._scalable = {};
@@ -1086,6 +1086,7 @@ Taaspace.Viewport = (function () {
     //   disableDomUpdate
     //     Set true to skip updating the position of the DOM elements
     //     after the move.
+    //   +Animation Options
     // 
     // Return
     //   this
@@ -1321,7 +1322,7 @@ Taaspace.Viewport = (function () {
       return this;
     } // else
     
-    // Turn draggability on
+    // Turn movability on
     op.status = true;
     this.on('mousewheel', op.onmousewheel);
     this.on('key-plus', op.onkeyplus);
@@ -1346,18 +1347,21 @@ Use Viewport.movable instead.');
   };
   
   View.prototype.movable = function (onoff, options) {
-    // Make viewport draggable aka pannable aka translateable.
+    // Make viewport movable aka pannable aka translateable.
     // 
     // Parameter
     //   onoff (optional, default true)
-    //     True to turn draggability on (default).
-    //     False to turn draggability off.
+    //     True to turn movability on (default).
+    //     False to turn movability off.
     //   options (optional)
     //     Object, Panning limits in space coordinates.
     // 
     // Options
     //   disableKeys, not implemented yet
     //   invertKeys, not implemented yet
+    //   disableAnimation
+    //     Do not use animation with discrete moves like with arrow keys.
+    //     Not so smooth but computationally lightweight.
     //   
     // Return
     //   this
@@ -1377,8 +1381,8 @@ Use Viewport.movable instead.');
       options = {};
     }
     
-    if (!this._draggable.hasOwnProperty('status')) {
-      // Draggability not yet initialized
+    if (!this._movable.hasOwnProperty('status')) {
+      // Movability not yet initialized
       
       // Capture difference between events
       var prevdx = 0;
@@ -1387,16 +1391,22 @@ Use Viewport.movable instead.');
       var that = this;
       var delta = function () {
         // Make key moves relative to scale.
-        return 50 / that._scale; // same as toSpaceDistance
+        return 100 / that._scale; // same as toSpaceDistance
       };
       
-      this._draggable = {
+      
+      this._movable = {
         status: false,
         ondragstart: function () {
           // Reset difference
           prevdx = 0;
           prevdy = 0;
         },
+        defaultAnimOptions: {
+          ease: 'in-out',
+          duration: '0.3s'
+        },
+        animOptions: {}, // set when checking disableAnimation
         ondrag: function (ev) {
           ev.gesture.preventDefault();
           
@@ -1408,45 +1418,56 @@ Use Viewport.movable instead.');
           prevdy = dy;
         },
         onkeyup: function () {
-          that.moveBy(0,-delta());
+          that.moveBy(0, -delta(), that._movable.animOptions);
         },
         onkeydown: function () {
-          that.moveBy(0,delta());
+          that.moveBy(0, delta(), that._movable.animOptions);
         },
         onkeyleft: function () {
-          that.moveBy(-delta(),0);
+          that.moveBy(-delta(), 0, that._movable.animOptions);
         },
         onkeyright: function () {
-          that.moveBy(delta(),0);
+          that.moveBy(delta(), 0, that._movable.animOptions);
         }
       };
     }
     
+    // Modify animation options before return.
+    // If user specifies disableAnimation, then user wants to disable it
+    // regardless of on or off.
+    if (options.hasOwnProperty('disableAnimation') &&
+        options.disableAnimation === true) {
+      this._movable.animOptions = {};
+    } else {
+      // Revert back to default.
+      this._movable.animOptions = this._movable.defaultAnimOptions;
+    }
+    
     if (onoff === false) {
-      // Turn draggability off
-      this._draggable.status = false;
-      this.off('dragstart', this._draggable.ondragstart);
-      this.off('drag', this._draggable.ondrag);
-      this.off('key-up', this._draggable.onkeyup);
-      this.off('key-down', this._draggable.onkeydown);
-      this.off('key-left', this._draggable.onkeyleft);
-      this.off('key-right', this._draggable.onkeyright);
+      // Turn movability off
+      this._movable.status = false;
+      this.off('dragstart', this._movable.ondragstart);
+      this.off('drag', this._movable.ondrag);
+      this.off('key-up', this._movable.onkeyup);
+      this.off('key-down', this._movable.onkeydown);
+      this.off('key-left', this._movable.onkeyleft);
+      this.off('key-right', this._movable.onkeyright);
       return this;
     } // else
     
     // Avoid doubles
-    if (this._draggable.status === true) {
+    if (this._movable.status === true) {
       return this;
     } // else
     
-    // Turn draggability on
-    this._draggable.status = true;
-    this.on('dragstart', this._draggable.ondragstart);
-    this.on('drag', this._draggable.ondrag);
-    this.on('key-up', this._draggable.onkeyup);
-    this.on('key-down', this._draggable.onkeydown);
-    this.on('key-left', this._draggable.onkeyleft);
-    this.on('key-right', this._draggable.onkeyright);
+    // Turn movability on
+    this._movable.status = true;
+    this.on('dragstart', this._movable.ondragstart);
+    this.on('drag', this._movable.ondrag);
+    this.on('key-up', this._movable.onkeyup);
+    this.on('key-down', this._movable.onkeydown);
+    this.on('key-left', this._movable.onkeyleft);
+    this.on('key-right', this._movable.onkeyright);
     return this;
   };
   
