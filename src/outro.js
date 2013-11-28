@@ -1,3 +1,7 @@
+  // Version
+  Taaspace.version = '0.0.4';
+  
+  // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
     // Common JS
     // http://wiki.commonjs.org/wiki/Modules/1.1
