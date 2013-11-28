@@ -152,19 +152,41 @@ module.exports = function(grunt) {
       standalone: {
         src: ['taaspace-standalone.js']
       }
+    },
+    
+    // Update version in the sources
+    replace: {
+      dist: {
+        options: {
+          patterns: [
+            {
+              match: /Taaspace\.version\s=\s'\d\.\d\.\d'/,
+              replacement: "Taaspace.version = '<%= pkg.version %>'",
+              expression: true // use RegExp
+            }
+          ]
+        },
+        files: [
+          {
+            src: ['src/outro.js'],
+            dest: 'src/outro.js'
+          }
+        ]
+      }
     }
     
   });
   
   // Load tasks
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify'); // For minifying
+  grunt.loadNpmTasks('grunt-contrib-jshint'); // For testing
+  grunt.loadNpmTasks('grunt-replace'); // For adding versions
   
   // Default task(s).
   grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['concat:basic', 'uglify:basic', 'jshint:basic']);
+  grunt.registerTask('build', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
   grunt.registerTask('test', ['jshint:basic', 'jshint:standalone']);
-  grunt.registerTask('build-standalone', ['concat:standalone', 'uglify:standalone']);
+  grunt.registerTask('build-standalone', ['replace', 'concat:standalone', 'uglify:standalone']);
   
 };

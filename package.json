@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A javascript library for zooming user interfaces.",
   "homepage": "https://github.com/taataa/taaspace",
   "main": "taaspace.js",
@@ -16,12 +16,12 @@
     "type": "MIT",
     "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "0.3.x",
     "grunt-contrib-uglify": "~0.2.7",
-    "grunt-contrib-jshint": "0.7.x"
+    "grunt-contrib-jshint": "0.7.x",
+    "grunt-replace": "~0.5.1"
   }
 }
