@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.2 - 2013-11-26
+/*! taaspace - v0.0.3 - 2013-11-28
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;

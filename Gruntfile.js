@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       options: {
         separator: '\n\n'
       },
-      dist: {
+      basic: {
         options: {
           banner: '<%= meta.banner %>'
         },
@@ -50,6 +50,31 @@ module.exports = function(grunt) {
           'src/outro.js'
         ],
         dest: 'taaspace.js'
+      },
+      standalone: {
+        options: {
+          banner: '<%= meta.banner %>'
+        },
+        src: [
+          'includes/jquery/jquery-1.10.2.js',
+          'includes/jquery/jquery.mousewheel-3.1.4.js',
+          'includes/move/move-0.3.2.js',
+          'includes/underscore/underscore-1.5.2.js',
+          'includes/hammer/hammer-1.0.5.js',
+          'includes/jwerty/jwerty-0.3.2.js',
+          'src/intro.js',
+          'src/space.js',
+          'src/element.js',
+          'src/viewport.js',
+          'src/text.js',
+          'src/image.js',
+          'src/group.js',
+          'src/network.js',
+          'src/custom.js',
+          'src/keyboardmanager.js',
+          'src/outro.js'
+        ],
+        dest: 'taaspace-standalone.js'
       }
     },
     
@@ -57,12 +82,22 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         report: 'gzip',
-        sourceMap: 'taaspace.min.map',
         banner: '<%= meta.banner %>'
       },
-      dist: {
+      basic: {
+        options: {
+          sourceMap: 'taaspace.min.map'
+        },
         files: {
           'taaspace.min.js': ['taaspace.js'],
+        }
+      },
+      standalone: {
+        options: {
+          sourceMap: 'taaspace-standalone.min.map'
+        },
+        files: {
+          'taaspace-standalone.min.js': ['taaspace-standalone.js'],
         }
       }
     },
@@ -111,8 +146,11 @@ module.exports = function(grunt) {
           define: false
         }
       },
-      dist: {
+      basic: {
         src: ['taaspace.js']
+      },
+      standalone: {
+        src: ['taaspace-standalone.js']
       }
     }
     
@@ -125,7 +163,8 @@ module.exports = function(grunt) {
   
   // Default task(s).
   grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['concat', 'uglify', 'test']);
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('build', ['concat:basic', 'uglify:basic', 'jshint:basic']);
+  grunt.registerTask('test', ['jshint:basic', 'jshint:standalone']);
+  grunt.registerTask('build-standalone', ['concat:standalone', 'uglify:standalone']);
   
 };
