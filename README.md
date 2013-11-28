@@ -5,6 +5,9 @@ A javascript library for zooming user interfaces. Very much under development.
 ## Example
 
 - [Basic example](https://rawgithub.com/taataa/taaspace/master/examples/basic.html) with zoomable and pannable space and text and image elements.
+- [Animation chaining](https://rawgithub.com/taataa/taaspace/master/examples/chain.html) presents how to fire functions when animations end.
+
+More examples at [taaspace-contrib-examples](https://github.com/taataa/taaspace-contrib-examples)!
 
 ## Features
 
@@ -20,6 +23,7 @@ A javascript library for zooming user interfaces. Very much under development.
 ## TODO
 
 - Networks
+- Touch gestures like pinch zoom
 - Animations and easing
 - Box element type
 - Extendability
