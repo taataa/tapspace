@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Example / Animation Chain</title>
+  
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style>
+    html, body, .space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    body {
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
+    }
+    
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+    
+    img {
+      box-shadow: 0px 0px 15px #050505;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</head>
+<body>
+  <div id="space" class="space"></div>
+  
+  <script src="../includes/jquery/jquery-1.10.2.js"></script>
+  <script src="../includes/jquery/jquery.mousewheel-3.1.4.js"></script>
+  <script src="../includes/hammer/hammer-1.0.5.js"></script>
+  <script src="../includes/jwerty/jwerty-0.3.2.js"></script>
+  <script src="../includes/move/move-0.3.2.js"></script>
+  <script src="../includes/underscore/underscore-1.5.2.js"></script>
+  
+  <script src="../taaspace.js"></script>
+  <script>
+    var space = Taaspace.create();
+    
+    var vp = space.createViewport('#space');
+    
+    var help = space.createText('Chain reaction.')
+      .size(80, 16)
+      .fontSize(11)
+      .moveBy(-46, -14);
+    
+    var arrow = space.createText('&rarr;')
+      .size(10, 10)
+      .fontSize(11)
+      .moveBy(-12, -2);
+    
+    var spiral = space.createImage('assets/spiral-512x512.jpg')
+      .size(10, 10)
+      .moveBy(0, 0);
+    
+    var blackletter = space.createImage('assets/blackletter-512x512.jpg')
+      .size(6, 6)
+      .moveBy(16, 2);
+    
+    var castle = space.createImage('assets/castle-512x512.jpg')
+      .size(6, 6)
+      .moveBy(28, 2);
+    
+    vp.scalable().movable();
+    space.select(vp);
+    
+    // By default, scale the viewport so that all the elements in
+    // the space are visible.
+    vp.focusTo(space.box(), 0.618);
+    
+    // Tapping the spiral starts a chain reaction
+    spiral.on('tap', function () {
+      spiral.moveBy(6, 0, {
+        ease: 'out',
+        duration: '0.52',
+        end: function () {
+          blackletter.moveBy(6, 0, {
+            ease: 'in',
+            duration: '0.2',
+            end: function () {
+              castle.moveBy(6, 0, {
+                ease: 'in',
+                duration: '0.2'
+              });
+            }
+          });
+        }
+      });
+    });
+    
+  </script>
+</body>
+</html>
