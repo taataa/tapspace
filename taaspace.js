@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.3 - 2013-11-28
+/*! taaspace - v0.0.4 - 2013-11-28
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -255,12 +255,15 @@ Taaspace.Element = (function () {
   // Animation options
   //   ease (optional, default none)
   //     "in", "out", "in-out", "snap", "none"
-  //   duration (optional, default 0)
+  //   duration (optional)
   //       Requires ease to be set.
   //       e.g. "2s"
-  //   delay (optional, default 0)
+  //   delay (optional)
   //       Requires ease to be set.
   //       e.g. "2s"
+  //   end (optional)
+  //       Requires ease to be set.
+  //       Function fires when the animation ends.
   //
   // Priority
   //   high
@@ -423,10 +426,13 @@ Taaspace.Element = (function () {
         width: this._w,
         height: this._h
       };
+    } else if (typeof height === 'undefined') {
+      // Missing height
+      this._w = width;
+    } else {
+      this._w = width;
+      this._h = height;
     }
-    
-    this._w = width;
-    this._h = height;
     
     this._space._scaleDomElement(this);
     
@@ -448,6 +454,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
+    throw 'Not implemented';
   };
   
   Elem.prototype.rotate = function (angle, options) {
@@ -465,6 +472,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   low
+    throw 'Not implemented';
   };
   
   Elem.prototype.moveTo = function (x, y, options) {
@@ -483,6 +491,7 @@ Taaspace.Element = (function () {
     // 
     // Priority
     //   medium
+    throw 'Not implemented';
   };
   
   Elem.prototype.moveBy = function (dx, dy, options) {
@@ -493,10 +502,12 @@ Taaspace.Element = (function () {
     //   dy
     //     Distance in space
     //   options (optional)
-    //     See Animation Options
     //  OR
     //   dxdy
     //   options (optional)
+    // 
+    // Options
+    //   See Animation Options
     // 
     // Return
     //   this
@@ -659,6 +670,10 @@ Use Element.movable instead.');
       var that = this;
       this._animation.end(function () {
         that._animation = null;
+        if (options.hasOwnProperty('end') &&
+            typeof options.end === 'function') {
+          options.end.call(that);
+        }
       });
     } else {
       
@@ -2169,6 +2184,10 @@ Taaspace.KeyboardManager = (function () {
 }());
 
 
+  // Version
+  Taaspace.version = '0.0.4';
+  
+  // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
     // Common JS
     // http://wiki.commonjs.org/wiki/Modules/1.1
