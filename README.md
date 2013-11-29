@@ -12,7 +12,7 @@ More examples at [taaspace-contrib-examples](https://github.com/taataa/taaspace-
 ## Features
 
 - Scalable, rotatable and draggable infinite space for HTML elements
-- Uses CSS3 and DOM elements, *no* HTML5 Canvas, SVG or WebGL
+- Uses CSS3 and DOM elements, **no** HTML5 Canvas, SVG or WebGL
 - Add text, image and box elements and also custom DOM elements into the space.
 - Add groups to handle sets of elements as a whole.
 - Add networks to load content dynamically, making possible to explore large amounts of data in a zoom like manner.
