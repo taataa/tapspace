@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.4 - 2013-11-28
+/*! taaspace - v0.0.5 - 2013-11-30
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -16504,6 +16504,10 @@ Taaspace.Text = (function () {
     }
     p[method](this._string);
     
+    p.attr({
+      'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-text'
+    });
+    
     p.css({
       position: 'absolute',
     });
@@ -16592,7 +16596,10 @@ Taaspace.Image = (function () {
     // Appends element into DOM.
     
     var domElem = $(document.createElement('img'));
-    domElem.attr('src', this._src);
+    domElem.attr({
+      'src': this._src,
+      'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
+    });
     domElem.css({
       position: 'absolute',
       width: this._w + 'px',
@@ -16939,8 +16946,12 @@ Taaspace.KeyboardManager = (function () {
 }());
 
 
+  // Constants as a settings for Taaspace.
+  Taaspace.SPACE_ELEMENT_CLASS = 'taaspace-element';
+
+
   // Version
-  Taaspace.version = '0.0.4';
+  Taaspace.version = '0.0.5';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

@@ -47,6 +47,7 @@ module.exports = function(grunt) {
           'src/network.js',
           'src/custom.js',
           'src/keyboardmanager.js',
+          'src/settings.js',
           'src/outro.js'
         ],
         dest: 'taaspace.js'
@@ -72,6 +73,7 @@ module.exports = function(grunt) {
           'src/network.js',
           'src/custom.js',
           'src/keyboardmanager.js',
+          'src/settings.js',
           'src/outro.js'
         ],
         dest: 'taaspace-standalone.js'

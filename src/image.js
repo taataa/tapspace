@@ -50,7 +50,10 @@ Taaspace.Image = (function () {
     // Appends element into DOM.
     
     var domElem = $(document.createElement('img'));
-    domElem.attr('src', this._src);
+    domElem.attr({
+      'src': this._src,
+      'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
+    });
     domElem.css({
       position: 'absolute',
       width: this._w + 'px',

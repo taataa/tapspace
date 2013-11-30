@@ -97,6 +97,10 @@ Taaspace.Text = (function () {
     }
     p[method](this._string);
     
+    p.attr({
+      'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-text'
+    });
+    
     p.css({
       position: 'absolute',
     });
