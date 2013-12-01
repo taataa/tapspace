@@ -443,9 +443,6 @@ Taaspace.Viewport = (function () {
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority 
-    //   high
     
     // Normalize params
     if (typeof options === 'undefined') {

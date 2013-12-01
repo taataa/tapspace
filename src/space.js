@@ -200,11 +200,13 @@ var Taaspace = (function () {
   Space.prototype.select = function () {
     // Select the viewport of the space to react to keyboard events.
     this._select(this._vp);
+    return this;
   };
   
   Space.prototype.deselect = function () {
     // Viewport does not react to keyboard events anymore.
     this._deselect(this._vp);
+    return this;
   };
   
   

@@ -234,13 +234,49 @@ Taaspace.SpaceElement = (function () {
     //   options
     //     See Animation Options
     // 
+    // Option
+    //   disableHtmlUpdate
+    // 
     // Return
     //   this
     //     for chaining
     // 
     // Priority
     //   medium
-    throw 'Not implemented';
+    
+    // Normalize params
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Pivot in relation to element before scaling
+    var px0 = (this._px - this._x);
+    var py0 = (this._py - this._y);
+    
+    // Scaling
+    this._w *= multiplier;
+    this._h *= multiplier;
+    
+    // Pivot in relation to element after scaling
+    var px1 = px0 * multiplier;
+    var py1 = py0 * multiplier;
+    
+    // Move element so that the pivot is at the same position in
+    // scaled coordinates.
+    var dx = px0 - px1;
+    var dy = py0 - py1;
+    this.moveBy(dx, dy, {
+      disableHtmlUpdate: true
+    });
+    
+    // Scale the element
+    if (!(options.hasOwnProperty('disableHtmlUpdate') &&
+          options.disableHtmlUpdate === true)) {
+      // Scale and move the HTMLElement.
+      this._scaleHtmlElement(options);
+    }
+    
+    return this;
   };
   
   Elem.prototype.rotate = function (angle, options) {

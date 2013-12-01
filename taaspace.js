@@ -211,11 +211,13 @@ var Taaspace = (function () {
   Space.prototype.select = function () {
     // Select the viewport of the space to react to keyboard events.
     this._select(this._vp);
+    return this;
   };
   
   Space.prototype.deselect = function () {
     // Viewport does not react to keyboard events anymore.
     this._deselect(this._vp);
+    return this;
   };
   
   
@@ -460,18 +462,39 @@ Taaspace.SpaceElement = (function () {
   
   // Mutators
   
-  Elem.prototype.pivot = function (xy) {
+  Elem.prototype.pivot = function (x, y) {
     // Set or get the pivot point.
-    // The point to moveTo, scale and rotate around.
-    // Does not move the element in relation to the space pivot.
+    // Move the point to moveTo, scale in and rotate around.
+    // Does not move the view in relation to the space origo.
     // 
     // Parameter
-    //   xy
-    //     Place for new pivot in relation to the current pivot in space units.
+    //   x
+    //   y
     // 
-    // Priority
-    //   medium
-    throw 'Not implemented';
+    // Parameter (Alternative)
+    //   xy
+    //     Place for new pivot in space units.
+    // 
+    // Return
+    //   xy of the current pivot
+    //     if no new pivot specified.
+    //   this
+    //     if new pivot specified.
+    // 
+    if (typeof x === 'object') {
+      y = x.y;
+      x = x.x;
+    } else {
+      if (typeof x === 'undefined') {
+        return {x: this._px, y: this._py};
+      } // else
+    }
+    
+    // Update the pivot
+    this._px = x;
+    this._py = y;
+    
+    return this;
   };
   
   Elem.prototype.size = function (width, height) {
@@ -525,13 +548,49 @@ Taaspace.SpaceElement = (function () {
     //   options
     //     See Animation Options
     // 
+    // Option
+    //   disableHtmlUpdate
+    // 
     // Return
     //   this
     //     for chaining
     // 
     // Priority
     //   medium
-    throw 'Not implemented';
+    
+    // Normalize params
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Pivot in relation to element before scaling
+    var px0 = (this._px - this._x);
+    var py0 = (this._py - this._y);
+    
+    // Scaling
+    this._w *= multiplier;
+    this._h *= multiplier;
+    
+    // Pivot in relation to element after scaling
+    var px1 = px0 * multiplier;
+    var py1 = py0 * multiplier;
+    
+    // Move element so that the pivot is at the same position in
+    // scaled coordinates.
+    var dx = px0 - px1;
+    var dy = py0 - py1;
+    this.moveBy(dx, dy, {
+      disableHtmlUpdate: true
+    });
+    
+    // Scale the element
+    if (!(options.hasOwnProperty('disableHtmlUpdate') &&
+          options.disableHtmlUpdate === true)) {
+      // Scale and move the HTMLElement.
+      this._scaleHtmlElement(options);
+    }
+    
+    return this;
   };
   
   Elem.prototype.rotate = function (angle, options) {
@@ -719,6 +778,7 @@ Use Element.movable instead.');
   };
   
   
+  
   // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._appendHtmlElement = function (options) {
@@ -851,6 +911,7 @@ Use Element.movable instead.');
   Elem.prototype._deselectHtmlElement = function () {
     this._htmlElement.toggleClass('taaspace-selected', false);
   };
+  
   
   
   ///////////////
@@ -1303,9 +1364,6 @@ Taaspace.Viewport = (function () {
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority 
-    //   high
     
     // Normalize params
     if (typeof options === 'undefined') {
