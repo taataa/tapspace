@@ -148,18 +148,39 @@ Taaspace.SpaceElement = (function () {
   
   // Mutators
   
-  Elem.prototype.pivot = function (xy) {
+  Elem.prototype.pivot = function (x, y) {
     // Set or get the pivot point.
-    // The point to moveTo, scale and rotate around.
-    // Does not move the element in relation to the space pivot.
+    // Move the point to moveTo, scale in and rotate around.
+    // Does not move the view in relation to the space origo.
     // 
     // Parameter
-    //   xy
-    //     Place for new pivot in relation to the current pivot in space units.
+    //   x
+    //   y
     // 
-    // Priority
-    //   medium
-    throw 'Not implemented';
+    // Parameter (Alternative)
+    //   xy
+    //     Place for new pivot in space units.
+    // 
+    // Return
+    //   xy of the current pivot
+    //     if no new pivot specified.
+    //   this
+    //     if new pivot specified.
+    // 
+    if (typeof x === 'object') {
+      y = x.y;
+      x = x.x;
+    } else {
+      if (typeof x === 'undefined') {
+        return {x: this._px, y: this._py};
+      } // else
+    }
+    
+    // Update the pivot
+    this._px = x;
+    this._py = y;
+    
+    return this;
   };
   
   Elem.prototype.size = function (width, height) {
@@ -407,6 +428,7 @@ Use Element.movable instead.');
   };
   
   
+  
   // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._appendHtmlElement = function (options) {
@@ -539,6 +561,7 @@ Use Element.movable instead.');
   Elem.prototype._deselectHtmlElement = function () {
     this._htmlElement.toggleClass('taaspace-selected', false);
   };
+  
   
   
   ///////////////
