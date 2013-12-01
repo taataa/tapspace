@@ -9,13 +9,13 @@ Taaspace.KeyboardManager = (function () {
   var Manager = function (container) {
     // Parameter
     //   container (optional, default is document)
-    //     Container DOMElement where to listen the keyboard events.
+    //     Container HTMLElement where to listen the keyboard events.
     
     if (typeof container === 'undefined') {
       container = document;
     }
     
-    // DOMElement
+    // HTMLElement
     this._c = container;
     
     // Jwerty Codes mapped to sets of object-handler pairs.
@@ -118,6 +118,7 @@ Taaspace.KeyboardManager = (function () {
   
   Manager.prototype.off = function (jwertyCode, obj, handler) {
     // Remove event handler for this key combination.
+    // Do the actual event unbinding with clean().
     removePair(this._pairs, jwertyCode, obj, handler);
     return this;
   };

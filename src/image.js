@@ -16,8 +16,8 @@ Taaspace.Image = (function () {
     this._space = space;
     this._src = src;
     
-    this._w = 100;
-    this._h = 100;
+    this._w = null; // Set at the latest when appending HTML
+    this._h = null;
     
     if (typeof options === 'object') {
       if (options.hasOwnProperty('width')) {
@@ -31,7 +31,7 @@ Taaspace.Image = (function () {
   };
   
   // Inherit from SpaceElement
-  Img.prototype = Taaspace.Element.create();
+  Img.prototype = Taaspace.SpaceElement.create();
   
   // Extend Taaspace
   Taaspace.extension.createImage = function (src, options) {
@@ -45,27 +45,31 @@ Taaspace.Image = (function () {
   
   // Pseudo-private mutators
   
-  Img.prototype._domAppend = function (container, fromSpace, options) {
+  Img.prototype._appendHtmlElement = function (options) {
     // Called by viewports.
-    // Appends element into DOM.
+    // Appends HTMLElement into DOM.
     
-    var domElem = $(document.createElement('img'));
-    domElem.attr({
+    var el = jQuery(document.createElement('img'));
+    this._htmlElement = el;
+    
+    el.attr({
       'src': this._src,
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
     });
-    domElem.css({
+    el.css({
       position: 'absolute',
       width: this._w + 'px',
       height: this._h + 'px'
     });
+    this._space._container.append(el);
     
-    $(container).append(domElem);
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
     
     // Init position
-    this._domMove(domElem, fromSpace, options);
+    this._moveHtmlElement(options);
     
-    return domElem;
+    return el;
   };
   
   

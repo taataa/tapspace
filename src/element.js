@@ -1,9 +1,9 @@
-Taaspace.Element = (function () {
+Taaspace.SpaceElement = (function () {
   //
   // Abstract prototype for all objects floating in the space.
   // 
   // Usage
-  //   MyElemType.prototype = Taaspace.Element.create()
+  //   MyElemType.prototype = Taaspace.SpaceElement.create()
   //
   // Animation options
   //   ease (optional, default none)
@@ -18,9 +18,6 @@ Taaspace.Element = (function () {
   //       Requires ease to be set.
   //       Function fires when the animation ends.
   //
-  // Priority
-  //   high
-  // 
   var exports = {};
   /////////////////
   
@@ -30,6 +27,13 @@ Taaspace.Element = (function () {
   
   var Elem = function () {
     this._space = null;
+    
+    // HTMLElement wrappend in jQuery object.
+    // Represents the SpaceElement.
+    this._htmlElement = null;
+    
+    // For mouse and touch gestures
+    this._hammertime = null;
     
     // Location of left top corner in space
     this._x = 0;
@@ -59,25 +63,22 @@ Taaspace.Element = (function () {
   Elem.prototype.width = function () {
     // Width of the element in space
     // 
-    // Priority
-    //   high
     return this._w;
   };
   
   Elem.prototype.height = function () {
     // Height of the element in space
     // 
-    // Priority
-    //   high
     return this._h;
   };
   
   Elem.prototype.center = function () {
     // Center point of the element in space
     // 
-    // Priority
-    //   high
-    throw 'Not implemented';
+    return {
+      x: this._x + this._w / 2,
+      y: this._y + this._h / 2
+    };
   };
   
   Elem.prototype.box = function () {
@@ -86,8 +87,6 @@ Taaspace.Element = (function () {
     // Return
     //   {x0, y0, x1, y1}
     // 
-    // Priority
-    //   medium
     return {
       x0: this._x,
       y0: this._y,
@@ -96,25 +95,35 @@ Taaspace.Element = (function () {
     };
   };
   
-  Elem.prototype.visibilityRatio = function (viewport) {
+  Elem.prototype.area = function () {
+    // Area of the box of the element in the space.
+    // 
+    // Return
+    //   Number
+    //     SpaceUnit^2
+    // 
+    return this._w * this._h;
+  };
+  
+  Elem.prototype.visibilityRatio = function () {
     // See Viewport.visibilityRatioOf
-    return viewport.visibilityRatioOf(this);
+    return this._space.visibilityRatioOf(this);
   };
   
-  Elem.prototype.distanceRatio = function (viewport) {
+  Elem.prototype.distanceRatio = function () {
     // See Viewport.distanceRatioOf
-    return viewport.distanceRatioOf(this);
+    return this._space.distanceRatioOf(this);
   };
   
-  Elem.prototype.focusRatio = function (viewport) {
+  Elem.prototype.focusRatio = function () {
     // See Viewport.focusRatioOf
-    return viewport.focusRatioOf(this);
+    return this._space.focusRatioOf(this);
   };
   
-  Elem.prototype.isInside = function (rect) {
+  Elem.prototype.isInside = function (box) {
     // Return
     //   true
-    //     if obj inside given rectangle
+    //     if obj inside given box
     //   false
     //     otherwise
     // 
@@ -154,16 +163,17 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.size = function (width, height) {
-    
     // Parameter
     //   width
     //     in space
     //   height
     //     in space
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   wh
     //     {width: <width_in_space>, height: <height_in_space>}
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   <nothing>
     //     Returns the current {width, height} of the element
     // 
@@ -171,6 +181,8 @@ Taaspace.Element = (function () {
     //   {width, height} if no parameters
     //  OR
     //   this for chaining
+    
+    // Normalize parameters
     if (typeof width === 'object') {
       height = width.height;
       width = width.width;
@@ -187,7 +199,7 @@ Taaspace.Element = (function () {
       this._h = height;
     }
     
-    this._space._scaleDomElement(this);
+    this._scaleHtmlElement();
     
     return this;
   };
@@ -255,7 +267,8 @@ Taaspace.Element = (function () {
     //   dy
     //     Distance in space
     //   options (optional)
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   dxdy
     //   options (optional)
     // 
@@ -266,8 +279,6 @@ Taaspace.Element = (function () {
     //   this
     //     for chaining
     // 
-    // Priority
-    //   medium
     
     if (typeof dx === 'object') {
       if (typeof dy === 'object') {
@@ -280,7 +291,7 @@ Taaspace.Element = (function () {
     this._x += dx;
     this._y += dy;
     
-    this._space._moveDomElement(this, options); ///?????????
+    this._moveHtmlElement(options);
     
     return this;
   };
@@ -337,59 +348,81 @@ Use Element.movable instead.');
   
   Elem.prototype.remove = function () {
     // Remove the element from space.
-    //
-    // Priority
-    //   high
-    throw 'Not implemented';
+    
+    this._removeHtmlElement();
+    this._space._removeSpaceElement(this);
   };
   
-  //?????
   Elem.prototype.attr = function () {
-    // Set attributes of the DOMElement.
+    // Set attributes of the HTMLElement.
     // Interface matches jQuery .attr().
     // http://api.jquery.com/attr/
-    throw 'Not implemented';
+    // 
+    // In future it might be possible that setting some known attributes
+    // must be prevented. This explains why not to just return the 
+    // HTMLElement in the first place.
+    this._htmlElement.attr.apply(this._htmlElement, arguments);
   };
+  
+  Elem.prototype.css = function () {
+    // Set style of the HTMLElement.
+    // Interface matches jQuery .css().
+    // http://api.jquery.com/attr/
+    // 
+    // In future it might be possible that setting some known styles
+    // must be prevented. This explains why not to just return the 
+    // HTMLElement in the first place.
+    this._htmlElement.css.apply(this._htmlElement, arguments);
+  };
+  
   
   
   // Events
   
-  Elem.prototype.on = function (type, viewport, callback) {
+  Elem.prototype.on = function (eventType, callback) {
     // Attach an event to the element
     // 
-    // Priority
-    //   high
+    // Usage:
+    //   myimage.on('tap', function () { ... });
     
-    // Shortcut syntax: on('tap', function () { ... });
-    // Attach to all viewports.
-    if (typeof callback === 'undefined' && typeof viewport === 'function') {
-      callback = viewport;
-      this._space._listenDomElements(this, type, callback);
-      return;
-    } // else
-    
-    // Attach only to one viewport.
-    viewport._listenDomElement(this, type, callback);
+    this._eventOnHtmlElement(eventType, callback);
   };
   
-  Elem.prototype.off = function () {
+  Elem.prototype.off = function (eventType, callback) {
     // Detach an event from the element
     // 
     // Priority
     //   medium
-    throw 'Not implemented';
+    this._eventOffHtmlElement(eventType, callback);
   };
   
+  Elem.prototype.select = function () {
+    this._selectHtmlElement();
+    this._space._select(this);
+  };
+  
+  Elem.prototype.deselect = function () {
+    this._deselectHtmlElement();
+    this._space._deselect(this);
+  };
   
   
   // Somewhat abstract pseudo-private mutators
   
-  Elem.prototype._domAppend = function () {
+  Elem.prototype._appendHtmlElement = function (options) {
     throw 'Abstract function. Must be implemented by the instance.';
   };
   
-  Elem.prototype._domMove = function (domElem, fromSpace, options) {
-    // Move the element on screen.
+  Elem.prototype._removeHtmlElement = function () {
+    // Remove the HTMLElement from DOM
+    // 
+    // Can be overridden in the child prototype.
+    this._htmlElement.remove();
+    this._htmlElement = null;
+  };
+  
+  Elem.prototype._moveHtmlElement = function (options) {
+    // Move the HTMLElement on viewport.
     // 
     // Can be reimplemented in the child prototype.
     // 
@@ -401,13 +434,14 @@ Use Element.movable instead.');
       options = {};
     }
     
-    var xy = fromSpace(this._x, this._y);
+    // New place in viewport
+    var xy = this._space.translatePointFromSpace(this._x, this._y);
     
     
     if (options.hasOwnProperty('ease')) {
       // Use animation by Move.js
       
-      this._animation = move(domElem.get(0))
+      this._animation = move(this._htmlElement.get(0))
         .set('left', xy.x)
         .set('top', xy.y);
       
@@ -419,7 +453,7 @@ Use Element.movable instead.');
         this._animation = this._animation.delay(options.delay);
       }
       
-      // Exec
+      // Exec animation
       var that = this;
       this._animation.end(function () {
         that._animation = null;
@@ -431,8 +465,8 @@ Use Element.movable instead.');
     } else {
       
       if (this._animation !== null) {
-        // Stop ongoing animation
-        move(domElem.get(0))
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
           .set('left', xy.x)
           .set('top', xy.y)
           .duration('0s')
@@ -441,7 +475,7 @@ Use Element.movable instead.');
       } else {
       
         // Feels quite raw after Move.js :)
-        domElem.css({
+        this._htmlElement.css({
           left: xy.x + 'px',
           top: xy.y + 'px'
         });
@@ -449,13 +483,14 @@ Use Element.movable instead.');
     }
   };
   
-  Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
+  Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
-    var nw = fromSpace(this._x, this._y);
-    var se = fromSpace(this._x + this._w, this._y + this._h);
+    var from = this._space.translatePointFromSpace;
+    var nw = from(this._x, this._y);
+    var se = from(this._x + this._w, this._y + this._h);
     
-    domElem.css({
+    this._htmlElement.css({
       left: nw.x + 'px',
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',
@@ -463,34 +498,47 @@ Use Element.movable instead.');
     });
   };
   
-  Elem.prototype._domRotate = function () {
+  
+  Elem.prototype._rotateHtmlElement = function () {
     throw 'Abstract function. Must be implemented by the instance.';
   };
   
-  Elem.prototype._domRemove = function (domElem, options) {
-    // Remove the DOMElement from DOM
-    // 
-    // Can be overridden in the child prototype.
-    // 
-    // Parameter
-    //   options
-    //     ease?
-    //     duration?
-    //     delay?
-    domElem.remove();
-  };
+  Elem.prototype._eventOnHtmlElement = function (eventType, handler) {
   
-  Elem.prototype._domListen = function (domElem, eventType, callback) {
     if (eventType === 'mousewheel') {
-      domElem.mousewheel(function(event, delta, deltaX, deltaY) {
-        callback(delta);
-      });
+      // Mousewheel event
+      this._htmlElement.on('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._onKey(jwertyCode, this, handler);
     } else {
-      // Attach a function to a Hammer event on the element.
-      Hammer(domElem[0]).on(eventType, callback);
+      // Mouse or touch event
+      this._hammertime.on(eventType, handler);
     }
   };
   
+  Elem.prototype._eventOffHtmlElement = function (eventType, handler) {
+    if (eventType === 'mousewheel') {
+      // Mousewheel event
+      this._htmlElement.off('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._offKey(jwertyCode, this, handler);
+    } else {
+      // Mouse or touch event
+      this._hammertime.off(eventType, handler);
+    }
+  };
+  
+  Elem.prototype._selectHtmlElement = function () {
+    this._htmlElement.toggleClass('taaspace-selected', true);
+  };
+  
+  Elem.prototype._deselectHtmlElement = function () {
+    this._htmlElement.toggleClass('taaspace-selected', false);
+  };
   
   
   ///////////////

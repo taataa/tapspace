@@ -30,7 +30,7 @@ Taaspace.Text = (function () {
   };
   
   // Inherit from SpaceElement
-  Text.prototype = Taaspace.Element.create();
+  Text.prototype = Taaspace.SpaceElement.create();
   
   // Extend Taaspace
   Taaspace.extension.createText = function (string, options) {
@@ -44,14 +44,17 @@ Taaspace.Text = (function () {
   
   Text.prototype.fontSize = function (newSize, options) {
     // Parameter
-    //   Options
-    //     Animation
+    //   options
+    // 
+    // Options
+    //   Animation NOT IMPLEMENTED YET
+    //   disableHtmlUpdate NOT IMPLEMENTED YET
     // 
     // Return
     //   this
     //     for chaining
     this._fontSize = newSize;
-    this._space._scaleDomElement(this, options);
+    this._scaleHtmlElement(options);
     return this;
   };
   
@@ -59,8 +62,11 @@ Taaspace.Text = (function () {
     // Scale font size by multiplier. Do not affect to element width.
     // 
     // Parameter
-    //   Options
-    //     Animation
+    //   options
+    // 
+    // Options
+    //   Animation NOT IMPLEMENTED YET
+    //   disableHtmlUpdate NOT IMPLEMENTED YET
     throw 'Not implemented';
   };
   
@@ -68,19 +74,16 @@ Taaspace.Text = (function () {
   
   // Pseudo-private mutators
   
-  Text.prototype._domAppend = function (container, fromSpace, options) {
-    // Called by viewports.
-    // Appends element into DOM.
+  Text.prototype._appendHtmlElement = function (options) {
+    // Called by space.
+    // Appends HTMLElement into DOM.
     // 
     // Parameter
-    //   container
-    //     DOMElement to append to
-    //   fromSpace
-    //     A function to convert space coordinates to screen coordinates.
     //   options (optional)
     // 
     // Option
     //   disableHTML
+    //     Handle string as plain text. See jQuery .text() and .html()
     
     // Normalize params
     if (typeof options !== 'object') {
@@ -88,6 +91,7 @@ Taaspace.Text = (function () {
     }
     
     var p = $(document.createElement('p'));
+    this._htmlElement = p;
     
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
@@ -102,27 +106,33 @@ Taaspace.Text = (function () {
     });
     
     p.css({
-      position: 'absolute',
+      position: 'absolute'
     });
     
-    $(container).append(p);
+    this._space._container.append(p);
     
     // Init position
-    this._domMove(p, fromSpace, options);
+    this._moveHtmlElement(options);
     
     return p;
   };
   
-  Text.prototype._domScale = function (domElem, fromSpace, scale, options) {
+  Text.prototype._scaleHtmlElement = function (options) {
+    // Parameter
+    //   options
+    // 
+    // Option
+    //   Animation (Not implemented)
     
-    var nw = fromSpace(this._x, this._y);
-    var se = fromSpace(this._x + this._w, this._y + this._h);
+    var from = this._space.translatePointFromSpace;
+    var nw = from(this._x, this._y);
+    var se = from(this._x + this._w, this._y + this._h);
     
-    // :/ We should have direct reference to the child element to
-    // make things fast
+    var dist = this._space.translateDistanceFromSpace;
+    var size = dist(this._fontSize);
     
-    domElem.css({
-      'font-size': (this._fontSize * scale) + 'px',
+    this._htmlElement.css({
+      'font-size': size + 'px',
       left: nw.x + 'px',
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',

@@ -1,4 +1,4 @@
-/*! taaspace - v0.0.5 - 2013-11-30
+/*! taaspace - v1.0.0 - 2013-12-01
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -12,7 +12,7 @@
 var Taaspace = (function () {
   //
   // Usage
-  //   var space = Taaspace.create()
+  //   var space = Taaspace.create('#space');
   //
   var exports = {};
   /////////////////
@@ -21,24 +21,84 @@ var Taaspace = (function () {
   
   // Constructor
   
-  var Space = function () {
+  var Space = function (containerHtmlElement, options) {
+    // Parameter
+    //   containerHtmlElement
+    //     Query string, HTMLElement or jQuery object
+    //   options (optional)
+    //     See Options
+    // 
+    // Option
+    //   See Taaspace.Viewport.View
     
-    // Elements, like Texts and Images in space
+    // Normalize params
+    if (typeof containerHtmlElement === 'undefined') {
+      throw {
+        name: 'MissingParameterError',
+        message: 'No container HTMLElement specified. ' +
+                 'Taaspace should have one.',
+      };
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    
+    // SpaceElements, like Texts and Images in space
     this._elems = [];
     
-    // Viewports to the space
-    this._vps = [];
-    
-    // Make elements and viewports referencable by id to be stored in objects.
+    // Make SpaceElements referencable by id to be stored in objects.
     // Makes implementing collections easy.
     this._idCounter = 0;
     
     // Maps keyboard events to selected objects.
     this._keyboardManager = Taaspace.KeyboardManager.create();
+    
+    // The container HTMLElement in DOM. Wrap inside jQuery object.
+    // Container is a property of Space instead of property of Viewport
+    // because ... no reason. Lets refactor later if this seems bad.
+    this._container = jQuery(containerHtmlElement);
+    
+    // Viewport to the space. Handles conversions between screen and space.
+    this._vp = Taaspace.Viewport.create(this, options);
+    
+    // Import the public functions of the viewport to the space.
+    // Public functions are those not beginning with underscore _.
+    // After this, user can call e.g.
+    //   var space = Taaspace.create('#space');
+    //   var areaOfViewport = space.area();
+    var proto = Taaspace.Viewport._View.prototype;
+    var that = this;
+    var importViewportProperty = function (property) {
+      that[property] = function () {
+        // 'this' references to window so that needs to be used. Why?
+        return proto[property].apply(that._vp, arguments);
+      };
+    };
+    var property;
+    for (property in proto) {
+      if (proto.hasOwnProperty(property)) {
+        if (typeof proto[property] === 'function') {
+          // If is meant public
+          if (property[0] !== '_') {
+            // Ensure there is no namespace collisions.
+            if (property in this) {
+              throw {
+                name: 'NamespaceCollisionError',
+                message: 'Space and Viewport namespaces collide: ' + property
+              };
+            }
+            // No collisions, import
+            importViewportProperty(property);
+          }
+        }
+      }
+    }
+    
   };
   
-  exports.create = function () {
-    return new Space();
+  exports.create = function (containerHtmlElement, options) {
+    return new Space(containerHtmlElement, options);
   };
   
   // For extendability.
@@ -46,9 +106,10 @@ var Taaspace = (function () {
   exports.extension = Space.prototype;
   
   
+  
   // Accessors
   
-  Space.prototype.box = function () {
+  Space.prototype.boundingBox = function () {
     // The bounding box for all the elements in the space. Can be used
     // to focus to all the elements.
     // 
@@ -96,18 +157,18 @@ var Taaspace = (function () {
   
   // Mutators
   
-  Space.prototype.pivot = function (xyOrViewportOrElement) {
-    // Move the location of the space pivot so that the relations between
+  Space.prototype.origo = function (xyOrElement) {
+    // Move the location of the space origo so that the relations between
     // the elements stay the same. Handy to avoid number overflow in big space.
     // If no parameters specified, return 0,0
     
-    var xy = xyOrViewportOrElement;
+    var xy = xyOrElement;
     
     if (typeof xy === 'undefined') {
       return {x:0, y:0};
     }
     
-    // If is viewport or element
+    // If is element
     if ('pivot' in xy && typeof xy.pivot === 'function') {
       xy = xy.pivot();
     }
@@ -118,9 +179,9 @@ var Taaspace = (function () {
   };
   
   Space.prototype.remove = function (elem) {
-    // Remove the element from the space.
-    this._elems = _.reject(this._elems, function (i) { return elem === i; });
-    throw 'Not implemented'; // Should remove the DOMElements too.
+    // Remove the SpaceElement and associated HTMLElement from the space.
+    elem._removeHtmlElement();
+    this._removeSpaceElement(elem);
   };
   
   Space.prototype.importSpaceElement = function (pluginElement) {
@@ -138,37 +199,23 @@ var Taaspace = (function () {
     // Becomes SpaceElement after having _id.
     var spaceElement = this._identify(pluginElement);
     
-    // Store SpaceElement into space. Why?
-    this._elems.push(spaceElement);
+    // Store SpaceElement into space to be able to move all.
+    this._addSpaceElement(spaceElement);
     
-    // Append SpaceElement to all viewports to be visible.
-    _.each(this._vps, function (vp) {
-      // Future: spaceElement._appendHtml(viewport);
-      vp._createDomElement(spaceElement);
-    });
+    // Append SpaceElement to DOM
+    spaceElement._appendHtmlElement();
     
     return spaceElement;
   };
   
-  
-  
-  Space.prototype.createViewport = function (containerEl, options) {
-    // Create a new view to the space. Kind of a window to the garden.
-    var vp = Taaspace.Viewport.create(this, containerEl, options);
-    
-    var spaceViewport = this._identify(vp);
-    this._addViewport(vp);
-    return vp;
+  Space.prototype.select = function () {
+    // Select the viewport of the space to react to keyboard events.
+    this._select(this._vp);
   };
   
-  Space.prototype.select = function (elementOrViewport) {
-    // Selected elements' keyboard event handler are enabled.
-    this._keyboardManager.select(elementOrViewport);
-  };
-  
-  Space.prototype.deselect = function (elementOrViewport) {
-    // Deselected elements' keyboard event handlers will not fire.
-    this._keyboardManager.deselect(elementOrViewport);
+  Space.prototype.deselect = function () {
+    // Viewport does not react to keyboard events anymore.
+    this._deselect(this._vp);
   };
   
   
@@ -176,61 +223,80 @@ var Taaspace = (function () {
   // Pseudo-private mutators
   
   Space.prototype._identify = function (obj) {
-    // Extends the object with unique _id property.
-    // Used to SpaceViewports and SpaceElements.
+    // Extends the object with unique _id property (is a string).
+    // Used to SpaceElements.
     obj._id = String(this._idCounter);
     this._idCounter += 1;
     return obj;
   };
   
-  Space.prototype._addViewport = function (vp) {
-    // New viewport to space.
-    this._vps.push(vp);
+  
+  Space.prototype._addSpaceElement = function (elem) {
+    // Only add the SpaceElement to the model. Does not create HTMLElement.
+    // Only SpaceElement knows how to do that.
+    //
+    // Precondition
+    //   elem must have _id property set.
+    //
+    // Parameter
+    //   elem
+    //     SpaceElement to be added
+    this._validateSpaceElement(elem); // throws InvalidSpaceElement
+    this._elems.push(elem);
+  };
+  
+  Space.prototype._validateSpaceElement = function (elem) {
+    // Test if elem is valid SpaceElement and throw error if not.
+    // To be valid spaceElement, _id property is required.
+    // 
+    // Throw
+    //   InvalidSpaceElement
+    // 
+    if ('_id' in elem && typeof elem._id === 'string') {
+      return;
+    } // else
     
-    // Append all existing elements to the new viewport.
-    _.each(this._elems, function (elem) {
-      vp._createDomElement(elem);
-    });
+    throw {
+      name: 'InvalidSpaceElement',
+      message: 'Element does not fulfill SpaceElement requirements.'
+    };
   };
   
-  ///?????????
-  Space.prototype._eachDomElement = function (elem, fn, args) {
-    // Execute function fn for each domElement of elem
-    _.each(this._vps, function (vp) {
-      vp._applyDomElement(elem, fn, args);
-    });
+  Space.prototype._removeSpaceElement = function (elem) {
+    // Only removes the SpaceElement from the model. Does not
+    // remove the HTMLElement. Only SpaceElement knows how to do that.
+    // Call this from SpaceElement.remove().
+    // 
+    // Parameter
+    //   elem
+    //     SpaceElement to be removed.
+    this._elems = _.reject(this._elems, function (i) { return elem === i; });
   };
   
-  ///?????????
-  Space.prototype._moveDomElement = function (elem, options) {
-    // Called from Element when element moves.
-    _.each(this._vps, function (vp) {
-      vp._moveDomElement(elem, options);
-    });
+  
+  Space.prototype._eachSpaceElement = function (fn) {
+    // Execute function fn for each SpaceElement
+    _.each(this._elems, fn);
   };
   
-  ///?????????
-  Space.prototype._scaleDomElement = function (elem, options) {
-    // Called from Element when element is scaled
-    _.each(this._vps, function (vp) {
-      vp._scaleDomElement(elem, options);
-    });
+  
+  Space.prototype._select = function (element) {
+    // Selected elements' keyboard event handler are enabled.
+    // With this you can set some elements selected and call
+    // only the handler functions of those elements.
+    this._keyboardManager.select(element);
   };
   
-  ///?????????
-  Space.prototype._listenDomElements = function (elem, type, callback) {
-    // Listen all the instances of element in the viewports.
-    
-    // Called from Element.on
-    _.each(this._vps, function (vp) {
-      vp._listenDomElement(elem, type, callback);
-    });
+  Space.prototype._deselect = function (element) {
+    // Deselected elements' keyboard event handlers will not fire.
+    this._keyboardManager.deselect(element);
   };
   
   Space.prototype._onKey = function (code, elementOrViewport, handler) {
     // Attach jwerty key combination event to element or viewport
     this._keyboardManager.on(code, elementOrViewport, handler);
   };
+  
   
   Space.prototype._offKey = function (code, elementOrViewport, handler) {
     // Detach jwerty key combination
@@ -239,18 +305,17 @@ var Taaspace = (function () {
   
   
   
-  
   ///////////////
   return exports;
 }());
 
 
-Taaspace.Element = (function () {
+Taaspace.SpaceElement = (function () {
   //
   // Abstract prototype for all objects floating in the space.
   // 
   // Usage
-  //   MyElemType.prototype = Taaspace.Element.create()
+  //   MyElemType.prototype = Taaspace.SpaceElement.create()
   //
   // Animation options
   //   ease (optional, default none)
@@ -265,9 +330,6 @@ Taaspace.Element = (function () {
   //       Requires ease to be set.
   //       Function fires when the animation ends.
   //
-  // Priority
-  //   high
-  // 
   var exports = {};
   /////////////////
   
@@ -277,6 +339,13 @@ Taaspace.Element = (function () {
   
   var Elem = function () {
     this._space = null;
+    
+    // HTMLElement wrappend in jQuery object.
+    // Represents the SpaceElement.
+    this._htmlElement = null;
+    
+    // For mouse and touch gestures
+    this._hammertime = null;
     
     // Location of left top corner in space
     this._x = 0;
@@ -306,25 +375,22 @@ Taaspace.Element = (function () {
   Elem.prototype.width = function () {
     // Width of the element in space
     // 
-    // Priority
-    //   high
     return this._w;
   };
   
   Elem.prototype.height = function () {
     // Height of the element in space
     // 
-    // Priority
-    //   high
     return this._h;
   };
   
   Elem.prototype.center = function () {
     // Center point of the element in space
     // 
-    // Priority
-    //   high
-    throw 'Not implemented';
+    return {
+      x: this._x + this._w / 2,
+      y: this._y + this._h / 2
+    };
   };
   
   Elem.prototype.box = function () {
@@ -333,8 +399,6 @@ Taaspace.Element = (function () {
     // Return
     //   {x0, y0, x1, y1}
     // 
-    // Priority
-    //   medium
     return {
       x0: this._x,
       y0: this._y,
@@ -343,25 +407,35 @@ Taaspace.Element = (function () {
     };
   };
   
-  Elem.prototype.visibilityRatio = function (viewport) {
+  Elem.prototype.area = function () {
+    // Area of the box of the element in the space.
+    // 
+    // Return
+    //   Number
+    //     SpaceUnit^2
+    // 
+    return this._w * this._h;
+  };
+  
+  Elem.prototype.visibilityRatio = function () {
     // See Viewport.visibilityRatioOf
-    return viewport.visibilityRatioOf(this);
+    return this._space.visibilityRatioOf(this);
   };
   
-  Elem.prototype.distanceRatio = function (viewport) {
+  Elem.prototype.distanceRatio = function () {
     // See Viewport.distanceRatioOf
-    return viewport.distanceRatioOf(this);
+    return this._space.distanceRatioOf(this);
   };
   
-  Elem.prototype.focusRatio = function (viewport) {
+  Elem.prototype.focusRatio = function () {
     // See Viewport.focusRatioOf
-    return viewport.focusRatioOf(this);
+    return this._space.focusRatioOf(this);
   };
   
-  Elem.prototype.isInside = function (rect) {
+  Elem.prototype.isInside = function (box) {
     // Return
     //   true
-    //     if obj inside given rectangle
+    //     if obj inside given box
     //   false
     //     otherwise
     // 
@@ -401,16 +475,17 @@ Taaspace.Element = (function () {
   };
   
   Elem.prototype.size = function (width, height) {
-    
     // Parameter
     //   width
     //     in space
     //   height
     //     in space
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   wh
     //     {width: <width_in_space>, height: <height_in_space>}
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   <nothing>
     //     Returns the current {width, height} of the element
     // 
@@ -418,6 +493,8 @@ Taaspace.Element = (function () {
     //   {width, height} if no parameters
     //  OR
     //   this for chaining
+    
+    // Normalize parameters
     if (typeof width === 'object') {
       height = width.height;
       width = width.width;
@@ -434,7 +511,7 @@ Taaspace.Element = (function () {
       this._h = height;
     }
     
-    this._space._scaleDomElement(this);
+    this._scaleHtmlElement();
     
     return this;
   };
@@ -502,7 +579,8 @@ Taaspace.Element = (function () {
     //   dy
     //     Distance in space
     //   options (optional)
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   dxdy
     //   options (optional)
     // 
@@ -513,8 +591,6 @@ Taaspace.Element = (function () {
     //   this
     //     for chaining
     // 
-    // Priority
-    //   medium
     
     if (typeof dx === 'object') {
       if (typeof dy === 'object') {
@@ -527,7 +603,7 @@ Taaspace.Element = (function () {
     this._x += dx;
     this._y += dy;
     
-    this._space._moveDomElement(this, options); ///?????????
+    this._moveHtmlElement(options);
     
     return this;
   };
@@ -584,59 +660,81 @@ Use Element.movable instead.');
   
   Elem.prototype.remove = function () {
     // Remove the element from space.
-    //
-    // Priority
-    //   high
-    throw 'Not implemented';
+    
+    this._removeHtmlElement();
+    this._space._removeSpaceElement(this);
   };
   
-  //?????
   Elem.prototype.attr = function () {
-    // Set attributes of the DOMElement.
+    // Set attributes of the HTMLElement.
     // Interface matches jQuery .attr().
     // http://api.jquery.com/attr/
-    throw 'Not implemented';
+    // 
+    // In future it might be possible that setting some known attributes
+    // must be prevented. This explains why not to just return the 
+    // HTMLElement in the first place.
+    this._htmlElement.attr.apply(this._htmlElement, arguments);
   };
+  
+  Elem.prototype.css = function () {
+    // Set style of the HTMLElement.
+    // Interface matches jQuery .css().
+    // http://api.jquery.com/attr/
+    // 
+    // In future it might be possible that setting some known styles
+    // must be prevented. This explains why not to just return the 
+    // HTMLElement in the first place.
+    this._htmlElement.css.apply(this._htmlElement, arguments);
+  };
+  
   
   
   // Events
   
-  Elem.prototype.on = function (type, viewport, callback) {
+  Elem.prototype.on = function (eventType, callback) {
     // Attach an event to the element
     // 
-    // Priority
-    //   high
+    // Usage:
+    //   myimage.on('tap', function () { ... });
     
-    // Shortcut syntax: on('tap', function () { ... });
-    // Attach to all viewports.
-    if (typeof callback === 'undefined' && typeof viewport === 'function') {
-      callback = viewport;
-      this._space._listenDomElements(this, type, callback);
-      return;
-    } // else
-    
-    // Attach only to one viewport.
-    viewport._listenDomElement(this, type, callback);
+    this._eventOnHtmlElement(eventType, callback);
   };
   
-  Elem.prototype.off = function () {
+  Elem.prototype.off = function (eventType, callback) {
     // Detach an event from the element
     // 
     // Priority
     //   medium
-    throw 'Not implemented';
+    this._eventOffHtmlElement(eventType, callback);
   };
   
+  Elem.prototype.select = function () {
+    this._selectHtmlElement();
+    this._space._select(this);
+  };
+  
+  Elem.prototype.deselect = function () {
+    this._deselectHtmlElement();
+    this._space._deselect(this);
+  };
   
   
   // Somewhat abstract pseudo-private mutators
   
-  Elem.prototype._domAppend = function () {
+  Elem.prototype._appendHtmlElement = function (options) {
     throw 'Abstract function. Must be implemented by the instance.';
   };
   
-  Elem.prototype._domMove = function (domElem, fromSpace, options) {
-    // Move the element on screen.
+  Elem.prototype._removeHtmlElement = function () {
+    // Remove the HTMLElement from DOM
+    // 
+    // Can be overridden in the child prototype.
+    this._htmlElement.remove();
+    this._htmlElement = null;
+  };
+  
+  Elem.prototype._moveHtmlElement = function (options) {
+    // Move the HTMLElement on viewport.
     // 
     // Can be reimplemented in the child prototype.
     // 
@@ -648,13 +746,14 @@ Use Element.movable instead.');
       options = {};
     }
     
-    var xy = fromSpace(this._x, this._y);
+    // New place in viewport
+    var xy = this._space.translatePointFromSpace(this._x, this._y);
     
     
     if (options.hasOwnProperty('ease')) {
       // Use animation by Move.js
       
-      this._animation = move(domElem.get(0))
+      this._animation = move(this._htmlElement.get(0))
         .set('left', xy.x)
         .set('top', xy.y);
       
@@ -666,7 +765,7 @@ Use Element.movable instead.');
         this._animation = this._animation.delay(options.delay);
       }
       
-      // Exec
+      // Exec animation
       var that = this;
       this._animation.end(function () {
         that._animation = null;
@@ -678,8 +777,8 @@ Use Element.movable instead.');
     } else {
       
       if (this._animation !== null) {
-        // Stop ongoing animation
-        move(domElem.get(0))
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
           .set('left', xy.x)
           .set('top', xy.y)
           .duration('0s')
@@ -688,7 +787,7 @@ Use Element.movable instead.');
       } else {
       
         // Feels quite raw after Move.js :)
-        domElem.css({
+        this._htmlElement.css({
           left: xy.x + 'px',
           top: xy.y + 'px'
         });
@@ -696,13 +795,14 @@ Use Element.movable instead.');
     }
   };
   
-  Elem.prototype._domScale = function (domElem, fromSpace, scale, options) {
+  Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
-    var nw = fromSpace(this._x, this._y);
-    var se = fromSpace(this._x + this._w, this._y + this._h);
+    var from = this._space.translatePointFromSpace;
+    var nw = from(this._x, this._y);
+    var se = from(this._x + this._w, this._y + this._h);
     
-    domElem.css({
+    this._htmlElement.css({
       left: nw.x + 'px',
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',
@@ -710,34 +810,47 @@ Use Element.movable instead.');
     });
   };
   
-  Elem.prototype._domRotate = function () {
+  
+  Elem.prototype._rotateHtmlElement = function () {
     throw 'Abstract function. Must be implemented by the instance.';
   };
   
-  Elem.prototype._domRemove = function (domElem, options) {
-    // Remove the DOMElement from DOM
-    // 
-    // Can be overridden in the child prototype.
-    // 
-    // Parameter
-    //   options
-    //     ease?
-    //     duration?
-    //     delay?
-    domElem.remove();
-  };
+  Elem.prototype._eventOnHtmlElement = function (eventType, handler) {
   
-  Elem.prototype._domListen = function (domElem, eventType, callback) {
     if (eventType === 'mousewheel') {
-      domElem.mousewheel(function(event, delta, deltaX, deltaY) {
-        callback(delta);
-      });
+      // Mousewheel event
+      this._htmlElement.on('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._onKey(jwertyCode, this, handler);
     } else {
-      // Attach a function to a Hammer event on the element.
-      Hammer(domElem[0]).on(eventType, callback);
+      // Mouse or touch event
+      this._hammertime.on(eventType, handler);
     }
   };
   
+  Elem.prototype._eventOffHtmlElement = function (eventType, handler) {
+    if (eventType === 'mousewheel') {
+      // Mousewheel event
+      this._htmlElement.off('mousewheel', handler);
+    } else if (eventType.indexOf('key-') === 0) {
+      // Keyboard event
+      var jwertyCode = eventType.substring(4);
+      this._space._offKey(jwertyCode, this, handler);
+    } else {
+      // Mouse or touch event
+      this._hammertime.off(eventType, handler);
+    }
+  };
+  
+  Elem.prototype._selectHtmlElement = function () {
+    this._htmlElement.toggleClass('taaspace-selected', true);
+  };
+  
+  Elem.prototype._deselectHtmlElement = function () {
+    this._htmlElement.toggleClass('taaspace-selected', false);
+  };
   
   
   ///////////////
@@ -750,21 +863,21 @@ Taaspace.Viewport = (function () {
   // Viewport into the space.
   // 
   // Methods
-  //   create(space, container, options)
+  //   create(space, options)
   // 
   // Animation options
   //   ease (optional, default none)
   //     "in", "out", "in-out", "snap", "none"
-  //   duration (optional, default 0)
+  //   duration (optional)
   //       Requires ease to be set.
   //       e.g. "2s"
-  //   delay (optional, default 0)
+  //   delay (optional)
   //       Requires ease to be set.
   //       e.g. "2s"
+  //   end (optional)
+  //       Requires ease to be set.
+  //       Function fires when the animation ends.
   //
-  // Priority
-  //   high
-  // 
   var exports = {};
   /////////////////
   
@@ -772,20 +885,20 @@ Taaspace.Viewport = (function () {
   
   // Constructor
   
-  var View = function (space, container, options) {
+  var View = function (space, options) {
     // Parameter
     //   space
     //     The space wanted to be displayed by the viewport
-    //   container
-    //     selector string, DOMElement or jQuery element
     //   options (optional)
     //     object of options
     // 
     // Options
     //   width
     //     Sets width of the container element. E.g. 120, '240px' or '100%'
+    //     ? Is this really needed
     //   height
     //     Sets height. See width.
+    //     ? Is this really needed
     
     // Normalize parameters
     if (typeof options === 'undefined') {
@@ -795,43 +908,39 @@ Taaspace.Viewport = (function () {
     // Viewport to the space
     this._space = space;
     
-    // Find type of container
-    if (typeof container === 'string') {
-      this._container = document.querySelector(container);
-    } else {
-      // Is jQuery element
-      if (container.hasOwnProperty(0)) {
-        this._container = container[0];
-      } else {
-        this._container = container;
-      }
-    }
+    // The container HTMLElement wrapped in jQuery object.
+    this._container = this._space._container;
     
-    // Requires style
-    $(this._container).css({
-      // Absolutely positioned elements have their position in relation
-      // to the parent element if the parent has position relative.
-      position: 'relative',
+    // Set styles and attributes of the container
+    (function initContainer(c) {
+    
+      // Requires style
+      c.css({
+        // Absolutely positioned elements have their position in relation
+        // to the parent element if the parent has position relative.
+        position: 'relative',
+        
+        // There will be lots of elements outside of the container element.
+        // The will be hidden by setting overflow to hidden.
+        overflow: 'hidden',
+      });
       
-      // There will be lots of elements outside of the container element.
-      // The will be hidden by setting overflow to hidden.
-      overflow: 'hidden',
-    });
+      // Set width and height of the viewport
+      if (options.hasOwnProperty('width')) {
+        // Normalize to css string with unit. Default to pixels
+        if (typeof options.width === 'number') {
+          options.width = options.width + 'px';
+        }
+        c.css('width', options.width);
+      }
+      if (options.hasOwnProperty('height')) {
+        if (typeof options.height === 'number') {
+          options.height = options.height + 'px';
+        }
+        c.css('height', options.height);
+      }
     
-    // Set width and height of the viewport
-    if (options.hasOwnProperty('width')) {
-      // Normalize to css string with unit. Default to pixels
-      if (typeof options.width === 'number') {
-        options.width = options.width + 'px';
-      }
-      $(this._container).css('width', options.width);
-    }
-    if (options.hasOwnProperty('height')) {
-      if (typeof options.height === 'number') {
-        options.height = options.height + 'px';
-      }
-      $(this._container).css('height', options.height);
-    }
+    }(this._container));
     
     
     // The location of the left-top corner in space.
@@ -847,10 +956,7 @@ Taaspace.Viewport = (function () {
     this._scale = 1;
     
     // Initialize Hammer instance where handlers can be attached to.
-    this._hammertime = Hammer(this._container);
-    
-    // Mapping from element ids to (elem, DOMElement) pairs.
-    this._domPairs = {};
+    this._hammertime = Hammer(this._container.get(0));
     
     // Model for movability. Defined in movable().
     this._movable = {};
@@ -858,47 +964,57 @@ Taaspace.Viewport = (function () {
     // Model for scalability. Defined in scalable().
     this._scalable = {};
     
-    // fromSpace is commonly passed to functions in other modules, e.g.
-    // to be used in dom operations.
+    // DEPRECATED
+    // translatePointFromSpace and translateDistanceFromSpace
+    // are commonly passed to functions
+    // in other modules, e.g. to be used with HTML operations.
     // Here we make a function that does not depend on the context, i.e.
     // value of 'this' and therefore can easily be passed.
-    var that = this;
-    this._fromSpace = function () {
-      return that.fromSpace.apply(that, arguments);
-    };
+    //var that = this;
+    //this._translatePointFromSpace = function () {
+    //  return that.translatePointFromSpace.apply(that, arguments);
+    //};
+    //this._translateDistanceFromSpace = function () {
+    //  return that.translateDistanceFromSpace.apply(that, arguments);
+    //};
     
   };
   
-  exports.create = function (space, containerEl, options) {
-    return new View(space, containerEl, options);
+  // Make the prototype accessible from outside.
+  // Needed to import functions from Viewport to Space.
+  exports._View = View;
+  
+  exports.create = function (space, options) {
+    return new View(space, options);
   };
+  
   
   
   // Accessors
   
   View.prototype.width = function () {
-    // Width in space
+    // Width of viewport in space
     // 
-    // Priority
-    //   high
-    var screenW = $(this._container).width();
-    return this.toSpaceDistance(screenW);
+    // Return
+    //   Number
+    var screenW = this._container.width();
+    return this.translateDistanceToSpace(screenW);
   };
   
   View.prototype.height = function () {
-    // Height in space
+    // Height of viewport in space
     // 
-    // Priority
-    //   high
-    var screenH = $(this._container).height();
-    return this.toSpaceDistance(screenH);
+    // Return
+    //   Number
+    var screenH = this._container.height();
+    return this.translateDistanceToSpace(screenH);
   };
   
   View.prototype.center = function () {
     // Center point in space
     // 
-    // Priority
-    //   high
+    // Return
+    //   xy
     
     // Naive, does not count rotation
     return {
@@ -907,18 +1023,28 @@ Taaspace.Viewport = (function () {
     };
   };
   
-  
   View.prototype.box = function () {
     // Viewport borders in space.
     // 
     // Return
     //   {x0, y0, x1, y1}
     // 
-    // Priority
-    //   high
-    throw 'Not implemented';
+    // Naive, does not count rotation
+    return {
+      x0: this._x,
+      y0: this._y,
+      x1: this._x + this.width(),
+      y1: this._y + this.height()
+    };
   };
   
+  View.prototype.area = function () {
+    // Area of the viewport in space. spaceUnit^2
+    // 
+    // Return
+    //   Number
+    return this.width() * this.height();
+  };
   
   View.prototype.visibilityRatioOf = function (boxOrElem) {
     // Visible area of the box divided by the area of the viewport.
@@ -949,16 +1075,23 @@ Taaspace.Viewport = (function () {
   };
   
   
-  View.prototype.toSpace = function (x, y) {
-    // Translate point on the container DOMElement to point in space.
+  View.prototype.translatePointToSpace = function (x, y) {
+    // Translate point on the container HTMLElement to point in space.
     // 
+    // Parameter
+    //   x
+    //     Number in space
+    //   y
+    //     Number in space
+    // 
+    // Parameter (Alternative)
+    //   xy
+    //     Point object in space
+    //   
     // Return
-    //   xy_in_space
-    // 
-    // Priority
-    //   high
+    //   xyInSpace
     
-    // Normalize
+    // Normalize params
     if (typeof x === 'object') {
       y = x.y;
       x = x.x;
@@ -971,20 +1104,27 @@ Taaspace.Viewport = (function () {
   };
   
   
-  View.prototype.fromSpace = function (x, y) {
-    // Translate point in space to point on the container DOMElement.
+  View.prototype.translatePointFromSpace = function (x, y) {
+    // Translate point in space to point on the container HTMLElement.
     // 
     // Usage
     //   fromSpace(12, -2.1) // {x: 200, y: 400}
     //   fromSpace({x: 12, y: -2.1}) // {x: 200, y: 400}
     // 
-    // Return
-    //   xyOnDom
+    // Parameter
+    //   x
+    //     Number in space
+    //   y
+    //     Number in space
     // 
-    // Priority
-    //   high
+    // Parameter (Alternative)
+    //   xy
+    //     Point object in space
+    // 
+    // Return
+    //   xyInViewport
     
-    // Normalize
+    // Normalize params
     if (typeof x === 'object') {
       y = x.y;
       x = x.x;
@@ -997,29 +1137,31 @@ Taaspace.Viewport = (function () {
   };
   
   
-  View.prototype.toSpaceDistance = function (d) {
-    // Translate distance on screen to distance in space.
+  View.prototype.translateDistanceToSpace = function (d) {
+    // Translate distance on container HTMLElement to distance in space.
+    // 
+    // Parameter
+    //   d
+    //     Number, distance in viewport
     // 
     // Return
-    //   distance_in_space
-    // 
-    // Priority
-    //   high
+    //   distanceInSpace
     return d / this._scale;
   };
   
   
-  View.prototype.fromSpaceDistance = function (d) {
-    // Translate distance in space to distance on screen.
+  View.prototype.translateDistanceFromSpace = function (d) {
+    // Translate distance in space to distance on container.
     // 
     // Usage
-    //   fromSpaceDist(2.3) // 200
+    //   translateDistanceFromSpace(2.3) // 200
+    // 
+    // Parameter
+    //   d
+    //     Number, distance in space
     // 
     // Return
-    //   distance_on_screen
-    // 
-    // Priority
-    //   high
+    //   distanceInViewport
     return d * this._scale;
   };
   
@@ -1029,18 +1171,20 @@ Taaspace.Viewport = (function () {
   
   View.prototype.pivot = function (x, y) {
     // Move the point to moveTo, scale in and rotate around.
-    // Does not move the view in relation to the space pivot.
+    // Does not move the view in relation to the space origo.
     // 
     // Parameter
-    //   xy (optional)
+    //   x
+    //   y
+    // 
+    // Parameter (Alternative)
+    //   xy
     //     Place for new pivot in space units.
     // 
     // Return
     //   xy of the current pivot, if no new pivot specified.
     //   this, if new pivot specified.
     // 
-    // Priority
-    //   medium
     if (typeof x === 'object') {
       y = x.y;
       x = x.x;
@@ -1065,17 +1209,16 @@ Taaspace.Viewport = (function () {
     //   x
     //   y
     //   options
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   xy
     //   options
     // 
     // Options
-    //   disableDomUpdate
-    //     Set true to skip updating the position of the DOM elements
+    //   disableHtmlUpdate
+    //     Set true to skip updating the position of the HTMLElements
     //     after the move.
     // 
-    // Priority
-    //   high
     
     // Normalize params
     if (typeof x === 'object') {
@@ -1101,24 +1244,22 @@ Taaspace.Viewport = (function () {
     //   dx
     //   dy
     //   options (optional)
-    //  OR
+    // 
+    // Parameter (Alternative)
     //   dxdy
     //   options (optional)
     // 
     // Options
-    //   silent (default false)
+    //   silent (default false) NOT IMPLEMENTED
     //     Set true to disable firing 'moved' event.
-    //   disableDomUpdate
-    //     Set true to skip updating the position of the DOM elements
+    //   disableHtmlUpdate
+    //     Set true to skip updating the position of the HTMLElements
     //     after the move.
     //   +Animation Options
     // 
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority
-    //   high
     
     // Normalize params
     if (typeof dx === 'object') {
@@ -1138,8 +1279,13 @@ Taaspace.Viewport = (function () {
     this._px += dx;
     this._py += dy;
     
-    if (!('disableDomUpdate' in options && options.disableDomUpdate === true)) {
-      this._moveEachDomElement(options);
+    if (!('disableHtmlUpdate' in options &&
+          options.disableHtmlUpdate === true)) {
+      // Move the HTMLElements. A place for optimization if all the elements
+      // could be moved with a single command.
+      this._space._eachSpaceElement(function (el) {
+        el._moveHtmlElement(options);
+      });
     }
     
     return this;
@@ -1152,6 +1298,7 @@ Taaspace.Viewport = (function () {
     // Option
     //   silent (default false)
     //     Set true to disable firing 'scaled' event.
+    //   disableHtmlUpdate (default false)
     // 
     // Return
     //   this
@@ -1160,23 +1307,36 @@ Taaspace.Viewport = (function () {
     // Priority 
     //   high
     
-    // Pivot on screen before scaling
-    var ob = this.fromSpace(this._px, this._py);
+    // Normalize params
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Pivot on viewport before scaling
+    var ob = this.translatePointFromSpace(this._px, this._py);
     
     // Scaling
     this._scale *= multiplier;
     
     // Pivot on screen after scaling
-    var oa = this.fromSpace(this._px, this._py);
+    var oa = this.translatePointFromSpace(this._px, this._py);
     
     // Move space so that pivot stays in the same space
-    var dx = this.toSpaceDistance(oa.x - ob.x);
-    var dy = this.toSpaceDistance(oa.y - ob.y);
+    var dx = this.translateDistanceToSpace(oa.x - ob.x);
+    var dy = this.translateDistanceToSpace(oa.y - ob.y);
     this.moveBy(dx, dy, {
-      disableDomUpdate: true
+      disableHtmlUpdate: true
     });
     
-    this._scaleEachDomElement(options);
+    // Scale the elements
+    if (!(options.hasOwnProperty('disableHtmlUpdate') &&
+          options.disableHtmlUpdate === true)) {
+      // Scale and move the HTMLElements. A place for optimization if all
+      // the elements could be moved with a single command.
+      this._space._eachSpaceElement(function (el) {
+        el._scaleHtmlElement(options);
+      });
+    }
     
     return this;
   };
@@ -1194,6 +1354,7 @@ Taaspace.Viewport = (function () {
     // Option
     //   silent (default false)
     //     Set true to disable firing 'rotated' event.
+    //   disableHtmlUpdate (default false)
     // 
     // Return
     //   this
@@ -1224,8 +1385,6 @@ Taaspace.Viewport = (function () {
     //   silent (default false)
     //     Set true to disable firing 'focused' event.
     // 
-    // Priority
-    //   medium
     
     // Normalize param
     if (typeof coverage === 'undefined') {
@@ -1248,7 +1407,7 @@ Taaspace.Viewport = (function () {
     var bcx = (box.x0 + box.x1) / 2;
     var bcy = (box.y0 + box.y1) / 2;
     this.moveTo(bcx, bcy, {
-      disableDomUpdate: true
+      disableHtmlUpdate: true
     });
     
     // Scale. How many times box should be multiplied.
@@ -1310,13 +1469,13 @@ Taaspace.Viewport = (function () {
       op.status = false;
       op.onmousewheel = function (event, delta, deltax, deltay) {
         
-        // Convert a page point to a point container DOMElement
-        var offset = $(that._container).offset();
+        // Convert a page point to a point container HTMLElement
+        var offset = that._container.offset();
         var cx = event.pageX - offset.left;
         var cy = event.pageY - offset.top;
         
         // pivot to mouse position
-        var spacePivot = that.toSpace(cx, cy);
+        var spacePivot = that.translatePointToSpace(cx, cy);
         that.pivot(spacePivot);
         
         if (delta > 0) {
@@ -1347,7 +1506,7 @@ Taaspace.Viewport = (function () {
       return this;
     } // else
     
-    // Turn movability on
+    // Turn scalability on
     op.status = true;
     this.on('mousewheel', op.onmousewheel);
     this.on('key-plus', op.onkeyplus);
@@ -1435,8 +1594,8 @@ Use Viewport.movable instead.');
         ondrag: function (ev) {
           ev.gesture.preventDefault();
           
-          var dx = that.toSpaceDistance(ev.gesture.deltaX);
-          var dy = that.toSpaceDistance(ev.gesture.deltaY);
+          var dx = that.translateDistanceToSpace(ev.gesture.deltaX);
+          var dy = that.translateDistanceToSpace(ev.gesture.deltaY);
           
           that.moveBy(prevdx - dx, prevdy - dy);
           prevdx = dx;
@@ -1496,34 +1655,16 @@ Use Viewport.movable instead.');
     return this;
   };
   
-  View.prototype.hideElement = function (element) {
-    // Hide an element from the viewport
-    // 
-    // Priority
-    //   low
-    throw 'Not implemented';
-  };
-  
-  View.prototype.showElement = function (element) {
-    // Show a hidden element.
-    // 
-    // Priority
-    //   low
-    throw 'Not implemented';
-  };
-  
   
   
   // Events
   
   View.prototype.on = function (eventType, handler) {
     // Attach an event to the viewport
-    // 
-    // Priority
-    //   high
+    
     if (eventType === 'mousewheel') {
       // Mousewheel event
-      $(this._container).on('mousewheel', handler);
+      this._container.on('mousewheel', handler);
     } else if (eventType.indexOf('key-') === 0) {
       // Keyboard event
       var jwertyCode = eventType.substring(4);
@@ -1536,12 +1677,10 @@ Use Viewport.movable instead.');
   
   View.prototype.off = function (eventType, handler) {
     // Detach an event from the viewport
-    // 
-    // Priority
-    //   medium
+    
     if (eventType === 'mousewheel') {
       // Mousewheel event
-      $(this._container).off('mousewheel', handler);
+      this._container.off('mousewheel', handler);
     } else if (eventType.indexOf('key-') === 0) {
       // Keyboard event
       var jwertyCode = eventType.substring(4);
@@ -1550,97 +1689,6 @@ Use Viewport.movable instead.');
       // Mouse or touch event
       this._hammertime.off(eventType, handler);
     }
-  };
-  
-  
-  
-  // Pseudo-private mutators
-  
-  View.prototype._getDomPair = function (id) {
-    if (this._domPairs.hasOwnProperty(id)) {
-      return this._domPairs[id];
-    } else {
-      throw {
-        name: 'UnknownElementError',
-        message: 'The element with _id ' + id + ' is not yet known'
-      };
-    }
-  };
-  
-  View.prototype._eachDomPair = function (iterator) {
-    for (var id in this._domPairs) {
-      if (this._domPairs.hasOwnProperty(id)) {
-        iterator(this._domPairs[id]);
-      }
-    }
-  };
-  
-  View.prototype._createDomElement = function (elem) {
-    // Called in every viewport by Space when an element is added to space.
-    
-    // Limit access to viewport by handing only the stuff needed.
-    var domElem = elem._domAppend(this._container, this._fromSpace);
-    this._domPairs[elem._id] = {
-      elem: elem,
-      dom: domElem
-    };
-  };
-  
-  ///?????????
-  View.prototype._applyDomElement = function (elem, fn, args) {
-    // Execute the function fn for the dom element of elem object.
-    // 
-    // Parameter
-    //   elem
-    //     The element whose dom element is retrieved.
-    //   fn
-    //     The function to be executed
-    //   args
-    //     List of additional arguments.
-    // Called from space.
-    var domElem = this._getDomPair(elem._id).dom;
-    // Copy array (slice(0)) to keep original unmodified.
-    var extendedArgs = args.slice(0).unshift(domElem);
-    fn.apply(elem, extendedArgs);
-  };
-  
-  ///?????????
-  View.prototype._moveDomElement = function (elem, options) {
-    // Called from Space.
-    
-    var domElem = this._getDomPair(elem._id).dom;
-    elem._domMove(domElem, this._fromSpace, options);
-  };
-  
-  ///?????????
-  View.prototype._moveEachDomElement = function (options) {
-    var fs = this._fromSpace;
-    this._eachDomPair(function (pair) {
-      pair.elem._domMove(pair.dom, fs, options);
-    });
-  };
-  
-  ///?????????
-  View.prototype._scaleDomElement = function (elem, options) {
-    // Called from Space.
-    
-    var domElem = this._getDomPair(elem._id).dom;
-    elem._domScale(domElem, this._fromSpace, this._scale, options);
-  };
-  
-  ///?????????
-  View.prototype._scaleEachDomElement = function (options) {
-    var fs = this._fromSpace;
-    var sc = this._scale;
-    this._eachDomPair(function (pair) {
-      pair.elem._domScale(pair.dom, fs, sc, options);
-    });
-  };
-  
-  ///?????????
-  View.prototype._listenDomElement = function (elem, type, callback) {
-    var domElem = this._getDomPair(elem._id).dom;
-    elem._domListen(domElem, type, callback);
   };
   
   
@@ -1682,7 +1730,7 @@ Taaspace.Text = (function () {
   };
   
   // Inherit from SpaceElement
-  Text.prototype = Taaspace.Element.create();
+  Text.prototype = Taaspace.SpaceElement.create();
   
   // Extend Taaspace
   Taaspace.extension.createText = function (string, options) {
@@ -1696,14 +1744,17 @@ Taaspace.Text = (function () {
   
   Text.prototype.fontSize = function (newSize, options) {
     // Parameter
-    //   Options
-    //     Animation
+    //   options
+    // 
+    // Options
+    //   Animation NOT IMPLEMENTED YET
+    //   disableHtmlUpdate NOT IMPLEMENTED YET
     // 
     // Return
     //   this
     //     for chaining
     this._fontSize = newSize;
-    this._space._scaleDomElement(this, options);
+    this._scaleHtmlElement(options);
     return this;
   };
   
@@ -1711,8 +1762,11 @@ Taaspace.Text = (function () {
     // Scale font size by multiplier. Do not affect to element width.
     // 
     // Parameter
-    //   Options
-    //     Animation
+    //   options
+    // 
+    // Options
+    //   Animation NOT IMPLEMENTED YET
+    //   disableHtmlUpdate NOT IMPLEMENTED YET
     throw 'Not implemented';
   };
   
@@ -1720,19 +1774,16 @@ Taaspace.Text = (function () {
   
   // Pseudo-private mutators
   
-  Text.prototype._domAppend = function (container, fromSpace, options) {
-    // Called by viewports.
-    // Appends element into DOM.
+  Text.prototype._appendHtmlElement = function (options) {
+    // Called by space.
+    // Appends HTMLElement into DOM.
     // 
     // Parameter
-    //   container
-    //     DOMElement to append to
-    //   fromSpace
-    //     A function to convert space coordinates to screen coordinates.
     //   options (optional)
     // 
     // Option
     //   disableHTML
+    //     Handle string as plain text. See jQuery .text() and .html()
     
     // Normalize params
     if (typeof options !== 'object') {
@@ -1740,6 +1791,7 @@ Taaspace.Text = (function () {
     }
     
     var p = $(document.createElement('p'));
+    this._htmlElement = p;
     
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
@@ -1754,27 +1806,33 @@ Taaspace.Text = (function () {
     });
     
     p.css({
-      position: 'absolute',
+      position: 'absolute'
     });
     
-    $(container).append(p);
+    this._space._container.append(p);
     
     // Init position
-    this._domMove(p, fromSpace, options);
+    this._moveHtmlElement(options);
     
     return p;
   };
   
-  Text.prototype._domScale = function (domElem, fromSpace, scale, options) {
+  Text.prototype._scaleHtmlElement = function (options) {
+    // Parameter
+    //   options
+    // 
+    // Option
+    //   Animation (Not implemented)
     
-    var nw = fromSpace(this._x, this._y);
-    var se = fromSpace(this._x + this._w, this._y + this._h);
+    var from = this._space.translatePointFromSpace;
+    var nw = from(this._x, this._y);
+    var se = from(this._x + this._w, this._y + this._h);
     
-    // :/ We should have direct reference to the child element to
-    // make things fast
+    var dist = this._space.translateDistanceFromSpace;
+    var size = dist(this._fontSize);
     
-    domElem.css({
-      'font-size': (this._fontSize * scale) + 'px',
+    this._htmlElement.css({
+      'font-size': size + 'px',
       left: nw.x + 'px',
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',
@@ -1807,8 +1865,8 @@ Taaspace.Image = (function () {
     this._space = space;
     this._src = src;
     
-    this._w = 100;
-    this._h = 100;
+    this._w = null; // Set at the latest when appending HTML
+    this._h = null;
     
     if (typeof options === 'object') {
       if (options.hasOwnProperty('width')) {
@@ -1822,7 +1880,7 @@ Taaspace.Image = (function () {
   };
   
   // Inherit from SpaceElement
-  Img.prototype = Taaspace.Element.create();
+  Img.prototype = Taaspace.SpaceElement.create();
   
   // Extend Taaspace
   Taaspace.extension.createImage = function (src, options) {
@@ -1836,27 +1894,31 @@ Taaspace.Image = (function () {
   
   // Pseudo-private mutators
   
-  Img.prototype._domAppend = function (container, fromSpace, options) {
+  Img.prototype._appendHtmlElement = function (options) {
     // Called by viewports.
-    // Appends element into DOM.
+    // Appends HTMLElement into DOM.
     
-    var domElem = $(document.createElement('img'));
-    domElem.attr({
+    var el = jQuery(document.createElement('img'));
+    this._htmlElement = el;
+    
+    el.attr({
       'src': this._src,
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
     });
-    domElem.css({
+    el.css({
       position: 'absolute',
       width: this._w + 'px',
       height: this._h + 'px'
     });
+    this._space._container.append(el);
     
-    $(container).append(domElem);
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
     
     // Init position
-    this._domMove(domElem, fromSpace, options);
+    this._moveHtmlElement(options);
     
-    return domElem;
+    return el;
   };
   
   
@@ -1982,13 +2044,13 @@ Taaspace.KeyboardManager = (function () {
   var Manager = function (container) {
     // Parameter
     //   container (optional, default is document)
-    //     Container DOMElement where to listen the keyboard events.
+    //     Container HTMLElement where to listen the keyboard events.
     
     if (typeof container === 'undefined') {
       container = document;
     }
     
-    // DOMElement
+    // HTMLElement
     this._c = container;
     
     // Jwerty Codes mapped to sets of object-handler pairs.
@@ -2091,6 +2153,7 @@ Taaspace.KeyboardManager = (function () {
   
   Manager.prototype.off = function (jwertyCode, obj, handler) {
     // Remove event handler for this key combination.
+    // Do the actual event unbinding with clean().
     removePair(this._pairs, jwertyCode, obj, handler);
     return this;
   };
@@ -2196,7 +2259,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '0.0.5';
+  Taaspace.version = '1.0.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

@@ -32,6 +32,10 @@
       padding: 0px;
       margin: 0px;
     }
+    
+    .taaspace-selected {
+      outline: 2px dotted white;
+    }
   </style>
 </head>
 <body>
@@ -46,9 +50,7 @@
   
   <script src="../taaspace.js"></script>
   <script>
-    var space = Taaspace.create();
-    
-    var vp = space.createViewport('#space');
+    var space = Taaspace.create('#space');
     
     var help = space.createText('Chain reaction.')
       .size(80, 16)
@@ -72,15 +74,15 @@
       .size(6, 6)
       .moveBy(28, 2);
     
-    vp.scalable().movable();
-    space.select(vp);
+    space.scalable().movable();
+    
+    spiral.select();
     
     // By default, scale the viewport so that all the elements in
     // the space are visible.
-    vp.focusTo(space.box(), 0.618);
+    space.focusTo(space.boundingBox(), 0.618);
     
-    // Tapping the spiral starts a chain reaction
-    spiral.on('tap', function () {
+    var reaction = function () {
       spiral.moveBy(6, 0, {
         ease: 'out',
         duration: '0.52',
@@ -97,6 +99,20 @@
           });
         }
       });
+    };
+    
+    // Tapping the spiral starts a chain reaction
+    spiral.on('tap', function (event) {
+      event.stopPropagation();
+      spiral.select();
+      space.deselect();
+      reaction();
+    });
+    spiral.on('key-right', reaction);
+    
+    space.on('tap', function () {
+      spiral.deselect();
+      space.select();
     });
     
   </script>
