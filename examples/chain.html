@@ -51,6 +51,7 @@
   <script src="../taaspace.js"></script>
   <script>
     var space = Taaspace.create('#space');
+    var port = space.getViewport();
     
     var help = space.createText('Chain reaction.')
       .size(80, 16)
@@ -74,13 +75,13 @@
       .size(6, 6)
       .moveBy(28, 2);
     
-    space.scalable().movable();
+    port.scalable().movable();
     
     spiral.select();
     
     // By default, scale the viewport so that all the elements in
     // the space are visible.
-    space.focusTo(space.boundingBox(), 0.618);
+    port.focusTo(space.box(), 0.618);
     
     var reaction = function () {
       spiral.moveBy(6, 0, {
@@ -105,14 +106,14 @@
     spiral.on('tap', function (event) {
       event.stopPropagation();
       spiral.select();
-      space.deselect();
+      port.deselect();
       reaction();
     });
     spiral.on('key-right', reaction);
     
-    space.on('tap', function () {
+    port.on('tap', function () {
       spiral.deselect();
-      space.select();
+      port.select();
     });
     
   </script>

@@ -1,4 +1,4 @@
-/*! taaspace - v1.0.0 - 2013-12-01
+/*! taaspace - v2.0.0 - 2013-12-01
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -56,44 +56,11 @@ var Taaspace = (function () {
     
     // The container HTMLElement in DOM. Wrap inside jQuery object.
     // Container is a property of Space instead of property of Viewport
-    // because ... no reason. Lets refactor later if this seems bad.
+    // because one space can have only one container.
     this._container = jQuery(containerHtmlElement);
     
     // Viewport to the space. Handles conversions between screen and space.
     this._vp = Taaspace.Viewport.create(this, options);
-    
-    // Import the public functions of the viewport to the space.
-    // Public functions are those not beginning with underscore _.
-    // After this, user can call e.g.
-    //   var space = Taaspace.create('#space');
-    //   var areaOfViewport = space.area();
-    var proto = Taaspace.Viewport._View.prototype;
-    var that = this;
-    var importViewportProperty = function (property) {
-      that[property] = function () {
-        // 'this' references to window so that needs to be used. Why?
-        return proto[property].apply(that._vp, arguments);
-      };
-    };
-    var property;
-    for (property in proto) {
-      if (proto.hasOwnProperty(property)) {
-        if (typeof proto[property] === 'function') {
-          // If is meant public
-          if (property[0] !== '_') {
-            // Ensure there is no namespace collisions.
-            if (property in this) {
-              throw {
-                name: 'NamespaceCollisionError',
-                message: 'Space and Viewport namespaces collide: ' + property
-              };
-            }
-            // No collisions, import
-            importViewportProperty(property);
-          }
-        }
-      }
-    }
     
   };
   
@@ -109,7 +76,12 @@ var Taaspace = (function () {
   
   // Accessors
   
-  Space.prototype.boundingBox = function () {
+  Space.prototype.getViewport = function () {
+    // The viewport to the space.
+    return this._vp;
+  };
+  
+  Space.prototype.box = function () {
     // The bounding box for all the elements in the space. Can be used
     // to focus to all the elements.
     // 
@@ -180,6 +152,7 @@ var Taaspace = (function () {
   
   Space.prototype.remove = function (elem) {
     // Remove the SpaceElement and associated HTMLElement from the space.
+    // See also SpaceElement.remove()
     elem._removeHtmlElement();
     this._removeSpaceElement(elem);
   };
@@ -206,18 +179,6 @@ var Taaspace = (function () {
     spaceElement._appendHtmlElement();
     
     return spaceElement;
-  };
-  
-  Space.prototype.select = function () {
-    // Select the viewport of the space to react to keyboard events.
-    this._select(this._vp);
-    return this;
-  };
-  
-  Space.prototype.deselect = function () {
-    // Viewport does not react to keyboard events anymore.
-    this._deselect(this._vp);
-    return this;
   };
   
   
@@ -421,17 +382,17 @@ Taaspace.SpaceElement = (function () {
   
   Elem.prototype.visibilityRatio = function () {
     // See Viewport.visibilityRatioOf
-    return this._space.visibilityRatioOf(this);
+    return this._space.getViewport().visibilityRatioOf(this);
   };
   
   Elem.prototype.distanceRatio = function () {
     // See Viewport.distanceRatioOf
-    return this._space.distanceRatioOf(this);
+    return this._space.getViewport().distanceRatioOf(this);
   };
   
   Elem.prototype.focusRatio = function () {
     // See Viewport.focusRatioOf
-    return this._space.focusRatioOf(this);
+    return this._space.getViewport().focusRatioOf(this);
   };
   
   Elem.prototype.isInside = function (box) {
@@ -773,7 +734,7 @@ Use Element.movable instead.');
   };
   
   Elem.prototype.deselect = function () {
-    this._deselectHtmlElement();
+    this._selectHtmlElement(false);
     this._space._deselect(this);
   };
   
@@ -807,7 +768,8 @@ Use Element.movable instead.');
     }
     
     // New place in viewport
-    var xy = this._space.translatePointFromSpace(this._x, this._y);
+    var vp = this._space.getViewport();
+    var xy = vp.translatePointFromSpace(this._x, this._y);
     
     
     if (options.hasOwnProperty('ease')) {
@@ -858,9 +820,9 @@ Use Element.movable instead.');
   Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
-    var from = this._space.translatePointFromSpace;
-    var nw = from(this._x, this._y);
-    var se = from(this._x + this._w, this._y + this._h);
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
     
     this._htmlElement.css({
       left: nw.x + 'px',
@@ -904,12 +866,17 @@ Use Element.movable instead.');
     }
   };
   
-  Elem.prototype._selectHtmlElement = function () {
-    this._htmlElement.toggleClass('taaspace-selected', true);
-  };
-  
-  Elem.prototype._deselectHtmlElement = function () {
-    this._htmlElement.toggleClass('taaspace-selected', false);
+  Elem.prototype._selectHtmlElement = function (onoff) {
+    // Add selection class
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    
+    // Normalize
+    if (typeof onoff !== 'boolean') {
+      onoff = true;
+    }
+    this._htmlElement.toggleClass('taaspace-selected', onoff);
   };
   
   
@@ -1749,6 +1716,45 @@ Use Viewport.movable instead.');
     }
   };
   
+  View.prototype.select = function () {
+    // Select the viewport to react to keyboard events.
+    // 
+    // Return
+    //   this
+    //     for chaining
+    this._selectHtmlElement(true);
+    this._space._select(this);
+    return this;
+  };
+  
+  View.prototype.deselect = function () {
+    // Viewport does not react to keyboard events anymore.
+    // 
+    // Return
+    //   this
+    //     for chaining
+    this._selectHtmlElement(false);
+    this._space._deselect(this);
+    return this;
+  };
+  
+  
+  
+  // Pseudo-private
+  
+  View.prototype._selectHtmlElement = function (onoff) {
+    // Add selection class to container
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    
+    // Normalize
+    if (typeof onoff !== 'boolean') {
+      onoff = true;
+    }
+    this._container.toggleClass('taaspace-selected', onoff);
+  };
+  
   
   
   ///////////////
@@ -1882,12 +1888,10 @@ Taaspace.Text = (function () {
     // Option
     //   Animation (Not implemented)
     
-    var from = this._space.translatePointFromSpace;
-    var nw = from(this._x, this._y);
-    var se = from(this._x + this._w, this._y + this._h);
-    
-    var dist = this._space.translateDistanceFromSpace;
-    var size = dist(this._fontSize);
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var size = vp.translateDistanceFromSpace(this._fontSize);
     
     this._htmlElement.css({
       'font-size': size + 'px',
@@ -2317,7 +2321,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '1.0.0';
+  Taaspace.version = '2.0.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

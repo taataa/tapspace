@@ -46,8 +46,8 @@
   
   <script src="../taaspace.js"></script>
   <script>
-    // Lets have a viewport to the space. Like a window to a new universe.
     var space = Taaspace.create('#space');
+    
     
     // Lets then add a number of elements to the space.
     
@@ -110,20 +110,26 @@
       .size(46, 46)
       .moveBy(1403, 1582);
     
+    // Lets have a viewport to the space. Like a window to a new universe.
+    var port = space.getViewport();
     
-    // Make the space scalable with common input methods
+    // Make the viewport scalable with common input methods
     // for zooming like mouse wheel and pinch zoom and
     // movable by drag.
-    space.scalable().movable();
+    port
+      .scalable() // Zooming
+      .movable() // Panning
+      .select(); // Capture keyboard events
     
-    // By default, scale the space so that all the elements in
-    // the are visible.
-    space.focusTo(space.boundingBox());
+    // Scale the viewport so that all the elements in
+    // the space are visible.
+    port.focusTo(space.box());
     
-    // Tapping the background of space focuses the viewport back to
+    // Tapping the background of viewport focuses the viewport back to
     // the initial state.
-    space.on('tap', function () {
-      space.focusTo(space.boundingBox());
+    port.on('tap', function () {
+      port.focusTo(space);
+      // Note how focusTo can also take in any object with box().
     });
     
   </script>

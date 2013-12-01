@@ -124,12 +124,10 @@ Taaspace.Text = (function () {
     // Option
     //   Animation (Not implemented)
     
-    var from = this._space.translatePointFromSpace;
-    var nw = from(this._x, this._y);
-    var se = from(this._x + this._w, this._y + this._h);
-    
-    var dist = this._space.translateDistanceFromSpace;
-    var size = dist(this._fontSize);
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var size = vp.translateDistanceFromSpace(this._fontSize);
     
     this._htmlElement.css({
       'font-size': size + 'px',

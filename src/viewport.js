@@ -828,6 +828,45 @@ Use Viewport.movable instead.');
     }
   };
   
+  View.prototype.select = function () {
+    // Select the viewport to react to keyboard events.
+    // 
+    // Return
+    //   this
+    //     for chaining
+    this._selectHtmlElement(true);
+    this._space._select(this);
+    return this;
+  };
+  
+  View.prototype.deselect = function () {
+    // Viewport does not react to keyboard events anymore.
+    // 
+    // Return
+    //   this
+    //     for chaining
+    this._selectHtmlElement(false);
+    this._space._deselect(this);
+    return this;
+  };
+  
+  
+  
+  // Pseudo-private
+  
+  View.prototype._selectHtmlElement = function (onoff) {
+    // Add selection class to container
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    
+    // Normalize
+    if (typeof onoff !== 'boolean') {
+      onoff = true;
+    }
+    this._container.toggleClass('taaspace-selected', onoff);
+  };
+  
   
   
   ///////////////

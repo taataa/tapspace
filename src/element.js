@@ -107,17 +107,17 @@ Taaspace.SpaceElement = (function () {
   
   Elem.prototype.visibilityRatio = function () {
     // See Viewport.visibilityRatioOf
-    return this._space.visibilityRatioOf(this);
+    return this._space.getViewport().visibilityRatioOf(this);
   };
   
   Elem.prototype.distanceRatio = function () {
     // See Viewport.distanceRatioOf
-    return this._space.distanceRatioOf(this);
+    return this._space.getViewport().distanceRatioOf(this);
   };
   
   Elem.prototype.focusRatio = function () {
     // See Viewport.focusRatioOf
-    return this._space.focusRatioOf(this);
+    return this._space.getViewport().focusRatioOf(this);
   };
   
   Elem.prototype.isInside = function (box) {
@@ -459,7 +459,7 @@ Use Element.movable instead.');
   };
   
   Elem.prototype.deselect = function () {
-    this._deselectHtmlElement();
+    this._selectHtmlElement(false);
     this._space._deselect(this);
   };
   
@@ -493,7 +493,8 @@ Use Element.movable instead.');
     }
     
     // New place in viewport
-    var xy = this._space.translatePointFromSpace(this._x, this._y);
+    var vp = this._space.getViewport();
+    var xy = vp.translatePointFromSpace(this._x, this._y);
     
     
     if (options.hasOwnProperty('ease')) {
@@ -544,9 +545,9 @@ Use Element.movable instead.');
   Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
-    var from = this._space.translatePointFromSpace;
-    var nw = from(this._x, this._y);
-    var se = from(this._x + this._w, this._y + this._h);
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
     
     this._htmlElement.css({
       left: nw.x + 'px',
@@ -590,12 +591,17 @@ Use Element.movable instead.');
     }
   };
   
-  Elem.prototype._selectHtmlElement = function () {
-    this._htmlElement.toggleClass('taaspace-selected', true);
-  };
-  
-  Elem.prototype._deselectHtmlElement = function () {
-    this._htmlElement.toggleClass('taaspace-selected', false);
+  Elem.prototype._selectHtmlElement = function (onoff) {
+    // Add selection class
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    
+    // Normalize
+    if (typeof onoff !== 'boolean') {
+      onoff = true;
+    }
+    this._htmlElement.toggleClass('taaspace-selected', onoff);
   };
   
   
