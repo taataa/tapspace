@@ -28,7 +28,6 @@ More examples at [taaspace-contrib-examples](https://github.com/taataa/taaspace-
 - Touch gestures like pinch zoom
 - Animations and easing
 - Box element type
-- Extendability
 - Panning and zooming limits
 - Grouping
 - Rotation
