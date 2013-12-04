@@ -93,6 +93,10 @@ Taaspace.Text = (function () {
     var p = $(document.createElement('p'));
     this._htmlElement = p;
     
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
+    
+    // The content. Plain text or HTML.
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
       if (options.disableHTML === true) {
@@ -101,10 +105,10 @@ Taaspace.Text = (function () {
     }
     p[method](this._string);
     
+    // Important attributes and styles.
     p.attr({
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-text'
     });
-    
     p.css({
       position: 'absolute'
     });

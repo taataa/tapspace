@@ -52,6 +52,10 @@ Taaspace.Image = (function () {
     var el = jQuery(document.createElement('img'));
     this._htmlElement = el;
     
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
+    
+    // Required styles and attributes.
     el.attr({
       'src': this._src,
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
@@ -63,8 +67,6 @@ Taaspace.Image = (function () {
     });
     this._space._container.append(el);
     
-    // Mouse and touch gestures
-    this._hammertime = Hammer(this._htmlElement[0]);
     
     // Init position
     this._moveHtmlElement(options);

@@ -1,4 +1,4 @@
-/*! taaspace - v2.0.0 - 2013-12-01
+/*! taaspace - v2.1.0 - 2013-12-05
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -588,6 +588,7 @@ Taaspace.SpaceElement = (function () {
     // 
     // Priority
     //   medium
+    // TODO
     throw 'Not implemented';
   };
   
@@ -685,27 +686,39 @@ Use Element.movable instead.');
     this._space._removeSpaceElement(this);
   };
   
-  Elem.prototype.attr = function () {
-    // Set attributes of the HTMLElement.
-    // Interface matches jQuery .attr().
-    // http://api.jquery.com/attr/
-    // 
-    // In future it might be possible that setting some known attributes
-    // must be prevented. This explains why not to just return the 
-    // HTMLElement in the first place.
-    this._htmlElement.attr.apply(this._htmlElement, arguments);
-  };
   
-  Elem.prototype.css = function () {
-    // Set style of the HTMLElement.
-    // Interface matches jQuery .css().
-    // http://api.jquery.com/attr/
-    // 
-    // In future it might be possible that setting some known styles
-    // must be prevented. This explains why not to just return the 
-    // HTMLElement in the first place.
-    this._htmlElement.css.apply(this._htmlElement, arguments);
-  };
+  
+  // Include jQuery functions.
+  // In future it might be possible that some jQuery functionality
+  // must be prevented. This explains why user should not use
+  // the _htmlElement directly in the first place.
+  _.each(
+    [
+    // Data
+    'data', 'removeData',
+    // Manipulation
+    'attr', 'css', 'prop', 'removeAttr', 'removeProp',
+    'addClass', 'hasClass', 'removeClass',
+    // Effects
+    'hide', 'show', 'toggle',
+    'fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle',
+    'finish', 'queue', 'stop'
+    ],
+    function include(key) {
+      // Ensure there is no namespace collisions. They may happen
+      // by accident.
+      if (key in Elem.prototype) {
+        throw {
+          name: 'NamespaceCollisionError',
+          message: 'Property already defined: ' + key
+        };
+      } // else
+      Elem.prototype[key] = function caller() {
+        // Call the jQuery function.
+        return this._htmlElement[key].apply(this._htmlElement, arguments);
+      };
+    }
+  );
   
   
   
@@ -743,6 +756,10 @@ Use Element.movable instead.');
   // Somewhat abstract pseudo-private mutators
   
   Elem.prototype._appendHtmlElement = function (options) {
+    // Post-conditions
+    //   this._hammertime is a Hammer object.
+    //   this._htmlElement is a jQuery object.
+    //   this._htmlElement is appended to this._space._container
     throw 'Abstract function. Must be implemented by the instance.';
   };
   
@@ -1857,6 +1874,10 @@ Taaspace.Text = (function () {
     var p = $(document.createElement('p'));
     this._htmlElement = p;
     
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
+    
+    // The content. Plain text or HTML.
     var method = 'html';
     if (options.hasOwnProperty('disableHTML')) {
       if (options.disableHTML === true) {
@@ -1865,10 +1886,10 @@ Taaspace.Text = (function () {
     }
     p[method](this._string);
     
+    // Important attributes and styles.
     p.attr({
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-text'
     });
-    
     p.css({
       position: 'absolute'
     });
@@ -1963,6 +1984,10 @@ Taaspace.Image = (function () {
     var el = jQuery(document.createElement('img'));
     this._htmlElement = el;
     
+    // Mouse and touch gestures
+    this._hammertime = Hammer(this._htmlElement[0]);
+    
+    // Required styles and attributes.
     el.attr({
       'src': this._src,
       'class': Taaspace.SPACE_ELEMENT_CLASS + ' taaspace-image'
@@ -1974,8 +1999,6 @@ Taaspace.Image = (function () {
     });
     this._space._container.append(el);
     
-    // Mouse and touch gestures
-    this._hammertime = Hammer(this._htmlElement[0]);
     
     // Init position
     this._moveHtmlElement(options);
@@ -2321,7 +2344,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '2.0.0';
+  Taaspace.version = '2.1.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
