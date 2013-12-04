@@ -6,7 +6,7 @@ A javascript library for zooming user interfaces. Very much under development.
 
 - [Basic example](https://rawgithub.com/taataa/taaspace/master/examples/basic.html) with zoomable and pannable space and text and image elements.
 - [Animation chaining](https://rawgithub.com/taataa/taaspace/master/examples/chain.html) presents how to fire functions when animations end.
-- [jQuery &alt; SpaceElement](https://rawgithub.com/taataa/taaspace/master/examples/jquery.html) shows how to use jQuery with the elements.
+- [jQuery &amp; SpaceElement](https://rawgithub.com/taataa/taaspace/master/examples/jquery.html) shows how to use jQuery with the elements.
 - [Scaling example](https://rawgithub.com/taataa/taaspace/master/examples/scale.html) makes you shrink and expand elements.
 
 More examples at [taaspace-contrib-examples](https://github.com/taataa/taaspace-contrib-examples)!
