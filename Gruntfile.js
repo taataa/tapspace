@@ -187,7 +187,8 @@ module.exports = function(grunt) {
   
   // Default task(s).
   grunt.registerTask('default', ['build']);
-  grunt.registerTask('build', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
+  grunt.registerTask('build', ['build-basic', 'build-standalone']);
+  grunt.registerTask('build-basic', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
   grunt.registerTask('test', ['jshint:basic', 'jshint:standalone']);
   grunt.registerTask('build-standalone', ['replace', 'concat:standalone', 'uglify:standalone']);
   
