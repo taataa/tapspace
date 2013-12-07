@@ -66,20 +66,26 @@
       .size(10, 10)
       .moveBy(32, 0);
     
-    view.scalable().movable();
+    var animOpts = {
+      'ease': 'in',
+      'duration': '0.3s'
+    };
+    
+    view.scalable(animOpts).movable();
     view.select();
     view.focusTo(space.box(), 0.618);
+    
     
     _.each([spiral, blackletter, castle], function (el) {
       el.on('tap', function () {
         el
           .pivot(el.center())
-          .scale(1.272);
+          .scale(1.272, animOpts);
       });
       el.on('hold', function () {
         el
           .pivot(el.center())
-          .scale(1/1.272);
+          .scale(1/1.272, animOpts);
       });
     });
     

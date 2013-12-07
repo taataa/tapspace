@@ -126,9 +126,9 @@ Taaspace.Text = (function () {
     //   options
     // 
     // Option
-    //   Animation (Not implemented)
+    //   Animation options
     
-    var vp = this._space.getViewport();
+    /*var vp = this._space.getViewport();
     var nw = vp.translatePointFromSpace(this._x, this._y);
     var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
     var size = vp.translateDistanceFromSpace(this._fontSize);
@@ -139,7 +139,68 @@ Taaspace.Text = (function () {
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',
       height: (se.y - nw.y) + 'px'
-    });
+    });*/
+    
+    // Normalize
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // Place in new viewport
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var size = vp.translateDistanceFromSpace(this._fontSize);
+    var x = nw.x;
+    var y = nw.y;
+    var w = (se.x - nw.x);
+    var h = (se.y - nw.y);
+    
+    // If ease is not a valid easing function name, do not animate.
+    var animate = options.hasOwnProperty('ease') &&
+                  options.ease !== 'none' &&
+                  typeof options.ease === 'string';
+    
+    if (animate) {
+      // Animate
+      // with Move.js
+      
+      this._animation = move(this._htmlElement.get(0))
+        .set('font-size', size)
+        .set('left', x)
+        .set('top', y)
+        .set('width', w)
+        .set('height', h);
+      this._animationEnder(options);
+      
+    } else {
+      // Do not animate
+      
+      if (this._animation !== null) {
+      
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
+          .set('font-size', size)
+          .set('left', x)
+          .set('top', y)
+          .set('width', w)
+          .set('height', h)
+          .duration('0s')
+          .end();
+        this._animation = null;
+        
+      } else {
+      
+        // Raw step.
+        this._htmlElement.css({
+          'font-size': size + 'px',
+          left: x + 'px',
+          top: y + 'px',
+          width: w + 'px',
+          height: h + 'px'
+        });
+      }
+    }
   };
   
   

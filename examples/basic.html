@@ -128,8 +128,9 @@
     // Tapping the background of viewport focuses the viewport back to
     // the initial state.
     port.on('tap', function () {
-      port.focusTo(space);
-      // Note how focusTo can also take in any object with box().
+      port.focusTo(space, {ease:'in', duration:'0.5'});
+      // Note how focusTo can take in any object with box().
+      // Note how focusTo can take in animation options as a second parameter.
     });
     
   </script>

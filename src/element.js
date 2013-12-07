@@ -496,6 +496,30 @@ Use Element.movable instead.');
     this._htmlElement = null;
   };
   
+  Elem.prototype._animationEnder = function (options) {
+    // Helper fn. Helps to handle options and run the 
+    // animation with optional end handler.
+    // Used by _moveHtmlElement and _scaleHtmlElement
+    
+    if (options.hasOwnProperty('duration')) {
+      this._animation = this._animation.duration(options.duration);
+    }
+    
+    if (options.hasOwnProperty('delay')) {
+      this._animation = this._animation.delay(options.delay);
+    }
+    
+    // Exec animation
+    var that = this;
+    this._animation.end(function () {
+      that._animation = null;
+      if (options.hasOwnProperty('end') &&
+          typeof options.end === 'function') {
+        options.end.call(that);
+      }
+    });
+  };
+  
   Elem.prototype._moveHtmlElement = function (options) {
     // Move the HTMLElement on viewport.
     // 
@@ -520,28 +544,12 @@ Use Element.movable instead.');
       this._animation = move(this._htmlElement.get(0))
         .set('left', xy.x)
         .set('top', xy.y);
+      this._animationEnder(options);
       
-      if (options.hasOwnProperty('duration')) {
-        this._animation = this._animation.duration(options.duration);
-      }
-      
-      if (options.hasOwnProperty('delay')) {
-        this._animation = this._animation.delay(options.delay);
-      }
-      
-      // Exec animation
-      var that = this;
-      this._animation.end(function () {
-        that._animation = null;
-        if (options.hasOwnProperty('end') &&
-            typeof options.end === 'function') {
-          options.end.call(that);
-        }
-      });
     } else {
       
+      // Cancel ongoing animation
       if (this._animation !== null) {
-        // Cancel ongoing animation
         move(this._htmlElement.get(0))
           .set('left', xy.x)
           .set('top', xy.y)
@@ -562,16 +570,62 @@ Use Element.movable instead.');
   Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
+    // Normalize
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // Place in new viewport
     var vp = this._space.getViewport();
     var nw = vp.translatePointFromSpace(this._x, this._y);
     var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var x = nw.x;
+    var y = nw.y;
+    var w = (se.x - nw.x);
+    var h = (se.y - nw.y);
     
-    this._htmlElement.css({
-      left: nw.x + 'px',
-      top: nw.y + 'px',
-      width: (se.x - nw.x) + 'px',
-      height: (se.y - nw.y) + 'px'
-    });
+    // If ease is not a valid easing function name, do not animate.
+    var animate = options.hasOwnProperty('ease') &&
+                  options.ease !== 'none' &&
+                  typeof options.ease === 'string';
+    
+    if (animate) {
+      // Animate
+      // with Move.js
+      
+      this._animation = move(this._htmlElement.get(0))
+        .set('left', x)
+        .set('top', y)
+        .set('width', w)
+        .set('height', h);
+      this._animationEnder(options);
+      
+    } else {
+      // Do not animate
+      
+      if (this._animation !== null) {
+      
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
+          .set('left', x)
+          .set('top', y)
+          .set('width', w)
+          .set('height', h)
+          .duration('0s')
+          .end();
+        this._animation = null;
+        
+      } else {
+      
+        // Raw step.
+        this._htmlElement.css({
+          left: x + 'px',
+          top: y + 'px',
+          width: w + 'px',
+          height: h + 'px'
+        });
+      }
+    }
   };
   
   

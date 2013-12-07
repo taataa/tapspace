@@ -516,11 +516,11 @@ Taaspace.Viewport = (function () {
     //     1 = Box fits in the viewport fully i.e. no margins.
     //     1.5 = Scale the 1 by 1.5, duh.
     //   options (optional)
-    //     Animation options
     // 
     // Option
     //   silent (default false)
     //     Set true to disable firing 'focused' event.
+    //   +Animation options
     // 
     
     // Normalize param
@@ -563,102 +563,6 @@ Taaspace.Viewport = (function () {
     this.scale(s * coverage, options);
   };
   
-  
-  View.prototype.scalable = function (onoff, options) {
-    // Make viewport scalable i.e. zoomable.
-    // Enables mouse wheel and pinch zoom.
-    // 
-    // Parameter
-    //   onoff (optional, default true)
-    //     True to turn scalability on (default).
-    //     False to turn scalability off.
-    //   options (optional)
-    //     Scaling limits.
-    // 
-    // Options
-    //   disableKeys, not implemented yet
-    //   invertKeys, not implemented yet
-    // 
-    // Return
-    //   this
-    //     for chaining
-    // 
-    // Priority
-    //   high
-    
-    // Handle parameters
-    if (typeof onoff === 'object') {
-      options = onoff;
-      onoff = true;
-    } else if (typeof onoff !== 'boolean') { // e.g. undefined
-      onoff = true;
-    }
-    if (typeof options !== 'object') {
-      options = {};
-    }
-    
-    var op = this._scalable;
-    
-    if (!op.hasOwnProperty('status')) {
-      // Scalability not yet initialized
-      
-      var that = this;
-      op.status = false;
-      op.onmousewheel = function (event, delta, deltax, deltay) {
-        
-        // Convert a page point to a point container HTMLElement
-        var offset = that._container.offset();
-        var cx = event.pageX - offset.left;
-        var cy = event.pageY - offset.top;
-        
-        // pivot to mouse position
-        var spacePivot = that.translatePointToSpace(cx, cy);
-        that.pivot(spacePivot);
-        
-        if (delta > 0) {
-          that.scale(1.25);
-        } else {
-          that.scale(1/1.25);
-        }
-      };
-      op.onkeyplus = function () {
-        that.pivot(that.center()).scale(1.25);
-      };
-      op.onkeyminus = function () {
-        that.pivot(that.center()).scale(1/1.25);
-      };
-    }
-    
-    if (onoff === false) {
-      // Turn scalablity off
-      op.status = false;
-      this.off('mousewheel', op.onmousewheel);
-      this.off('key-plus', op.onkeyplus);
-      this.off('key-subtract', op.onkeyminus);
-      return this;
-    } // else
-    
-    // Avoid doubles
-    if (op.status === true) {
-      return this;
-    } // else
-    
-    // Turn scalability on
-    op.status = true;
-    this.on('mousewheel', op.onmousewheel);
-    this.on('key-plus', op.onkeyplus);
-    this.on('key-subtract', op.onkeyminus);
-    return this;
-  };
-  
-  View.prototype.rotatable = function (onoff, options) {
-    // Make viewport rotatable by touch gestures.
-    // 
-    // Priority
-    //   low
-    throw 'Not implemented';
-  };
-  
   View.prototype.draggable = function () {
     // DEPRECATED, alias to View.movable
     /* jshint multistr: true */
@@ -682,7 +586,7 @@ Use Viewport.movable instead.');
     //   invertKeys, not implemented yet
     //   disableAnimation
     //     Do not use animation with discrete moves like with arrow keys.
-    //     Not so smooth but computationally lightweight.
+    //     Is not so smooth but computationally lightweight.
     //   
     // Return
     //   this
@@ -714,7 +618,6 @@ Use Viewport.movable instead.');
         // Make key moves relative to scale.
         return 100 / that._scale; // same as toSpaceDistance
       };
-      
       
       this._movable = {
         status: false,
@@ -791,6 +694,124 @@ Use Viewport.movable instead.');
     this.on('key-right', this._movable.onkeyright);
     return this;
   };
+  
+  View.prototype.scalable = function (onoff, options) {
+    // Make viewport scalable i.e. zoomable.
+    // Enables mouse wheel and pinch zoom.
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    //     True to turn scalability on (default).
+    //     False to turn scalability off.
+    //   options (optional)
+    // 
+    // Options
+    //   disableKeys
+    //   invertKeys, not implemented yet
+    //   + Animation options
+    // 
+    // Return
+    //   this
+    //     for chaining
+    // 
+    // Priority
+    //   high
+    
+    // Normalize parameters
+    if (typeof onoff === 'object') {
+      options = onoff;
+      onoff = true;
+    } else if (typeof onoff !== 'boolean') { // e.g. undefined
+      onoff = true;
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // We need this, see below
+    var that = this;
+    
+    // Initialize if first time.
+    if (!this._scalable.hasOwnProperty('status')) {
+      this._scalable = {
+        status: false,
+        animationOptions: {},
+        disableKeys: false,
+        onmousewheel: function (event, delta, deltax, deltay) {
+          
+          // Convert a page point to a point container HTMLElement
+          var offset = that._container.offset();
+          var cx = event.pageX - offset.left;
+          var cy = event.pageY - offset.top;
+          
+          // pivot to mouse position
+          var spacePivot = that.translatePointToSpace(cx, cy);
+          that.pivot(spacePivot);
+          
+          if (delta > 0) {
+            that.scale(1.25, that._scalable.animationOptions);
+          } else {
+            that.scale(1/1.25, that._scalable.animationOptions);
+          }
+        },
+        onkeyplus: function () {
+          if (that._scalable.disableKeys) {
+            return;
+          } // else
+          that
+            .pivot(that.center())
+            .scale(1.25, that._scalable.animationOptions);
+        },
+        onkeyminus: function () {
+          if (that._scalable.disableKeys) {
+            return;
+          } // else
+          that
+            .pivot(that.center())
+            .scale(1/1.25, that._scalable.animationOptions);
+        }
+      };
+    }
+    
+    
+    // Animation options can change independent of onoff
+    _.each(['ease', 'duration', 'delay'], function (p) {
+      if (options.hasOwnProperty(p)) {
+        that._scalable.animationOptions[p] = options[p];
+      }
+    });
+    
+    
+    if (onoff === false) {
+      // Turn scalablity off
+      this._scalable.status = false;
+      this.off('mousewheel', this._scalable.onmousewheel);
+      this.off('key-plus', this._scalable.onkeyplus);
+      this.off('key-subtract', this._scalable.onkeyminus);
+      return this;
+    } // else
+    
+    // Avoid doubles
+    if (this._scalable.status === true) {
+      return this;
+    } // else
+    
+    // Turn scalability on
+    this._scalable.status = true;
+    this.on('mousewheel', this._scalable.onmousewheel);
+    this.on('key-plus', this._scalable.onkeyplus);
+    this.on('key-subtract', this._scalable.onkeyminus);
+    return this;
+  };
+  
+  View.prototype.rotatable = function (onoff, options) {
+    // Make viewport rotatable by touch gestures.
+    // 
+    // Priority
+    //   low
+    throw 'Not implemented';
+  };
+  
   
   
   

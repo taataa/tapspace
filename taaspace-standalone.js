@@ -1,4 +1,4 @@
-/*! taaspace - v2.1.0 - 2013-12-05
+/*! taaspace - v2.2.0 - 2013-12-07
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -15526,6 +15526,30 @@ Use Element.movable instead.');
     this._htmlElement = null;
   };
   
+  Elem.prototype._animationEnder = function (options) {
+    // Helper fn. Helps to handle options and run the 
+    // animation with optional end handler.
+    // Used by _moveHtmlElement and _scaleHtmlElement
+    
+    if (options.hasOwnProperty('duration')) {
+      this._animation = this._animation.duration(options.duration);
+    }
+    
+    if (options.hasOwnProperty('delay')) {
+      this._animation = this._animation.delay(options.delay);
+    }
+    
+    // Exec animation
+    var that = this;
+    this._animation.end(function () {
+      that._animation = null;
+      if (options.hasOwnProperty('end') &&
+          typeof options.end === 'function') {
+        options.end.call(that);
+      }
+    });
+  };
+  
   Elem.prototype._moveHtmlElement = function (options) {
     // Move the HTMLElement on viewport.
     // 
@@ -15550,28 +15574,12 @@ Use Element.movable instead.');
       this._animation = move(this._htmlElement.get(0))
         .set('left', xy.x)
         .set('top', xy.y);
+      this._animationEnder(options);
       
-      if (options.hasOwnProperty('duration')) {
-        this._animation = this._animation.duration(options.duration);
-      }
-      
-      if (options.hasOwnProperty('delay')) {
-        this._animation = this._animation.delay(options.delay);
-      }
-      
-      // Exec animation
-      var that = this;
-      this._animation.end(function () {
-        that._animation = null;
-        if (options.hasOwnProperty('end') &&
-            typeof options.end === 'function') {
-          options.end.call(that);
-        }
-      });
     } else {
       
+      // Cancel ongoing animation
       if (this._animation !== null) {
-        // Cancel ongoing animation
         move(this._htmlElement.get(0))
           .set('left', xy.x)
           .set('top', xy.y)
@@ -15592,16 +15600,62 @@ Use Element.movable instead.');
   Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
     
+    // Normalize
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // Place in new viewport
     var vp = this._space.getViewport();
     var nw = vp.translatePointFromSpace(this._x, this._y);
     var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var x = nw.x;
+    var y = nw.y;
+    var w = (se.x - nw.x);
+    var h = (se.y - nw.y);
     
-    this._htmlElement.css({
-      left: nw.x + 'px',
-      top: nw.y + 'px',
-      width: (se.x - nw.x) + 'px',
-      height: (se.y - nw.y) + 'px'
-    });
+    // If ease is not a valid easing function name, do not animate.
+    var animate = options.hasOwnProperty('ease') &&
+                  options.ease !== 'none' &&
+                  typeof options.ease === 'string';
+    
+    if (animate) {
+      // Animate
+      // with Move.js
+      
+      this._animation = move(this._htmlElement.get(0))
+        .set('left', x)
+        .set('top', y)
+        .set('width', w)
+        .set('height', h);
+      this._animationEnder(options);
+      
+    } else {
+      // Do not animate
+      
+      if (this._animation !== null) {
+      
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
+          .set('left', x)
+          .set('top', y)
+          .set('width', w)
+          .set('height', h)
+          .duration('0s')
+          .end();
+        this._animation = null;
+        
+      } else {
+      
+        // Raw step.
+        this._htmlElement.css({
+          left: x + 'px',
+          top: y + 'px',
+          width: w + 'px',
+          height: h + 'px'
+        });
+      }
+    }
   };
   
   
@@ -16176,11 +16230,11 @@ Taaspace.Viewport = (function () {
     //     1 = Box fits in the viewport fully i.e. no margins.
     //     1.5 = Scale the 1 by 1.5, duh.
     //   options (optional)
-    //     Animation options
     // 
     // Option
     //   silent (default false)
     //     Set true to disable firing 'focused' event.
+    //   +Animation options
     // 
     
     // Normalize param
@@ -16223,102 +16277,6 @@ Taaspace.Viewport = (function () {
     this.scale(s * coverage, options);
   };
   
-  
-  View.prototype.scalable = function (onoff, options) {
-    // Make viewport scalable i.e. zoomable.
-    // Enables mouse wheel and pinch zoom.
-    // 
-    // Parameter
-    //   onoff (optional, default true)
-    //     True to turn scalability on (default).
-    //     False to turn scalability off.
-    //   options (optional)
-    //     Scaling limits.
-    // 
-    // Options
-    //   disableKeys, not implemented yet
-    //   invertKeys, not implemented yet
-    // 
-    // Return
-    //   this
-    //     for chaining
-    // 
-    // Priority
-    //   high
-    
-    // Handle parameters
-    if (typeof onoff === 'object') {
-      options = onoff;
-      onoff = true;
-    } else if (typeof onoff !== 'boolean') { // e.g. undefined
-      onoff = true;
-    }
-    if (typeof options !== 'object') {
-      options = {};
-    }
-    
-    var op = this._scalable;
-    
-    if (!op.hasOwnProperty('status')) {
-      // Scalability not yet initialized
-      
-      var that = this;
-      op.status = false;
-      op.onmousewheel = function (event, delta, deltax, deltay) {
-        
-        // Convert a page point to a point container HTMLElement
-        var offset = that._container.offset();
-        var cx = event.pageX - offset.left;
-        var cy = event.pageY - offset.top;
-        
-        // pivot to mouse position
-        var spacePivot = that.translatePointToSpace(cx, cy);
-        that.pivot(spacePivot);
-        
-        if (delta > 0) {
-          that.scale(1.25);
-        } else {
-          that.scale(1/1.25);
-        }
-      };
-      op.onkeyplus = function () {
-        that.pivot(that.center()).scale(1.25);
-      };
-      op.onkeyminus = function () {
-        that.pivot(that.center()).scale(1/1.25);
-      };
-    }
-    
-    if (onoff === false) {
-      // Turn scalablity off
-      op.status = false;
-      this.off('mousewheel', op.onmousewheel);
-      this.off('key-plus', op.onkeyplus);
-      this.off('key-subtract', op.onkeyminus);
-      return this;
-    } // else
-    
-    // Avoid doubles
-    if (op.status === true) {
-      return this;
-    } // else
-    
-    // Turn scalability on
-    op.status = true;
-    this.on('mousewheel', op.onmousewheel);
-    this.on('key-plus', op.onkeyplus);
-    this.on('key-subtract', op.onkeyminus);
-    return this;
-  };
-  
-  View.prototype.rotatable = function (onoff, options) {
-    // Make viewport rotatable by touch gestures.
-    // 
-    // Priority
-    //   low
-    throw 'Not implemented';
-  };
-  
   View.prototype.draggable = function () {
     // DEPRECATED, alias to View.movable
     /* jshint multistr: true */
@@ -16342,7 +16300,7 @@ Use Viewport.movable instead.');
     //   invertKeys, not implemented yet
     //   disableAnimation
     //     Do not use animation with discrete moves like with arrow keys.
-    //     Not so smooth but computationally lightweight.
+    //     Is not so smooth but computationally lightweight.
     //   
     // Return
     //   this
@@ -16374,7 +16332,6 @@ Use Viewport.movable instead.');
         // Make key moves relative to scale.
         return 100 / that._scale; // same as toSpaceDistance
       };
-      
       
       this._movable = {
         status: false,
@@ -16451,6 +16408,124 @@ Use Viewport.movable instead.');
     this.on('key-right', this._movable.onkeyright);
     return this;
   };
+  
+  View.prototype.scalable = function (onoff, options) {
+    // Make viewport scalable i.e. zoomable.
+    // Enables mouse wheel and pinch zoom.
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    //     True to turn scalability on (default).
+    //     False to turn scalability off.
+    //   options (optional)
+    // 
+    // Options
+    //   disableKeys
+    //   invertKeys, not implemented yet
+    //   + Animation options
+    // 
+    // Return
+    //   this
+    //     for chaining
+    // 
+    // Priority
+    //   high
+    
+    // Normalize parameters
+    if (typeof onoff === 'object') {
+      options = onoff;
+      onoff = true;
+    } else if (typeof onoff !== 'boolean') { // e.g. undefined
+      onoff = true;
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // We need this, see below
+    var that = this;
+    
+    // Initialize if first time.
+    if (!this._scalable.hasOwnProperty('status')) {
+      this._scalable = {
+        status: false,
+        animationOptions: {},
+        disableKeys: false,
+        onmousewheel: function (event, delta, deltax, deltay) {
+          
+          // Convert a page point to a point container HTMLElement
+          var offset = that._container.offset();
+          var cx = event.pageX - offset.left;
+          var cy = event.pageY - offset.top;
+          
+          // pivot to mouse position
+          var spacePivot = that.translatePointToSpace(cx, cy);
+          that.pivot(spacePivot);
+          
+          if (delta > 0) {
+            that.scale(1.25, that._scalable.animationOptions);
+          } else {
+            that.scale(1/1.25, that._scalable.animationOptions);
+          }
+        },
+        onkeyplus: function () {
+          if (that._scalable.disableKeys) {
+            return;
+          } // else
+          that
+            .pivot(that.center())
+            .scale(1.25, that._scalable.animationOptions);
+        },
+        onkeyminus: function () {
+          if (that._scalable.disableKeys) {
+            return;
+          } // else
+          that
+            .pivot(that.center())
+            .scale(1/1.25, that._scalable.animationOptions);
+        }
+      };
+    }
+    
+    
+    // Animation options can change independent of onoff
+    _.each(['ease', 'duration', 'delay'], function (p) {
+      if (options.hasOwnProperty(p)) {
+        that._scalable.animationOptions[p] = options[p];
+      }
+    });
+    
+    
+    if (onoff === false) {
+      // Turn scalablity off
+      this._scalable.status = false;
+      this.off('mousewheel', this._scalable.onmousewheel);
+      this.off('key-plus', this._scalable.onkeyplus);
+      this.off('key-subtract', this._scalable.onkeyminus);
+      return this;
+    } // else
+    
+    // Avoid doubles
+    if (this._scalable.status === true) {
+      return this;
+    } // else
+    
+    // Turn scalability on
+    this._scalable.status = true;
+    this.on('mousewheel', this._scalable.onmousewheel);
+    this.on('key-plus', this._scalable.onkeyplus);
+    this.on('key-subtract', this._scalable.onkeyminus);
+    return this;
+  };
+  
+  View.prototype.rotatable = function (onoff, options) {
+    // Make viewport rotatable by touch gestures.
+    // 
+    // Priority
+    //   low
+    throw 'Not implemented';
+  };
+  
   
   
   
@@ -16662,9 +16737,9 @@ Taaspace.Text = (function () {
     //   options
     // 
     // Option
-    //   Animation (Not implemented)
+    //   Animation options
     
-    var vp = this._space.getViewport();
+    /*var vp = this._space.getViewport();
     var nw = vp.translatePointFromSpace(this._x, this._y);
     var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
     var size = vp.translateDistanceFromSpace(this._fontSize);
@@ -16675,7 +16750,68 @@ Taaspace.Text = (function () {
       top: nw.y + 'px',
       width: (se.x - nw.x) + 'px',
       height: (se.y - nw.y) + 'px'
-    });
+    });*/
+    
+    // Normalize
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    // Place in new viewport
+    var vp = this._space.getViewport();
+    var nw = vp.translatePointFromSpace(this._x, this._y);
+    var se = vp.translatePointFromSpace(this._x + this._w, this._y + this._h);
+    var size = vp.translateDistanceFromSpace(this._fontSize);
+    var x = nw.x;
+    var y = nw.y;
+    var w = (se.x - nw.x);
+    var h = (se.y - nw.y);
+    
+    // If ease is not a valid easing function name, do not animate.
+    var animate = options.hasOwnProperty('ease') &&
+                  options.ease !== 'none' &&
+                  typeof options.ease === 'string';
+    
+    if (animate) {
+      // Animate
+      // with Move.js
+      
+      this._animation = move(this._htmlElement.get(0))
+        .set('font-size', size)
+        .set('left', x)
+        .set('top', y)
+        .set('width', w)
+        .set('height', h);
+      this._animationEnder(options);
+      
+    } else {
+      // Do not animate
+      
+      if (this._animation !== null) {
+      
+        // Cancel ongoing animation
+        move(this._htmlElement.get(0))
+          .set('font-size', size)
+          .set('left', x)
+          .set('top', y)
+          .set('width', w)
+          .set('height', h)
+          .duration('0s')
+          .end();
+        this._animation = null;
+        
+      } else {
+      
+        // Raw step.
+        this._htmlElement.css({
+          'font-size': size + 'px',
+          left: x + 'px',
+          top: y + 'px',
+          width: w + 'px',
+          height: h + 'px'
+        });
+      }
+    }
   };
   
   
@@ -17099,7 +17235,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '2.1.0';
+  Taaspace.version = '2.2.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
