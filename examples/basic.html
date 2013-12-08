@@ -54,12 +54,12 @@
     var wheelText = space.createText('Zoom in by using your mouse wheel. Let\'s roll!')
       .size(633, 400) // Size of text block in the space.
       .fontSize(100) // Size of the font in the space
-      .moveBy(558, 0); // Position of the text in the space. Default is (0, 0)
+      .moveTo(558, 0); // Position of the text in the space.
     
     var numpadText = space.createText('Numpad minus \'-\' and plus \'+\' work too.')
       .size(250, 200)
       .fontSize(46)
-      .moveBy(558, 1070);
+      .moveBy(558, 1070); // moveTo and moveBy. Default position for an element is (0, 0)
     
     var numpadText = space.createText('What about arrow keys?')
       .moveBy(1236, 1433)

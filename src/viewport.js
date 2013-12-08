@@ -372,8 +372,11 @@ Taaspace.Viewport = (function () {
       options = {};
     }
     
+    // Remember that _px and _py are space coordinates
+    var dx = x - this._px;
+    var dy = y - this._py;
     
-    this.moveBy(x - this._px, y - this._py, options);
+    return this.moveBy(dx, dy, options);
   };
   
   

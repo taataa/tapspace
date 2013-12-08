@@ -166,11 +166,11 @@ Taaspace.Text = (function () {
       // with Move.js
       
       this._animation = move(this._htmlElement.get(0))
-        .set('font-size', size)
         .set('left', x)
         .set('top', y)
         .set('width', w)
-        .set('height', h);
+        .set('height', h)
+        .set('font-size', size);
       this._animationEnder(options);
       
     } else {
@@ -180,11 +180,11 @@ Taaspace.Text = (function () {
       
         // Cancel ongoing animation
         move(this._htmlElement.get(0))
-          .set('font-size', size)
           .set('left', x)
           .set('top', y)
           .set('width', w)
           .set('height', h)
+          .set('font-size', size)
           .duration('0s')
           .end();
         this._animation = null;

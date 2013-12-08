@@ -1,4 +1,4 @@
-/*! taaspace - v2.2.0 - 2013-12-07
+/*! taaspace - v2.3.0 - 2013-12-08
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -577,19 +577,42 @@ Taaspace.SpaceElement = (function () {
     // will be at x y in space.
     // 
     // Parameter
-    //   x, y
+    //   x
+    //   y
     //     New place in space
     //   options (optional)
-    //     See Animation Options
+    // 
+    // Parameter (Alternative)
+    //   xy
+    //     Point as new place in space.
+    //   options (optional)
+    // 
+    // Options
+    //   disableHtmlUpdate
+    //   + Animation Options
     // 
     // Return
     //   this
     //     for chaining
     // 
-    // Priority
-    //   medium
-    // TODO
-    throw 'Not implemented';
+    
+    // Normalize params
+    if (typeof x === 'object') {
+      if (typeof y === 'object') {
+        options = y;
+      }
+      y = x.y;
+      x = x.x;
+    }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Take pivot into account
+    var dx = x - this._px;
+    var dy = y - this._py;
+    
+    return this.moveBy(dx, dy, options);
   };
   
   Elem.prototype.moveBy = function (dx, dy, options) {
@@ -606,13 +629,14 @@ Taaspace.SpaceElement = (function () {
     //   options (optional)
     // 
     // Options
-    //   See Animation Options
+    //   disableHtmlUpdate
+    //   + Animation Options
     // 
     // Return
     //   this
     //     for chaining
-    // 
     
+    // Normalize params
     if (typeof dx === 'object') {
       if (typeof dy === 'object') {
         options = dy;
@@ -620,11 +644,21 @@ Taaspace.SpaceElement = (function () {
       dy = dx.y;
       dx = dx.x;
     }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     
     this._x += dx;
     this._y += dy;
     
-    this._moveHtmlElement(options);
+    this._px += dx;
+    this._py += dy;
+    
+    var disableHtml = ('disableHtmlUpdate' in options &&
+                       options.disableHtmlUpdate === true);
+    if (!disableHtml) {
+      this._moveHtmlElement(options);
+    }
     
     return this;
   };
@@ -1331,8 +1365,11 @@ Taaspace.Viewport = (function () {
       options = {};
     }
     
+    // Remember that _px and _py are space coordinates
+    var dx = x - this._px;
+    var dy = y - this._py;
     
-    this.moveBy(x - this._px, y - this._py, options);
+    return this.moveBy(dx, dy, options);
   };
   
   
@@ -2022,11 +2059,11 @@ Taaspace.Text = (function () {
       // with Move.js
       
       this._animation = move(this._htmlElement.get(0))
-        .set('font-size', size)
         .set('left', x)
         .set('top', y)
         .set('width', w)
-        .set('height', h);
+        .set('height', h)
+        .set('font-size', size);
       this._animationEnder(options);
       
     } else {
@@ -2036,11 +2073,11 @@ Taaspace.Text = (function () {
       
         // Cancel ongoing animation
         move(this._htmlElement.get(0))
-          .set('font-size', size)
           .set('left', x)
           .set('top', y)
           .set('width', w)
           .set('height', h)
+          .set('font-size', size)
           .duration('0s')
           .end();
         this._animation = null;
@@ -2480,7 +2517,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '2.2.0';
+  Taaspace.version = '2.3.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

@@ -302,19 +302,42 @@ Taaspace.SpaceElement = (function () {
     // will be at x y in space.
     // 
     // Parameter
-    //   x, y
+    //   x
+    //   y
     //     New place in space
     //   options (optional)
-    //     See Animation Options
+    // 
+    // Parameter (Alternative)
+    //   xy
+    //     Point as new place in space.
+    //   options (optional)
+    // 
+    // Options
+    //   disableHtmlUpdate
+    //   + Animation Options
     // 
     // Return
     //   this
     //     for chaining
     // 
-    // Priority
-    //   medium
-    // TODO
-    throw 'Not implemented';
+    
+    // Normalize params
+    if (typeof x === 'object') {
+      if (typeof y === 'object') {
+        options = y;
+      }
+      y = x.y;
+      x = x.x;
+    }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
+    
+    // Take pivot into account
+    var dx = x - this._px;
+    var dy = y - this._py;
+    
+    return this.moveBy(dx, dy, options);
   };
   
   Elem.prototype.moveBy = function (dx, dy, options) {
@@ -331,13 +354,14 @@ Taaspace.SpaceElement = (function () {
     //   options (optional)
     // 
     // Options
-    //   See Animation Options
+    //   disableHtmlUpdate
+    //   + Animation Options
     // 
     // Return
     //   this
     //     for chaining
-    // 
     
+    // Normalize params
     if (typeof dx === 'object') {
       if (typeof dy === 'object') {
         options = dy;
@@ -345,11 +369,21 @@ Taaspace.SpaceElement = (function () {
       dy = dx.y;
       dx = dx.x;
     }
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     
     this._x += dx;
     this._y += dy;
     
-    this._moveHtmlElement(options);
+    this._px += dx;
+    this._py += dy;
+    
+    var disableHtml = ('disableHtmlUpdate' in options &&
+                       options.disableHtmlUpdate === true);
+    if (!disableHtml) {
+      this._moveHtmlElement(options);
+    }
     
     return this;
   };
