@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace.util.mapReduce test</title>
+  
+</head>
+<body>
+  <h1>See the console.</h1>
+  
+  <script src="../src/util.js"></script>
+  <script>
+    
+    // Alias
+    var mapReduce = Taaspace.util.mapReduce;
+    
+    // Testing tool
+    var assert = function (condition, errorMessage) {
+      if (!condition) {
+        throw errorMessage;
+      }
+    };
+    var success = function () {
+      console.log('All tests finished successfully.');
+    };
+    // For randomized delays
+    var randomMinMax = function (min, max) {
+      return Math.random() * (max - min) + min;
+    };
+    
+    // Test arrays
+    
+    var hello = ['h', 'e', 'll', 'o'];
+    
+    var test1 = function () {
+      // Basic
+      
+      mapReduce(
+        hello,
+        function map(x, done, index, array) {
+          
+          assert(array[index] === x, 'Array should contain x in the index.');
+          
+          var delay = Math.round(randomMinMax(10, 400));
+          setTimeout(function () {
+            done(index, x);
+          }, delay);
+        },
+        function reduce(resultArray) {
+          
+          assert(resultArray.join('') === 'hello',
+                 'Joined array should result \'hello\'');
+          console.log('Test 1: Finished.');
+          
+          // Continue to
+          test2();
+        }
+      );
+      
+    };
+    
+    
+    var test2 = function () {
+      // Empty array
+      
+      mapReduce(
+        [],
+        function map(x, done, index, array) {
+          assert(false, 'This should not be executed');
+        },
+        function reduce(resultArray) {
+          
+          assert(typeof resultArray === 'object',
+                 'Result should be array.');
+          assert(resultArray.length === 0,
+                 'Result array should be empty.');
+          console.log('Test 2: Finished.');
+          
+          // Continue to
+          test3();
+        }
+      );
+    };
+    
+    var test3 = function () {
+      // Invalid params
+      try {
+        mapReduce(
+          3,
+          function map(x, done, index, array) {
+            assert(false, 'This should not be executed');
+          },
+          function reduce(resultArray) {
+            assert(false, 'This should not be executed');
+          }
+        );
+      } catch (err) {
+        
+        assert(err.name === 'InvalidParameterError',
+               'Unexpected exception name');
+        console.log('Test 3: Finished.');
+        
+        // Continue to
+        test4();
+      }
+    };
+    
+    var test4 = function () {
+      // Array with one item
+      
+      mapReduce(
+        [2],
+        function map(x, done, index, array) {
+          assert(x === 2, 'Element should be 2.');
+          assert(index === 0, 'Index should be 0.');
+          assert(array.length === 1, 'Array length should be 1.');
+          
+          done(index, x);
+        },
+        function reduce(resultArray) {
+          assert(resultArray.length === 1, 'Result array length should be 1.');
+          assert(resultArray[0] === 2, 'Result array should contain 2.');
+          
+          console.log('Test 4: Finished.');
+          // Continue to
+          test5();
+        }
+      );
+    };
+    
+    var test5 = function () {
+      // What happens if done is not called.
+      
+      var maps = 0;
+      
+      mapReduce(
+        [1, 2, 3],
+        function map(x, done, index, array) {
+          maps += 1;
+        },
+        function reduce(resultArray) {
+          assert(false, 'Reduce should not be called');
+        }
+      );
+      
+      setTimeout(function wait() {
+        assert(maps === 3, 'Map function should be called three times');
+        console.log('Test 5: Finished.');
+        // Continue to
+        //test6();
+        success();
+      }, 200);
+    };
+    
+    
+    
+    // Start test
+    test1();
+    
+  </script>
+</body>
+</html>

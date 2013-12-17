@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace.graph.bfs example</title>
+  
+</head>
+<body>
+  <h1>See the console.</h1>
+  
+  <script src="../src/graph.js"></script>
+  <script>
+    
+    // Alias
+    var graph = Taaspace.graph;
+    
+    // Testing tool
+    var assert = function (condition, errorMessage) {
+      if (!condition) {
+        throw errorMessage;
+      }
+    };
+    var success = function () {
+      console.log('All tests finished successfully.');
+    };
+    
+    // Test graphs
+    
+    // a -> b -> c -> d -> e
+    //  \                 /
+    //   --------<--------
+    var alpha1 = {
+      a: {name: 'a', next: 'b'},
+      b: {name: 'b', next: 'c'},
+      c: {name: 'c', next: 'd'},
+      d: {name: 'd', next: 'e'},
+      e: {name: 'e', next: 'a'}
+    };
+    
+    //   b - c   g
+    //  /     \ /
+    // a       d
+    //  \     / \
+    //   e - f   h
+    var fish = {
+      a: ['b', 'e'],
+      b: ['a', 'c'],
+      c: ['b', 'd'],
+      d: ['c', 'f', 'g', 'h'],
+      e: ['a', 'f'],
+      f: ['d', 'e'],
+      g: ['d'],
+      h: ['h']
+    };
+  
+    var test1 = function () {
+      // Basic
+      
+      var l = alpha1;
+      
+      graph.bfs({
+        root: l.a,
+        handler: function (v, spreadTo, end, predecessor, depth) {
+          
+          assert(depth < 5, 'Depth too large');
+          
+          setTimeout(function () {
+            spreadTo([l[v.next]]);
+          }, 100);
+        },
+        finish: function () {
+          console.log('Test 1: Finished.');
+          
+          // Continue to
+          test2();
+        }
+      });
+      
+    };
+    
+    
+    var test2 = function () {
+      // Explicit end
+      
+      var l = fish;
+      
+      graph.bfs({
+        root: l.a,
+        handler: function (v, spreadTo, end, predecessor, depth) {
+          
+          if (v.length === 1) {
+            end(v);
+          } else {
+            setTimeout(function () {
+              var i, nextOnes;
+              nextOnes = [];
+              for (i = 0; i < v.length; i += 1) {
+                nextOnes.push(l[v[i]]);
+              }
+              spreadTo(nextOnes);
+            }, 100);
+          }
+        },
+        finish: function (endvertex) {
+          assert(typeof endvertex !== 'undefined', 'Endvertex not found.');
+          assert(endvertex[0] === 'd', 'Endvertex is not g.');
+          console.log('Test 2: Finished.');
+          
+          // Continue to
+          test3();
+        }
+      });
+      
+    };
+    
+    
+    var test3 = function () {
+      // Do not call spreadTo or end
+      
+      var l = fish;
+      
+      graph.bfs({
+        root: l.a,
+        handler: function (v, spreadTo, end) {
+          console.log('Test 3: Finished.');
+          test4();
+        },
+        finish: function (endvertex) {
+          assert(true === false, 'We should not be here.');
+        }
+      });
+    };
+    
+    var test4 = function () {
+      // Call spreadTo with invalid array.
+      
+      var l = fish;
+      
+      graph.bfs({
+        root: l.a,
+        handler: function (v, spreadTo, end) {
+          try {
+            spreadTo({not:'an array'});
+          } catch (err) {
+            assert(err.name === 'InvalidArrayError',
+                   'Should throw InvalidArrayError');
+            console.log('Test 4: Finished.');
+            test5();
+          }
+        },
+        finish: function (endvertex) {
+          assert(true === false, 'We should not be here.');
+        }
+      });
+    };
+    
+    var test5 = function () {
+      // Call end with number of parameters.
+      
+      var l = fish;
+      
+      graph.bfs({
+        root: l.a,
+        handler: function (v, spreadTo, end) {
+          end('h', 'e', 'll', 'o');
+        },
+        finish: function (a, b, c, d) {
+          assert(a+b+c+d === 'hello', 'Finish should have four parameters ' +
+                                      'which form \'hello\'.');
+          console.log('Test 5: Finished.');
+          success();
+        }
+      });
+    };
+    
+    // Start test
+    test1();
+    
+  </script>
+</body>
+</html>
