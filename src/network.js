@@ -8,8 +8,18 @@ Taaspace.Network = (function () {
   var exports = {};
   /////////////////
   
+  
+  
+  // Constructor
+  
   var Net = function (space, root, options) {
     this._space = space;
+  };
+  
+  // Extend Taaspace
+  Taaspace.extension.createNetwork = function (root, options) {
+    var network = new Net(this, root, options);
+    return network;
   };
   
   
@@ -22,7 +32,6 @@ Taaspace.Network = (function () {
   
   
   
-  // Constructor
   
   exports.create = function (space, root, options) {
       return new Net(space, root, options);
