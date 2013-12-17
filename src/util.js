@@ -1,6 +1,3 @@
-// Allow independent use without other Taaspace files.
-var Taaspace = Taaspace || {};
-
 Taaspace.util = (function () {
   //
   // Utility functions for example handling asynchronicity.
@@ -62,7 +59,7 @@ Taaspace.util = (function () {
     // Normalize and validate parameters
     var isKindOfArray = typeof array === 'object' &&
                         'length' in array;
-    var validParams = typeof mapfn === 'function' && 
+    var validParams = typeof mapfn === 'function' &&
                       typeof reducefn === 'function' &&
                       isKindOfArray;
     if (!validParams) {

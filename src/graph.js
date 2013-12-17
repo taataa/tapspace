@@ -1,6 +1,3 @@
-// Allow independent use without other Taaspace files.
-var Taaspace = Taaspace || {};
-
 Taaspace.graph = (function () {
   //
   // Graph algorithms

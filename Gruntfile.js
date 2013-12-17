@@ -47,6 +47,8 @@ module.exports = function(grunt) {
           'src/network.js',
           'src/custom.js',
           'src/keyboardmanager.js',
+          'src/graph.js',
+          'src/util.js',
           'src/settings.js',
           'src/outro.js'
         ],
@@ -73,6 +75,8 @@ module.exports = function(grunt) {
           'src/network.js',
           'src/custom.js',
           'src/keyboardmanager.js',
+          'src/graph.js',
+          'src/util.js',
           'src/settings.js',
           'src/outro.js'
         ],
