@@ -70,6 +70,63 @@ var Taaspace = (function () {
     return this._vp;
   };
   
+  Space.prototype.width = function () {
+    // Width of the space. See Space.box().
+    var b = this.box();
+    return b.x1 - b.x0;
+  };
+  
+  Space.prototype.height = function () {
+    // Height of the space. See Space.box().
+    var b = this.box();
+    return b.y1 - b.y0;
+  };
+  
+  Space.prototype.center = function () {
+    // Center point of space box. Not same as origo. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0) / 2,
+      y: b.y0 + (b.y1 - b.y0) / 2
+    };
+  };
+  
+  Space.prototype.northwest = function () {
+    // Top-left point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0,
+      y: b.y0
+    };
+  };
+  
+  Space.prototype.northeast = function () {
+    // Top-right point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0),
+      y: b.y0
+    };
+  };
+  
+  Space.prototype.southwest = function () {
+    // Bottom-left point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0,
+      y: b.y0 + (b.y1 - b.y0)
+    };
+  };
+  
+  Space.prototype.southeast = function () {
+    // Bottom-right point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0),
+      y: b.y0 + (b.y1 - b.y0)
+    };
+  };
+  
   Space.prototype.box = function () {
     // The bounding box for all the elements in the space. Can be used
     // to focus to all the elements.

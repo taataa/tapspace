@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Example / Positioning</title>
+  
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style>
+    html, body, .space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    body {
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
+    }
+    
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+    
+    img {
+      box-shadow: 0px 0px 15px #050505;
+      padding: 0px;
+      margin: 0px;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="space" class="space"></div>
+  
+  <script src="../includes/jquery/jquery-1.10.2.js"></script>
+  <script src="../includes/jquery/jquery.mousewheel-3.1.4.js"></script>
+  <script src="../includes/hammer/hammer-1.0.5.js"></script>
+  <script src="../includes/jwerty/jwerty-0.3.2.js"></script>
+  <script src="../includes/move/move-0.3.2.js"></script>
+  <script src="../includes/underscore/underscore-1.5.2.js"></script>
+  
+  <script src="../taaspace.js"></script>
+  <script>
+    var space = Taaspace.create('#space');
+    var port = space.getViewport().scalable().movable().select();
+    
+    // 
+    //   + - - - +
+    //   |       |
+    //   | S     |
+    //   |       |
+    //   + - - - +
+    // 
+    var spiral = space.createImage('assets/spiral-512x512.jpg')
+      .size(4, 4)
+      .moveTo(0, 0);
+    
+    // 
+    //   + - - - +
+    //   |       |
+    //   | S + - |
+    //   |   | L |
+    //   + - + - +
+    // 
+    var letter = space.createImage('assets/blackletter-512x512.jpg')
+      .size(2, 2)
+      .moveTo(spiral.center());
+    
+    // 
+    // +-+
+    // +-+ - - - +
+    //   |       |
+    //   | S + - |
+    //   |   | L |
+    //   + - + - +
+    // 
+    var castle = space.createImage('assets/castle-512x512.jpg')
+      .size(1, 1);
+    // Set the pivot point of the castle to be in the bottom-right corner
+    // of the image. Move to moves the castle so that the pivot point will
+    // move to the parameter (the top-left corner of the spiral image).
+    castle.pivot(castle.southeast())
+      .moveTo(spiral.northwest());
+    
+    
+    // Scale the viewport so that all the elements in
+    // the space are visible.
+    port.focusTo(space.box(), 0.618);
+    
+    
+    // Move the Spiral to the top right corner of the current viewport by
+    // tapping it.
+    spiral.on('tap', function moveToCorner() {
+      spiral
+        .pivot(spiral.northeast())
+        .moveTo(port.northeast());
+    });
+    
+  </script>
+</body>
+</html>

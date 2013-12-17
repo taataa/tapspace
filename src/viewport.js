@@ -104,20 +104,6 @@ Taaspace.Viewport = (function () {
     // Model for scalability. Defined in scalable().
     this._scalable = {};
     
-    // DEPRECATED
-    // translatePointFromSpace and translateDistanceFromSpace
-    // are commonly passed to functions
-    // in other modules, e.g. to be used with HTML operations.
-    // Here we make a function that does not depend on the context, i.e.
-    // value of 'this' and therefore can easily be passed.
-    //var that = this;
-    //this._translatePointFromSpace = function () {
-    //  return that.translatePointFromSpace.apply(that, arguments);
-    //};
-    //this._translateDistanceFromSpace = function () {
-    //  return that.translateDistanceFromSpace.apply(that, arguments);
-    //};
-    
   };
   
   // Make the prototype accessible from outside.
@@ -160,6 +146,42 @@ Taaspace.Viewport = (function () {
     return {
       x: this._x + this.width() / 2,
       y: this._y + this.height() / 2
+    };
+  };
+  
+  View.prototype.northwest = function () {
+    // Top-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y
+    };
+  };
+  
+  View.prototype.northeast = function () {
+    // Top-right point of the element in space
+    // 
+    return {
+      x: this._x + this.width(),
+      y: this._y
+    };
+  };
+  
+  View.prototype.southwest = function () {
+    // Bottom-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y + this.height()
+    };
+  };
+  
+  View.prototype.southeast = function () {
+    // Bottom-right point of the element in space
+    // 
+    return {
+      x: this._x + this.width(),
+      y: this._y + this.height()
     };
   };
   

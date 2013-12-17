@@ -1,4 +1,4 @@
-/*! taaspace - v2.3.0 - 2013-12-08
+/*! taaspace - v2.4.0 - 2013-12-17
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -14836,6 +14836,63 @@ var Taaspace = (function () {
     return this._vp;
   };
   
+  Space.prototype.width = function () {
+    // Width of the space. See Space.box().
+    var b = this.box();
+    return b.x1 - b.x0;
+  };
+  
+  Space.prototype.height = function () {
+    // Height of the space. See Space.box().
+    var b = this.box();
+    return b.y1 - b.y0;
+  };
+  
+  Space.prototype.center = function () {
+    // Center point of space box. Not same as origo. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0) / 2,
+      y: b.y0 + (b.y1 - b.y0) / 2
+    };
+  };
+  
+  Space.prototype.northwest = function () {
+    // Top-left point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0,
+      y: b.y0
+    };
+  };
+  
+  Space.prototype.northeast = function () {
+    // Top-right point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0),
+      y: b.y0
+    };
+  };
+  
+  Space.prototype.southwest = function () {
+    // Bottom-left point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0,
+      y: b.y0 + (b.y1 - b.y0)
+    };
+  };
+  
+  Space.prototype.southeast = function () {
+    // Bottom-right point of the element in space. See Space.box().
+    var b = this.box();
+    return {
+      x: b.x0 + (b.x1 - b.x0),
+      y: b.y0 + (b.y1 - b.y0)
+    };
+  };
+  
   Space.prototype.box = function () {
     // The bounding box for all the elements in the space. Can be used
     // to focus to all the elements.
@@ -15077,7 +15134,7 @@ Taaspace.SpaceElement = (function () {
     this._px = 0;
     this._py = 0;
     
-    // Is animation currently playing
+    // Is animation currently playing.
     // Makes possible to cancel animations.
     this._animation = null;
   };
@@ -15108,6 +15165,42 @@ Taaspace.SpaceElement = (function () {
     return {
       x: this._x + this._w / 2,
       y: this._y + this._h / 2
+    };
+  };
+  
+  Elem.prototype.northwest = function () {
+    // Top-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y
+    };
+  };
+  
+  Elem.prototype.northeast = function () {
+    // Top-right point of the element in space
+    // 
+    return {
+      x: this._x + this._w,
+      y: this._y
+    };
+  };
+  
+  Elem.prototype.southwest = function () {
+    // Bottom-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y + this._h
+    };
+  };
+  
+  Elem.prototype.southeast = function () {
+    // Bottom-right point of the element in space
+    // 
+    return {
+      x: this._x + this._w,
+      y: this._y + this._h
     };
   };
   
@@ -15270,9 +15363,7 @@ Taaspace.SpaceElement = (function () {
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority
-    //   medium
+
     
     // Normalize params
     if (typeof options === 'undefined') {
@@ -15852,20 +15943,6 @@ Taaspace.Viewport = (function () {
     // Model for scalability. Defined in scalable().
     this._scalable = {};
     
-    // DEPRECATED
-    // translatePointFromSpace and translateDistanceFromSpace
-    // are commonly passed to functions
-    // in other modules, e.g. to be used with HTML operations.
-    // Here we make a function that does not depend on the context, i.e.
-    // value of 'this' and therefore can easily be passed.
-    //var that = this;
-    //this._translatePointFromSpace = function () {
-    //  return that.translatePointFromSpace.apply(that, arguments);
-    //};
-    //this._translateDistanceFromSpace = function () {
-    //  return that.translateDistanceFromSpace.apply(that, arguments);
-    //};
-    
   };
   
   // Make the prototype accessible from outside.
@@ -15908,6 +15985,42 @@ Taaspace.Viewport = (function () {
     return {
       x: this._x + this.width() / 2,
       y: this._y + this.height() / 2
+    };
+  };
+  
+  View.prototype.northwest = function () {
+    // Top-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y
+    };
+  };
+  
+  View.prototype.northeast = function () {
+    // Top-right point of the element in space
+    // 
+    return {
+      x: this._x + this.width(),
+      y: this._y
+    };
+  };
+  
+  View.prototype.southwest = function () {
+    // Bottom-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y + this.height()
+    };
+  };
+  
+  View.prototype.southeast = function () {
+    // Bottom-right point of the element in space
+    // 
+    return {
+      x: this._x + this.width(),
+      y: this._y + this.height()
     };
   };
   
@@ -16986,8 +17099,18 @@ Taaspace.Network = (function () {
   var exports = {};
   /////////////////
   
+  
+  
+  // Constructor
+  
   var Net = function (space, root, options) {
     this._space = space;
+  };
+  
+  // Extend Taaspace
+  Taaspace.extension.createNetwork = function (root, options) {
+    var network = new Net(this, root, options);
+    return network;
   };
   
   
@@ -17000,7 +17123,6 @@ Taaspace.Network = (function () {
   
   
   
-  // Constructor
   
   exports.create = function (space, root, options) {
       return new Net(space, root, options);
@@ -17272,7 +17394,7 @@ Taaspace.KeyboardManager = (function () {
 
 
   // Version
-  Taaspace.version = '2.3.0';
+  Taaspace.version = '2.4.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

@@ -47,7 +47,7 @@ Taaspace.SpaceElement = (function () {
     this._px = 0;
     this._py = 0;
     
-    // Is animation currently playing
+    // Is animation currently playing.
     // Makes possible to cancel animations.
     this._animation = null;
   };
@@ -78,6 +78,42 @@ Taaspace.SpaceElement = (function () {
     return {
       x: this._x + this._w / 2,
       y: this._y + this._h / 2
+    };
+  };
+  
+  Elem.prototype.northwest = function () {
+    // Top-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y
+    };
+  };
+  
+  Elem.prototype.northeast = function () {
+    // Top-right point of the element in space
+    // 
+    return {
+      x: this._x + this._w,
+      y: this._y
+    };
+  };
+  
+  Elem.prototype.southwest = function () {
+    // Bottom-left point of the element in space
+    // 
+    return {
+      x: this._x,
+      y: this._y + this._h
+    };
+  };
+  
+  Elem.prototype.southeast = function () {
+    // Bottom-right point of the element in space
+    // 
+    return {
+      x: this._x + this._w,
+      y: this._y + this._h
     };
   };
   
@@ -240,9 +276,7 @@ Taaspace.SpaceElement = (function () {
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority
-    //   medium
+
     
     // Normalize params
     if (typeof options === 'undefined') {
