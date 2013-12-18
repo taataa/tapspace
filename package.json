@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A javascript library for zooming user interfaces.",
   "homepage": "https://github.com/taataa/taaspace",
   "main": "taaspace.js",

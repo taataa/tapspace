@@ -1,4 +1,4 @@
-/*! taaspace - v2.6.1 - 2013-12-18
+/*! taaspace - v2.6.2 - 2013-12-18
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -17898,7 +17898,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.6.1';
+  Taaspace.version = '2.6.2';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
