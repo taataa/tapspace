@@ -54,7 +54,7 @@
         id: 'a',
         src: 'assets/spiral-512x512.jpg',
         spaceElement: null,
-        prev: 'd',
+        prev: 'taa05',
         next: 'b'
       },
       'b': {
@@ -73,9 +73,53 @@
       },
       'd': {
         id: 'd',
-        src: 'assets/blackletter-512x512.jpg',
+        src: 'assets/Lenna-512x512.png',
         spaceElement: null,
         prev: 'c',
+        next: 'taa1'
+      },
+      
+      
+      'taa00': {
+        id: 'taa00',
+        src: 'assets/taa00_256.jpg',
+        spaceElement: null,
+        prev: 'd',
+        next: 'taa01'
+      },
+      'taa01': {
+        id: 'taa01',
+        src: 'assets/taa01_256.jpg',
+        spaceElement: null,
+        prev: 'taa00',
+        next: 'taa02'
+      },
+      'taa02': {
+        id: 'taa02',
+        src: 'assets/taa02_256.jpg',
+        spaceElement: null,
+        prev: 'taa01',
+        next: 'taa03'
+      },
+      'taa03': {
+        id: 'taa03',
+        src: 'assets/taa03_256.jpg',
+        spaceElement: null,
+        prev: 'taa02',
+        next: 'taa04'
+      },
+      'taa04': {
+        id: 'taa04',
+        src: 'assets/taa04_256.jpg',
+        spaceElement: null,
+        prev: 'taa03',
+        next: 'taa05'
+      },
+      'taa05': {
+        id: 'taa05',
+        src: 'assets/taa05_256.jpg',
+        spaceElement: null,
+        prev: 'taa04',
         next: 'a'
       }
     };
@@ -103,8 +147,10 @@
         }
         
         unit.spaceElement.on('tap', function () {
-          net.spreadFrom(unit, 1);
-          view.focusTo(unit.spaceElement, 0.618, {ease: 'snap'});
+          net.spreadFrom(unit, 3, function () {
+            console.log('spreadFrom ended');
+          });
+          view.focusTo(unit.spaceElement, 0.06, {ease: 'snap'});
         });
         
         done();
@@ -123,8 +169,8 @@
     
     view.scalable().movable().select();
     
-    net.spreadFrom(units.a, 1);
-    view.focusTo(units.a.spaceElement, 0.618);
+    net.spreadFrom(units.a, 3);
+    view.focusTo(units.a.spaceElement, 0.06);
     
   </script>
 </body>

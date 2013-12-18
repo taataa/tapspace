@@ -59,7 +59,7 @@ Taaspace.Network = (function () {
   
   // Mutators
   
-  Net.prototype.spreadFrom = function (rootObj, toDepth) {
+  Net.prototype.spreadFrom = function (rootObj, toDepth, callback) {
     // Create the local neighborhood of the rootObj and
     // remove the rest of the network.
     // 
@@ -71,6 +71,8 @@ Taaspace.Network = (function () {
     //     The creating distance. To how many steps/edges/neighbors ahead will
     //     be created with the given create function. The ones farther away
     //     will be removed with the given remove function.
+    //   callback (optional)
+    //     Function to be called when spreadFrom finishes.
     // 
     // Throws
     //   InvalidParameterError
@@ -90,7 +92,9 @@ Taaspace.Network = (function () {
     if (typeof toDepth !== 'number') {
       toDepth = 3;
     }
-    
+    if (typeof callback !== 'function') {
+      callback = function () {};
+    }
     
     var that = this;
     var isCreated = '_taaspace_isCreated';
@@ -126,7 +130,9 @@ Taaspace.Network = (function () {
         };
         
         if (!vertex.hasOwnProperty(isCreated)) {
+          // Is done only once per vertex during the lifespan of the vertex.
           vertex[isCreated] = true;
+          that._objects.push(vertex);
           that._create(that._space, vertex, done, predecessor, distance);
         } else {
           // Skip creating, go get the neighbors.
@@ -147,9 +153,13 @@ Taaspace.Network = (function () {
             });
           } else {
             newVertices.push(vertex);
+            next();
           }
         });
         that._objects = newVertices;
+        
+        // Everything finished.
+        callback();
       }
     
     });
@@ -172,7 +182,7 @@ Taaspace.Network = (function () {
     // Execute iterator function for each currently existing object of
     // the network.
     var i, obj;
-    for (i = 0; i < this._objects; i += 1) {
+    for (i = 0; i < this._objects.length; i += 1) {
       obj = this._objects[i];
       iterator(obj, i, this._objects);
     }
@@ -192,6 +202,7 @@ Taaspace.Network = (function () {
       i += 1;
       iterator(obj, next, i - 1, list);
     };
+    next();
   };
   
   
