@@ -50,26 +50,33 @@
     var view = space.getViewport();
     
     var units = {
-      's': {
-        id: 's',
+      'a': {
+        id: 'a',
         src: 'assets/spiral-512x512.jpg',
         spaceElement: null,
-        prev: 'l',
-        next: 'c'
+        prev: 'd',
+        next: 'b'
       },
-      'l': {
-        id: 'l',
+      'b': {
+        id: 'b',
         src: 'assets/blackletter-512x512.jpg',
         spaceElement: null,
-        prev: 'l',
-        next: 's'
+        prev: 'a',
+        next: 'c'
       },
       'c': {
         id: 'c',
         src: 'assets/castle-512x512.jpg',
         spaceElement: null,
-        prev: 's',
-        next: 'l'
+        prev: 'b',
+        next: 'd'
+      },
+      'd': {
+        id: 'd',
+        src: 'assets/blackletter-512x512.jpg',
+        spaceElement: null,
+        prev: 'c',
+        next: 'a'
       }
     };
     
@@ -96,7 +103,7 @@
         }
         
         unit.spaceElement.on('tap', function () {
-          net.spreadFrom(unit);
+          net.spreadFrom(unit, 1);
           view.focusTo(unit.spaceElement, 0.618, {ease: 'snap'});
         });
         
@@ -116,9 +123,8 @@
     
     view.scalable().movable().select();
     
-    net.spreadFrom(units.s);
-    
-    view.focusTo(units.s.spaceElement, 0.618);
+    net.spreadFrom(units.a, 1);
+    view.focusTo(units.a.spaceElement, 0.618);
     
   </script>
 </body>

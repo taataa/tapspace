@@ -111,11 +111,15 @@ Taaspace.Network = (function () {
       
       handler: function (vertex, spreadTo, end, predecessor, distance) {
         
+        // Mark to be keeped by removing the removeMe mark.
+        delete vertex[removeMe];
+        
         var done = function () {
           
-          // End if too far.
-          if (distance + 1 >= toDepth) {
+          // Do not continue if too far.
+          if (distance + 1 > toDepth) {
             spreadTo([]);
+            return;
           }
           
           that._neighbors(that.space, vertex, spreadTo, predecessor, distance);
