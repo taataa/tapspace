@@ -84,11 +84,13 @@ Taaspace.graph = (function () {
       root = params.root;
       handler = params.handler;
     } else {
-      throw {
+      var err = {
         name: 'InvalidParameterError',
         message: 'You must specify root and handler parameters ' +
                  'and root must be an object and handler must be a function.'
       };
+      console.error(err.name, err.message);
+      throw err;
     }
     var validFinish = params.hasOwnProperty('finish') &&
                       typeof params.finish === 'function';

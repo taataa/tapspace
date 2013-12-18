@@ -80,10 +80,12 @@ Taaspace.Network = (function () {
     
     // Normalize parameters
     if (typeof rootObj !== 'object') {
-      throw {
+      var err = {
         name: 'InvalidParameterError',
         message: 'rootObj must be an object'
       };
+      console.error(err.name, err.message);
+      throw err;
     }
     if (typeof toDepth !== 'number') {
       toDepth = 3;
