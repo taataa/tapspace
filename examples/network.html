@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Example / Using Networks</title>
+  
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style>
+    html, body, .space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    body {
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
+    }
+    
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+    
+    img {
+      box-shadow: 0px 0px 15px #050505;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</head>
+<body>
+  <div id="space" class="space"></div>
+  
+  <script src="../includes/jquery/jquery-1.10.2.js"></script>
+  <script src="../includes/jquery/jquery.mousewheel-3.1.4.js"></script>
+  <script src="../includes/hammer/hammer-1.0.5.js"></script>
+  <script src="../includes/jwerty/jwerty-0.3.2.js"></script>
+  <script src="../includes/move/move-0.3.2.js"></script>
+  <script src="../includes/underscore/underscore-1.5.2.js"></script>
+  
+  <script src="../taaspace.js"></script>
+  <script>
+    var space = Taaspace.create('#space');
+    var view = space.getViewport();
+    
+    var units = {
+      's': {
+        id: 's',
+        src: 'assets/spiral-512x512.jpg',
+        spaceElement: null,
+        prev: 'l',
+        next: 'c'
+      },
+      'l': {
+        id: 'l',
+        src: 'assets/blackletter-512x512.jpg',
+        spaceElement: null,
+        prev: 'l',
+        next: 's'
+      },
+      'c': {
+        id: 'c',
+        src: 'assets/castle-512x512.jpg',
+        spaceElement: null,
+        prev: 's',
+        next: 'l'
+      }
+    };
+    
+    var net = space.createNetwork({
+      create: function (space, unit, done, predecessor) {
+        var size, pivot, xy;
+        if (predecessor === null) {
+          unit.spaceElement = space.createImage(unit.src)
+            .size(1, 1)
+            .pivot(0, 0)
+            .moveTo(0, 0);
+        } else if (predecessor.id === unit.prev) {
+          size = predecessor.spaceElement.width() / 2;
+          unit.spaceElement = space.createImage(unit.src)
+            .size(size, size);
+          unit.spaceElement.pivot(unit.spaceElement.northwest());
+          unit.spaceElement.moveTo(predecessor.spaceElement.southeast());
+        } else if (predecessor.id === unit.next) {
+          size = predecessor.spaceElement.width() * 2;
+          unit.spaceElement = space.createImage(unit.src)
+            .size(size, size);
+          unit.spaceElement.pivot(unit.spaceElement.southeast());
+          unit.spaceElement.moveTo(predecessor.spaceElement.northwest());
+        }
+        
+        unit.spaceElement.on('tap', function () {
+          net.spreadFrom(unit);
+          view.focusTo(unit.spaceElement, 0.618, {ease: 'snap'});
+        });
+        
+        done();
+      },
+      
+      neighbors: function (space, unit, done, predecessor) {
+        var n = [units[unit.prev], units[unit.next]];
+        done(n);
+      },
+      
+      remove: function (space, unit, done) {
+        unit.spaceElement.remove();
+        done();
+      }
+    });
+    
+    view.scalable().movable().select();
+    
+    net.spreadFrom(units.s);
+    
+    view.focusTo(units.s.spaceElement, 0.618);
+    
+  </script>
+</body>
+</html>

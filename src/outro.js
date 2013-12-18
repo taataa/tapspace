@@ -1,5 +1,5 @@
   // Version
-  Taaspace.version = '2.5.0';
+  Taaspace.version = '2.6.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
