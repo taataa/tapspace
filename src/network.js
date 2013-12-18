@@ -112,6 +112,12 @@ Taaspace.Network = (function () {
       handler: function (vertex, spreadTo, end, predecessor, distance) {
         
         var done = function () {
+          
+          // End if too far.
+          if (distance + 1 >= toDepth) {
+            spreadTo([]);
+          }
+          
           that._neighbors(that.space, vertex, spreadTo, predecessor, distance);
         };
         

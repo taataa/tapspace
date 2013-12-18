@@ -1,4 +1,4 @@
-/*! taaspace - v2.6.0 - 2013-12-18
+/*! taaspace - v2.6.1 - 2013-12-18
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -2416,10 +2416,12 @@ Taaspace.Network = (function () {
     
     // Normalize parameters
     if (typeof rootObj !== 'object') {
-      throw {
+      var err = {
         name: 'InvalidParameterError',
         message: 'rootObj must be an object'
       };
+      console.error(err.name, err.message);
+      throw err;
     }
     if (typeof toDepth !== 'number') {
       toDepth = 3;
@@ -2446,6 +2448,12 @@ Taaspace.Network = (function () {
       handler: function (vertex, spreadTo, end, predecessor, distance) {
         
         var done = function () {
+          
+          // End if too far.
+          if (distance + 1 >= toDepth) {
+            spreadTo([]);
+          }
+          
           that._neighbors(that.space, vertex, spreadTo, predecessor, distance);
         };
         
@@ -2869,11 +2877,13 @@ Taaspace.graph = (function () {
       root = params.root;
       handler = params.handler;
     } else {
-      throw {
+      var err = {
         name: 'InvalidParameterError',
         message: 'You must specify root and handler parameters ' +
                  'and root must be an object and handler must be a function.'
       };
+      console.error(err.name, err.message);
+      throw err;
     }
     var validFinish = params.hasOwnProperty('finish') &&
                       typeof params.finish === 'function';
@@ -3129,7 +3139,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.6.0';
+  Taaspace.version = '2.6.1';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
