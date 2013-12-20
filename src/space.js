@@ -197,8 +197,13 @@ var Taaspace = (function () {
   };
   
   Space.prototype.remove = function (elem) {
+    // DEPRECATED
     // Remove the SpaceElement and associated HTMLElement from the space.
     // See also SpaceElement.remove()
+    
+    console.warn('Space.remove(elem) is deprecated. ' +
+                 'Use SpaceElem.remove() instead.');
+    
     elem._removeHtmlElement();
     this._removeSpaceElement(elem);
   };

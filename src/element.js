@@ -560,8 +560,13 @@ Use Element.movable instead.');
     // Remove the HTMLElement from DOM
     // 
     // Can be overridden in the child prototype.
-    this._htmlElement.remove();
-    this._htmlElement = null;
+    if (this._htmlElement !== null) {
+      this._htmlElement.remove();
+      this._htmlElement = null;
+    } else {
+      console.warn('SpaceElement removed already. ' +
+                   'Does the code an unnecessary remove call?');
+    }
   };
   
   Elem.prototype._animationEnder = function (options) {

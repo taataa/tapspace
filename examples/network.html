@@ -76,7 +76,7 @@
         src: 'assets/Lenna-512x512.png',
         spaceElement: null,
         prev: 'c',
-        next: 'taa1'
+        next: 'taa00'
       },
       
       
@@ -124,6 +124,10 @@
       }
     };
     
+    var focusSize = 0.1;
+    var depthRadius = 3;
+    var nextRatio = 1.618;
+    
     var net = space.createNetwork({
       create: function (space, unit, done, predecessor) {
         var size, pivot, xy;
@@ -133,13 +137,13 @@
             .pivot(0, 0)
             .moveTo(0, 0);
         } else if (predecessor.id === unit.prev) {
-          size = predecessor.spaceElement.width() / 2;
+          size = predecessor.spaceElement.width() / nextRatio;
           unit.spaceElement = space.createImage(unit.src)
             .size(size, size);
           unit.spaceElement.pivot(unit.spaceElement.northwest());
           unit.spaceElement.moveTo(predecessor.spaceElement.southeast());
         } else if (predecessor.id === unit.next) {
-          size = predecessor.spaceElement.width() * 2;
+          size = predecessor.spaceElement.width() * nextRatio;
           unit.spaceElement = space.createImage(unit.src)
             .size(size, size);
           unit.spaceElement.pivot(unit.spaceElement.southeast());
@@ -147,10 +151,10 @@
         }
         
         unit.spaceElement.on('tap', function () {
-          net.spreadFrom(unit, 3, function () {
+          net.spreadFrom(unit, depthRadius, function () {
             console.log('spreadFrom ended');
           });
-          view.focusTo(unit.spaceElement, 0.06, {ease: 'snap'});
+          view.focusTo(unit.spaceElement, focusSize, {ease: 'snap'});
         });
         
         done();
@@ -169,8 +173,8 @@
     
     view.scalable().movable().select();
     
-    net.spreadFrom(units.a, 3);
-    view.focusTo(units.a.spaceElement, 0.06);
+    net.spreadFrom(units.a, depthRadius);
+    view.focusTo(units.a.spaceElement, focusSize);
     
   </script>
 </body>

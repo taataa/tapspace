@@ -1,4 +1,4 @@
-/*! taaspace - v2.6.3 - 2013-12-18
+/*! taaspace - v2.6.4 - 2013-12-21
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -208,8 +208,13 @@ var Taaspace = (function () {
   };
   
   Space.prototype.remove = function (elem) {
+    // DEPRECATED
     // Remove the SpaceElement and associated HTMLElement from the space.
     // See also SpaceElement.remove()
+    
+    console.warn('Space.remove(elem) is deprecated. ' +
+                 'Use SpaceElem.remove() instead.');
+    
     elem._removeHtmlElement();
     this._removeSpaceElement(elem);
   };
@@ -892,8 +897,13 @@ Use Element.movable instead.');
     // Remove the HTMLElement from DOM
     // 
     // Can be overridden in the child prototype.
-    this._htmlElement.remove();
-    this._htmlElement = null;
+    if (this._htmlElement !== null) {
+      this._htmlElement.remove();
+      this._htmlElement = null;
+    } else {
+      console.warn('SpaceElement removed already. ' +
+                   'Does the code an unnecessary remove call?');
+    }
   };
   
   Elem.prototype._animationEnder = function (options) {
@@ -3154,7 +3164,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.6.3';
+  Taaspace.version = '2.6.4';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
