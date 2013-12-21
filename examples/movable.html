@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Example / Movable SpaceElements</title>
+  
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style>
+    html, body, .space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    body {
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
+    }
+    
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+    
+    img {
+      box-shadow: 0px 0px 15px #050505;
+      padding: 0px;
+      margin: 0px;
+    }
+    
+    .taaspace-selected {
+      outline: 2px dotted white;
+    }
+  </style>
+</head>
+<body>
+  <div id="space" class="space"></div>
+  
+  <script src="../includes/jquery/jquery-1.10.2.js"></script>
+  <script src="../includes/jquery/jquery.mousewheel-3.1.4.js"></script>
+  <script src="../includes/hammer/hammer-1.0.5.js"></script>
+  <script src="../includes/jwerty/jwerty-0.3.2.js"></script>
+  <script src="../includes/move/move-0.3.2.js"></script>
+  <script src="../includes/underscore/underscore-1.5.2.js"></script>
+  
+  <script src="../taaspace.js"></script>
+  <script>
+    var space = Taaspace.create('#space');
+    var port = space.getViewport();
+    
+    var help = space.createText('Move by drag.')
+      .size(80, 16)
+      .fontSize(11)
+      .moveBy(-46, -14)
+      .movable();
+    
+    var spiral = space.createImage('assets/spiral-512x512.jpg')
+      .size(10, 10)
+      .moveBy(0, 0)
+      .movable();
+    
+    var blackletter = space.createImage('assets/blackletter-512x512.jpg')
+      .size(6, 6)
+      .moveBy(16, 2)
+      .movable();
+    
+    var rosette = space.createImage('assets/castle-512x512.jpg')
+      .size(6, 6)
+      .moveBy(28, 2);
+    
+    port.scalable().movable();
+    
+    
+    port.focusTo(space, 0.618);
+    
+    spiral.on('tap', function (event) {
+      event.stopPropagation();
+      spiral.select();
+      port.deselect();
+    });
+    
+    port.on('tap', function () {
+      spiral.deselect();
+      port.select();
+    });
+    
+  </script>
+</body>
+</html>

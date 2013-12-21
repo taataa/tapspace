@@ -1,4 +1,4 @@
-/*! taaspace - v2.7.0 - 2013-12-21
+/*! taaspace - v2.8.0 - 2013-12-21
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -392,6 +392,12 @@ Taaspace.SpaceElement = (function () {
     // Is animation currently playing.
     // Makes possible to cancel animations.
     this._animation = null;
+    
+    // Model for movability. Defined in movable().
+    this._movable = {};
+    
+    // Model for scalability. Defined in scalable().
+    this._scalable = {};
   };
   
   exports.create = function () {
@@ -764,6 +770,139 @@ Taaspace.SpaceElement = (function () {
     return this;
   };
   
+  Elem.prototype.draggable = function () {
+    // DEPRECATED, alias to Elem.movable
+    /* jshint multistr: true */
+    console.warn('Element.draggable is deprecated. \
+Use Element.movable instead.');
+    return this.movable.apply(this, arguments);
+  };
+  
+  Elem.prototype.movable = function (onoff, options) {
+    // Make element movable by dragging with pointer or finger.
+    // 
+    // Parameter
+    //   onoff (optional, default true)
+    //
+    // Parameter (Alternative)
+    //   options (optional)
+    //
+    // Parameter (Alternative)
+    //   onoff
+    //   options
+    //     Scaling limits
+    // 
+    // Return
+    //   this
+    //     for chaining
+    
+    // Normalize parameters
+    if (typeof onoff === 'object') {
+      options = onoff;
+      onoff = true;
+    } else if (typeof onoff !== 'boolean') { // e.g. undefined
+      onoff = true;
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    
+    if (!this._movable.hasOwnProperty('status')) {
+      // Movability not yet initialized
+      
+      // Capture difference between events
+      var prevdx = 0;
+      var prevdy = 0;
+      
+      var that = this;
+      
+      var vp = this._space.getViewport();
+      var delta = function () {
+        // Make key moves relative to scale.
+        return vp.translateDistanceToSpace(100);
+      };
+      
+      this._movable = {
+        status: false,
+        ondragstart: function (ev) {
+          // Reset difference
+          prevdx = 0;
+          prevdy = 0;
+          // Prevent affecting the viewport. Viewport might be movable also.
+          ev.stopPropagation();
+        },
+        defaultAnimOptions: {
+          ease: 'in-out',
+          duration: '0.3s'
+        },
+        animOptions: {}, // set when checking disableAnimation
+        ondrag: function (ev) {
+          ev.gesture.preventDefault();
+          
+          var dx = vp.translateDistanceToSpace(ev.gesture.deltaX);
+          var dy = vp.translateDistanceToSpace(ev.gesture.deltaY);
+          
+          that.moveBy(dx - prevdx, dy - prevdy);
+          prevdx = dx;
+          prevdy = dy;
+          
+          // Prevent affecting the viewport. Viewport might be movable also.
+          ev.stopPropagation();
+        },
+        onkeyup: function () {
+          that.moveBy(0, -delta(), that._movable.animOptions);
+        },
+        onkeydown: function () {
+          that.moveBy(0, delta(), that._movable.animOptions);
+        },
+        onkeyleft: function () {
+          that.moveBy(-delta(), 0, that._movable.animOptions);
+        },
+        onkeyright: function () {
+          that.moveBy(delta(), 0, that._movable.animOptions);
+        }
+      };
+    }
+    
+    // Modify animation options before return.
+    // If user specifies disableAnimation, then user wants to disable it
+    // regardless of on or off.
+    if (options.hasOwnProperty('disableAnimation') &&
+        options.disableAnimation === true) {
+      this._movable.animOptions = {};
+    } else {
+      // Revert back to default.
+      this._movable.animOptions = this._movable.defaultAnimOptions;
+    }
+    
+    if (onoff === false) {
+      // Turn movability off
+      this._movable.status = false;
+      this.off('dragstart', this._movable.ondragstart);
+      this.off('drag', this._movable.ondrag);
+      this.off('key-up', this._movable.onkeyup);
+      this.off('key-down', this._movable.onkeydown);
+      this.off('key-left', this._movable.onkeyleft);
+      this.off('key-right', this._movable.onkeyright);
+      return this;
+    } // else
+    
+    // Avoid double ons
+    if (this._movable.status === true) {
+      return this;
+    } // else
+    
+    // Turn movability on
+    this._movable.status = true;
+    this.on('dragstart', this._movable.ondragstart);
+    this.on('drag', this._movable.ondrag);
+    this.on('key-up', this._movable.onkeyup);
+    this.on('key-down', this._movable.onkeydown);
+    this.on('key-left', this._movable.onkeyleft);
+    this.on('key-right', this._movable.onkeyright);
+    return this;
+  };
+  
   Elem.prototype.scalable = function (onoff, options) {
     // Make element scalable by pinch gesture.
     // 
@@ -789,30 +928,6 @@ Taaspace.SpaceElement = (function () {
     throw 'Not implemented';
   };
   
-  Elem.prototype.draggable = function () {
-    // DEPRECATED, alias to Elem.movable
-    /* jshint multistr: true */
-    console.warn('Element.draggable is deprecated. \
-Use Element.movable instead.');
-    return this.movable.apply(this, arguments);
-  };
-  
-  Elem.prototype.movable = function (onoff, options) {
-    // Make element movable by dragging with pointer or finger.
-    // 
-    // Parameter
-    //   onoff (optional, default true)
-    //   options (optional)
-    //     Scaling limits
-    // 
-    // Return
-    //   this
-    //     for chaining
-    // 
-    // Priority
-    //   low
-    throw 'Not implemented';
-  };
   
   Elem.prototype.remove = function () {
     // Remove the element from space.
@@ -1750,7 +1865,7 @@ Use Viewport.movable instead.');
   };
   
   View.prototype.movable = function (onoff, options) {
-    // Make viewport movable aka pannable aka translateable.
+    // Make viewport movable aka pannable aka translatable.
     // 
     // Parameter
     //   onoff (optional, default true)
@@ -1769,11 +1884,8 @@ Use Viewport.movable instead.');
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority
-    //   high
     
-    // Handle parameters
+    // Normalize parameters
     if (typeof onoff === 'object') {
       options = onoff;
       onoff = true;
@@ -3261,7 +3373,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.7.0';
+  Taaspace.version = '2.8.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {

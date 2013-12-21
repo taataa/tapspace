@@ -624,7 +624,7 @@ Use Viewport.movable instead.');
   };
   
   View.prototype.movable = function (onoff, options) {
-    // Make viewport movable aka pannable aka translateable.
+    // Make viewport movable aka pannable aka translatable.
     // 
     // Parameter
     //   onoff (optional, default true)
@@ -643,11 +643,8 @@ Use Viewport.movable instead.');
     // Return
     //   this
     //     for chaining
-    // 
-    // Priority
-    //   high
     
-    // Handle parameters
+    // Normalize parameters
     if (typeof onoff === 'object') {
       options = onoff;
       onoff = true;
