@@ -15139,6 +15139,11 @@ Taaspace.SpaceElement = (function () {
     this._px = 0;
     this._py = 0;
     
+    // Events FIXME use minibus
+    this._onScaled = [];
+    //this._onMoved = [];
+    //this._onRotated = [];
+    
     // Is animation currently playing.
     // Makes possible to cancel animations.
     this._animation = null;
@@ -15626,6 +15631,22 @@ Use Element.movable instead.');
     this._eventOffHtmlElement(eventType, callback);
   };
   
+  Elem.prototype.emit = function (eventType) {
+    // Fire an event.
+    // FIXME just a quick'n'dirty
+    
+    var handlerList;
+    if (eventType === 'scaled') {
+      handlerList = this._onScaled;
+    }
+    
+    var i, handler;
+    for (i = 0; i < handlerList.length; i += 1) {
+      handler = handlerList[i];
+      handler.call(this);
+    }
+  };
+  
   Elem.prototype.select = function () {
     this._selectHtmlElement();
     this._space._select(this);
@@ -15734,6 +15755,10 @@ Use Element.movable instead.');
   
   Elem.prototype._scaleHtmlElement = function (options) {
     // Can be overridden in the child prototype.
+    // 
+    // Emit
+    //   scaled
+    //     When the scale is finished.
     
     // Normalize
     if (typeof options !== 'object') {
@@ -15790,7 +15815,10 @@ Use Element.movable instead.');
           height: h + 'px'
         });
       }
+      
     }
+    
+    this.emit('scaled');
   };
   
   
@@ -15807,6 +15835,8 @@ Use Element.movable instead.');
       // Keyboard event
       var jwertyCode = eventType.substring(4);
       this._space._onKey(jwertyCode, this, handler);
+    } else if (eventType === 'scaled') {
+      this._onScaled.push(handler); // FIXME, use minibus
     } else {
       // Mouse or touch event
       this._hammertime.on(eventType, handler);
@@ -15821,6 +15851,8 @@ Use Element.movable instead.');
       // Keyboard event
       var jwertyCode = eventType.substring(4);
       this._space._offKey(jwertyCode, this, handler);
+    } else if (eventType === 'scaled') {
+      this._onScaled = []; // FIXME, use minibus
     } else {
       // Mouse or touch event
       this._hammertime.off(eventType, handler);

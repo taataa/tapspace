@@ -28,9 +28,14 @@
     }
     
     img {
-      box-shadow: 0px 0px 15px #050505;
       padding: 0px;
       margin: 0px;
+      opacity: 0.382;
+    }
+    
+    img.focused {
+      box-shadow: 0px 0px 15px #050505;
+      opacity: 1;
     }
   </style>
 </head>
@@ -124,37 +129,53 @@
       }
     };
     
-    var focusSize = 0.1;
+    var focusSize = 0.2;
     var depthRadius = 3;
     var nextRatio = 1.618;
+    var sin45 = 1 / Math.sqrt(2);
     
     var net = space.createNetwork({
       create: function (space, unit, done, predecessor) {
-        var size, pivot, xy;
+        // var predecessorRadius, unitRadius, predecessorCenter
+        var pr, ur, pc;
+        // var unitX, unitY
+        var ux, uy;
         if (predecessor === null) {
+          ur = 0.5;
           unit.spaceElement = space.createImage(unit.src)
-            .size(1, 1)
+            .size(ur * 2, ur * 2)
             .pivot(0, 0)
             .moveTo(0, 0);
         } else if (predecessor.id === unit.prev) {
-          size = predecessor.spaceElement.width() / nextRatio;
+          pr = predecessor.spaceElement.width() / 2;
+          ur = pr / nextRatio;
           unit.spaceElement = space.createImage(unit.src)
-            .size(size, size);
-          unit.spaceElement.pivot(unit.spaceElement.northwest());
-          unit.spaceElement.moveTo(predecessor.spaceElement.southeast());
+            .size(ur * 2, ur * 2);
+          unit.spaceElement.pivot(unit.spaceElement.center());
+          pc = predecessor.spaceElement.center();
+          ux = pc.x + pr * sin45 + ur * sin45;
+          uy = pc.y + pr * sin45 + ur * sin45;
+          unit.spaceElement.moveTo(ux, uy);
         } else if (predecessor.id === unit.next) {
-          size = predecessor.spaceElement.width() * nextRatio;
+          pr = predecessor.spaceElement.width() / 2;
+          ur = pr * nextRatio;
           unit.spaceElement = space.createImage(unit.src)
-            .size(size, size);
-          unit.spaceElement.pivot(unit.spaceElement.southeast());
-          unit.spaceElement.moveTo(predecessor.spaceElement.northwest());
+            .size(ur * 2, ur * 2);
+          unit.spaceElement.pivot(unit.spaceElement.center());
+          pc = predecessor.spaceElement.center();
+          ux = pc.x - pr * sin45 - ur * sin45;
+          uy = pc.y - pr * sin45 - ur * sin45;
+          unit.spaceElement.moveTo(ux, uy);
         }
         
+        // Make them circles
+        unit.spaceElement.on('scaled', function () {
+          var r = view.translateDistanceFromSpace(this.width());
+          this.css('border-radius', r + 'px');
+        });
+        
         unit.spaceElement.on('tap', function () {
-          net.spreadFrom(unit, depthRadius, function () {
-            console.log('spreadFrom ended');
-          });
-          view.focusTo(unit.spaceElement, focusSize, {ease: 'snap'});
+          focus(unit);
         });
         
         done();
@@ -173,8 +194,20 @@
     
     view.scalable().movable().select();
     
-    net.spreadFrom(units.a, depthRadius);
-    view.focusTo(units.a.spaceElement, focusSize);
+    
+    
+    var focus = function (unit) {
+      net.spreadFrom(unit, depthRadius, function () {
+        console.log('spreadFrom ended');
+      });
+      view.focusTo(unit.spaceElement, focusSize,
+                   {ease: 'snap'});
+      // Mark as focused.
+      jQuery('.focused').removeClass('focused');
+      unit.spaceElement.addClass('focused');
+    };
+    
+    focus(units.a);
     
   </script>
 </body>
