@@ -214,7 +214,34 @@ Taaspace.Viewport = (function () {
     // Return
     //   number
     //     In range [0, 1]
-    throw 'Not implemented';
+    
+    var box;
+    
+    // Validate and normalize params
+    if (typeof boxOrElem === 'object') {
+      if ('box' in boxOrElem && typeof boxOrElem.box === 'function') {
+        box = boxOrElem.box();
+      } else {
+        // use boxOrElem as is.
+        box = boxOrElem;
+      }
+    } else {
+      console.error('Viewport.visibilityRatioOf() invalid parameter:',
+                    boxOrElem);
+      return;
+    }
+    
+    // Viewport box
+    var vbox = this.box();
+    
+    // Area of a rectangle inside of a rectangle.
+    var iarea = Taaspace.util.intersectionArea(vbox, box);
+    
+    // Area of the viewport
+    var varea = Taaspace.util.boxArea(vbox);
+    
+    // Ratio
+    return iarea / varea;
   };
   
   View.prototype.distanceRatioOf = function (boxOrElem) {

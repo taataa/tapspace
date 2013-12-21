@@ -1,4 +1,4 @@
-/*! taaspace - v2.6.4 - 2013-12-21
+/*! taaspace - v2.7.0 - 2013-12-21
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
@@ -1308,7 +1308,34 @@ Taaspace.Viewport = (function () {
     // Return
     //   number
     //     In range [0, 1]
-    throw 'Not implemented';
+    
+    var box;
+    
+    // Validate and normalize params
+    if (typeof boxOrElem === 'object') {
+      if ('box' in boxOrElem && typeof boxOrElem.box === 'function') {
+        box = boxOrElem.box();
+      } else {
+        // use boxOrElem as is.
+        box = boxOrElem;
+      }
+    } else {
+      console.error('Viewport.visibilityRatioOf() invalid parameter:',
+                    boxOrElem);
+      return;
+    }
+    
+    // Viewport box
+    var vbox = this.box();
+    
+    // Area of a rectangle inside of a rectangle.
+    var iarea = Taaspace.util.intersectionArea(vbox, box);
+    
+    // Area of the viewport
+    var varea = Taaspace.util.boxArea(vbox);
+    
+    // Ratio
+    return iarea / varea;
   };
   
   View.prototype.distanceRatioOf = function (boxOrElem) {
@@ -3153,6 +3180,44 @@ Taaspace.util = (function () {
   };
   
   
+  exports.boxArea = function (box) {
+    // Area of a box.
+    // 
+    // Return
+    //   number
+    //     Positive or 0;
+    
+    //                     area
+    //                     w * h
+    //               (width) * (height)
+    return (box.x1 - box.x0) * (box.y1 - box.y0);
+  };
+  
+  
+  exports.intersectionArea = function (boxA, boxB) {
+    // Calculate area of the intersection of two boxes.
+    // 
+    // Return
+    //   number
+    //     Positive number if boxes collide.
+    //     0 if the boxes do not collide.
+    var ItlX = Math.max(boxA.x0, boxB.x0);
+    var ItlY = Math.max(boxA.y0, boxB.y0);
+    var IbrX = Math.min(boxA.x1, boxB.x1);
+    var IbrY = Math.min(boxA.y1, boxB.y1);
+    var Iwidth;
+    var Iheight;
+    
+    if (ItlX <= IbrX && ItlY <= IbrY) {
+      Iwidth = IbrX - ItlX;
+      Iheight = IbrY - ItlY;
+      return Iwidth * Iheight;
+    }
+    
+    // else
+    return 0;
+  };
+  
   
   ///////////////
   return exports;
@@ -3164,7 +3229,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.6.4';
+  Taaspace.version = '2.7.0';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
