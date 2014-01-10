@@ -1,7 +1,7 @@
-/*! taaspace - v2.8.0 - 2013-12-21
+/*! taaspace - v2.8.1 - 2014-01-10
  * https://github.com/taataa/taaspace
  *
- * Copyright (c) 2013 Akseli Palen <akseli.palen@gmail.com>;
+ * Copyright (c) 2014 Akseli Palen <akseli.palen@gmail.com>;
  * Licensed under the MIT license */
 
 /*!
@@ -17283,12 +17283,34 @@ Taaspace.Network = (function () {
   // Constructor
   
   var Net = function (space, kwargs) {
+    
+    // Validate parameters
+    var valid = false;
+    if (typeof kwargs === 'object') {
+      if (kwargs.hasOwnProperty('create') &&
+          typeof kwargs.create === 'function' &&
+          kwargs.hasOwnProperty('neighbors') &&
+          typeof kwargs.neighbors === 'function' &&
+          kwargs.hasOwnProperty('remove') &&
+          typeof kwargs.remove === 'function') {
+        valid = true;
+      }
+    }
+    if (!valid) {
+      var err = {
+        name: 'InvalidParameterError',
+        message: 'Missing parameter or parameter type is not a function.'
+      };
+      console.error(err.name, err.message);
+      throw err;
+    }
+    
     this._space = space;
     this._create = kwargs.create;
     this._neighbors = kwargs.neighbors;
     this._remove = kwargs.remove;
     
-    this._objects = [];
+    this._vertices = [];
   };
   
   // Extend Taaspace
@@ -17309,14 +17331,14 @@ Taaspace.Network = (function () {
     //     See Keyword Arguments.
     // 
     // Keyword Arguments
-    //   create
-    //     Function that defines how to create the SpaceElements for the
+    //   create (required)
+    //     Function that defines how to create the SpaceElement(s) of the
     //     given object. Must call done when finished.
-    //   neighbors
+    //   neighbors (required)
     //     Function that defines which objects are adjancent to the 
     //     given object. Must call done with the adjacent in an array.
-    //   remove
-    //     Function that defines how to remove the SpaceElements for the
+    //   remove (required)
+    //     Function that defines how to remove the SpaceElement(s) of the
     //     given object. Must call done when finished.
     
     var network = new Net(this, kwargs);
@@ -17392,7 +17414,7 @@ Taaspace.Network = (function () {
         
         var done = function () {
           
-          // Do not continue if too far.
+          // Do not continue to this direction if too far.
           if (distance + 1 > toDepth) {
             spreadTo([]);
             return;
@@ -17404,7 +17426,7 @@ Taaspace.Network = (function () {
         if (!vertex.hasOwnProperty(isCreated)) {
           // Is done only once per vertex during the lifespan of the vertex.
           vertex[isCreated] = true;
-          that._objects.push(vertex);
+          that._vertices.push(vertex);
           that._create(that._space, vertex, done, predecessor, distance);
         } else {
           // Skip creating, go get the neighbors.
@@ -17428,7 +17450,7 @@ Taaspace.Network = (function () {
             next();
           }
         });
-        that._objects = newVertices;
+        that._vertices = newVertices;
         
         // Everything finished.
         callback();
@@ -17450,31 +17472,29 @@ Taaspace.Network = (function () {
   // Pseudo-private functions
   
   Net.prototype._each = function (iterator) {
-    // Synchronic for each.
+    // Synchronic for-each.
     // Execute iterator function for each currently existing object of
     // the network.
-    var i, obj;
-    for (i = 0; i < this._objects.length; i += 1) {
-      obj = this._objects[i];
-      iterator(obj, i, this._objects);
+    var i;
+    var list = this._vertices;
+    for (i = 0; i < list.length; i += 1) {
+      iterator(list[i], i, list);
     }
   };
   
   Net.prototype._asyncEach = function (iterator) {
-    // Asynchronic for each.
+    // Asynchronic for-each.
     
     var i = 0;
-    var obj;
-    var list = this._objects;
+    var list = this._vertices;
     var next = function next() {
       if (i >= list.length) {
         return;
       }
-      obj = list[i];
-      i += 1;
-      iterator(obj, next, i - 1, list);
+      i += 1; // tail recursion
+      iterator(list[i], next, i - 1, list);
     };
-    next();
+    next(); // start
   };
   
   
@@ -18128,7 +18148,7 @@ Taaspace.util = (function () {
 
 
   // Version
-  Taaspace.version = '2.8.0';
+  Taaspace.version = '2.8.1';
   
   // Modules
   if(typeof module === 'object' && typeof module.exports === 'object') {
