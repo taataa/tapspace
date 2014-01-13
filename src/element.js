@@ -252,8 +252,8 @@ Taaspace.SpaceElement = (function () {
     
     // Normalize parameters
     if (typeof width === 'object') {
-      height = width.height;
-      width = width.width;
+      this._w = width.width;
+      this._h = width.height;
     } else if (typeof width === 'undefined') {
       return {
         width: this._w,
