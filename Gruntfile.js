@@ -181,6 +181,27 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+    
+    qunit: {
+      dist: {
+        options: {
+          urls: [
+            'http://localhost:8000/tests/taaspace.graph.html',
+            'http://localhost:8000/tests/taaspace.util.html'
+          ]
+        },
+      }
+    },
+    
+    // Start server for QUnit tests.
+    connect: {
+      server: {
+        options: {
+          port: 8000,
+          base: '.'
+        }
+      }
     }
     
   });
@@ -189,13 +210,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify'); // For minifying
   grunt.loadNpmTasks('grunt-contrib-jshint'); // For testing
+  grunt.loadNpmTasks('grunt-contrib-qunit'); // For functional testing
+  grunt.loadNpmTasks('grunt-contrib-connect'); // For functional test server
   grunt.loadNpmTasks('grunt-replace'); // For adding versions
   
   // Default task(s).
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build', ['build-basic', 'build-standalone']);
   grunt.registerTask('build-basic', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
-  grunt.registerTask('test', ['jshint:basic', 'jshint:standalone']);
+  grunt.registerTask('test', ['test:syntax', 'test:function']);
+  grunt.registerTask('test:syntax', ['jshint:basic', 'jshint:standalone']);
+  grunt.registerTask('test:function', ['connect', 'qunit']);
   grunt.registerTask('build-standalone', ['replace', 'concat:standalone', 'uglify:standalone']);
   
 };

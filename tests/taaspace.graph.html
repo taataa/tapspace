@@ -2,30 +2,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace.graph.bfs example</title>
-  
+  <title>Taaspace.graph test</title>
+  <link rel="stylesheet" href="lib/qunit-1.13.0.css">
 </head>
 <body>
-  <h1>Taaspace.graph.bfs test (ad hoc)</h1>
-  <h2>See the console.</h2>
-  
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="lib/qunit-1.13.0.js"></script>
   <script src="../taaspace-standalone.js"></script>
-  <script>
-    
-    // Alias
-    var graph = Taaspace.graph;
-    
-    // Testing tool
-    var assert = function (condition, errorMessage) {
-      if (!condition) {
-        throw errorMessage;
-      }
-    };
-    var success = function () {
-      console.log('All tests finished successfully.');
-    };
-    
-    // Test graphs
+  <script type="text/javascript">
+  
+    // Fixture graphs
     
     // a -> b -> c -> d -> e
     //  \                 /
@@ -53,129 +40,127 @@
       g: ['d'],
       h: ['h']
     };
-  
-    var test1 = function () {
-      // Basic
+    
+    asyncTest('basic graph usage', function () {
+      expect(6); // 5 handler calls + 1 finish
       
-      var l = alpha1;
+      // Fixture alias
+      var f = alpha1;
       
-      graph.bfs({
-        root: l.a,
-        handler: function (v, spreadTo, end, predecessor, depth) {
+      Taaspace.graph.bfs({
+        root: f.a,
+        handler: function (vertex, spreadTo, end, predecessor, depth) {
           
-          assert(depth < 5, 'Depth too large');
+          ok(depth < 5, 'Depth must be below 5 because' +
+                        ' there are no more vertices.');
           
           setTimeout(function () {
-            spreadTo([l[v.next]]);
-          }, 100);
+            spreadTo([f[vertex.next]]);
+          }, 50);
         },
         finish: function () {
-          console.log('Test 1: Finished.');
+          ok(true, 'The algorithm must call finish');
           
-          // Continue to
-          test2();
+          start();
         }
       });
       
-    };
+    });
     
     
-    var test2 = function () {
-      // Explicit end
+    asyncTest('explicit end call', function () {
       
-      var l = fish;
+      var f = fish;
       
-      graph.bfs({
-        root: l.a,
+      Taaspace.graph.bfs({
+        root: f.a, // Start from the mouth of fish.
         handler: function (v, spreadTo, end, predecessor, depth) {
           
+          // End to the tail of fish.
           if (v.length === 1) {
             end(v);
           } else {
             setTimeout(function () {
+              // Convert strings to vertices and spread to those.
               var i, nextOnes;
               nextOnes = [];
               for (i = 0; i < v.length; i += 1) {
-                nextOnes.push(l[v[i]]);
+                nextOnes.push(f[v[i]]);
               }
               spreadTo(nextOnes);
-            }, 100);
+            }, 50);
           }
         },
         finish: function (endvertex) {
-          assert(typeof endvertex !== 'undefined', 'Endvertex not found.');
-          assert(endvertex[0] === 'd', 'Endvertex is not g.');
-          console.log('Test 2: Finished.');
+          ok(typeof endvertex !== 'undefined', 'Endvertex not found.');
+          ok(endvertex[0] === 'd', 'Endvertex is not g.');
           
-          // Continue to
-          test3();
+          // Finish
+          start();
         }
       });
-      
-    };
+    });
     
     
-    var test3 = function () {
-      // Do not call spreadTo or end
-      
-      var l = fish;
-      
-      graph.bfs({
-        root: l.a,
+    asyncTest('Not calling spreadTo or end', function () {
+      var f = fish;
+      Taaspace.graph.bfs({
+        root: f.a,
         handler: function (v, spreadTo, end) {
-          console.log('Test 3: Finished.');
-          test4();
+          ok(true, 'Hander is called');
+          start();
         },
         finish: function (endvertex) {
-          assert(true === false, 'We should not be here.');
+          ok(false, 'We should not be here.');
         }
       });
-    };
+    });
     
-    var test4 = function () {
-      // Call spreadTo with invalid array.
-      
-      var l = fish;
-      
-      graph.bfs({
-        root: l.a,
+    
+    asyncTest('Call spreadTo with invalid array.', function () {
+      var f = fish;
+      Taaspace.graph.bfs({
+        root: f.a,
         handler: function (v, spreadTo, end) {
           try {
             spreadTo({not:'an array'});
           } catch (err) {
-            assert(err.name === 'InvalidArrayError',
-                   'Should throw InvalidArrayError');
-            console.log('Test 4: Finished.');
-            test5();
+            ok(err.name === 'InvalidArrayError',
+               'Should throw InvalidArrayError');
+            start();
           }
         },
         finish: function (endvertex) {
-          assert(true === false, 'We should not be here.');
+          ok(false, 'We should not be here.');
         }
       });
-    };
+    });
     
-    var test5 = function () {
-      // Call end with number of parameters.
-      
-      var l = fish;
-      
-      graph.bfs({
-        root: l.a,
+    
+    asyncTest('Call end with number of parameters.', function () {
+      var f = fish;
+      Taaspace.graph.bfs({
+        root: f.a,
         handler: function (v, spreadTo, end) {
           end('h', 'e', 'll', 'o');
         },
         finish: function (a, b, c, d) {
-          assert(a+b+c+d === 'hello', 'Finish should have four parameters ' +
-                                      'which form \'hello\'.');
-          console.log('Test 5: Finished.');
-          success();
+          ok(a+b+c+d === 'hello', 'Finish should have four parameters ' +
+                                  'which form \'hello\'.');
+          start();
         }
       });
-    };
+    });
     
-    // Start test
-    test1();
+    /* Ready for future
+    asyncTest('', function () {
+    });
+    
+    asyncTest('', function () {
+    });
+    
+    asyncTest('', function () {
+    });*/
     
   </script>
 </body>
