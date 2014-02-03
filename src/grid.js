@@ -10,6 +10,39 @@ Taaspace.Grid = (function () {
   // Constructor
   
   var Grid = function (box, kwargs) {
+    // Example
+    //   var grid = space.createGrid(
+    //     mySpaceElement,
+    //     {
+    //       columns: 2,
+    //       rows: 2,
+    //       columnMargin: 0.1,
+    //       rowMargin: 0.1
+    //     }
+    //   );
+    //   mySpaceElement.moveTo(grid.northWest(-2, 1));
+    //   
+    // Parameter
+    //   box
+    //     Box object or an object with box function property.
+    //     Defines the cell size of the grid. See kwargs for dividing
+    //     to multiple columns and rows.
+    //   kwargs
+    //     A set of optional parameters.
+    //     See Keyword Arguments.
+    // 
+    // Keyword Arguments
+    //   columns (optional, default 1)
+    //     Integer. How many columns fits to the given box.
+    //   rows (optional, default 1)
+    //     Integer. How many rows fits to the given box.
+    //   columnMargin (optional, default 0)
+    //     Number. How much space should be left between the columns.
+    //     A distance in space.
+    //   rowMargin (optional, default 0)
+    //     Number. How much space should be left between the rows.
+    //     A distance in space.
+    
     // Normalize parameters
     var columns = 1;
     var rows = 1;
@@ -57,39 +90,7 @@ Taaspace.Grid = (function () {
   
   // Extend Taaspace
   Taaspace.extension.createGrid = function (box, kwargs) {
-    // Example
-    //   var grid = space.createGrid(
-    //     mySpaceElement,
-    //     {
-    //       columns: 2,
-    //       rows: 2,
-    //       columnMargin: 0.1,
-    //       rowMargin: 0.1
-    //     }
-    //   );
-    //   mySpaceElement.moveTo(grid.northWest(-2, 1));
-    //   
-    // Parameter
-    //   box
-    //     Box object or an object with box function property.
-    //     Defines the cell size of the grid. See kwargs for dividing
-    //     to multiple columns and rows.
-    //   kwargs
-    //     A set of optional parameters.
-    //     See Keyword Arguments.
-    // 
-    // Keyword Arguments
-    //   columns (optional, default 1)
-    //     Integer. How many columns fits to the given box.
-    //   rows (optional, default 1)
-    //     Integer. How many rows fits to the given box.
-    //   columnMargin (optional, default 0)
-    //     Number. How much space should be left between the columns.
-    //     A distance in space.
-    //   rowMargin (optional, default 0)
-    //     Number. How much space should be left between the rows.
-    //     A distance in space.
-    
+    // See Grid.
     return new Grid(box, kwargs);
   };
   
