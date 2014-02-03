@@ -39,6 +39,7 @@ module.exports = function(grunt) {
         src: [
           'src/intro.js',
           'src/space.js',
+          'src/box.js',
           'src/element.js',
           'src/viewport.js',
           'src/text.js',
@@ -68,6 +69,7 @@ module.exports = function(grunt) {
           'includes/jwerty/jwerty-0.3.2.js',
           'src/intro.js',
           'src/space.js',
+          'src/box.js',
           'src/element.js',
           'src/viewport.js',
           'src/text.js',
@@ -188,7 +190,8 @@ module.exports = function(grunt) {
         options: {
           urls: [
             'http://localhost:8000/tests/taaspace.graph.html',
-            'http://localhost:8000/tests/taaspace.util.html'
+            'http://localhost:8000/tests/taaspace.util.html',
+            'http://localhost:8000/tests/taaspace.box.html',
           ]
         },
       }
@@ -219,7 +222,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['build-basic', 'build-standalone']);
   grunt.registerTask('build-basic', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
   grunt.registerTask('test', ['test:syntax', 'test:function']);
-  grunt.registerTask('test:syntax', ['jshint:basic', 'jshint:standalone']);
+  grunt.registerTask('test:syntax', ['jshint:basic']);
   grunt.registerTask('test:function', ['connect', 'qunit']);
   grunt.registerTask('build-standalone', ['replace', 'concat:standalone', 'uglify:standalone']);
   
