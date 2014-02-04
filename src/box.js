@@ -100,7 +100,8 @@ Taaspace.Box = (function () {
   Box.prototype.area = function () {
     return this.w * this.h;
   };
-  
+
+
   
   // Mutators
   
