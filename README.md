@@ -2,6 +2,8 @@
 
 A javascript library for zooming user interfaces.
 
+![Taaspace.js Logo](../master/includes/taaspace-logo-128.png?raw=true)
+
 ## Examples
 
 - [Basic example](https://rawgithub.com/taataa/taaspace/master/examples/basic.html) with zoomable and pannable space and text and image elements.
