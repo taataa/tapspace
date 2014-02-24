@@ -234,13 +234,13 @@ Taaspace.SpaceElement = (function () {
     // Parameter
     //   width
     //     in space
-    //   height
+    //   height (optional, default to width)
     //     in space
     // 
     // Parameter (Alternative)
-    //   wh
+    //   widthheight
     //     {width: <width_in_space>, height: <height_in_space>}
-    // 
+    //
     // Parameter (Alternative)
     //   <nothing>
     //     Returns the current {width, height} of the element
@@ -260,8 +260,9 @@ Taaspace.SpaceElement = (function () {
         height: this._h
       };
     } else if (typeof height === 'undefined') {
-      // Missing height
+      // Missing height, make square
       this._w = width;
+      this._h = width;
     } else {
       this._w = width;
       this._h = height;
