@@ -1,4 +1,4 @@
-/*! taaspace - v2.9.0 - 2014-01-13
+/*! taaspace - v2.9.0 - 2014-02-24
  * https://github.com/taataa/taaspace
  *
  * Copyright (c) 2014 Akseli Palen <akseli.palen@gmail.com>;
@@ -15090,6 +15090,171 @@ var Taaspace = (function () {
 }());
 
 
+Taaspace.Box = (function () {
+  //
+  // A box object representing a rectangle.
+  // 
+  var exports = {};
+  /////////////////
+  
+  
+  
+  // Constructor
+  
+  var Box = function (nwx, nwy, sex, sey) {
+    // Example
+    //   var b = Taaspace.Box.create(nwx, nwy, sex, sey);
+    //   b.northWest();
+    //   
+    // Parameter
+    //   nwx
+    //   nwy
+    //     North west X- and Y-coordinate
+    //   sex
+    //   sey
+    //     South east X- and Y-coordinate
+    // 
+    
+    this.x = nwx;
+    this.y = nwy;
+    this.w = sex - nwx;
+    this.h = sey - nwy;
+  };
+  
+  exports.create = function (nwx, nwy, sex, sey) {
+    return new Box(nwx, nwy, sex, sey);
+  };
+  
+  
+  
+  // Accessors
+  
+  Box.prototype.center = function () {
+    // Center point of the box.
+    // 
+    // Return
+    //   point
+    
+    return {
+      x: this.x + this.w / 2,
+      y: this.y + this.h / 2
+    };
+  };
+  
+  Box.prototype.northWest = function () {
+    // North-west point
+    // See .center(...) for details.
+    
+    return {
+      x: this.x,
+      y: this.y
+    };
+  };
+  
+  Box.prototype.northEast = function () {
+    // North-east point
+    // See .center(...) for details.
+    
+    return {
+      x: this.x + this.w,
+      y: this.y
+    };
+  };
+  
+  Box.prototype.southWest = function () {
+    // South-west point
+    // See .center(...) for details.
+    
+    return {
+      x: this.x,
+      y: this.y + this.h
+    };
+  };
+  
+  Box.prototype.southEast = function () {
+    // South-east point
+    // See .center(...) for details.
+    
+    return {
+      x: this.x + this.w,
+      y: this.y + this.h
+    };
+  };
+  
+  Box.prototype.width = function () {
+    return this.w;
+  };
+  
+  Box.prototype.height = function () {
+    return this.h;
+  };
+  
+  Box.prototype.area = function () {
+    return this.w * this.h;
+  };
+
+
+  
+  // Mutators
+  
+  Box.prototype.moveTo = function (x, y) {
+    // Move the box so that the north-west corner is at x, y
+    // 
+    // Parameter
+    //   x
+    //   y
+    // 
+    // Parameter (Alternative)
+    //   xy
+    // 
+    // Return
+    //   this, for chaining
+    
+    // Normalize params
+    if (typeof x === 'object') {
+      y = x.y;
+      x = x.x;
+    }
+    
+    this.x = x;
+    this.y = y;
+    
+    return this;
+  };
+  
+  
+  Box.prototype.moveBy = function (dx, dy) {
+    // Move the box by delta
+    // 
+    // Parameter
+    //   dx
+    //   dy
+    // 
+    // Parameter (Alternative)
+    //   dxdy
+    // 
+    // Return
+    //   this
+    //     for chaining
+    
+    // Normalize params
+    if (typeof dx === 'object') {
+      dy = dx.y;
+      dx = dx.x;
+    }
+    
+    this.x += dx;
+    this.y += dy;
+    
+    return this;
+  };
+  
+  
+  
+  ///////////////
+  return exports;
+}());
+
 Taaspace.SpaceElement = (function () {
   //
   // Abstract prototype for all objects floating in the space.
@@ -15326,13 +15491,13 @@ Taaspace.SpaceElement = (function () {
     // Parameter
     //   width
     //     in space
-    //   height
+    //   height (optional, default to width)
     //     in space
     // 
     // Parameter (Alternative)
-    //   wh
+    //   widthheight
     //     {width: <width_in_space>, height: <height_in_space>}
-    // 
+    //
     // Parameter (Alternative)
     //   <nothing>
     //     Returns the current {width, height} of the element
@@ -15352,8 +15517,9 @@ Taaspace.SpaceElement = (function () {
         height: this._h
       };
     } else if (typeof height === 'undefined') {
-      // Missing height
+      // Missing height, make square
       this._w = width;
+      this._h = width;
     } else {
       this._w = width;
       this._h = height;
@@ -16984,6 +17150,40 @@ Taaspace.Text = (function () {
   
   // Mutators
   
+  Text.prototype.text = function (newText, options) {
+    // Parameter
+    //   newText (optional)
+    //     String. If omitted, returns the original text.
+    //   options (optional)
+    //     Object
+    // 
+    // Options
+    //   disableHtml
+    //     Handle string as plain text. See jQuery .text() and .html()
+
+
+    // Normalize params
+
+    if (typeof newText === 'string') {
+      if (typeof options !== 'object') {
+        options = {};
+      }
+
+      this._string = newText;
+
+      // The content. Plain text or HTML.
+      var method = 'html';
+      if (options.hasOwnProperty('disableHTML')) {
+        if (options.disableHTML === true) {
+          method = 'text';
+        }
+      }
+      this._htmlElement[method](this._string);
+      return this; // chain 
+    }
+    return this._string;
+  };
+
   Text.prototype.fontSize = function (newSize, options) {
     // Parameter
     //   options
@@ -17025,7 +17225,7 @@ Taaspace.Text = (function () {
     // 
     // Option
     //   disableHTML
-    //     Handle string as plain text. See jQuery .text() and .html()
+    //     See .text()
     
     // Normalize params
     if (typeof options !== 'object') {
@@ -17195,6 +17395,17 @@ Taaspace.Image = (function () {
   
   
   
+  // Mutators
+
+  Img.prototype.sourceImage = function (newSrc) {
+    // Change source image path or return the current.
+    if (typeof newSrc === 'undefined') {
+      return this._src;
+    } // else
+    this._htmlElement.attr('src', newSrc);
+    return this;
+  };
+
   
   
   // Pseudo-private mutators
@@ -17774,6 +17985,39 @@ Taaspace.Grid = (function () {
   // Constructor
   
   var Grid = function (box, kwargs) {
+    // Example
+    //   var grid = space.createGrid(
+    //     mySpaceElement,
+    //     {
+    //       columns: 2,
+    //       rows: 2,
+    //       columnMargin: 0.1,
+    //       rowMargin: 0.1
+    //     }
+    //   );
+    //   mySpaceElement.moveTo(grid.northWest(-2, 1));
+    //   
+    // Parameter
+    //   box
+    //     Box object or an object with box function property.
+    //     Defines the cell size of the grid. See kwargs for dividing
+    //     to multiple columns and rows.
+    //   kwargs
+    //     A set of optional parameters.
+    //     See Keyword Arguments.
+    // 
+    // Keyword Arguments
+    //   columns (optional, default 1)
+    //     Integer. How many columns fits to the given box.
+    //   rows (optional, default 1)
+    //     Integer. How many rows fits to the given box.
+    //   columnMargin (optional, default 0)
+    //     Number. How much space should be left between the columns.
+    //     A distance in space.
+    //   rowMargin (optional, default 0)
+    //     Number. How much space should be left between the rows.
+    //     A distance in space.
+    
     // Normalize parameters
     var columns = 1;
     var rows = 1;
@@ -17821,39 +18065,7 @@ Taaspace.Grid = (function () {
   
   // Extend Taaspace
   Taaspace.extension.createGrid = function (box, kwargs) {
-    // Example
-    //   var grid = space.createGrid(
-    //     mySpaceElement,
-    //     {
-    //       columns: 2,
-    //       rows: 2,
-    //       columnMargin: 0.1,
-    //       rowMargin: 0.1
-    //     }
-    //   );
-    //   mySpaceElement.moveTo(grid.northWest(-2, 1));
-    //   
-    // Parameter
-    //   box
-    //     Box object or an object with box function property.
-    //     Defines the cell size of the grid. See kwargs for dividing
-    //     to multiple columns and rows.
-    //   kwargs
-    //     A set of optional parameters.
-    //     See Keyword Arguments.
-    // 
-    // Keyword Arguments
-    //   columns (optional, default 1)
-    //     Integer. How many columns fits to the given box.
-    //   rows (optional, default 1)
-    //     Integer. How many rows fits to the given box.
-    //   columnMargin (optional, default 0)
-    //     Number. How much space should be left between the columns.
-    //     A distance in space.
-    //   rowMargin (optional, default 0)
-    //     Number. How much space should be left between the rows.
-    //     A distance in space.
-    
+    // See Grid.
     return new Grid(box, kwargs);
   };
   

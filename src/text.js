@@ -42,6 +42,40 @@ Taaspace.Text = (function () {
   
   // Mutators
   
+  Text.prototype.text = function (newText, options) {
+    // Parameter
+    //   newText (optional)
+    //     String. If omitted, returns the original text.
+    //   options (optional)
+    //     Object
+    // 
+    // Options
+    //   disableHtml
+    //     Handle string as plain text. See jQuery .text() and .html()
+
+
+    // Normalize params
+
+    if (typeof newText === 'string') {
+      if (typeof options !== 'object') {
+        options = {};
+      }
+
+      this._string = newText;
+
+      // The content. Plain text or HTML.
+      var method = 'html';
+      if (options.hasOwnProperty('disableHTML')) {
+        if (options.disableHTML === true) {
+          method = 'text';
+        }
+      }
+      this._htmlElement[method](this._string);
+      return this; // chain 
+    }
+    return this._string;
+  };
+
   Text.prototype.fontSize = function (newSize, options) {
     // Parameter
     //   options
@@ -83,7 +117,7 @@ Taaspace.Text = (function () {
     // 
     // Option
     //   disableHTML
-    //     Handle string as plain text. See jQuery .text() and .html()
+    //     See .text()
     
     // Normalize params
     if (typeof options !== 'object') {

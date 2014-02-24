@@ -68,7 +68,7 @@
       
     var lennaText = space.createText('She\'s Lena, a Playboy model whose picture has become most widely used test image for all kinds of image processing algorithms since early 1970\'s.')
       .moveBy(1450, 1582)
-      .size(10, 10)
+      .size(10) // width = height = 10
       .fontSize(1);
     
     var moreText = space.createText('Still want some more?')
@@ -83,7 +83,7 @@
     
     var backText = space.createText('BTW, tapping the background throws you back where you started.')
       .moveBy(1450, 1593.132)
-      .size(0.1, 0.1)
+      .size(0.1)
       .fontSize(0.010);
     
     var valley = space.createImage('assets/valley-512x1024.jpg')
@@ -95,19 +95,19 @@
       .moveBy(558,708);
     
     var spiral = space.createImage('assets/spiral-512x512.jpg')
-      .size(316, 316)
+      .size(316)
       .moveBy(874, 1070);
     
     var blackletter = space.createImage('assets/blackletter-512x512.jpg')
-      .size(195, 195)
+      .size(195)
       .moveBy(994, 1433);
     
     var castle = space.createImage('assets/castle-512x512.jpg')
-      .size(121, 121)
+      .size(121)
       .moveBy(1236, 1507);
     
     var lenna = space.createImage('assets/Lenna-512x512.png')
-      .size(46, 46)
+      .size(46)
       .moveBy(1403, 1582);
     
     // Lets have a viewport to the space. Like a window to a new universe.

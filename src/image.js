@@ -41,6 +41,17 @@ Taaspace.Image = (function () {
   
   
   
+  // Mutators
+
+  Img.prototype.sourceImage = function (newSrc) {
+    // Change source image path or return the current.
+    if (typeof newSrc === 'undefined') {
+      return this._src;
+    } // else
+    this._htmlElement.attr('src', newSrc);
+    return this;
+  };
+
   
   
   // Pseudo-private mutators
