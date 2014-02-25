@@ -45,6 +45,7 @@ module.exports = function(grunt) {
           'src/intro.js',
           'src/space.js',
           'src/box.js',
+          'src/geometry/point.js',
           'src/element.js',
           'src/viewport.js',
           'src/text.js',
@@ -75,6 +76,7 @@ module.exports = function(grunt) {
           'src/intro.js',
           'src/space.js',
           'src/box.js',
+          'src/geometry/point.js',
           'src/element.js',
           'src/viewport.js',
           'src/text.js',
@@ -175,7 +177,7 @@ module.exports = function(grunt) {
         options: {
           patterns: [
             {
-              match: /Taaspace\.version\s=\s'\d\.\d\.\d'/,
+              match: /Taaspace\.version\s*=\s*'\d+\.\d+\.\d+'/,
               replacement: "Taaspace.version = '<%= pkg.version %>'",
               expression: true // use RegExp
             }
