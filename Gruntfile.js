@@ -26,6 +26,11 @@ module.exports = function(grunt) {
  * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %> <<%= pkg.author.email %>>;\n\
  * Licensed under the <%= pkg.license.type %> license */\n\n'
     },
+
+    // List available tasks
+    availabletasks: {
+      tasks: {}
+    },
     
     // Merge source files
     concat: {
@@ -192,6 +197,7 @@ module.exports = function(grunt) {
             'http://localhost:8000/tests/taaspace.graph.html',
             'http://localhost:8000/tests/taaspace.util.html',
             'http://localhost:8000/tests/taaspace.box.html',
+            'http://localhost:8000/tests/taaspace.point.html',
           ]
         },
       }
@@ -210,6 +216,7 @@ module.exports = function(grunt) {
   });
   
   // Load tasks
+  grunt.loadNpmTasks('grunt-available-tasks'); 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify'); // For minifying
   grunt.loadNpmTasks('grunt-contrib-jshint'); // For testing
@@ -218,7 +225,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-replace'); // For adding versions
   
   // Default task(s).
-  grunt.registerTask('default', ['build']);
+  grunt.registerTask('default', ['availabletasks']);
   grunt.registerTask('build', ['build-basic', 'build-standalone']);
   grunt.registerTask('build-basic', ['replace', 'concat:basic', 'uglify:basic', 'jshint:basic']);
   grunt.registerTask('test', ['test:syntax', 'test:function']);
