@@ -189,6 +189,23 @@ module.exports = function(grunt) {
             dest: 'src/outro.js'
           }
         ]
+      },
+      readme: {
+        options: {
+          patterns: [
+            {
+              match: />v\d+\.\d+\.\d+</,
+              replacement: ">v<%= pkg.version %><",
+              expression: true // use RegExp
+            }
+          ]
+        },
+        files: [
+          {
+            src: ['README.md'],
+            dest: 'README.md'
+          }
+        ]
       }
     },
     

@@ -1,4 +1,4 @@
-# Taaspace.js
+# Taaspace.js<sup>v2.10.1</sup>
 
 A javascript library for dynamic zooming user interfaces.
 
