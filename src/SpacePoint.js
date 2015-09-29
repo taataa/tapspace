@@ -16,14 +16,14 @@ var SpacePoint = function (xy, reference) {
   }
 };
 
-var proto = Point.prototype;
+var proto = SpacePoint.prototype;
 
 
 proto.offset = function (dxdy) {
   // Create a new point nearby.
   var x = this.xy[0] + dxdy[0];
   var y = this.xy[1] + dxdy[1];
-  return new Point([x, y], this.tr);
+  return new SpacePoint([x, y], this.tr);
 };
 
 proto.equals = function (point) {
@@ -32,11 +32,11 @@ proto.equals = function (point) {
           this.tr.equals(point.tr));
 };
 
-proto.transformTo = function (reference) {
+proto.projectTo = function (reference) {
   var inv = this.tr.inverse();
   var spacexy = this.xy.transform(inv);
   return spacexy.transform(reference.tr);
 };
 
 
-module.exports = Point;
+module.exports = SpacePoint;

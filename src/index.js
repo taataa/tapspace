@@ -1,4 +1,7 @@
 
-exports.Point = require('./Point.js');
+exports.Taa = require('./Taa');
+exports.Space = require('./Space');
+exports.SpaceTaa = require('./SpaceTaa');
+exports.SpaceView = require('./SpaceView');
 
-exports.version = require('./version.js');
+exports.version = require('./version');

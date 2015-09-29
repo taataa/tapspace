@@ -21,18 +21,29 @@
     "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
   },
   "dependencies": {
-    "kld-affine": "^0.1.0"
+    "kld-affine": "^0.1.0",
+    "seqid": "^1.0.1"
   },
   "devDependencies": {
-    "jshint": "latest"
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.3",
+    "browserify": "^11.2.0",
+    "mocha-phantomjs": "^4.0.1",
+    "phantomjs": "^1.9.18",
+    "chai": "^3.3.0",
+    "chai-jquery": "^2.0.0",
+    "jquery": "^2.1.4",
+    "minifyify": "^7.1.0"
   },
   "scripts": {
     "start": "python -m SimpleHTTPServer",
-    "build": "npm run test:lint && npm run build:bundle && npm run test:headless",
+    "build": "npm run test:lint && npm run build:dev && npm run test:headless",
     "build:bundle": "browserify src/index.js --standalone taaspace -o taaspace.js",
+    "build:dev": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
+    "#build:dev": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.map.json --output taaspace.map.json] > taaspace.min.js",
     "test": "npm run test:lint && npm run test:headless",
-    "test:unit": "mocha test/taaspace.test.js",
-    "test:headless": "mocha-phantomjs test/testrunner.html",
-    "test:lint": "jshint src/* test/*.js"
+    "test:unit": "mocha tests/taaspace.test.js",
+    "test:headless": "mocha-phantomjs tests/testrunner.html",
+    "test:lint": "jshint src/* tests/*.js"
   }
 }
