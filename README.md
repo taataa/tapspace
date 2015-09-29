@@ -1,12 +1,8 @@
 # taaspace.js<sup>v3.0.0dev</sup>
 
-A javascript library for positioning zoomable user interfaces of square-formatted images.
+A javascript library for positioning zoomable user interfaces of square-formatted images. For example great tool for image graph visualization.
 
 ![taaspace.js Logo](docs/taaspace-logo-128.png?raw=true)
-
-## Examples
-
-- [Basic example](https://rawgithub.com/taataa/taaspace/master/examples/basic.html).
 
 ## Features
 
@@ -16,6 +12,7 @@ A javascript library for positioning zoomable user interfaces of square-formatte
 
 ## TODO
 
+- So much, including
 - Grouping
 - Helper function for full-page apps.
 - Documentation

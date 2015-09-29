@@ -20,7 +20,9 @@
     "type": "MIT",
     "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
   },
-  "dependencies": {},
+  "dependencies": {
+    "kld-affine": "^0.1.0"
+  },
   "devDependencies": {
     "jshint": "latest"
   },
