@@ -2,7 +2,7 @@
 
 A javascript library for positioning zoomable user interfaces of square-formatted images.
 
-![taaspace.js Logo](../master/docs/taaspace-logo-128.png?raw=true)
+![taaspace.js Logo](docs/taaspace-logo-128.png?raw=true)
 
 ## Examples
 
