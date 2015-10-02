@@ -60,8 +60,22 @@ describe('taaspace', function () {
       var a = space.add(taa);
       var p = a.at(new taaspace.Vector2D(1, 1));
       var vp = p.projectTo(view);
-      vp.xy.x.should.equal(256);
-      vp.xy.y.should.equal(256);
+      var epsilon = 0.01;
+      var val = 256;
+      vp.xy.x.should.be.within(val - epsilon, val + epsilon);
+      vp.xy.y.should.be.within(val - epsilon, val + epsilon);
+    });
+
+    it('should be transformable', function () {
+      var a = space.add(taa);
+      var r180o = (new taaspace.Matrix2D()).rotate(Math.PI);
+      a.transformBy(r180o);
+      var p = a.at(new taaspace.Vector2D(1, 1));
+      var vp = p.projectTo(view);
+      var epsilon = 0.01;
+      var val = -256;
+      vp.xy.x.should.be.within(val - epsilon, val + epsilon);
+      vp.xy.y.should.be.within(val - epsilon, val + epsilon);
     });
   });
 

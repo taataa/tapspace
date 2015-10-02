@@ -10,7 +10,7 @@ var Transformer = function (emitter) {
   };
 
   emitter.transformBy = function (transformation) {
-    emitter.tr = ctx.tr.multiply(transformation);
+    emitter.tr = emitter.tr.multiply(transformation);
     emitter.emit('transformed', emitter);
   };
 
