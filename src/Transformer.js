@@ -14,9 +14,14 @@ var Transformer = function (emitter) {
     emitter.emit('transformed', emitter);
   };
 
-  emitter.getPoint = function (xy) {
+  emitter.getSpacePoint = function (xy) {
+    // Parameter
+    //   xy
+    //     Vector2D
     return new SpacePoint(xy, emitter);
   };
+  // alias
+  emitter.at = emitter.getSpacePoint;
 };
 
 module.exports = Transformer;

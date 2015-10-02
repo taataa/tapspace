@@ -3,14 +3,27 @@ View
 */
 var Emitter = require('component-emitter');
 var Transformer = require('./transformer');
+var affine = require('kld-affine');
 
 var SpaceView = function (space, container) {
   Emitter(this);
   Transformer(this);
   var this2 = this;
 
+  // Test valid space
+  if (typeof space !== 'object' || !('add' in space)) {
+    throw 'Space should be a Space object';
+  }
+  // Test if valid dom element
+  if (!('tagName' in container)) {
+    throw 'Container should be a DOM Element';
+  }
+
   this.space = space;
   this.cont = container;
+
+  // Transformation from space to view
+  this.transformTo((new affine.Matrix2D()).scale(256));
 
   this.content = {}; // Dict over list because key search time complexity
 

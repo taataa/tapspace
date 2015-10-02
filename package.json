@@ -21,7 +21,7 @@
     "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
   },
   "dependencies": {
-    "kld-affine": "^0.1.0",
+    "kld-affine": "git+https://github.com/thelonious/kld-affine.git#development",
     "seqid": "^1.0.1"
   },
   "devDependencies": {
@@ -33,7 +33,8 @@
     "chai": "^3.3.0",
     "chai-jquery": "^2.0.0",
     "jquery": "^2.1.4",
-    "minifyify": "^7.1.0"
+    "minifyify": "^7.1.0",
+    "mochify": "^2.13.0"
   },
   "scripts": {
     "start": "python -m SimpleHTTPServer",

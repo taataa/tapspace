@@ -3,8 +3,9 @@
 describe('taaspace', function () {
 
   it('should have submodules', function () {
-    taaspace.should.have.keys('Taa', 'Space', 'SpaceTaa', 'SpaceView',
-      'version');
+    taaspace.should.have.keys('Taa', 'Space', 'SpaceView',
+      'version',
+      'Vector2D', 'Matrix2D');
   });
 
   describe('Taa', function () {
@@ -35,26 +36,33 @@ describe('taaspace', function () {
     });
   });
 
-  /*describe('SpaceTaa', function () {
-    it('should have an id', function () {
+  describe('SpaceTaa', function () {
+    var space, view, taa;
 
-      var a = new taaspace.SpaceTaa();
-      var b = new taaspace.SpaceTaa();
+    beforeEach(function (done) {
+      var cont = document.getElementById('taaspace-sandbox');
+      cont.innerHTML = '';
+      space = new taaspace.Space();
+      view = new taaspace.SpaceView(space, cont);
+      taa = new taaspace.Taa('assets/taa.png', done);
+    });
+
+    it('should have an id', function () {
+      var a = space.add(taa);
+      var b = space.add(taa);
       a.should.have.property('id');
       a.id.should.be.a.String;
       b.id.should.be.a.String;
       a.id.should.not.equal(b.id);
     });
 
-    it('should be transformable', function () {
-      var a = new taaspace.Taa('assets/taa.png');
-      (function () {
-        a.scale(1.4);
-        a.rotate(Math.PI);
-        a.translate(23, 20);
-        a.transform(1, 2, 2, 1, 10, 20);
-      }).should.not.throw();
+    it('should be able to return a SpacePoint', function () {
+      var a = space.add(taa);
+      var p = a.at(new taaspace.Vector2D(1, 1));
+      var vp = p.projectTo(view);
+      vp.xy.x.should.equal(256);
+      vp.xy.y.should.equal(256);
     });
-  });*/
+  });
 
 });

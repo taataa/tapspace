@@ -8,13 +8,11 @@ var Taa = function (imgSrc, onLoad) {
   Emitter(this);
   var this2 = this;
 
-  if (typeof onLoad !== 'function') {
-    onLoad = function () {};
-  }
-
   this.img = new Image(256, 256);
   this.img.addEventListener('load', function () {
-    onLoad(this2);
+    if (typeof onLoad === 'function') {
+      onLoad.call(this2);
+    }
     this2.emit('load', this2);
   }, false); // useCapture=false
 

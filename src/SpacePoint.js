@@ -12,7 +12,7 @@ var SpacePoint = function (xy, reference) {
   // Transformation from space to member
   this.tr = reference.tr;
   if (!this.tr.isInvertible()) {
-    throw new Error('Invertible transformation matrix');
+    throw new Error('Transformation matrix should be invertible');
   }
 };
 
@@ -21,9 +21,11 @@ var proto = SpacePoint.prototype;
 
 proto.offset = function (dxdy) {
   // Create a new point nearby.
-  var x = this.xy[0] + dxdy[0];
-  var y = this.xy[1] + dxdy[1];
-  return new SpacePoint([x, y], this.tr);
+  //
+  // Parameter
+  //   dxdy
+  //     Vector2D
+  return new SpacePoint(this.xy.add(dxdy), this.tr);
 };
 
 proto.equals = function (point) {
@@ -35,7 +37,8 @@ proto.equals = function (point) {
 proto.projectTo = function (reference) {
   var inv = this.tr.inverse();
   var spacexy = this.xy.transform(inv);
-  return spacexy.transform(reference.tr);
+  var transVect = spacexy.transform(reference.tr);
+  return new SpacePoint(transVect, reference);
 };
 
 
