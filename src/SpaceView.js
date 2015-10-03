@@ -4,6 +4,7 @@ View
 var Emitter = require('component-emitter');
 var Transformer = require('./transformer');
 var affine = require('kld-affine');
+var move = require('movejs');
 
 var SpaceView = function (space, container) {
   Emitter(this);
@@ -36,17 +37,32 @@ var SpaceView = function (space, container) {
       var img = spacetaa.taa.img.cloneNode(false); // deep=false
       img.className = 'taaspace-taa';
       this2.cont.appendChild(img);
-      this2.content[spacetaa.id] = spacetaa;
+      this2.content[spacetaa.id] = img;
       // Make transformation
+      move(img).matrix(spacetaa.tr.a, spacetaa.tr.b,
+                       spacetaa.tr.c, spacetaa.tr.d,
+                       spacetaa.tr.e, spacetaa.tr.f).end();
     }
   });
 
   this.space.on('contentRemoved', function (spacetaa) {
-    delete this2.content[spacetaa.id]; // does not throw if does not exist
+    var el;
+    if (this2.content.hasOwnProperty(spacetaa.id)) {
+      el = this2.content[spacetaa.id];
+      this2.cont.removeChild(el);
+      delete this2.content[spacetaa.id]; // does not throw if does not exist
+    }
   });
 
   this.space.on('contentTransformed', function (spacetaa) {
     // Update transformation
+    var el;
+    if (this2.content.hasOwnProperty(spacetaa.id)) {
+      el = this2.content[spacetaa.id];
+      move(el).matrix(spacetaa.tr.a, spacetaa.tr.b,
+                      spacetaa.tr.c, spacetaa.tr.d,
+                      spacetaa.tr.e, spacetaa.tr.f).end();
+    }
   });
 };
 

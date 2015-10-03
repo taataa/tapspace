@@ -21,6 +21,10 @@
       font-family: sans-serif;
       color: white;
     }
+
+    .taaspace-taa {
+      transform-origin: 0 0;
+    }
   </style>
 </head>
 <body>
@@ -31,7 +35,9 @@
     var space = new taaspace.Space();
     var view = new taaspace.SpaceView(space, container);
     var taa = new taaspace.Taa('assets/taa00.jpg', function () {
-      space.add(this);
+      var spacetaa = space.add(this);
+      spacetaa.rotateBy(0.15);
+      spacetaa.translateBy(new taaspace.Vector2D(100, 0));
     });
 
   </script>

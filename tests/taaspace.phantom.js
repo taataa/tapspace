@@ -56,6 +56,12 @@ describe('taaspace', function () {
       a.id.should.not.equal(b.id);
     });
 
+    it('should be removable', function () {
+      var a = space.add(taa);
+      a.remove();
+      space.content.hasOwnProperty(a.id).should.equal(false);
+    });
+
     it('should be able to return a SpacePoint', function () {
       var a = space.add(taa);
       var p = a.at(new taaspace.Vector2D(1, 1));

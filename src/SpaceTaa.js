@@ -13,6 +13,18 @@ var SpaceTaa = function (space, taa) {
   this.id = seqid.next().toString();
   this.space = space;
   this.taa = taa;
+
+  space._add(this);
+};
+
+var proto = SpaceTaa.prototype;
+
+proto.remove = function () {
+  if (this.space) {
+    var s = this.space;
+    this.space = null;
+    s._remove(this);
+  } // else in null space already
 };
 
 module.exports = SpaceTaa;

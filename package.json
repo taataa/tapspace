@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "kld-affine": "git+https://github.com/thelonious/kld-affine.git#development",
-    "seqid": "^1.0.1"
+    "seqid": "^1.0.1",
+    "movejs": "git://github.com/axelpale/move.js"
   },
   "devDependencies": {
     "jshint": "^2.8.0",
