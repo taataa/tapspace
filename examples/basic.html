@@ -37,7 +37,8 @@
     var taa = new taaspace.Taa('assets/taa00.jpg', function () {
       var spacetaa = space.add(this);
       spacetaa.rotateBy(0.15);
-      spacetaa.translateBy(new taaspace.Vector2D(100, 0));
+      var center = view.getSpacePointNormalized(new taaspace.Vector2D(0.5, 0.5));
+      spacetaa.translateTo(center);
     });
 
   </script>

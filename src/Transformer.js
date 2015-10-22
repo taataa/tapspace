@@ -1,8 +1,8 @@
 var affine = require('kld-affine');
 var SpacePoint = require('./SpacePoint');
 
-// Replace
-affine.Matrix2D.prototype.translate = function (tx, ty) {
+// Monkey patch
+affine.Matrix2D.prototype.translateBy = function (tx, ty) {
   return new this.constructor(
     this.a,
     this.b,
@@ -10,6 +10,16 @@ affine.Matrix2D.prototype.translate = function (tx, ty) {
     this.d,
     tx + this.e,
     ty + this.f
+  );
+};
+affine.Matrix2D.prototype.translateTo = function (tx, ty) {
+  return new this.constructor(
+    this.a,
+    this.b,
+    this.c,
+    this.d,
+    tx,
+    ty
   );
 };
 
@@ -31,11 +41,19 @@ var Transformer = function (emitter) {
     emitter.emit('transformed', emitter);
   };
 
+  emitter.translateTo = function (xy) {
+    // Parameter
+    //   xy
+    //     Vector2D
+    emitter.tr = emitter.tr.translateTo(xy.x, xy.y);
+    emitter.emit('transformed', emitter);
+  };
+
   emitter.translateBy = function (xy) {
     // Parameter
     //   xy
     //     Vector2D
-    emitter.tr = emitter.tr.translate(xy.x, xy.y);
+    emitter.tr = emitter.tr.translateBy(xy.x, xy.y);
     emitter.emit('transformed', emitter);
   };
 
@@ -47,6 +65,13 @@ var Transformer = function (emitter) {
   };
   // alias
   emitter.at = emitter.getSpacePoint;
+
+  emitter.getSpacePointNormalized = function (xy, dimensions) {
+    var w = dimensions.x;
+    var h = dimensions.y;
+    var nxy = new affine.Vector2D(xy.x * w, xy.y * h);
+    return new SpacePoint(nxy, emitter);
+  };
 };
 
 module.exports = Transformer;

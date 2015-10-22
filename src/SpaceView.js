@@ -21,8 +21,9 @@ var SpaceView = function (space, container) {
   }
 
   this.space = space;
-  this.cont = container;
+  this.el = container;
 
+  // Default transformation.
   // Transformation from space to view
   this.transformTo((new affine.Matrix2D()).scale(256));
 
@@ -36,7 +37,7 @@ var SpaceView = function (space, container) {
     } else {
       var img = spacetaa.taa.img.cloneNode(false); // deep=false
       img.className = 'taaspace-taa';
-      this2.cont.appendChild(img);
+      this2.el.appendChild(img);
       this2.content[spacetaa.id] = img;
       // Make transformation
       move(img).matrix(spacetaa.tr.a, spacetaa.tr.b,
@@ -49,7 +50,7 @@ var SpaceView = function (space, container) {
     var el;
     if (this2.content.hasOwnProperty(spacetaa.id)) {
       el = this2.content[spacetaa.id];
-      this2.cont.removeChild(el);
+      this2.el.removeChild(el);
       delete this2.content[spacetaa.id]; // does not throw if does not exist
     }
   });
@@ -64,6 +65,18 @@ var SpaceView = function (space, container) {
                       spacetaa.tr.e, spacetaa.tr.f).end();
     }
   });
+
+  // Rewrite to curry in dimensions
+  var transformerGetSpacePointNormalized = this.getSpacePointNormalized;
+  this.getSpacePointNormalized = function (xy) {
+    // Parameter
+    //   xy
+    //     taaspace.Vector2D
+    var wh = new affine.Vector2D(this2.el.clientWidth, this2.el.clientHeight);
+    return transformerGetSpacePointNormalized(xy, wh);
+  };
 };
+
+var proto = SpaceView.prototype;
 
 module.exports = SpaceView;
