@@ -6,10 +6,12 @@ Emits
   contentTransformed
 */
 var Emitter = require('component-emitter');
+var SpacePlane = require('./SpacePlane');
 var SpaceTaa = require('./SpaceTaa');
 
 var Space = function () {
   Emitter(this);
+  SpacePlane(this);
 
   this.content = {}; // Dict over list because key search time complexity
   this.transformedHandlers = {}; // To be able to remove event handlers
