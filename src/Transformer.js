@@ -81,7 +81,7 @@ var Transformer = function (plane) {
     plane.emit('transformed', plane);
   };
 
-  plane.transform = function (domain, range) {
+  plane.translateScaleRotate = function (domain, range) {
     // Parameter
     //   domain
     //   range

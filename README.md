@@ -18,6 +18,13 @@ A javascript library for positioning zoomable user interfaces of square-formatte
 - Documentation
 - Testing
 
+## Notes for Devs
+
+Build & run tests:
+
+    $ npm run build
+
+
 ## License
 
 [MIT License](../blob/master/LICENSE)

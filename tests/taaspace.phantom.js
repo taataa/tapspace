@@ -3,22 +3,23 @@
 describe('taaspace', function () {
 
   it('should have submodules', function () {
-    taaspace.should.have.keys('Taa', 'Space', 'SpaceView',
-      'version',
-      'Vector2D', 'Matrix2D');
+    taaspace.should.have.keys('Taa', 'Space', 'HTMLSpaceView',
+      'version');
   });
 
   describe('Taa', function () {
-    it('should fire load event', function (done) {
+    it('should fire "loaded" event', function (done) {
       var taa = new taaspace.Taa('assets/taa.png');
-      taa.on('load', function (taa2) {
-        taa2.img.should.equal(taa.img);
+      taa.on('loaded', function (err, taa2) {
+        should.equal(err, null);
+        taa2.image.should.equal(taa.image);
         done();
       });
     });
   });
 
-  describe('SpaceView', function () {
+  /*
+  describe('HTMLSpaceView', function () {
     var space;
     var view;
 
@@ -26,7 +27,7 @@ describe('taaspace', function () {
       var cont = document.getElementById('taaspace-sandbox');
       cont.innerHTML = '';
       space = new taaspace.Space();
-      view = new taaspace.SpaceView(space, cont);
+      view = new taaspace.HTMLSpaceView(space, cont);
     });
 
     it('should be able to create an img element', function () {
@@ -43,7 +44,7 @@ describe('taaspace', function () {
       var cont = document.getElementById('taaspace-sandbox');
       cont.innerHTML = '';
       space = new taaspace.Space();
-      view = new taaspace.SpaceView(space, cont);
+      view = new taaspace.HTMLSpaceView(space, cont);
       taa = new taaspace.Taa('assets/taa.png', done);
     });
 
@@ -83,6 +84,6 @@ describe('taaspace', function () {
       vp.xy.x.should.be.within(val - epsilon, val + epsilon);
       vp.xy.y.should.be.within(val - epsilon, val + epsilon);
     });
-  });
+  });*/
 
 });

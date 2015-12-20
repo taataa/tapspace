@@ -1,29 +1,38 @@
+// API v0.3.0
 var Emitter = require('component-emitter');
+var loadimages = require('loadimages');
 
-var Taa = function (imgSrc, onLoad) {
+var Taa = function (imgSrc, onLoaded) {
   // Parameters
   //   imgSrc
-  //   onLoad
+  //   onLoaded
   //     optional, function (taa)
   Emitter(this);
   var this2 = this;
 
-  this.img = new Image(256, 256);
-  this.img.addEventListener('load', function () {
-    if (typeof onLoad === 'function') {
-      onLoad.call(this2);
+  this.image = null;
+
+  // If the image is cached, the 'load' event of Image element is
+  // fired instantly when calling loadimages. If we did not care
+  // about this, the on('loaded', fn) listeners would experience
+  // different execution order depending whether the images was
+  // cached or not.
+  var notCached = false;
+
+  loadimages(imgSrc, function (err, image) {
+    this2.image = image;
+
+    if (notCached) {
+      this2.emit('loaded', err, this2);
+      onLoaded(err, this2);
+    } else {
+      setTimeout(function () {
+        this2.emit('loaded', err, this2);
+        onLoaded(err, this2);
+      }, 0);
     }
-    this2.emit('load', this2);
-  }, false); // useCapture=false
-
-  // Allow on('load') binding to fire after 'new Taa(...)'
-  // even when image is already cached. The following executes
-  // event after the current stack has been executed.
-  setTimeout(function () {
-    this2.img.src = imgSrc;
-  }, 0);
+  });
+  notCached = true;
 };
-
-var proto = Taa.prototype;
 
 module.exports = Taa;

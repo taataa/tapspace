@@ -6,7 +6,7 @@ var Transformer = require('./transformer');
 var affine = require('kld-affine');
 var move = require('movejs');
 
-var SpaceView = function (space, container) {
+var HTMLSpaceView = function (space, container) {
   Emitter(this);
   Transformer(this);
   var this2 = this;
@@ -77,6 +77,6 @@ var SpaceView = function (space, container) {
   };
 };
 
-var proto = SpaceView.prototype;
+var proto = HTMLSpaceView.prototype;
 
-module.exports = SpaceView;
+module.exports = HTMLSpaceView;
