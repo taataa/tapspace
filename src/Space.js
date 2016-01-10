@@ -29,7 +29,7 @@ proto.add = function (taa) {
   // Return
   //   SpaceTaa
   //
-  var st = new SpaceTaa(this, taa); // Calls _add
+  var st = new SpaceTaa(this, taa); // Calls space._add
   return st;
 };
 
@@ -56,7 +56,7 @@ proto._add = function (spacetaa) {
 
 proto.remove = function (spacetaa) {
   if (this.content.hasOwnProperty(spacetaa.id)) {
-    spacetaa.remove();
+    spacetaa.remove(); // calls space._remove
   }  // else
   // Nothing to remove, nothing to emit
 };

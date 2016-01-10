@@ -1,4 +1,4 @@
-// API v0.2.0
+// API v0.3.0
 
 var SpacePoint = function (xy, reference) {
   // Example
@@ -8,12 +8,16 @@ var SpacePoint = function (xy, reference) {
   //   xy
   //     2D array
   //   reference
-  //     a SpacePlane
+  //     a SpacePlane or SpacePoint
   //       an item in space, enabling coord projections.
   this.xy = xy;
 
-  // The SpacePlane the xy are on.
-  this.reference = reference;
+  // The SpacePlanes transformation the xy are on.
+  // Design note: at first the references were SpacePlanes. But because
+  // a SpacePlane can move or be removed, we chose only the transformation
+  // to be remembered.
+  // For now, there is no hierarchy so local transformation _T is enough.
+  this._T = reference._T;
 };
 
 var proto = SpacePoint.prototype;
@@ -28,20 +32,20 @@ proto.offset = function (dx, dy) {
   //   dy
   //     ...
   var xy = [this.xy[0] + dx, this.xy[1] + dy];
-  return new SpacePoint(xy, this.reference);
+  return new SpacePoint(xy, this);
 };
 
 proto.polarOffset = function (radius, radians) {
   // Create a new point moved by the polar coordinates
   var x = this.xy[0] + radius * Math.cos(radians);
   var y = this.xy[1] + radius * Math.sin(radians);
-  return new SpacePoint([x, y], this.reference);
+  return new SpacePoint([x, y], this);
 };
 
 proto.equals = function (point) {
   return (this.xy[0] === point.xy[0] &&
           this.xy[1] === point.xy[1] &&
-          this.reference.equals(point.reference));
+          this._T.equals(point._T));
 };
 
 proto.to = function (target) {
@@ -57,11 +61,11 @@ proto.to = function (target) {
   //
   // Parameter
   //   target, a SpacePlane
-  if (target === this.reference) {
+  if (target._T.equals(this._T)) {
     return this;
   } // else
-  var B = this.reference.transformation.getInverse();
-  var AB = reference.transformation.product(B);
+  var B = this._T.getInverse();
+  var AB = target._T.multiplyBy(B);
   var y = AB.transform(this.xy);
   return new SpacePoint(y, target);
 };
@@ -73,7 +77,7 @@ proto.transform = function (tr) {
   //   tr
   //     a Transform
   var xy_hat = tr.transform(this.xy);
-  return new SpacePoint(xy_hat, this.reference);
+  return new SpacePoint(xy_hat, this);
 };
 
 

@@ -5,12 +5,14 @@ var loadimages = require('loadimages');
 var Taa = function (imgSrc, onLoaded) {
   // Parameters
   //   imgSrc
-  //   onLoaded
+  //   onLoaded(err, taa)
   //     optional, function (taa)
   Emitter(this);
   var this2 = this;
 
-  this.image = null;
+  // This object will be replaced by a real Image object but before that
+  // src is needed in SpaceView.
+  this.image = { src: imgSrc };
 
   // If the image is cached, the 'load' event of Image element is
   // fired instantly when calling loadimages. If we did not care

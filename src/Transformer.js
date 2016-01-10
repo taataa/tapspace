@@ -11,7 +11,7 @@ var normalize = function (points, plane) {
 var Transformer = function (plane) {
   // As Space is only null SpacePlane,
   // Transformers cannot have null transformations.
-  plane.T = new nudged.Transform(1, 0, 0, 0); // identity transformation
+  plane._T = new nudged.Transform(1, 0, 0, 0); // identity transformation
 
   plane.scale = function (pivot, multiplierOrDomain, range) {
     // Parameter
@@ -27,14 +27,14 @@ var Transformer = function (plane) {
 
     if (useMultiplier){
       var multiplier = multiplierOrDomain;
-      this.T = this.T.scaleFixed(normPivot, multiplier);
+      this._T = this._T.scaleBy(multiplier, normPivot);
     } else {
       var domain = multiplierOrDomain;
       // Convert all SpacePoints onto local SpacePlane and to arrays
       var normDomain = normalize(domain, plane);
       var normRange = normalize(range, plane);
-      var S = nudged.estimateScalerFixed(normPivot, normDomain, normRange);
-      this.T = S.multiply(this.T);
+      var S = nudged.estimateS(normDomain, normRange, normPivot);
+      this._T = S.multiplyBy(this._T);
     }
 
     plane.emit('transformed', plane);
@@ -54,14 +54,14 @@ var Transformer = function (plane) {
 
     if (useRadians){
       var radians = radiansOrDomain;
-      this.T = this.T.rotateFixed(normPivot, radians);
+      this._T = this._T.rotateBy(radians, normPivot);
     } else {
       var domain = radiansOrDomain;
       // Convert all SpacePoints onto local SpacePlane and to arrays
       var normDomain = normalize(domain, plane);
       var normRange = normalize(range, plane);
-      var R = nudged.estimateRotatorFixed(normPivot, normDomain, normRange);
-      this.T = R.multiply(this.T);
+      var R = nudged.estimateR(normDomain, normRange, normPivot);
+      this._T = R.multiplyBy(this._T);
     }
 
     plane.emit('transformed', plane);
@@ -76,8 +76,8 @@ var Transformer = function (plane) {
     var normDomain = normalize(domain, plane);
     var normRange = normalize(range, plane);
 
-    var T = nudged.estimateTranslator(normDomain, normRange);
-    this.T = T.multiply(this.T);
+    var T = nudged.estimateT(normDomain, normRange);
+    this._T = T.multiplyBy(this._T);
     plane.emit('transformed', plane);
   };
 
@@ -90,8 +90,8 @@ var Transformer = function (plane) {
     var dom = normalize(domain, plane);
     var ran = normalize(range, plane);
 
-    var T = nudged.estimate(dom, ran);
-    this.T = T.multiply(this.T);
+    var T = nudged.estimateTSR(dom, ran);
+    this._T = T.multiplyBy(this._T);
     plane.emit('transformed', plane);
   };
 

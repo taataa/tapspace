@@ -18,7 +18,6 @@ describe('taaspace', function () {
     });
   });
 
-  /*
   describe('HTMLSpaceView', function () {
     var space;
     var view;
@@ -30,13 +29,14 @@ describe('taaspace', function () {
       view = new taaspace.HTMLSpaceView(space, cont);
     });
 
-    it('should be able to create an img element', function () {
+    it('should be able to create an img element immediately', function () {
       var taa = new taaspace.Taa('assets/taa.png');
       space.add(taa);
       $('img.taaspace-taa').should.exist;
     });
   });
 
+  /*
   describe('SpaceTaa', function () {
     var space, view, taa;
 

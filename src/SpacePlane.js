@@ -1,11 +1,14 @@
-// API v0.2.0
+// API v0.3.0
+
 var SpacePoint = require('./SpacePoint');
 
+var at = function (xy) {
+  return new SpacePoint(xy, this);
+};
+
 var SpacePlane = function (emitter) {
-  emitter.T = null;
-  emitter.at = function (xy) {
-    return new SpacePoint(xy, this);
-  };
+  emitter._T = null;
+  emitter.at = at;
 };
 
 module.exports = SpacePlane;
