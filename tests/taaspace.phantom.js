@@ -31,10 +31,14 @@ describe('taaspace', function () {
 
     it('should be able to create an img element immediately', function () {
       var taa = new taaspace.Taa('assets/taa.png');
-      space.add(taa);
-      $('img.taaspace-taa').should.exist;
+      var spacetaa = space.add(taa);
+      var el = $('img.taaspace-taa');
+      el.should.exist;
+      var st2 = view.getSpaceTaaByElementId(el.attr('id'));
+      st2.should.equal(spacetaa);
     });
   });
+
 
   /*
   describe('SpaceTaa', function () {

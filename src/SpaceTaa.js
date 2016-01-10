@@ -32,7 +32,7 @@ proto.remove = function () {
   } // else in null space already
 };
 
-proto.mid = function () {
+proto.atMid = function () {
   // Middle point
   return this.at([0.5, 0.5]);
 };

@@ -3,11 +3,17 @@
 var SpacePoint = require('./SpacePoint');
 
 var at = function (xy) {
+  // DEBUG TODO remove
+  if (xy.length !== 2) {
+    throw 'Invalid point, use array [x, y]';
+  }
   return new SpacePoint(xy, this);
 };
 
 var SpacePlane = function (emitter) {
+  // Coordinate system. The transformation from the space to the plane.
   emitter._T = null;
+
   emitter.at = at;
 };
 

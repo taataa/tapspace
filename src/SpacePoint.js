@@ -64,7 +64,7 @@ proto.to = function (target) {
   if (target._T.equals(this._T)) {
     return this;
   } // else
-  var B = this._T.getInverse();
+  var B = this._T.inverse();
   var AB = target._T.multiplyBy(B);
   var y = AB.transform(this.xy);
   return new SpacePoint(y, target);

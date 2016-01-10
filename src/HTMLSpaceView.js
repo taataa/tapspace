@@ -36,19 +36,24 @@ var HTMLSpaceView = function (space, container) {
 
   // Default transformation.
   // Transformation from space to view
-  this.scale(this.at(0,0), 256);
+  // One space unit (taa) becomes 256 pixels on screen.
+  this.scale(this.at([0,0]), 256);
 
-  // A mapping from space-taa ids to HTML elements of the space taas.
-  // For data structure, dict over list because key search time complexity.
-  this._content = {};
+  // Two mappings from space taa ids:
+  // 1. to HTML elements of the space taas.
+  // 2. to SpaceTaa instances
+  // Dev decision:
+  //   For data structure, dict over list because key search time complexity.
+  this._elements = {};
+  this._spacetaas = {};
 
   // Listen the space for new taas or transformations
 
   this.space.on('contentAdded', function (spacetaa) {
-    if (this2._content.hasOwnProperty(spacetaa.id)) {
+    if (this2._elements.hasOwnProperty(spacetaa.id)) {
       // SpaceTaa is already drawn.
     } else {
-      var img = new Image(256, 256);
+      var img = new Image(1, 1);
       var taa = spacetaa.taa;
       img.src = taa.image.src;
       img.id = this2.id + '/' + spacetaa.id; // View-specific unique elem id
@@ -56,50 +61,53 @@ var HTMLSpaceView = function (space, container) {
       // Show to client
       this2._el.appendChild(img);
       // Make referencable
-      this2._content[spacetaa.id] = img;
+      this2._elements[spacetaa.id] = img;
+      this2._spacetaas[spacetaa.id] = spacetaa;
       // Make transformation
-      move(img).matrix(spacetaa._T.a, spacetaa._T.b,
-                       spacetaa._T.c, spacetaa._T.d,
-                       spacetaa._T.e, spacetaa._T.f).end();
+      var T = this2._T.multiplyBy(spacetaa._T);
+      move(img).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
     }
   });
 
   this.space.on('contentRemoved', function (spacetaa) {
     var el;
-    if (this2._content.hasOwnProperty(spacetaa.id)) {
-      el = this2._content[spacetaa.id];
+    if (this2._elements.hasOwnProperty(spacetaa.id)) {
+      el = this2._elements[spacetaa.id];
+      // Remove HTML element
       this2._el.removeChild(el);
-      delete this2._content[spacetaa.id]; // does not throw if does not exist
+      // JS feature: does not throw if does not exist
+      delete this2._elements[spacetaa.id];
+      delete this2._spacetaas[spacetaa.id];
     }
   });
 
   this.space.on('contentTransformed', function (spacetaa) {
     // Update transformation
     var el;
-    if (this2._content.hasOwnProperty(spacetaa.id)) {
-      el = this2._content[spacetaa.id];
-      move(el).matrix(spacetaa._T.a, spacetaa._T.b,
-                      spacetaa._T.c, spacetaa._T.d,
-                      spacetaa._T.e, spacetaa._T.f).end();
+    if (this2._elements.hasOwnProperty(spacetaa.id)) {
+      el = this2._elements[spacetaa.id];
+      // Make transformation
+      var T = this2._T.multiplyBy(spacetaa._T);
+      move(el).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
     }
   });
 
   this.getElementBySpaceTaa = function (spaceTaa) {
     // Get HTML element representation of the space taa.
-    if (this._content.hasOwnProperty(spaceTaa.id)) {
-      return this._content[spaceTaa.id];
+    if (this._elements.hasOwnProperty(spaceTaa.id)) {
+      return this._elements[spaceTaa.id];
     }
   };
 
-  this.getSpaceTaaById = function (id) {
+  this.getSpaceTaaByElementId = function (id) {
     // Get space taa by HTML element id
     // Return null if no space taa for such id.
     var i = id.split('/');
     var spaceViewId = i[0];
     var spaceTaaId = i[1];
     if (this.id === spaceViewId) {
-      if (this._content.hasOwnProperty(spaceTaaId)) {
-        return this._content[spaceTaaId];
+      if (this._spacetaas.hasOwnProperty(spaceTaaId)) {
+        return this._spacetaas[spaceTaaId];
       }
     }
     return null;
@@ -109,8 +117,10 @@ var HTMLSpaceView = function (space, container) {
     // Example:
     //   view.atNorm([1, 0.5])
     //     gives the center of the right edge of the screen.
-    var x = normxy[0] * this._el.width;
-    var y = normxy[1] * this._el.height;
+    var w = this._el.offsetWidth;
+    var h = this._el.offsetHeight;
+    var x = normxy[0] * w;
+    var y = normxy[1] * h;
     return this.at([x, y]);
   };
 

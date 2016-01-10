@@ -23,9 +23,9 @@
   "dependencies": {
     "kld-affine": "git+https://github.com/thelonious/kld-affine.git#development",
     "seqid": "^1.0.1",
-    "movejs": "git://github.com/axelpale/move.js",
     "loadimages": "^0.2.2",
-    "nudged": "^1.0.1"
+    "nudged": "^1.0.1",
+    "move-js": "^0.5.0"
   },
   "devDependencies": {
     "jshint": "^2.8.0",
