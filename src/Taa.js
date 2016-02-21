@@ -2,6 +2,8 @@
 var Emitter = require('component-emitter');
 var loadimages = require('loadimages');
 
+var NOOP = function () {};
+
 var Taa = function (imgSrc, onLoaded) {
   // Parameters
   //   imgSrc
@@ -9,6 +11,11 @@ var Taa = function (imgSrc, onLoaded) {
   //     optional, function (taa)
   Emitter(this);
   var this2 = this;
+
+  // onLoaded is optional
+  if (typeof onLoaded !== 'function') {
+    onLoaded = NOOP;
+  }
 
   // This object will be replaced by a real Image object but before that
   // src is needed in SpaceView.

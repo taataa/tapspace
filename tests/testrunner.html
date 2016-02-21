@@ -2,7 +2,24 @@
   <head>
     <meta charset="utf-8">
     <title>Tests</title>
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <!--link rel="stylesheet" href="../node_modules/mocha/mocha.css" /-->
+    <style>
+      /* Goal is to let the sandbox to fill the whole viewport */
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: black;
+      }
+      #mocha { display: none; }
+      #taaspace-sandbox {
+        width: 100%;
+        height: 100%;
+      }
+      .taaspace-taa {
+        display: block;
+        transform-origin: 0% 0%;
+      }
+    </style>
   </head>
   <body>
     <div id="mocha"></div>
@@ -19,6 +36,16 @@
     <script src="../taaspace.min.js"></script>
     <script src="taaspace.phantom.js"></script>
     <script>
+      var takeScreenshot = function () {
+        // Take screenshot.
+        // See https://www.npmjs.com/package/mocha-phantomjs
+        if (window.callPhantom) {
+          var filename = "tests/screenshots/" + Date.now();
+          console.log("Taking screenshot " + filename);
+          callPhantom({'screenshot': filename});
+        }
+      };
+
       if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
       else { mocha.run(); }
     </script>

@@ -3,6 +3,7 @@
 var Emitter = require('component-emitter');
 var SpacePlane = require('./SpacePlane');
 var Transformer = require('./Transformer');
+var SpaceRectangle = require('./SpaceRectangle');
 
 // Unique ID generator. Unique over session.
 // Usage: seqid.next()
@@ -13,10 +14,13 @@ var SpaceTaa = function (space, taa) {
   Emitter(this);
   SpacePlane(this);
   Transformer(this);
+  SpaceRectangle(this);
 
   this.id = seqid.next().toString();
   this.space = space;
   this.taa = taa;
+
+  this.resize([256, 256]); // Size of taa.
 
   space._add(this);
 };
@@ -30,11 +34,6 @@ proto.remove = function () {
     s._remove(this);
     this.emit('removed', this, s);
   } // else in null space already
-};
-
-proto.atMid = function () {
-  // Middle point
-  return this.at([0.5, 0.5]);
 };
 
 module.exports = SpaceTaa;

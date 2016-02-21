@@ -34,3 +34,6 @@ node_modules
 taaspace.min.js
 taaspace.min.js.map
 taaspace.js
+
+# Test output
+tests/screenshots/*

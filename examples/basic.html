@@ -24,7 +24,7 @@
 
     .taaspace-taa {
       display: block;
-      transform-origin: 0 0;
+      transform-origin: 0% 0%;
     }
   </style>
 </head>
@@ -38,9 +38,14 @@
     var view = new taaspace.HTMLSpaceView(space, container);
     var taa = new taaspace.Taa('assets/taa00.jpg', function (err, taa) {
       var spacetaa = space.add(taa);
+      //spacetaa.scale(spacetaa.atNorm([0,0]), 2);
+      //view.scale(view.atNorm([0,0]), 2);
       //spacetaa.rotate(spacetaa.atMid(), 0.15 * 2 * Math.PI);
-      var center = view.atNorm([0.5, 0.5]);
-      spacetaa.translate(spacetaa.atMid(), center);
+      //var center = view.atNorm([0.5, 0.5]);
+      spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
+      console.log(spacetaa._T);
+      console.log(spacetaa.at([0,0]).to(view).xy);
+      //spacetaa.translate(spacetaa.atMid(), center);
     });
   }());
   </script>

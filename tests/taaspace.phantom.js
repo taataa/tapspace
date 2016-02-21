@@ -23,19 +23,51 @@ describe('taaspace', function () {
     var view;
 
     beforeEach(function () {
+      // Reset the sandbox
       var cont = document.getElementById('taaspace-sandbox');
       cont.innerHTML = '';
       space = new taaspace.Space();
       view = new taaspace.HTMLSpaceView(space, cont);
     });
 
+    // Easier to debug
+    afterEach(function () {
+      if (this.currentTest.state === 'failed') {
+        takeScreenshot();
+      }
+    });
+
     it('should be able to create an img element immediately', function () {
+      // Without need to wait for the image to load
       var taa = new taaspace.Taa('assets/taa.png');
       var spacetaa = space.add(taa);
       var el = $('img.taaspace-taa');
       el.should.exist;
       var st2 = view.getSpaceTaaByElementId(el.attr('id'));
       st2.should.equal(spacetaa);
+    });
+
+    it('should position the taa correctly', function (done) {
+      var taa = new taaspace.Taa('assets/taa.png');
+      var spacetaa = space.add(taa);
+      spacetaa.at([0,0]).to(view).xy.should.eql([0,0]);
+      spacetaa.atNorm([1,1]).to(view).xy.should.eql([256,256]);
+      spacetaa.atNorm([1,1]).xy.should.eql([256,256]);
+      spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
+      setTimeout(function () {
+        spacetaa.at([0,0]).to(view).xy.should.eql([256,256]);
+        done();
+      }, 200);
+    });
+
+    it('should be able to translate', function () {
+      var taa = new taaspace.Taa('assets/taa.png');
+      var spacetaa = space.add(taa);
+      spacetaa.translate(spacetaa.atNorm([0,0]), spacetaa.atNorm([1,1]));
+      var el1 = document.elementFromPoint(300, 300); // null if outside window
+      //console.log('elem', el1);
+      var el2 = $('img.taaspace-taa')[0];
+      el1.should.equal(el2);
     });
   });
 

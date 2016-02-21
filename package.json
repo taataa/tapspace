@@ -47,7 +47,7 @@
     "#build:dev": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.map.json --output taaspace.map.json] > taaspace.min.js",
     "test": "npm run test:lint && npm run test:headless",
     "test:unit": "mocha tests/taaspace.test.js",
-    "test:headless": "mocha-phantomjs tests/testrunner.html",
+    "test:headless": "mocha-phantomjs --view 512x512 tests/testrunner.html",
     "test:lint": "jshint src/* tests/*.js"
   }
 }

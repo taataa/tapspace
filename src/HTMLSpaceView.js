@@ -4,8 +4,13 @@ View
 */
 var Emitter = require('component-emitter');
 var SpacePlane = require('./SpacePlane');
-var Transformer = require('./transformer');
+var Transformer = require('./Transformer');
+var SpaceRectangle = require('./SpaceRectangle');
+var nudged = require('nudged');
 var move = require('movejs');
+
+// Disable animations by default.
+move.defaults = { duration: 0 };
 
 // Unique ID generator. Unique over session.
 // Usage: seqid.next()
@@ -16,6 +21,7 @@ var HTMLSpaceView = function (space, container) {
   Emitter(this);
   SpacePlane(this);
   Transformer(this);
+  SpaceRectangle(this);
   var this2 = this;
 
   // Test valid space
@@ -34,10 +40,11 @@ var HTMLSpaceView = function (space, container) {
   this.space = space;
   this._el = container;
 
-  // Default transformation.
-  // Transformation from space to view
-  // One space unit (taa) becomes 256 pixels on screen.
-  this.scale(this.at([0,0]), 256);
+  (function initSize() {
+    var w = container.clientWidth;
+    var h = container.clientHeight;
+    this2.resize([w, h]);
+  }());
 
   // Two mappings from space taa ids:
   // 1. to HTML elements of the space taas.
@@ -47,25 +54,32 @@ var HTMLSpaceView = function (space, container) {
   this._elements = {};
   this._spacetaas = {};
 
+  var transformImage = function (img, spacetaa) {
+    // Transform images because the view orientation.
+    var T = this2._T.multiplyBy(spacetaa._T.inverse());
+    // The last step in the transformation chain.
+    //T = this2.defaultTrans.multiplyBy(this2._T);
+    move(img).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
+  };
+
   // Listen the space for new taas or transformations
 
   this.space.on('contentAdded', function (spacetaa) {
     if (this2._elements.hasOwnProperty(spacetaa.id)) {
       // SpaceTaa is already drawn.
     } else {
-      var img = new Image(1, 1);
       var taa = spacetaa.taa;
-      img.src = taa.image.src;
-      img.id = this2.id + '/' + spacetaa.id; // View-specific unique elem id
-      img.className = 'taaspace-taa';
+      var el = new Image(256, 256);
+      el.src = taa.image.src;
+      el.id = this2.id + '/' + spacetaa.id; // View-specific unique elem id
+      el.className = 'taaspace-taa';
       // Show to client
-      this2._el.appendChild(img);
+      this2._el.appendChild(el);
       // Make referencable
-      this2._elements[spacetaa.id] = img;
+      this2._elements[spacetaa.id] = el;
       this2._spacetaas[spacetaa.id] = spacetaa;
       // Make transformation
-      var T = this2._T.multiplyBy(spacetaa._T);
-      move(img).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
+      transformImage(el, spacetaa);
     }
   });
 
@@ -87,8 +101,19 @@ var HTMLSpaceView = function (space, container) {
     if (this2._elements.hasOwnProperty(spacetaa.id)) {
       el = this2._elements[spacetaa.id];
       // Make transformation
-      var T = this2._T.multiplyBy(spacetaa._T);
-      move(el).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
+      transformImage(el, spacetaa);
+    }
+  });
+
+  // If the view is transformed, we of course need to retransform everything.
+  this.on('transformed', function () {
+    var id, element, spacetaa;
+    for (id in this2._elements) {
+      if (this2._elements.hasOwnProperty(id)) {
+        element  = this2._elements[id];
+        spacetaa = this2._spacetaas[id];
+        transformImage(element, spacetaa);
+      }
     }
   });
 
@@ -111,27 +136,6 @@ var HTMLSpaceView = function (space, container) {
       }
     }
     return null;
-  };
-
-  this.atNorm = function (normxy) {
-    // Example:
-    //   view.atNorm([1, 0.5])
-    //     gives the center of the right edge of the screen.
-    var w = this._el.offsetWidth;
-    var h = this._el.offsetHeight;
-    var x = normxy[0] * w;
-    var y = normxy[1] * h;
-    return this.at([x, y]);
-  };
-
-  this.atMid = function () {
-    // Center
-    return this.atNorm([0.5, 0.5]);
-  };
-
-  this.getSize = function () {
-    // Return [width, height] in pixels
-    return [this._el.width, this._el.height];
   };
 
   this.getRootElement = function () {

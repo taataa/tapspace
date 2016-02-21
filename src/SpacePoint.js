@@ -54,13 +54,14 @@ proto.to = function (target) {
   //
   // Implementation:
   // First, compute transformation B from the current plane
-  // to the space. It is equal to the inverse transformation of
-  // the reference. Second, let A be transformation to the target plane.
+  // to the space. It is equal to the inverse transformation of this._T.
+  // Second, let A be transformation to the target plane.
   // Compute combined transformation AB. Given a vector x, y = ABx, where
-  // y is the same vector on the target plane.
+  // y is now x when represented in the coordinates of the target plane.
   //
   // Parameter
   //   target, a SpacePlane
+  
   if (target._T.equals(this._T)) {
     return this;
   } // else
