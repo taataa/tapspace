@@ -2,6 +2,12 @@
 
 describe('taaspace', function () {
 
+  function getEmptyContainer() {
+    var cont = document.getElementById('taaspace-sandbox');
+    cont.innerHTML = '';
+    return cont;
+  }
+
   it('should have submodules', function () {
     taaspace.should.have.keys('Taa', 'Space', 'HTMLSpaceView',
       'version');
@@ -23,9 +29,7 @@ describe('taaspace', function () {
     var view;
 
     beforeEach(function () {
-      // Reset the sandbox
-      var cont = document.getElementById('taaspace-sandbox');
-      cont.innerHTML = '';
+      var cont = getEmptyContainer();
       space = new taaspace.Space();
       view = new taaspace.HTMLSpaceView(space, cont);
     });
@@ -72,13 +76,12 @@ describe('taaspace', function () {
   });
 
 
-  /*
+
   describe('SpaceTaa', function () {
     var space, view, taa;
 
     beforeEach(function (done) {
-      var cont = document.getElementById('taaspace-sandbox');
-      cont.innerHTML = '';
+      var cont = getEmptyContainer();
       space = new taaspace.Space();
       view = new taaspace.HTMLSpaceView(space, cont);
       taa = new taaspace.Taa('assets/taa.png', done);
@@ -101,25 +104,13 @@ describe('taaspace', function () {
 
     it('should be able to return a SpacePoint', function () {
       var a = space.add(taa);
-      var p = a.at(new taaspace.Vector2D(1, 1));
-      var vp = p.projectTo(view);
+      var p = a.atNorm([1,1]);
+      var vp = p.to(view);
       var epsilon = 0.01;
       var val = 256;
-      vp.xy.x.should.be.within(val - epsilon, val + epsilon);
-      vp.xy.y.should.be.within(val - epsilon, val + epsilon);
+      vp.xy[0].should.be.within(val - epsilon, val + epsilon);
+      vp.xy[1].should.be.within(val - epsilon, val + epsilon);
     });
-
-    it('should be transformable', function () {
-      var a = space.add(taa);
-      var r180o = (new taaspace.Matrix2D()).rotate(Math.PI);
-      a.transformBy(r180o);
-      var p = a.at(new taaspace.Vector2D(1, 1));
-      var vp = p.projectTo(view);
-      var epsilon = 0.01;
-      var val = -256;
-      vp.xy.x.should.be.within(val - epsilon, val + epsilon);
-      vp.xy.y.should.be.within(val - epsilon, val + epsilon);
-    });
-  });*/
+  });
 
 });
