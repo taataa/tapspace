@@ -54,6 +54,38 @@ var SpaceRectangle = function (transformer) {
     return new SpacePoint([width / 2, height / 2], t);
   };
 
+  t.atMidN = function () {
+    return new SpacePoint([width / 2, 0], t);
+  };
+
+  t.atMidW = function () {
+    return new SpacePoint([0, height / 2], t);
+  };
+
+  t.atMidE = function () {
+    return new SpacePoint([width, height / 2], t);
+  };
+
+  t.atMidS = function () {
+    return new SpacePoint([width / 2, height], t);
+  };
+
+  t.atNW = function () {
+    return new SpacePoint([0, 0], t);
+  };
+
+  t.atNE = function () {
+    return new SpacePoint([width, 0], t);
+  };
+
+  t.atSW = function () {
+    return new SpacePoint([0, height], t);
+  };
+
+  t.atSE = function () {
+    return new SpacePoint([width, height], t);
+  };
+
 };
 
 module.exports = SpaceRectangle;

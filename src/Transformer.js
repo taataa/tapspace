@@ -20,71 +20,26 @@ var normalize = function (points, plane) {
   return normalized;
 };
 
+var transformByEstimate = function (plane, type, domain, range, pivot) {
+  // Types: T,S,R,TS,TR,SR,TSR (see nudged for further details)
+
+  var normPivot;
+  if (typeof pivot !== 'undefined') {
+    normPivot = pivot.to(plane).xy;
+  }
+
+  // Convert all SpacePoints onto local SpacePlane and to arrays
+  var normDomain = normalize(domain, plane);
+  var normRange = normalize(range, plane);
+
+  var T = nudged.estimate(type, normDomain, normRange, normPivot);
+  // S represents transf from plane to space, so inverse.
+  plane._T = T.inverse().multiplyBy(plane._T);
+  // Notify especially view about transformation.
+  plane.emit('transformed', plane);
+};
+
 var Transformer = function (plane) {
-
-  plane.scale = function (pivot, multiplierOrDomain, range) {
-    // Parameter
-    //   pivot, a SpacePoint
-    //   multiplier, the scale factor, > 0
-    //  OR
-    //   pivot
-    //   domain
-    //   range
-
-    var normPivot = pivot.to(plane).xy;
-    var useMultiplier = (typeof range === 'undefined');
-
-    if (useMultiplier){
-      var multiplier = multiplierOrDomain;
-      // this._T represents transf from space to plane, so inverse scale.
-      // For example, if taa is very small, a far away space coordinate
-      // needs huge multiplier to be represented on the taa's coords.
-      if (multiplier > 0) {
-        this._T = this._T.scaleBy(1 / multiplier, normPivot);
-      } else {
-        throw 'Invalid multiplier: ' + multiplier;
-      }
-    } else {
-      var domain = multiplierOrDomain;
-      // Convert all SpacePoints onto local SpacePlane and to arrays
-      var normDomain = normalize(domain, plane);
-      var normRange = normalize(range, plane);
-      var S = nudged.estimateS(normDomain, normRange, normPivot);
-      // S represents transf from plane to space, so inverse.
-      this._T = S.inverse().multiplyBy(this._T);
-    }
-
-    plane.emit('transformed', plane);
-  };
-
-  plane.rotate = function (pivot, radiansOrDomain, range) {
-    // Parameter
-    //   pivot
-    //   radians
-    //  OR
-    //   pivot
-    //   domain
-    //   range
-
-    var normPivot = pivot.to(plane).xy;
-    var useRadians = (typeof range === 'undefined');
-
-    if (useRadians){
-      var radians = radiansOrDomain;
-      // this._T represents transf from space to plane, so inverse rads.
-      this._T = this._T.rotateBy(-radians, normPivot);
-    } else {
-      var domain = radiansOrDomain;
-      // Convert all SpacePoints onto local SpacePlane and to arrays
-      var normDomain = normalize(domain, plane);
-      var normRange = normalize(range, plane);
-      var R = nudged.estimateR(normDomain, normRange, normPivot);
-      // R represents transf from plane to space, so inverse.
-      this._T = R.inverse().multiplyBy(this._T);
-    }
-
-    plane.emit('transformed', plane);
-  };
 
   plane.translate = function (domain, range) {
     // Move plane horizontally and vertically by example.
@@ -96,34 +51,94 @@ var Transformer = function (plane) {
     //   domain
     //   range
 
-    // Convert all SpacePoints onto local SpacePlane and to arrays
-    var normDomain = normalize(domain, plane);
-    var normRange = normalize(range, plane);
+    transformByEstimate(this, 'T', domain, range);
 
-    // Compute transformation from plane to space
-    var T = nudged.estimateT(normDomain, normRange);
-    // this._T represents transformation from space to the plane, so inverse
-    this._T = T.inverse().multiplyBy(this._T);
-    plane.emit('transformed', plane);
   };
 
-  // TODO
-  // translateScale
-  // translateRotate
+  plane.scale = function (pivot, multiplierOrDomain, range) {
+    // Parameter
+    //   pivot, a SpacePoint
+    //   multiplier, the scale factor, > 0
+    //  OR
+    //   pivot
+    //   domain
+    //   range
+
+    var useMultiplier = (typeof range === 'undefined');
+
+    if (useMultiplier){
+      var normPivot = pivot.to(plane).xy;
+      var multiplier = multiplierOrDomain;
+      // this._T represents transf from space to plane, so inverse scale.
+      // For example, if taa is very small, a far away space coordinate
+      // needs huge multiplier to be represented on the taa's coords.
+      if (multiplier > 0) {
+        this._T = this._T.scaleBy(1 / multiplier, normPivot);
+        plane.emit('transformed', plane);
+      } else {
+        throw 'Invalid multiplier: ' + multiplier;
+      }
+    } else {
+      var domain = multiplierOrDomain;
+      transformByEstimate(this, 'S', domain, range, pivot);
+    }
+  };
+
+  plane.rotate = function (pivot, radiansOrDomain, range) {
+    // Parameter
+    //   pivot
+    //   radians
+    //  OR
+    //   pivot
+    //   domain
+    //   range
+
+    var useRadians = (typeof range === 'undefined');
+
+    if (useRadians){
+      var normPivot = pivot.to(plane).xy;
+      var radians = radiansOrDomain;
+      // this._T represents transf from space to plane, so inverse rads.
+      this._T = this._T.rotateBy(-radians, normPivot);
+      plane.emit('transformed', plane);
+    } else {
+      var domain = radiansOrDomain;
+      transformByEstimate(this, 'R', domain, range, pivot);
+    }
+  };
+
   // scaleRotate
+
+  plane.translateScale = function (domain, range) {
+    // Parameter
+    //   domain
+    //   range
+
+    transformByEstimate(this, 'TS', domain, range);
+  };
+
+  plane.translateRotate = function (domain, range) {
+    // Parameter
+    //   domain
+    //   range
+
+    transformByEstimate(this, 'TR', domain, range);
+  };
+
+  plane.scaleRotate = function (pivot, domain, range) {
+    // Parameter
+    //   domain
+    //   range
+
+    transformByEstimate(this, 'SR', domain, range, pivot);
+  };
 
   plane.translateScaleRotate = function (domain, range) {
     // Parameter
     //   domain
     //   range
 
-    // Convert all SpacePoints onto local SpacePlane and to arrays
-    var dom = normalize(domain, plane);
-    var ran = normalize(range, plane);
-
-    var T = nudged.estimateTSR(dom, ran);
-    this._T = T.inverse().multiplyBy(this._T);
-    plane.emit('transformed', plane);
+    transformByEstimate(this, 'TSR', domain, range);
   };
 
   // plane.translateAndScaleToFit, not sure if necessary for now
