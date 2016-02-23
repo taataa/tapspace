@@ -12,6 +12,7 @@ var SpaceTaa = require('./SpaceTaa');
 var Space = function () {
   Emitter(this);
   SpacePlane(this);
+  // Has constant identity transformation _T
 
   this.content = {}; // Dict over list because key search time complexity
   this.transformedHandlers = {}; // To be able to remove event handlers

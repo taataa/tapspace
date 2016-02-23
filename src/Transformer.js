@@ -21,9 +21,6 @@ var normalize = function (points, plane) {
 };
 
 var Transformer = function (plane) {
-  // As Space is only null SpacePlane,
-  // Transformers cannot have null transformations.
-  plane._T = new nudged.Transform(1, 0, 0, 0); // identity transformation
 
   plane.scale = function (pivot, multiplierOrDomain, range) {
     // Parameter
