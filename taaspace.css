@@ -1,4 +1,5 @@
 .taaspace-taa {
   display: block;
+  position: absolute;
   transform-origin: 0% 0%;
 }
