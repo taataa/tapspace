@@ -41,6 +41,18 @@ var transformByEstimate = function (plane, type, domain, range, pivot) {
 
 var Transformer = function (plane) {
 
+  plane.getTransform = function () {
+    // Needed when we want to store Space element's position for later use.
+    return plane._T;
+  };
+
+  plane.setTransform = function (T) {
+    // Needed when we whan to restore stored position, maybe after
+    // modification.
+    plane._T = T;
+    plane.emit('transformed', plane);
+  };
+
   plane.translate = function (domain, range) {
     // Move plane horizontally and vertically by example.
     //
@@ -52,7 +64,6 @@ var Transformer = function (plane) {
     //   range
 
     transformByEstimate(this, 'T', domain, range);
-
   };
 
   plane.scale = function (pivot, multiplierOrDomain, range) {

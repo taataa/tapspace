@@ -111,6 +111,21 @@ describe('taaspace', function () {
       vp.xy[0].should.be.within(val - epsilon, val + epsilon);
       vp.xy[1].should.be.within(val - epsilon, val + epsilon);
     });
+
+    it('should be able to give and take Transform objects', function () {
+      var a = space.add(taa);
+      // Move to unit square.
+      a.translateScale(
+        [a.atNW(), a.atSE()],
+        [space.at([0,0]), space.at([1,1])]
+      );
+      var t = a.getTransform();
+      var rt = t.rotateBy(1);
+      a.setTransform(rt);
+      a.atSE().to(space).xy.should.not.eql([1,1]);
+      a.setTransform(t);
+      a.atSE().to(space).xy.should.eql([1,1]);
+    });
   });
 
 });
