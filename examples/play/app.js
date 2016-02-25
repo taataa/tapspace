@@ -271,21 +271,34 @@ var view = new taaspace.HTMLSpaceView(space, container);
 
 var star = new taaspace.Taa('img/chellah_star.jpg');
 var knot = new taaspace.Taa('img/marrakech_knot.jpg');
+var msun = new taaspace.Taa('img/marrakech_sun.jpg');
+var saic = new taaspace.Taa('img/marrakech_mosaic.jpg');
+var sand = new taaspace.Taa('img/rabat_sand.jpg');
 
 var spacestar = space.add(star);
 var spaceknot = space.add(knot);
+var spacemsun = space.add(msun);
+var spacesaic = space.add(saic);
+var spacesand = space.add(sand);
 
-spacestar.translateScale(
-  [spacestar.atNW(), spacestar.atSE()],
-  [space.at([0,0]), space.at([1,1])]
-);
-spaceknot.translateScale(
-  [spaceknot.atNW(), spaceknot.atSE()],
-  [space.at([-0.5,-0.5]), space.at([0.118,0.118])]
-);
+var c = space.at([0,0]);
+var putOnCircle = function (spacetaa, i) {
+  var rads = i * 2 * Math.PI / 5 - (Math.PI / 5);
+  spacetaa.translateScaleRotate(
+    [spacetaa.atMidN(), spacetaa.atMidS()],
+    [c.polarOffset(1.382, rads), c.polarOffset(0.382, rads)]
+  );
+};
+
+putOnCircle(spacestar, 0);
+putOnCircle(spaceknot, 1);
+putOnCircle(spacemsun, 2);
+putOnCircle(spacesaic, 3);
+putOnCircle(spacesand, 4);
+
 view.translateScale(
   [view.atNW(), view.atSE()],
-  [space.at([-1,-1]), space.at([2,2])]
+  [space.at([-3,-3]), space.at([3,3])]
 );
 
 (function makeSpaceTransformable() {
@@ -350,6 +363,9 @@ var makeSpaceTaaTransformable = function (spacetaa) {
 
 makeSpaceTaaTransformable(spacestar);
 makeSpaceTaaTransformable(spaceknot);
+makeSpaceTaaTransformable(spacemsun);
+makeSpaceTaaTransformable(spacesaic);
+makeSpaceTaaTransformable(spacesand);
 
 },{"./TouchHandler":2}],4:[function(require,module,exports){
 
