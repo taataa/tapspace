@@ -69,7 +69,6 @@ describe('taaspace', function () {
       var spacetaa = space.add(taa);
       spacetaa.translate(spacetaa.atNorm([0,0]), spacetaa.atNorm([1,1]));
       var el1 = document.elementFromPoint(300, 300); // null if outside window
-      //console.log('elem', el1);
       var el2 = $('img.taaspace-taa')[0];
       el1.should.equal(el2);
     });
