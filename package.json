@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "3.0.0-alpha",
+  "version": "3.0.0",
   "description": "A ZUI positioning lib for squareformatted images.",
   "keywords": [
     "zoomable",
