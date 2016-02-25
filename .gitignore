@@ -31,9 +31,9 @@ node_modules
 *.DS_Store
 
 # Project related, temporary
-taaspace.min.js
-taaspace.min.js.map
-taaspace.js
+#taaspace.min.js
+#taaspace.min.js.map
+#taaspace.js
 
 # Test output
 tests/screenshots/*
