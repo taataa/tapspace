@@ -43,7 +43,7 @@
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "serve": "python3 -m http.server 8000",
-    "build": "npm run test:lint && npm run build:dev && npm run test:headless",
+    "build": "npm run test:lint && npm run build:min && npm run test:headless",
     "build:bundle": "browserify src/index.js --standalone taaspace -o taaspace.js",
     "build:min": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.min.js.map --output taaspace.min.js.map] > taaspace.min.js",
     "build:dev": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
