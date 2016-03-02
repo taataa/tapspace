@@ -127,4 +127,33 @@ describe('taaspace', function () {
     });
   });
 
+
+  describe('SpacePoint', function () {
+    describe('#polarOffset', function () {
+      var space, p;
+
+      beforeEach(function () {
+        space = new taaspace.Space();
+        p = space.at([100, 100]);
+      });
+
+      it('should allow 0 and 2PI', function () {
+        var a = p.polarOffset(100, 2 * Math.PI);
+        var b = p.polarOffset(100, 0);
+        a.xy.should.be.shallowDeepAlmostEqual(b.xy);
+      });
+
+      it('should allow 0 distance', function () {
+        var a = p.polarOffset(0, Math.PI / 3);
+        a.xy.should.eql(p.xy);
+      });
+
+      it('should allow angles outside [0, 2PI]', function () {
+        var a = p.polarOffset(100, 2 * Math.PI + 1);
+        var b = p.polarOffset(100, 1);
+        a.xy.should.be.shallowDeepAlmostEqual(b.xy);
+      });
+    });
+  });
+
 });
