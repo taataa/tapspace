@@ -11,8 +11,11 @@ A javascript library for positioning zoomable user interfaces of square-formatte
 
 ## Features
 
-- Scalable, rotatable and draggable infinite space for square-formatted HTML images.
+- Scalable, rotatable, and translatable infinite space for square-formatted HTML images.
 - Uses CSS3 and DOM elements, **no** HTML5 Canvas, SVG or WebGL
+
+## Todo
+
 - Animate transformations, like moving an image, simply by passing some parameters. Animation support by [Move.js](http://visionmedia.github.io/move.js/)
 
 
