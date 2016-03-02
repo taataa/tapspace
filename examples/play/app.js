@@ -284,10 +284,11 @@ var spacesand = space.add(sand);
 var c = space.at([0,0]);
 var putOnCircle = function (spacetaa, i) {
   var rads = i * 2 * Math.PI / 5 - (Math.PI / 5);
-  spacetaa.translateScaleRotate(
-    [spacetaa.atMidN(), spacetaa.atMidS()],
-    [c.polarOffset(1.382, rads), c.polarOffset(0.382, rads)]
-  );
+  var midn = spacetaa.atMidN();
+  var mids = spacetaa.atMidS();
+  var offn = c.polarOffset(1.382, rads);
+  var offs = c.polarOffset(0.382, rads);
+  spacetaa.translateScaleRotate([midn, mids], [offn, offs]);
 };
 
 putOnCircle(spacestar, 0);
