@@ -57,9 +57,17 @@ var HTMLSpaceView = function (space, container) {
   var transformImage = function (img, spacetaa) {
     // Transform images because the view orientation.
     var T = this2._T.multiplyBy(spacetaa._T.inverse());
-    // The last step in the transformation chain.
-    //T = this2.defaultTrans.multiplyBy(this2._T);
-    move(img).matrix(T.s, T.r, -T.r, T.s, T.tx, T.ty).end();
+    // TODO Current move.js does not prevent scientific notation reaching CSS
+    // which leads to problems with Safari and Opera. Therefore we must
+    // prevent the notation here.
+    // Of course this will cause error in the presentation.
+    // However the error is only in the presentation and thus not a problem.
+    var prec = 8;
+    var s = T.s.toFixed(prec);
+    var r = T.r.toFixed(prec);
+    var tx = T.tx.toFixed(prec);
+    var ty = T.ty.toFixed(prec);
+    move(img).matrix(s, r,-r, s, tx, ty).end();
   };
 
   // Listen the space for new taas or transformations
