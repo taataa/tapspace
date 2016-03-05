@@ -56,7 +56,8 @@ var HTMLSpaceView = function (space, container) {
 
   var transformImage = function (img, spacetaa) {
     // Transform images because the view orientation.
-    var T = this2._T.multiplyBy(spacetaa._T.inverse());
+    // See 2016-03-05-09.
+    var T = this2._T.inverse().multiplyBy(spacetaa._T);
     // TODO Current move.js does not prevent scientific notation reaching CSS
     // which leads to problems with Safari and Opera. Therefore we must
     // prevent the notation here.

@@ -306,15 +306,20 @@ view.translateScale(
   var hand = new TouchHandler(container);
   var elTr;
   hand.on('start', function () {
+    // Store the initial transformation from view to space.
     elTr = view.getTransform();
   });
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
     if (elTr === null) { return; }
-    // We get a new transformation on view.
+    // We get a new transformation on view: transformOnView
+    // See note 2016-03-05-12
+    //   Given transformation H_view on view and we want
+    //   to apply it so that it looks that whole space is moving:
+    //      V_hat = V * inv(H_view)
+    //   Where V is the original view coordinate transformation.
     var tOV = transformOnView;
-    // I have no idea why this works:
-    var finalTr = tOV.multiplyBy(elTr);
+    var finalTr = elTr.multiplyBy(tOV.inverse());
     // Apply it.
     view.setTransform(finalTr);
   });
@@ -329,7 +334,7 @@ var makeSpaceTaaTransformable = function (spacetaa) {
   var hand = new TouchHandler(el);
   var elTr;
   hand.on('start', function () {
-    // Store the initial transformation from space to taa.
+    // Store the initial transformation from taa to space.
     elTr = spacetaa.getTransform();
   });
   hand.on('move', function (transformOnView) {
@@ -337,22 +342,14 @@ var makeSpaceTaaTransformable = function (spacetaa) {
     if (elTr === null) { return; }
     // We get a new transformation on view.
     var tOV = transformOnView;
-    // We know how to convert from space to view.
-    var vT = view.getTransform();
-    // We convert it to space.
-    // tOV transforms coords on view to other coords on view.
-    // We want to know what would do same for space coords.
-    // Therefore we need transformation vT that first transforms space coords
-    // to view, then applies tOV, and finally maps back on space: inv(vT)
+    // See note 2016-03-05-11:
+    //   To apply transformation H_view to space object:
+    //     T_hat = V * H_view * inv(V) * T
     //
-    // Points vT * x are transformed by tOV: tOV * vT * x.
-    //       tOV * vT == vT * tOS
-    //   <=> inv(vT) * tOV * vT == inv(vT) * vT * tOS
-    //   <=> tOS = inv(vT) * tOV * vT
-    var tOS = vT.inverse().multiplyBy(tOV).multiplyBy(vT);
-    // We combine it with the initial conversion to spaceTaa.
-    // I have no idea why this works:
-    var finalTr = elTr.multiplyBy(tOS.inverse());
+    var vT = view.getTransform();
+    var tOS = vT.multiplyBy(tOV).multiplyBy(vT.inverse());
+    // We combine it with the initial coord. transf. of spaceTaa.
+    var finalTr = tOS.multiplyBy(elTr);
     // Apply it.
     spacetaa.setTransform(finalTr);
   });

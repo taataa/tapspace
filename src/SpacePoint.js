@@ -1,5 +1,7 @@
 // API v0.3.0
 
+var Transform = require('./Transform');
+
 var SpacePoint = function (xy, reference) {
   // Example
   //   var p = taaspace.Point([x, y], taa);
@@ -12,11 +14,18 @@ var SpacePoint = function (xy, reference) {
   //       an item in space, enabling coord projections.
   this.xy = xy;
 
-  // The SpacePlanes transformation the xy are on.
-  // Design note: at first the references were SpacePlanes. But because
-  // a SpacePlane can move or be removed, we chose only the transformation
-  // to be remembered.
+  // The SpacePlane's transformation the xy are on.
+  // Design note: at first, the references were SpacePlanes and not
+  // transformations. But because a SpacePlane can move or be removed,
+  // we chose only the transformation to be remembered.
+  // Design note: later we found it would be convenient for debugging
+  // to know where the point came from, which led to this._origin.
+  // After that we found that in toSpace method, we would need reference
+  // to space, although we only have implicit reference to its coords.
+  // Therefore this._origin was dropped.
+
   // For now, there is no hierarchy so local transformation _T is enough.
+  // With hierarchy we should calc transformation all the way to the space.
   this._T = reference._T;
 };
 
@@ -52,23 +61,42 @@ proto.to = function (target) {
   // Create a new SpacePoint at same location but on a
   // different SpacePlane.
   //
-  // Implementation:
-  // First, compute transformation B from the current plane
-  // to the space. It is equal to the inverse transformation of this._T.
-  // Second, let A be transformation to the target plane.
-  // Compute combined transformation AB. Given a vector x, y = ABx, where
-  // y is now x when represented in the coordinates of the target plane.
+  // Implementation note (See 2016-03-05-09):
+  //
+  // First, compute coord. transf. B from the current plane
+  // to the space:
+  //   x_space = B * x_plane  <=>  x_plane = inv(B) * x_space
+  //   B = plane._T
+  // Second, let A be coord. transf. from the space to the target plane:
+  //   x_target = A * x_space
+  //   A = inv(target._T)
+  // Therefore combined coord. transf. C from the curr. plane to the target:
+  //   x_target = C * x_plane
+  //   <=> A * x_space = C * inv(B) * x_space
+  //   <=> A = C * inv(B)
+  //   <=> C = AB
+  //   <=> C = inv(target._T) * plane._T
   //
   // Parameter
   //   target, a SpacePlane
-  
+
   if (target._T.equals(this._T)) {
     return this;
   } // else
-  var B = this._T.inverse();
-  var AB = target._T.multiplyBy(B);
-  var y = AB.transform(this.xy);
-  return new SpacePoint(y, target);
+  var C = target._T.inverse().multiplyBy(this._T);
+  var xy_target = C.transform(this.xy);
+  return new SpacePoint(xy_target, target);
+};
+
+proto.toSpace = function () {
+  // Create a new SpacePoint at same location but represented on space coords.
+  //
+  // Implementation note:
+  //   We already have coord. transf. from the current plane to the space:
+  //     plane._T
+  var xy_space = this._T.transform(this.xy);
+  var space_mock = {'_T': Transform.IDENTITY};
+  return new SpacePoint(xy_space, space_mock);
 };
 
 proto.transform = function (tr) {

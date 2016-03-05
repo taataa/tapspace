@@ -55,11 +55,11 @@ describe('taaspace', function () {
       var taa = new taaspace.Taa('assets/taa.png');
       var spacetaa = space.add(taa);
       spacetaa.at([0,0]).to(view).xy.should.eql([0,0]);
-      spacetaa.atNorm([1,1]).to(view).xy.should.eql([256,256]);
+      spacetaa.atNorm([0.5,0.5]).to(view).xy.should.eql([128,128]);
       spacetaa.atNorm([1,1]).xy.should.eql([256,256]);
       spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
       setTimeout(function () {
-        spacetaa.at([0,0]).to(view).xy.should.eql([256,256]);
+        spacetaa.atNorm([1,1]).to(view).xy.should.eql([512,512]);
         done();
       }, 200);
     });

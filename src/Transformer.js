@@ -1,56 +1,72 @@
 // API v0.2.0
 var nudged = require('nudged');
+var Transform = require('./Transform');
 var SpacePoint = require('./SpacePoint');
 
-var normalize = function (points, plane) {
-  // Transform all the points onto the given plane.
+var normalize = function (points) {
+  // Transform all the points onto the space and then to array.
   // Arguments
   //   points, a single spacepoint or a list of spacepoints
   //   plane, a SpacePlane e.g. a SpaceTaa where to normalize
-  var i, p, np;
-  var normalized = [];
+  // Return
+  //   array of xy points in space.
+  var i, p, np, normalized;
   if (!Array.isArray(points)) {
-    points = [points];
-  }
+    // Single SpacePoint
+    p = points;
+    np = p.toSpace().xy;
+    return [np];
+  } // else
+  normalized = [];
   for (i = 0; i < points.length; i += 1) {
     p = points[i];
-    np = p.to(plane).xy;
+    np = p.toSpace().xy;
     normalized.push(np);
   }
   return normalized;
 };
+
 
 var transformByEstimate = function (plane, type, domain, range, pivot) {
   // Types: T,S,R,TS,TR,SR,TSR (see nudged for further details)
 
   var normPivot;
   if (typeof pivot !== 'undefined') {
-    normPivot = pivot.to(plane).xy;
+    normPivot = normalize(pivot)[0];
   }
 
-  // Convert all SpacePoints onto local SpacePlane and to arrays
-  var normDomain = normalize(domain, plane);
-  var normRange = normalize(range, plane);
+  // Convert all SpacePoints onto the space and to arrays
+  var normDomain = normalize(domain);
+  var normRange = normalize(range);
 
-  var T = nudged.estimate(type, normDomain, normRange, normPivot);
-  // S represents transf from plane to space, so inverse.
-  plane._T = T.inverse().multiplyBy(plane._T);
+  // Then compute optimal transformation in space
+  var H_space = nudged.estimate(type, normDomain, normRange, normPivot);
+  // See 2016-03-05-11:
+  //   To apply transformation to a space object:
+  //     T_hat = toSpace(H) * T
+  // Therefore:
+  plane._T = H_space.multiplyBy(plane._T);
+
   // Notify especially view about transformation.
   plane.emit('transformed', plane);
 };
 
+
 var Transformer = function (plane) {
 
   plane.getTransform = function () {
+    // Return
+    //   transformation from plane to space, i.e.
+    //     xy_space = T * xy_plane
     // Needed when we want to store Space element's position for later use.
-    return plane._T;
+    return this._T;
   };
 
   plane.setTransform = function (T) {
     // Needed when we whan to restore stored position, maybe after
     // modification.
-    plane._T = T;
-    plane.emit('transformed', plane);
+    this._T = T;
+    this.emit('transformed', this);
   };
 
   plane.translate = function (domain, range) {
@@ -77,18 +93,17 @@ var Transformer = function (plane) {
 
     var useMultiplier = (typeof range === 'undefined');
 
-    if (useMultiplier){
-      var normPivot = pivot.to(plane).xy;
+    if (useMultiplier) {
+      var normPivot = normalize(pivot)[0];
       var multiplier = multiplierOrDomain;
-      // this._T represents transf from space to plane, so inverse scale.
-      // For example, if taa is very small, a far away space coordinate
-      // needs huge multiplier to be represented on the taa's coords.
-      if (multiplier > 0) {
-        this._T = this._T.scaleBy(1 / multiplier, normPivot);
-        plane.emit('transformed', plane);
-      } else {
-        throw 'Invalid multiplier: ' + multiplier;
-      }
+      // Multiplier does not depend on plane.
+      // We create a pivoted scaling transform on space.
+      var S_space = Transform.IDENTITY.scaleBy(multiplier, normPivot);
+      // See 2016-03-05-11
+      //   We transform space objects by:
+      //   T_hat = H_space * T
+      this._T = S_space.multiplyBy(this._T);
+      plane.emit('transformed', plane);
     } else {
       var domain = multiplierOrDomain;
       transformByEstimate(this, 'S', domain, range, pivot);
@@ -107,18 +122,21 @@ var Transformer = function (plane) {
     var useRadians = (typeof range === 'undefined');
 
     if (useRadians){
-      var normPivot = pivot.to(plane).xy;
+      var normPivot = normalize(pivot)[0];
       var radians = radiansOrDomain;
-      // this._T represents transf from space to plane, so inverse rads.
-      this._T = this._T.rotateBy(-radians, normPivot);
+      // Radians do not depend on plane.
+      // We create a pivoted rotation transform on space.
+      var R_space = Transform.IDENTITY.rotateBy(radians, normPivot);
+      // See 2016-03-05-11
+      //   We transform space objects by:
+      //   T_hat = H_space * T
+      this._T = R_space.multiplyBy(this._T);
       plane.emit('transformed', plane);
     } else {
       var domain = radiansOrDomain;
       transformByEstimate(this, 'R', domain, range, pivot);
     }
   };
-
-  // scaleRotate
 
   plane.translateScale = function (domain, range) {
     // Parameter
