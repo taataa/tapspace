@@ -2,24 +2,6 @@
 //var nudged = require('nudged');
 var SpacePoint = require('./SpacePoint');
 
-/*var normalize = function (points, plane) {
-  // Transform all the points onto the given plane.
-  // Arguments
-  //   points, a single spacepoint or a list of spacepoints
-  //   plane, a SpacePlane e.g. a SpaceTaa where to normalize
-  var i, p, np;
-  var normalized = [];
-  if (!Array.isArray(points)) {
-    points = [points];
-  }
-  for (i = 0; i < points.length; i += 1) {
-    p = points[i];
-    np = p.to(plane).xy;
-    normalized.push(np);
-  }
-  return normalized;
-};*/
-
 var SpaceRectangle = function (transformer) {
 
   var t = transformer;  // Alias
@@ -37,7 +19,7 @@ var SpaceRectangle = function (transformer) {
     width = dimensions[0];
     height = dimensions[1];
 
-    t.emit('resized', t);
+    this.emit('resized', t);
   };
 
   t.getSize = function () {

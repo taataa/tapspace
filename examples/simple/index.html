@@ -19,7 +19,7 @@
     var space = new taaspace.Space();
     var view = new taaspace.HTMLSpaceView(space, container);
     var taa = new taaspace.Taa('assets/taa00.jpg', function (err, taa) {
-      var spacetaa = space.add(taa);
+      var spacetaa = new taaspace.SpaceTaa(space, taa);
       spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
     });
   }());

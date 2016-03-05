@@ -3,48 +3,29 @@ API v0.4.0
 View
 */
 var Emitter = require('component-emitter');
+var SpaceContainer = require('./SpaceContainer');
 var SpacePlane = require('./SpacePlane');
 var Transformer = require('./Transformer');
 var SpaceRectangle = require('./SpaceRectangle');
-var nudged = require('nudged');
 var move = require('movejs');
 
 // Disable animations by default.
 move.defaults = { duration: 0 };
 
-// Unique ID generator. Unique over session.
-// Usage: seqid.next()
-// Return: int
-var seqid = require('seqid')(0);
+var HTMLSpaceView = function (space, htmlContainer) {
+  // Test if valid dom element
+  if (!('tagName' in htmlContainer)) {
+    throw 'Container should be a DOM Element';
+  }
 
-var HTMLSpaceView = function (space, container) {
   Emitter(this);
+  SpaceContainer(this);
   SpacePlane(this);
   Transformer(this);
   SpaceRectangle(this);
   var this2 = this;
 
-  // Test valid space
-  if (typeof space !== 'object' || !('add' in space)) {
-    throw 'Space should be a Space object';
-  }
-  // Test if valid dom element
-  if (!('tagName' in container)) {
-    throw 'Container should be a DOM Element';
-  }
-
-  // Both SpaceTaas and SpaceViews have unique IDs because there can be
-  // plenty of both.
-  this.id = seqid.next().toString();
-
-  this.space = space;
-  this._el = container;
-
-  (function initSize() {
-    var w = container.clientWidth;
-    var h = container.clientHeight;
-    this2.resize([w, h]);
-  }());
+  this._el = htmlContainer;
 
   // Two mappings from space taa ids:
   // 1. to HTML elements of the space taas.
@@ -54,10 +35,19 @@ var HTMLSpaceView = function (space, container) {
   this._elements = {};
   this._spacetaas = {};
 
+  (function initSize() {
+    var w = this2._el.clientWidth;
+    var h = this2._el.clientHeight;
+    this2.resize([w, h]);
+  }());
+
   var transformImage = function (img, spacetaa) {
     // Transform images because the view orientation.
     // See 2016-03-05-09.
-    var T = this2._T.inverse().multiplyBy(spacetaa._T);
+    var spacetaa_global_T = spacetaa.getGlobalTransform();
+    var T = this2._T.inverse().multiplyBy(spacetaa_global_T);
+    // TODO What if view parent is not the root?
+    //   Solution: getTransformTo(plane)
     // TODO Current move.js does not prevent scientific notation reaching CSS
     // which leads to problems with Safari and Opera. Therefore we must
     // prevent the notation here.
@@ -73,7 +63,7 @@ var HTMLSpaceView = function (space, container) {
 
   // Listen the space for new taas or transformations
 
-  this.space.on('contentAdded', function (spacetaa) {
+  var contentAddedHandler = function (spacetaa) {
     if (this2._elements.hasOwnProperty(spacetaa.id)) {
       // SpaceTaa is already drawn.
     } else {
@@ -90,9 +80,9 @@ var HTMLSpaceView = function (space, container) {
       // Make transformation
       transformImage(el, spacetaa);
     }
-  });
+  };
 
-  this.space.on('contentRemoved', function (spacetaa) {
+  var contentRemovedHandler = function (spacetaa) {
     var el;
     if (this2._elements.hasOwnProperty(spacetaa.id)) {
       el = this2._elements[spacetaa.id];
@@ -102,9 +92,9 @@ var HTMLSpaceView = function (space, container) {
       delete this2._elements[spacetaa.id];
       delete this2._spacetaas[spacetaa.id];
     }
-  });
+  };
 
-  this.space.on('contentTransformed', function (spacetaa) {
+  var contentTransformedHandler = function (spacetaa) {
     // Update transformation
     var el;
     if (this2._elements.hasOwnProperty(spacetaa.id)) {
@@ -112,6 +102,17 @@ var HTMLSpaceView = function (space, container) {
       // Make transformation
       transformImage(el, spacetaa);
     }
+  };
+
+  this.on('added', function (self, newParent) {
+    newParent.on('contentAdded', contentAddedHandler);
+    newParent.on('contentRemoved', contentRemovedHandler);
+    newParent.on('contentTransformed', contentTransformedHandler);
+  });
+  this.on('removed', function (self, oldParent) {
+    oldParent.off('contentAdded', contentAddedHandler);
+    oldParent.off('contentRemoved', contentRemovedHandler);
+    oldParent.off('contentTransformed', contentTransformedHandler);
   });
 
   // If the view is transformed, we of course need to retransform everything.
@@ -150,8 +151,9 @@ var HTMLSpaceView = function (space, container) {
   this.getRootElement = function () {
     return this._el;
   };
-};
 
-var proto = HTMLSpaceView.prototype;
+  // View ready to be added to Space.
+  this.setParent(space);
+};
 
 module.exports = HTMLSpaceView;

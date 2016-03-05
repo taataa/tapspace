@@ -10,7 +10,7 @@ var SpacePoint = function (xy, reference) {
   //   xy
   //     2D array
   //   reference
-  //     a SpacePlane or SpacePoint
+  //     a SpaceContainer or SpacePoint
   //       an item in space, enabling coord projections.
   this.xy = xy;
 
@@ -24,9 +24,13 @@ var SpacePoint = function (xy, reference) {
   // to space, although we only have implicit reference to its coords.
   // Therefore this._origin was dropped.
 
-  // For now, there is no hierarchy so local transformation _T is enough.
-  // With hierarchy we should calc transformation all the way to the space.
-  this._T = reference._T;
+  if (reference.hasOwnProperty('getGlobalTransform')) {
+    // Is a SpacePlane
+    this._T = reference.getGlobalTransform();
+  } else {
+    // Is a SpacePoint
+    this._T = reference._T;
+  }
 };
 
 var proto = SpacePoint.prototype;
@@ -61,6 +65,9 @@ proto.to = function (target) {
   // Create a new SpacePoint at same location but on a
   // different SpacePlane.
   //
+  // Parameter
+  //   target, a SpacePlane or null.
+  //
   // Implementation note (See 2016-03-05-09):
   //
   // First, compute coord. transf. B from the current plane
@@ -77,13 +84,19 @@ proto.to = function (target) {
   //   <=> C = AB
   //   <=> C = inv(target._T) * plane._T
   //
-  // Parameter
-  //   target, a SpacePlane
 
-  if (target._T.equals(this._T)) {
+  if (target === null) {
+    // target is the root container (space)
+    return this.toSpace();
+  }
+
+  // Target's global transformation. This._T is already global.
+  var target_gT = target.getGlobalTransform();
+
+  if (target_gT.equals(this._T)) {
     return this;
   } // else
-  var C = target._T.inverse().multiplyBy(this._T);
+  var C = target_gT.inverse().multiplyBy(this._T);
   var xy_target = C.transform(this.xy);
   return new SpacePoint(xy_target, target);
 };

@@ -275,11 +275,11 @@ var msun = new taaspace.Taa('img/marrakech_sun.jpg');
 var saic = new taaspace.Taa('img/marrakech_mosaic.jpg');
 var sand = new taaspace.Taa('img/rabat_sand.jpg');
 
-var spacestar = space.add(star);
-var spaceknot = space.add(knot);
-var spacemsun = space.add(msun);
-var spacesaic = space.add(saic);
-var spacesand = space.add(sand);
+var spacestar = new taaspace.SpaceTaa(space, star);
+var spaceknot = new taaspace.SpaceTaa(space, knot);
+var spacemsun = new taaspace.SpaceTaa(space, msun);
+var spacesaic = new taaspace.SpaceTaa(space, saic);
+var spacesand = new taaspace.SpaceTaa(space, sand);
 
 var c = space.at([0,0]);
 var putOnCircle = function (spacetaa, i) {

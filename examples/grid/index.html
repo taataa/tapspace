@@ -27,7 +27,7 @@
     var createSpaceTaa = function (src, x, y) {
       new taaspace.Taa(src, function (err, taa) {
         if (err) { throw err; }
-        var staa = space.add(taa);
+        var staa = new taaspace.SpaceTaa(space, taa);
         staa.translateScaleRotate(
           [staa.atNorm([0,0]), staa.atNorm([1,1])],
           [space.at([x, y]), space.at([x + 1, y + 1])]

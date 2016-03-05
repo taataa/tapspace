@@ -9,7 +9,7 @@ describe('taaspace', function () {
   }
 
   it('should have submodules', function () {
-    taaspace.should.have.keys('Taa', 'Space', 'HTMLSpaceView',
+    taaspace.should.have.keys('Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView',
       'version');
   });
 
@@ -44,7 +44,7 @@ describe('taaspace', function () {
     it('should be able to create an img element immediately', function () {
       // Without need to wait for the image to load
       var taa = new taaspace.Taa('assets/taa.png');
-      var spacetaa = space.add(taa);
+      var spacetaa = new taaspace.SpaceTaa(space, taa);
       var el = $('img.taaspace-taa');
       el.should.exist;
       var st2 = view.getSpaceTaaByElementId(el.attr('id'));
@@ -53,7 +53,7 @@ describe('taaspace', function () {
 
     it('should position the taa correctly', function (done) {
       var taa = new taaspace.Taa('assets/taa.png');
-      var spacetaa = space.add(taa);
+      var spacetaa = new taaspace.SpaceTaa(space, taa);
       spacetaa.at([0,0]).to(view).xy.should.eql([0,0]);
       spacetaa.atNorm([0.5,0.5]).to(view).xy.should.eql([128,128]);
       spacetaa.atNorm([1,1]).xy.should.eql([256,256]);
@@ -66,7 +66,7 @@ describe('taaspace', function () {
 
     it('should be able to translate', function () {
       var taa = new taaspace.Taa('assets/taa.png');
-      var spacetaa = space.add(taa);
+      var spacetaa = new taaspace.SpaceTaa(space, taa);
       spacetaa.translate(spacetaa.atNorm([0,0]), spacetaa.atNorm([1,1]));
       var el1 = document.elementFromPoint(300, 300); // null if outside window
       var el2 = $('img.taaspace-taa')[0];
@@ -87,8 +87,8 @@ describe('taaspace', function () {
     });
 
     it('should have an id', function () {
-      var a = space.add(taa);
-      var b = space.add(taa);
+      var a = new taaspace.SpaceTaa(space, taa);
+      var b = new taaspace.SpaceTaa(space, taa);
       a.should.have.property('id');
       a.id.should.be.a.String;
       b.id.should.be.a.String;
@@ -96,13 +96,13 @@ describe('taaspace', function () {
     });
 
     it('should be removable', function () {
-      var a = space.add(taa);
+      var a = new taaspace.SpaceTaa(space, taa);
       a.remove();
-      space.content.hasOwnProperty(a.id).should.equal(false);
+      space._content.hasOwnProperty(a.id).should.equal(false);
     });
 
     it('should be able to return a SpacePoint', function () {
-      var a = space.add(taa);
+      var a = new taaspace.SpaceTaa(space, taa);
       var p = a.atNorm([1,1]);
       var vp = p.to(view);
       var epsilon = 0.01;
@@ -112,7 +112,7 @@ describe('taaspace', function () {
     });
 
     it('should be able to give and take Transform objects', function () {
-      var a = space.add(taa);
+      var a = new taaspace.SpaceTaa(space, taa);
       // Move to unit square.
       a.translateScale(
         [a.atNW(), a.atSE()],
