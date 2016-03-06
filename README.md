@@ -16,14 +16,19 @@ A javascript library for positioning zoomable user interfaces of square-formatte
 
 ## Todo
 
+- View children of added spacecontent.
 - Animate transformations, like moving an image, simply by passing some parameters. Animation support by [Move.js](http://visionmedia.github.io/move.js/)
 
 
 ## Notes for Devs
 
-Build & run tests:
+Run release build & tests:
 
     $ npm run build
+
+Run debug build & tests:
+
+    $ npm run build:dev
 
 
 ## License
