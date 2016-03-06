@@ -332,30 +332,29 @@ view.translateScale(
 var makeSpaceTaaTransformable = function (spacetaa) {
   var el = view.getElementBySpaceTaa(spacetaa);
   var hand = new TouchHandler(el);
-  var elTr;
+  var originalParent = null;
+  var originalTransf = null;
   hand.on('start', function () {
+    // Store original parent so we can return spacetaa onto it after gesture.
+    originalParent = spacetaa.getParent();
+    // Change parent to view => not dependent on how view is transformed.
+    spacetaa.setParent(view);
     // Store the initial transformation from taa to space.
-    elTr = spacetaa.getTransform();
+    originalTransf = spacetaa.getTransform();
   });
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
-    if (elTr === null) { return; }
-    // We get a new transformation on view.
-    var tOV = transformOnView;
-    // See note 2016-03-05-11:
-    //   To apply transformation H_view to space object:
-    //     T_hat = V * H_view * inv(V) * T
-    //
-    var vT = view.getTransform();
-    var tOS = vT.multiplyBy(tOV).multiplyBy(vT.inverse());
-    // We combine it with the initial coord. transf. of spaceTaa.
-    var finalTr = tOS.multiplyBy(elTr);
-    // Apply it.
-    spacetaa.setTransform(finalTr);
+    if (originalTransf === null) { return; }
+    // Apply to spacetaa
+    var newTransf = transformOnView.multiplyBy(originalTransf);
+    spacetaa.setTransform(newTransf);
   });
   hand.on('end', function () {
-    // We do not need the initial transformation anymore.
-    elTr = null;
+    // Drop back to original parent.
+    spacetaa.setParent(originalParent);
+    // We do not need the initial transformation and parent anymore.
+    originalTransf = null;
+    originalParent = null;
   });
 };
 
