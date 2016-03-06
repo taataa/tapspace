@@ -132,7 +132,7 @@ var Model = function () {
 
 module.exports = Model;
 
-},{"component-emitter":4,"nudged":5}],2:[function(require,module,exports){
+},{"component-emitter":5,"nudged":6}],2:[function(require,module,exports){
 var Emitter = require('component-emitter');
 var Model = require('./Model');
 
@@ -231,7 +231,7 @@ var TouchHandler = function (element) {
 
 module.exports = TouchHandler;
 
-},{"./Model":1,"component-emitter":4}],3:[function(require,module,exports){
+},{"./Model":1,"component-emitter":5}],3:[function(require,module,exports){
 /*
 
 Design note:
@@ -264,6 +264,7 @@ Future notes:
 */
 
 var TouchHandler = require('./TouchHandler');
+var utils = require('./utils');
 
 var container = document.getElementById('space');
 var space = new taaspace.Space();
@@ -341,6 +342,8 @@ var makeSpaceTaaTransformable = function (spacetaa) {
     spacetaa.setParent(view);
     // Store the initial transformation from taa to space.
     originalTransf = spacetaa.getTransform();
+    // Show in touch order
+    el.style.zIndex = utils.getIncrementalZIndex();
   });
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
@@ -364,7 +367,18 @@ makeSpaceTaaTransformable(spacemsun);
 makeSpaceTaaTransformable(spacesaic);
 makeSpaceTaaTransformable(spacesand);
 
-},{"./TouchHandler":2}],4:[function(require,module,exports){
+},{"./TouchHandler":2,"./utils":4}],4:[function(require,module,exports){
+
+(function closure() {
+  var i = 100;
+
+  exports.getIncrementalZIndex = function () {
+    i += 1;
+    return i;
+  };
+}());
+
+},{}],5:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -527,7 +541,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*
 
 */
@@ -558,7 +572,7 @@ exports.estimate = function (type, domain, range, pivot) {
   throw new Error('Unknown estimator type: ' + type);
 };
 
-},{"./lib/Transform":6,"./lib/estimateR":7,"./lib/estimateS":8,"./lib/estimateSR":9,"./lib/estimateT":10,"./lib/estimateTR":11,"./lib/estimateTS":12,"./lib/estimateTSR":13,"./lib/version":14}],6:[function(require,module,exports){
+},{"./lib/Transform":7,"./lib/estimateR":8,"./lib/estimateS":9,"./lib/estimateSR":10,"./lib/estimateT":11,"./lib/estimateTR":12,"./lib/estimateTS":13,"./lib/estimateTSR":14,"./lib/version":15}],7:[function(require,module,exports){
 
 var Transform = function (s, r, tx, ty) {
 
@@ -697,7 +711,7 @@ Transform.IDENTITY = new Transform(1, 0, 0, 0);
 
 module.exports = Transform;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range, pivot) {
@@ -748,7 +762,7 @@ module.exports = function (domain, range, pivot) {
   return new Transform(shat, rhat, tx, ty);
 };
 
-},{"./Transform":6}],8:[function(require,module,exports){
+},{"./Transform":7}],9:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range, pivot) {
@@ -794,7 +808,7 @@ module.exports = function (domain, range, pivot) {
   return new Transform(shat, 0, tx, ty);
 };
 
-},{"./Transform":6}],9:[function(require,module,exports){
+},{"./Transform":7}],10:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range, pivot) {
@@ -874,7 +888,7 @@ module.exports = function (domain, range, pivot) {
   return new Transform(s, r, tx, ty);
 };
 
-},{"./Transform":6}],10:[function(require,module,exports){
+},{"./Transform":7}],11:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range) {
@@ -901,7 +915,7 @@ module.exports = function (domain, range) {
   return new Transform(1, 0, txhat, tyhat);
 };
 
-},{"./Transform":6}],11:[function(require,module,exports){
+},{"./Transform":7}],12:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range) {
@@ -961,7 +975,7 @@ module.exports = function (domain, range) {
   return new Transform(shat, rhat, txhat, tyhat);
 };
 
-},{"./Transform":6}],12:[function(require,module,exports){
+},{"./Transform":7}],13:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range) {
@@ -1023,7 +1037,7 @@ module.exports = function (domain, range) {
   return new Transform(shat, 0, txhat, tyhat);
 };
 
-},{"./Transform":6}],13:[function(require,module,exports){
+},{"./Transform":7}],14:[function(require,module,exports){
 var Transform = require('./Transform');
 
 module.exports = function (domain, range) {
@@ -1098,7 +1112,7 @@ module.exports = function (domain, range) {
   return new Transform(s, r, tx, ty);
 };
 
-},{"./Transform":6}],14:[function(require,module,exports){
+},{"./Transform":7}],15:[function(require,module,exports){
 module.exports = '1.0.1';
 
 },{}]},{},[3]);

@@ -30,6 +30,7 @@ Future notes:
 */
 
 var TouchHandler = require('./TouchHandler');
+var utils = require('./utils');
 
 var container = document.getElementById('space');
 var space = new taaspace.Space();
@@ -107,6 +108,8 @@ var makeSpaceTaaTransformable = function (spacetaa) {
     spacetaa.setParent(view);
     // Store the initial transformation from taa to space.
     originalTransf = spacetaa.getTransform();
+    // Show in touch order
+    el.style.zIndex = utils.getIncrementalZIndex();
   });
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
