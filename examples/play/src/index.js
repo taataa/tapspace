@@ -36,39 +36,6 @@ var container = document.getElementById('space');
 var space = new taaspace.Space();
 var view = new taaspace.HTMLSpaceView(space, container);
 
-var star = new taaspace.Taa('img/chellah_star.jpg');
-var knot = new taaspace.Taa('img/marrakech_knot.jpg');
-var msun = new taaspace.Taa('img/marrakech_sun.jpg');
-var saic = new taaspace.Taa('img/marrakech_mosaic.jpg');
-var sand = new taaspace.Taa('img/rabat_sand.jpg');
-
-var spacestar = new taaspace.SpaceTaa(space, star);
-var spaceknot = new taaspace.SpaceTaa(space, knot);
-var spacemsun = new taaspace.SpaceTaa(space, msun);
-var spacesaic = new taaspace.SpaceTaa(space, saic);
-var spacesand = new taaspace.SpaceTaa(space, sand);
-
-var c = space.at([0,0]);
-var putOnCircle = function (spacetaa, i) {
-  var rads = i * 2 * Math.PI / 5 - (Math.PI / 5);
-  var midn = spacetaa.atMidN();
-  var mids = spacetaa.atMidS();
-  var offn = c.polarOffset(1.382, rads);
-  var offs = c.polarOffset(0.382, rads);
-  spacetaa.translateScaleRotate([midn, mids], [offn, offs]);
-};
-
-putOnCircle(spacestar, 0);
-putOnCircle(spaceknot, 1);
-putOnCircle(spacemsun, 2);
-putOnCircle(spacesaic, 3);
-putOnCircle(spacesand, 4);
-
-view.translateScale(
-  [view.atNW(), view.atSE()],
-  [space.at([-3,-3]), space.at([3,3])]
-);
-
 (function makeSpaceTransformable() {
   var hand = new TouchHandler(container);
   var elTr;
@@ -127,8 +94,36 @@ var makeSpaceTaaTransformable = function (spacetaa) {
   });
 };
 
-makeSpaceTaaTransformable(spacestar);
-makeSpaceTaaTransformable(spaceknot);
-makeSpaceTaaTransformable(spacemsun);
-makeSpaceTaaTransformable(spacesaic);
-makeSpaceTaaTransformable(spacesand);
+
+var imgs = [
+  'img/chellah_star.jpg',
+  'img/marrakech_knot.jpg',
+  'img/marrakech_sun.jpg',
+  'img/marrakech_mosaic.jpg',
+  'img/rabat_sand.jpg',
+  'img/oudaya_door.jpg',
+  'img/chellah_nw.jpg'
+];
+
+var c = space.at([0,0]);
+var n = imgs.length;
+var putOnCircle = function (spacetaa, i) {
+  var rads = i * 2 * Math.PI / n - (Math.PI / n);
+  var midn = spacetaa.atMidN();
+  var mids = spacetaa.atMidS();
+  var offn = c.polarOffset(1.382, rads);
+  var offs = c.polarOffset(0.382, rads);
+  spacetaa.translateScaleRotate([midn, mids], [offn, offs]);
+};
+
+imgs.forEach(function (src, i) {
+  taa = new taaspace.Taa(src);
+  staa = new taaspace.SpaceTaa(space, taa);
+  putOnCircle(staa, i);
+  makeSpaceTaaTransformable(staa);
+});
+
+view.translateScale(
+  [view.atNW(), view.atSE()],
+  [space.at([-3,-3]), space.at([3,3])]
+);
