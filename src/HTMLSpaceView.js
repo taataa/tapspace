@@ -7,6 +7,7 @@ var SpaceContainer = require('./SpaceContainer');
 var SpacePlane = require('./SpacePlane');
 var Transformer = require('./Transformer');
 var SpaceRectangle = require('./SpaceRectangle');
+var SpaceTaa = require('./SpaceTaa');
 var move = require('movejs');
 
 // Disable animations by default.
@@ -61,55 +62,101 @@ var HTMLSpaceView = function (space, htmlContainer) {
     move(img).matrix(s, r,-r, s, tx, ty).end();
   };
 
-  // Listen the space for new taas or transformations
+  // Listen the space for new or removed taas or transformations
 
-  var contentAddedHandler = function (spacetaa) {
-    if (this2._elements.hasOwnProperty(spacetaa.id)) {
-      // SpaceTaa is already drawn.
+  var contentAddedHandler = function (spacecontainer, newParent, oldParent) {
+    if (typeof oldParent === 'undefined') { oldParent = null; }
+    if (typeof newParent === 'undefined') { newParent = null; }
+
+    // SpaceView, SpaceTaa ...
+    var con = spacecontainer;
+
+    if (this2._elements.hasOwnProperty(con.id)) {
+      // Content is already drawn.
     } else {
-      var taa = spacetaa.taa;
-      var el = new Image(256, 256);
-      el.src = taa.image.src;
-      el.id = this2.id + '/' + spacetaa.id; // View-specific unique elem id
-      el.className = 'taaspace-taa';
-      // Show to client
-      this2._el.appendChild(el);
-      // Make referencable
-      this2._elements[spacetaa.id] = el;
-      this2._spacetaas[spacetaa.id] = spacetaa;
-      // Make transformation
-      transformImage(el, spacetaa);
+      if (con instanceof SpaceTaa) {
+        var taa = con.taa;
+        var el = new Image(256, 256);
+        el.src = taa.image.src;
+        el.id = this2.id + '/' + con.id; // View-specific unique elem id
+        el.className = 'taaspace-taa';
+        // Show to client
+        this2._el.appendChild(el);
+        // Make referencable
+        this2._elements[con.id] = el;
+        this2._spacetaas[con.id] = con;
+        // Make transformation
+        transformImage(el, con);
+      } else if (con instanceof HTMLSpaceView) {
+        // No representation for views.
+      } else {
+        throw new Exception('Unknown space content; cannot represent');
+      }
     }
   };
 
-  var contentRemovedHandler = function (spacetaa) {
-    var el;
-    if (this2._elements.hasOwnProperty(spacetaa.id)) {
-      el = this2._elements[spacetaa.id];
-      // Remove HTML element
-      this2._el.removeChild(el);
-      // JS feature: does not throw if does not exist
-      delete this2._elements[spacetaa.id];
-      delete this2._spacetaas[spacetaa.id];
+  var contentRemovedHandler = function (spacecontent, oldParent, newParent) {
+    if (typeof oldParent === 'undefined') { oldParent = null; }
+    if (typeof newParent === 'undefined') { newParent = null; }
+
+    var sameRoot, el, con;
+
+    con = spacecontent; // Alias
+
+    // Decide sameRoot
+    if (oldParent === null || newParent === null) {
+      sameRoot = false;
+    } else {
+      sameRoot = oldParent.getRootParent() === newParent.getRootParent();
+    }
+
+    if (sameRoot) {
+      // No reason to remove and then add again.
+    } else {
+      // New parent in different space, so not displayed in this view anymore.
+      if (this2._elements.hasOwnProperty(con.id)) {
+        // Remove HTML element
+        el = this2._elements[con.id];
+        this2._el.removeChild(el);
+        // Remove from memory.
+        // JS feature: does not throw if does not exist
+        delete this2._elements[con.id];
+        delete this2._spacetaas[con.id];
+      }
+    }
+
+  };
+
+  var contentTransformedHandler = function (spacecontent) {
+    // Update css transformation.
+    // If a container has children, they must also be transformed.
+    var cons, i, con, el;
+    cons = spacecontent.getAllChildren();
+    cons.push(spacecontent);
+
+    for (i = 0; i < cons.length; i += 1) {
+      con = cons[i];
+      if (this2._elements.hasOwnProperty(con.id)) {
+        if (con instanceof SpaceTaa) {
+          el = this2._elements[con.id];
+          // Make transformation
+          transformImage(el, con);
+        }
+        // Else: no transformable representation for Views.
+      }
     }
   };
 
-  var contentTransformedHandler = function (spacetaa) {
-    // Update transformation
-    var el;
-    if (this2._elements.hasOwnProperty(spacetaa.id)) {
-      el = this2._elements[spacetaa.id];
-      // Make transformation
-      transformImage(el, spacetaa);
-    }
-  };
-
+  // View added to new parent.
   this.on('added', function (self, newParent) {
+    // TODO add content of the new space.
     newParent.on('contentAdded', contentAddedHandler);
     newParent.on('contentRemoved', contentRemovedHandler);
     newParent.on('contentTransformed', contentTransformedHandler);
   });
+  // View removed from parent.
   this.on('removed', function (self, oldParent) {
+    // TODO remove content of the old space.
     oldParent.off('contentAdded', contentAddedHandler);
     oldParent.off('contentRemoved', contentRemovedHandler);
     oldParent.off('contentTransformed', contentTransformedHandler);

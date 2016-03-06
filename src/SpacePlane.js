@@ -1,4 +1,12 @@
-// API v0.6.0
+/*
+SpacePlane
+API v0.6.0
+
+A SpacePlane represents a coordinate system. It does not include
+methods to transform the system. SpacePlane and Transformer are separated
+because we want to have planes that cannot be transformed, as Space.
+
+*/
 
 var nudged = require('nudged');
 var SpacePoint = require('./SpacePoint');
@@ -66,11 +74,7 @@ var SpacePlane = function (emitter) {
     // Become space. Called e.g. when plane is removed from parent.
     this._T = nudged.Transform.IDENTITY;
   };
-
-  emitter.on('removed', function () {
-    // Root containers cannot move.
-    emitter.resetTransform();
-  });
+  
 };
 
 module.exports = SpacePlane;

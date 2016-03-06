@@ -72,6 +72,20 @@ describe('taaspace', function () {
       var el2 = $('img.taaspace-taa')[0];
       el1.should.equal(el2);
     });
+
+    it('should be able to present reparented taas', function () {
+      var taa = new taaspace.Taa('assets/taa.png');
+      var spacetaa = new taaspace.SpaceTaa(space, taa);
+      spacetaa.translate(spacetaa.atNW(), spacetaa.atSE());
+      spacetaa.setParent(view);
+      // Let's see if spacetaa is still in place.
+      var el1 = document.elementFromPoint(300, 300); // null if outside window
+      el1.should.equal(view.getElementBySpaceTaa(spacetaa));
+      // Let's see if spacetaa follows the view.
+      view.translate(space.at([0,0]), space.at([1000,1000]));
+      var el2 = document.elementFromPoint(300, 300); // null if outside window
+      el2.should.equal(el1);
+    });
   });
 
 
@@ -124,6 +138,16 @@ describe('taaspace', function () {
       a.atSE().to(space).xy.should.not.eql([1,1]);
       a.setTransform(t);
       a.atSE().to(space).xy.should.eql([1,1]);
+    });
+
+    it('should allow children', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      var b = new taaspace.SpaceTaa(a, taa);
+      var c = new taaspace.SpaceTaa(b, taa);
+      a.getChildren().should.eql([b]);
+      a.getAllChildren()[0].should.equal(b);
+      a.getAllChildren()[1].should.equal(c);
+      c.getAllChildren().should.eql([]);
     });
   });
 

@@ -26,7 +26,10 @@ var SpaceContainer = function (emitter) {
   // Dict over list because key search time complexity
   emitter._content = {};
 
-  // To be able to remove event handlers
+  // We need to store built handlers bound to children
+  // to be able to remove the handlers when child is removed.
+  emitter._addedHandlers = {};
+  emitter._removedHandlers = {};
   emitter._transformedHandlers = {};
 
   emitter.has = function (spacecontainer) {
@@ -35,26 +38,83 @@ var SpaceContainer = function (emitter) {
     return spacecontainer._parent === this;
   };
 
+  emitter.getParent = function () {
+    return this._parent;
+  };
+
+  emitter.getRootParent = function () {
+    if (this._parent === null) {
+      return this;
+    } // else
+    return this._parent.getRootParent();
+  };
+
+  emitter.getChildren = function () {
+    // Immediate child SpaceContainers in a list.
+    var id, arr, obj;
+    arr = [];
+    obj = this._content;
+    for (id in obj) {
+      arr.push(obj[id]);
+    }
+    return arr;
+  };
+
+  emitter.getAllChildren = function () {
+    // Descendants in a list.
+    var i, children, child, arr;
+    arr = [];
+    children = this.getChildren();
+    for (i = 0; i < children.length; i += 1) {
+      child = children[i];
+      arr = arr.concat(child, child.getAllChildren());
+    }
+    return arr;
+  };
+
   emitter.setParent = function (newParent) {
     // Add to new parent container.
 
-    if (this._parent === null && newParent !== null) {
-      this._parent = newParent;
-      this._parent._addChild(this);
-      this.emit('added', this, this._parent);
+    var oldParent = this._parent;
+
+    if (oldParent === null) {
+      if (newParent === null) {
+        // From root to root.
+        // Do nothing
+      } else {
+        // From root to child.
+        this._parent = newParent;
+        this._parent._addChild(this);
+        this.emit('added', this, this._parent, null);
+        newParent.emit('contentAdded', this, this._parent, null);
+      }
+    } else {
+      if (newParent === null) {
+        // From child to root.
+        this._parent = null; // Becomes new root container.
+        oldParent._removeChild(this);
+        this.emit('removed', this, oldParent, null);
+        oldParent.emit('contentRemoved', this, oldParent, null);
+      } else {
+        // From child to child.
+        this._parent = newParent;
+        oldParent._removeChild(this);
+        newParent._addChild(this);
+        this.emit('removed', this, oldParent, newParent);
+        this.emit('added', this, newParent, oldParent);
+        // With both oldParent and newParent, SpaceView is able to
+        // decide whether to keep same HTMLElement or recreate it.
+        oldParent.emit('contentRemoved', this, oldParent, newParent);
+        newParent.emit('contentAdded', this, newParent, oldParent);
+      }
     }
-    // else TODO
+
   };
 
   emitter.remove = function () {
     // Remove this space container from parent container.
-
-    if (this._parent !== null) {
-      var p = this._parent;
-      this._parent = null; // Becomes new root container.
-      p._removeChild(this);
-      this.emit('removed', this, p);
-    } // else in null space already
+    // Return: see setParent
+    return this.setParent(null);
   };
 
   emitter._addChild = function (child) {
@@ -77,31 +137,49 @@ var SpaceContainer = function (emitter) {
 
     this._content[sc.id] = sc;
 
-    // Start to listen if child has transformed
-    var handler = function () {
-      self.emit('contentTransformed', sc);
+    // Start to listen if child has beed added, removed or transformed
+    var addedHandler = function (a, b, c) {
+      self.emit('contentAdded', a, b, c);
     };
-    sc.on('transformed', handler);
-    sc.on('contentTransformed', handler);
-    this._transformedHandlers[sc.id] = handler;
-
-    this.emit('contentAdded', sc);
+    var removedHandler = function (a, b, c) {
+      self.emit('contentRemoved', a, b, c);
+    };
+    var transformedHandler = function (a, b, c) {
+      self.emit('contentTransformed', a, b, c);
+    };
+    // added and removed events are not listened because
+    // for after successfully made add or remove,
+    // contentAdded and contentRemoved are fired in setParent.
+    sc.on('contentAdded', addedHandler);
+    sc.on('contentRemoved', removedHandler);
+    sc.on('transformed', transformedHandler);
+    sc.on('contentTransformed', transformedHandler);
+    this._addedHandlers[sc.id] = addedHandler;
+    this._removedHandlers[sc.id] = removedHandler;
+    this._transformedHandlers[sc.id] = transformedHandler;
   };
 
   emitter._removeChild = function (spacecontainer) {
     // To be called from SpaceContainer#remove
     // Precondition: spacecontainer in space
+    var sc, h;
 
-    var sc = spacecontainer; // alias
+    sc = spacecontainer; // alias
     delete this._content[sc.id];
 
     // Remove handlers
-    var h = this._transformedHandlers[sc.id];
+    h = this._addedHandlers[sc.id];
+    delete this._addedHandlers[sc.id];
+    sc.off('contentAdded', h);
+
+    h = this._removedHandlers[sc.id];
+    delete this._removedHandlers[sc.id];
+    sc.off('contentRemoved', h);
+
+    h = this._transformedHandlers[sc.id];
     delete this._transformedHandlers[sc.id];
     sc.off('transformed', h);
     sc.off('contentTransformed', h);
-
-    this.emit('contentRemoved', sc);
   };
 };
 

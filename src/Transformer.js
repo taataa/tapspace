@@ -192,6 +192,51 @@ var Transformer = function (plane) {
   };
 
   // plane.translateAndScaleToFit, not sure if necessary for now
+
+  plane.on('removed', function (self, oldParent, newParent) {
+    if (typeof oldParent === 'undefined') { oldParent = null; }
+    if (typeof newParent === 'undefined') { newParent = null; }
+
+    var sameRoot;
+    if (newParent === null) {
+      // Root containers cannot move.
+      this.resetTransform();
+    } else {
+      if (oldParent === null) {
+        // Removed from null parent?
+        throw new Exception('Cannot remove from null parent');
+      } else {
+        // Moved onto another parent.
+        // Let us keep the location in space the same if possible.
+        // It is possible only if the parents share same root i.e.
+        // are in the same space.
+        sameRoot = oldParent.getRootParent() === newParent.getRootParent();
+        if (sameRoot) {
+          // Keep the location.
+          // Let
+          //   OT be the old local coord. transformation.
+          //   NT be the unknown new local coord. transf.
+          //   OPGT be the global coord. transf. of old parent
+          //   NPGT be the global coord. transf. of new parent
+          // Now, we want to keep global transf. unchanged.
+          //   OPGT * OT = NPGT * NT
+          //   <=> NT = inv(NPGT) * OPGT * OT
+          var opgt = oldParent.getGlobalTransform();
+          var npgt = newParent.getGlobalTransform();
+          var ot = this._T;
+          var nt = npgt.inverse().multiplyBy(opgt).multiplyBy(ot);
+          this._T = nt;
+          this.emit('transformed', this); // TODO Is needed because inplace?
+        } else {
+          // In different space: reset
+          this.resetTransform();
+        }
+        // Note: there could be a need to change parent with the same
+        // local transformation. Not needed for now.
+      }
+
+    }
+  });
 };
 
 module.exports = Transformer;
