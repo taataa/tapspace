@@ -1,6 +1,7 @@
 /*
-API v0.4.0
+
 View
+
 */
 var Emitter = require('component-emitter');
 var SpaceContainer = require('./SpaceContainer');
@@ -8,6 +9,7 @@ var SpacePlane = require('./SpacePlane');
 var Transformer = require('./Transformer');
 var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = require('./SpaceTaa');
+var SpaceHTML = require('./SpaceHTML');
 var move = require('movejs');
 
 // Disable animations by default.
@@ -44,7 +46,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
 
   var transformImage = function (img, spacetaa) {
     // Transform images because the view orientation.
-    // See 2016-03-05-09.
+    // See 2016-03-05-09 for math.
     var spacetaa_global_T = spacetaa.getGlobalTransform();
     var T = this2._T.inverse().multiplyBy(spacetaa_global_T);
     // TODO What if view parent is not the root?
@@ -62,25 +64,58 @@ var HTMLSpaceView = function (space, htmlContainer) {
     move(img).matrix(s, r,-r, s, tx, ty).end();
   };
 
+  var getViewSpecificId = function (contentId) {
+    // Each rendered element has own ID. The ID differs from
+    // the id of space nodes because a space node can become
+    // visualized through multiple views.
+    return this2.id + '/' + contentId;
+  };
+
   // Listen the space for new or removed taas or transformations
 
   var contentAddedHandler = function (spacecontainer, newParent, oldParent) {
     if (typeof oldParent === 'undefined') { oldParent = null; }
     if (typeof newParent === 'undefined') { newParent = null; }
 
+    var con, el, wh;
+
     // SpaceView, SpaceTaa ...
-    var con = spacecontainer;
+    con = spacecontainer;
 
     if (this2._elements.hasOwnProperty(con.id)) {
       // Content is already drawn.
     } else {
       if (con instanceof SpaceTaa) {
-        var taa = con.taa;
-        var el = new Image(256, 256);
-        el.src = taa.image.src;
-        el.id = this2.id + '/' + con.id; // View-specific unique elem id
+        el = new Image(256, 256);
+        el.src = con.taa.image.src;
+        el.id = getViewSpecificId(con.id);
         el.className = 'taaspace-taa';
         // Show to client
+        this2._el.appendChild(el);
+        // Make referencable
+        this2._elements[con.id] = el;
+        this2._spacetaas[con.id] = con;
+        // Make transformation
+        transformImage(el, con);
+      } else if (con instanceof SpaceHTML) {
+        // Create container div.
+        el = document.createElement('div');
+        el.innerHTML = con.html;
+        el.id = getViewSpecificId(con.id);
+        el.className = 'taaspace-html';
+        // Resize, and let taaspace styles do the rest.
+        wh = con.getSize();
+        el.style.width = wh[0] + 'px';
+        el.style.height = wh[1] + 'px';
+        // TODO react to size change
+        // on resize reset the style.width and style.height
+        con.on('resized', function () {
+          // TODO remove listener
+          var wh = con.getSize();
+          el.style.width = wh[0] + 'px';
+          el.style.height = wh[1] + 'px';
+        });
+        // Render
         this2._el.appendChild(el);
         // Make referencable
         this2._elements[con.id] = el;
@@ -119,7 +154,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
         el = this2._elements[con.id];
         this2._el.removeChild(el);
         // Remove from memory.
-        // JS feature: does not throw if does not exist
+        // JS feature of delete: does not throw if key does not exist
         delete this2._elements[con.id];
         delete this2._spacetaas[con.id];
       }
@@ -140,6 +175,9 @@ var HTMLSpaceView = function (space, htmlContainer) {
         if (con instanceof SpaceTaa) {
           el = this2._elements[con.id];
           // Make transformation
+          transformImage(el, con);
+        } else if (con instanceof SpaceHTML) {
+          el = this2._elements[con.id];
           transformImage(el, con);
         }
         // Else: no transformable representation for Views.

@@ -1,0 +1,23 @@
+html, body, #space {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  background: #222;
+  font-family: sans-serif;
+  color: white;
+}
+
+#msg {
+  font-size: 1.4em;
+}
+
+a { text-decoration: none; }
+a:link { color: #6666FF; }
+a:visited { color: #6666FF; }
+a:hover { color: #6666FF; }
+a:active { color: #6666FF; }

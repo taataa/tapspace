@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Example / HTML content</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="../../taaspace.css">
+</head>
+<body>
+  <div id="space"></div>
+  <script src="../../taaspace.min.js"></script>
+  <script>
+  (function () {
+    var container = document.getElementById('space');
+    var space = new taaspace.Space();
+    var view = new taaspace.HTMLSpaceView(space, container);
+
+    var spacehtml = new taaspace.SpaceHTML(space, '<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>taaspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>');
+    spacehtml.resize([300, 300]);
+    spacehtml.translateScaleRotate(
+      [spacehtml.atNE(), spacehtml.atSE()],
+      [view.atNorm([0.4, 0.3]), view.atNorm([0.4, 0.3]).offset(0.0, 300.0)]
+    );
+
+    var spacewiki = new taaspace.SpaceHTML(space, '<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>');
+    spacewiki.resize([400, 300]);
+    spacewiki.translateScaleRotate(
+      [spacewiki.atSE(), spacewiki.atSW()],
+      [view.atNorm([0.4, 0.6]), view.atNorm([0.4, 0.6]).offset(400.0, 0.0)]
+    );
+
+    var spacetube = new taaspace.SpaceHTML(space, '<iframe id="ytplayer" type="text/html" width="500" height="300" src="http://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>');
+    spacetube.resize([500, 300]);
+    spacetube.translateScaleRotate(
+      [spacetube.atSW(), spacetube.atSE()],
+      [view.atNorm([0.4, 0.3]), view.atNorm([0.4, 0.6]).offset(400.0, 0.0)]
+    );
+
+    var mid = view.atMid();
+
+    spacehtml.rotate(mid, -Math.PI / 20);
+    spacewiki.rotate(mid, -Math.PI / 20);
+    spacetube.rotate(mid, -Math.PI / 20);
+    spacehtml.scale(mid, 0.8);
+    spacewiki.scale(mid, 0.8);
+    spacetube.scale(mid, 0.8);
+  }());
+  </script>
+</body>
+</html>

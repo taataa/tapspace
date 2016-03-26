@@ -10,7 +10,7 @@ describe('taaspace', function () {
 
   it('should have submodules', function () {
     taaspace.should.have.keys('Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView',
-      'version');
+      'version', 'SpaceHTML');
   });
 
   describe('Taa', function () {
@@ -151,6 +151,24 @@ describe('taaspace', function () {
     });
   });
 
+  describe('SpaceHTML', function () {
+    var space, view, taa;
+
+    beforeEach(function () {
+      var cont = getEmptyContainer();
+      space = new taaspace.Space();
+      view = new taaspace.HTMLSpaceView(space, cont);
+    });
+
+    it('should allow creation', function () {
+      var a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>');
+      var el = $('.taaspace-html');
+      var h1 = el.find('h1');
+      h1.should.exist;
+      var b = view.getSpaceTaaByElementId(el.attr('id'));
+      b.should.equal(a);
+    });
+  });
 
   describe('SpacePoint', function () {
     describe('#polarOffset', function () {

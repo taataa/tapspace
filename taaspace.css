@@ -10,7 +10,7 @@
   display: block;
 }
 
-.taaspace-taa {
+.taaspace-taa, .taaspace-html {
   display: inline-block;
   position: absolute;
   /*

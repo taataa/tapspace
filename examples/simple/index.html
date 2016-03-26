@@ -21,6 +21,7 @@
     var taa = new taaspace.Taa('assets/taa00.jpg', function (err, taa) {
       var spacetaa = new taaspace.SpaceTaa(space, taa);
       spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
+      spacetaa.rotate(spacetaa.atMid(), Math.PI / 4);
     });
   }());
   </script>
