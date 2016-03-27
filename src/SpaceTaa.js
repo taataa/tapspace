@@ -1,7 +1,7 @@
-// v0.3.0
+// API v0.6.0
 
 var Emitter = require('component-emitter');
-var SpaceContainer = require('./SpaceContainer');
+var SpaceNode = require('./SpaceNode');
 var SpacePlane = require('./SpacePlane');
 var Transformer = require('./Transformer');
 var SpaceRectangle = require('./SpaceRectangle');
@@ -9,11 +9,11 @@ var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = function (parent, taa) {
   // Parameters:
   //   parent
-  //     a SpaceContainer
+  //     a SpaceNode
   //   taa
   //     a Taa
   Emitter(this);
-  SpaceContainer(this);
+  SpaceNode(this);
   SpacePlane(this);
   Transformer(this);
   SpaceRectangle(this);

@@ -12,19 +12,19 @@ var Emitter = require('component-emitter');
 // Return: int
 var seqid = require('seqid')(0);
 
-var SpaceContainer = function (emitter) {
+var SpaceNode = function (emitter) {
   // Parameters
   //   emitter, an Emitter.
 
-  // Each container has an id. That is used by the parent containers.
+  // Each node has an id. That is used by the parent nodes and in views.
   emitter.id = seqid.next().toString();
 
-  // Containers with null parent are root containers i.e. spaces.
-  // SpaceContainer#remove sets _parent to null.
+  // Nodes with null parent are root nodes i.e. spaces.
+  // SpaceNode#remove sets _parent to null.
   emitter._parent = null;
 
   // Dict over list because key search time complexity
-  emitter._content = {};
+  emitter._children = {};
 
   // We need to store built handlers bound to children
   // to be able to remove the handlers when child is removed.
@@ -32,10 +32,10 @@ var SpaceContainer = function (emitter) {
   emitter._removedHandlers = {};
   emitter._transformedHandlers = {};
 
-  emitter.has = function (spacecontainer) {
+  emitter.has = function (spaceNode) {
     // Return
     //   true if spacetaa in space
-    return spacecontainer._parent === this;
+    return spaceNode._parent === this;
   };
 
   emitter.getParent = function () {
@@ -50,10 +50,11 @@ var SpaceContainer = function (emitter) {
   };
 
   emitter.getChildren = function () {
-    // Immediate child SpaceContainers in a list.
+    // Return child SpaceNodes in a list.
+    // Does not include the children of the children.
     var id, arr, obj;
     arr = [];
-    obj = this._content;
+    obj = this._children;
     for (id in obj) {
       arr.push(obj[id]);
     }
@@ -61,7 +62,7 @@ var SpaceContainer = function (emitter) {
   };
 
   emitter.getAllChildren = function () {
-    // Descendants in a list.
+    // All descendants in a list, including the children.
     var i, children, child, arr;
     arr = [];
     children = this.getChildren();
@@ -73,7 +74,7 @@ var SpaceContainer = function (emitter) {
   };
 
   emitter.setParent = function (newParent) {
-    // Add to new parent container.
+    // Add to new parent.
 
     var oldParent = this._parent;
 
@@ -91,7 +92,7 @@ var SpaceContainer = function (emitter) {
     } else {
       if (newParent === null) {
         // From child to root.
-        this._parent = null; // Becomes new root container.
+        this._parent = null; // Becomes new root node.
         oldParent._removeChild(this);
         this.emit('removed', this, oldParent, null);
         oldParent.emit('contentRemoved', this, oldParent, null);
@@ -112,7 +113,7 @@ var SpaceContainer = function (emitter) {
   };
 
   emitter.remove = function () {
-    // Remove this space container from parent container.
+    // Remove this space node from its parent.
     // Return: see setParent
     return this.setParent(null);
   };
@@ -121,21 +122,20 @@ var SpaceContainer = function (emitter) {
     // To be called from child.setParent().
     //
     // Parameters
-    //   child, A SpaceContainer
+    //   child, A SpaceNode
     //
     // Return
     //   undefined
     //
     // Dev. note:
-    //   Previously this was called from the SpaceContainer constructor.
-    //   However, because SpaceContainer upgrade is done before other
+    //   Previously this was called from the SpaceNode constructor.
+    //   However, because SpaceNode upgrade is done before other
     //   upgrades, the child would not be ready to be added to parent.
-    //   Therefore
 
     var sc = child; // alias
     var self = this;
 
-    this._content[sc.id] = sc;
+    this._children[sc.id] = sc;
 
     // Start to listen if child has beed added, removed or transformed
     var addedHandler = function (a, b, c) {
@@ -159,13 +159,13 @@ var SpaceContainer = function (emitter) {
     this._transformedHandlers[sc.id] = transformedHandler;
   };
 
-  emitter._removeChild = function (spacecontainer) {
-    // To be called from SpaceContainer#remove
-    // Precondition: spacecontainer in space
+  emitter._removeChild = function (child) {
+    // To be called from SpaceNode#remove
+    // Precondition: child in space
     var sc, h;
 
-    sc = spacecontainer; // alias
-    delete this._content[sc.id];
+    sc = child; // alias
+    delete this._children[sc.id];
 
     // Remove handlers
     h = this._addedHandlers[sc.id];
@@ -183,4 +183,4 @@ var SpaceContainer = function (emitter) {
   };
 };
 
-module.exports = SpaceContainer;
+module.exports = SpaceNode;

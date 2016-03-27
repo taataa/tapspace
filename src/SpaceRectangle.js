@@ -1,5 +1,5 @@
-// API v0.5.0
-//var nudged = require('nudged');
+// API v0.6.0
+
 var SpacePoint = require('./SpacePoint');
 
 var SpaceRectangle = function (transformer) {

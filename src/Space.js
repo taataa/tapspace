@@ -6,13 +6,13 @@ Emits
   contentTransformed
 */
 var Emitter = require('component-emitter');
+var SpaceNode = require('./SpaceNode');
 var SpacePlane = require('./SpacePlane');
-var SpaceContainer = require('./SpaceContainer');
 
 var Space = function () {
   Emitter(this);
 
-  SpaceContainer(this);
+  SpaceNode(this);
   // TODO remove possibility to add to parent.
 
   SpacePlane(this);

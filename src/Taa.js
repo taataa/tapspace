@@ -1,4 +1,4 @@
-// API v0.3.0
+// API v0.6.0
 var Emitter = require('component-emitter');
 var loadimages = require('loadimages');
 

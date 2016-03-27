@@ -1,4 +1,4 @@
-// API v0.2.0
+// API v0.6.0
 var nudged = require('nudged');
 var Transform = require('./Transform');
 var SpacePoint = require('./SpacePoint');
@@ -7,10 +7,10 @@ var normalize = function (points, plane) {
   // Transform all the points onto the parent and
   // represent them in array [[x0,y0], [x1,y1], ...].
   //
-  // Arguments
+  // Arguments:
   //   points, a single spacepoint or a list of spacepoints
   //   plane, a SpacePlane e.g. a SpaceTaa onto normalize.
-  // Return
+  // Return:
   //   array of xy points in space.
   var i, p, np, normalized;
 
@@ -59,7 +59,7 @@ var Transformer = function (plane) {
   //
   // Parameters
   //   plane
-  //     a SpaceContainer
+  //     a SpacePlane
 
   plane.setTransform = function (T) {
     // Needed when we whan to restore stored position, maybe after
@@ -142,7 +142,7 @@ var Transformer = function (plane) {
 
     var useRadians = (typeof range === 'undefined');
 
-    if (useRadians){
+    if (useRadians) {
       var normPivot = normalize(pivot, this._parent)[0];
       var radians = radiansOrDomain;
       // Radians do not depend on plane.
@@ -199,7 +199,7 @@ var Transformer = function (plane) {
 
     var sameRoot;
     if (newParent === null) {
-      // Root containers cannot move.
+      // Root nodes cannot move.
       this.resetTransform();
     } else {
       if (oldParent === null) {

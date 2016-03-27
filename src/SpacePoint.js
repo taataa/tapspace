@@ -1,16 +1,16 @@
-// API v0.3.0
+// API v0.6.0
 
 var Transform = require('./Transform');
 
 var SpacePoint = function (xy, reference) {
   // Example
-  //   var p = taaspace.Point([x, y], taa);
+  //   var p = taaspace.SpacePoint([x, y], taa);
   //
   // Parameter
   //   xy
   //     2D array
   //   reference
-  //     a SpaceContainer or SpacePoint
+  //     a SpaceNode or SpacePoint
   //       an item in space, enabling coord projections.
   this.xy = xy;
 
@@ -86,7 +86,7 @@ proto.to = function (target) {
   //
 
   if (target === null) {
-    // target is the root container (space)
+    // target is the root node (space)
     return this.toSpace();
   }
 

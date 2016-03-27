@@ -1,4 +1,4 @@
-// API v0.2.0
+// API v0.6.0
 var nudged = require('nudged');
 
 // TODO

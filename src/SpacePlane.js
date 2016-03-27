@@ -4,7 +4,7 @@ API v0.6.0
 
 A SpacePlane represents a coordinate system. It does not include
 methods to transform the system. SpacePlane and Transformer are separated
-because we want to have planes that cannot be transformed, as Space.
+because we want to have planes that cannot be transformed, as the Space.
 
 */
 
@@ -17,13 +17,13 @@ var at = function (xy) {
   if (xy.length !== 2) {  // DEBUG TODO remove this
     throw 'Invalid point, use array [x, y]';
   }
-  return new SpacePoint(xy, this);  // Note: this === emitter
+  return new SpacePoint(xy, this);  // Note: this === spaceNode
 };
 
-var SpacePlane = function (emitter) {
+var SpacePlane = function (spaceNode) {
   // Parameters
-  //   emitter
-  //     A SpaceContainer to monkey patch to SpacePlane
+  //   spaceNode
+  //     A SpaceNode to monkey patch to SpacePlane
 
   // Coordinate transformation.
   // The transformation from the plane to the parent (space).
@@ -37,11 +37,11 @@ var SpacePlane = function (emitter) {
   //
   // For Space, it is obviously the identity transform:
   //   x_space = T * x_space
-  emitter._T = nudged.Transform.IDENTITY; // identity transformation
+  spaceNode._T = nudged.Transform.IDENTITY; // identity transformation
 
-  emitter.at = at;
+  spaceNode.at = at;
 
-  emitter.getTransform = function () {
+  spaceNode.getTransform = function () {
     // Local transform from plane to parent
     //
     // Return
@@ -51,7 +51,7 @@ var SpacePlane = function (emitter) {
     return this._T;
   };
 
-  emitter.getGlobalTransform = function () {
+  spaceNode.getGlobalTransform = function () {
     // Return
     //   transformation from the plane to root container.
     //
@@ -70,11 +70,11 @@ var SpacePlane = function (emitter) {
     return this._parent.getGlobalTransform().multiplyBy(this._T);
   };
 
-  emitter.resetTransform = function () {
+  spaceNode.resetTransform = function () {
     // Become space. Called e.g. when plane is removed from parent.
     this._T = nudged.Transform.IDENTITY;
   };
-  
+
 };
 
 module.exports = SpacePlane;

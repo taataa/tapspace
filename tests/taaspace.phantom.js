@@ -3,6 +3,7 @@
 describe('taaspace', function () {
 
   function getEmptyContainer() {
+    // Return an empty html container.
     var cont = document.getElementById('taaspace-sandbox');
     cont.innerHTML = '';
     return cont;
@@ -47,7 +48,7 @@ describe('taaspace', function () {
       var spacetaa = new taaspace.SpaceTaa(space, taa);
       var el = $('img.taaspace-taa');
       el.should.exist;
-      var st2 = view.getSpaceTaaByElementId(el.attr('id'));
+      var st2 = view.getSpaceNodeByElementId(el.attr('id'));
       st2.should.equal(spacetaa);
     });
 
@@ -80,7 +81,7 @@ describe('taaspace', function () {
       spacetaa.setParent(view);
       // Let's see if spacetaa is still in place.
       var el1 = document.elementFromPoint(300, 300); // null if outside window
-      el1.should.equal(view.getElementBySpaceTaa(spacetaa));
+      el1.should.equal(view.getElementBySpaceNode(spacetaa));
       // Let's see if spacetaa follows the view.
       view.translate(space.at([0,0]), space.at([1000,1000]));
       var el2 = document.elementFromPoint(300, 300); // null if outside window
@@ -112,7 +113,7 @@ describe('taaspace', function () {
     it('should be removable', function () {
       var a = new taaspace.SpaceTaa(space, taa);
       a.remove();
-      space._content.hasOwnProperty(a.id).should.equal(false);
+      space._children.hasOwnProperty(a.id).should.equal(false);
     });
 
     it('should be able to return a SpacePoint', function () {
@@ -165,7 +166,7 @@ describe('taaspace', function () {
       var el = $('.taaspace-html');
       var h1 = el.find('h1');
       h1.should.exist;
-      var b = view.getSpaceTaaByElementId(el.attr('id'));
+      var b = view.getSpaceNodeByElementId(el.attr('id'));
       b.should.equal(a);
     });
   });
