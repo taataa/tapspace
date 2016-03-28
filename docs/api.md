@@ -6,11 +6,11 @@
 
 Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter)
 
-#### taaspace.Emitter#emit(eventName, arg1, arg2, ...)
+#### #emit(eventName, arg1, arg2, ...)
 
-#### taaspace.Emitter#on(eventName, eventHandler)
+#### #on(eventName, eventHandler)
 
-#### taaspace.Emitter#off(eventName, eventHandler)
+#### #off(eventName, eventHandler)
 
 
 
@@ -20,17 +20,17 @@ Is an Emitter, SpaceNode, SpacePlane, Transformer, and SpaceRectangle.
 
 Listens events: added, removed, transformed, contentAdded, contentRemoved, contentTransformed
 
-#### taaspace.HTMLSpaceView#getElementBySpaceNode(spaceNode)
+#### #getElementBySpaceNode(spaceNode)
 
 Return the HTMLElement that represents the spaceNode in this view.
 
 Return null if no HTMLElement found.
 
-#### taaspace.HTMLSpaceView#getRootElement()
+#### #getRootElement()
 
 Return the container HTMLElement of this view.
 
-#### taaspace.HTMLSpaceView#getSpaceNodeByElementId(id)
+#### #getSpaceNodeByElementId(id)
 
 Return the SpaceNode that is represented by HTMLElement having the given id attribute.
 
@@ -50,7 +50,7 @@ Cannot have a parent SpaceNode.
 
 Is an Emitter, SpaceNode, SpacePlane, Transformer, and SpaceRectangle.
 
-#### taaspace.SpaceHTML#getHTML()
+#### #getHTML()
 
 Return string.
 
@@ -60,33 +60,33 @@ Return string.
 
 Upgrades `emitter` to a SpaceNode.
 
-#### taaspace.SpaceNode#getParent()
+#### #getParent()
 
 Return a SpaceNode.
 
 Return null if no parent.
 
-#### taaspace.SpaceNode#getRootParent()
+#### #getRootParent()
 
 Return a SpaceNode.
 
-#### taaspace.SpaceNode#getChildren()
+#### #getChildren()
 
 Return an array of SpaceNodes.
 
-#### taaspace.SpaceNode#getDescendants()
+#### #getDescendants()
 
 Return an array of SpaceNodes.
 
-#### taaspace.SpaceNode#hasChild(spaceNode)
+#### #hasChild(spaceNode)
 
 Return true if spaceNode is a child of this.
 
-#### taaspace.SpaceNode#setParent(newParent)
+#### #setParent(newParent)
 
 Move this onto a parent SpaceNode. Will be removed from the old parent if there was one.
 
-#### taaspace.SpaceNode#remove()
+#### #remove()
 
 Detach from the current parent.
 
@@ -120,21 +120,21 @@ Properties: xy
 
 Immutable.
 
-#### taaspace.SpacePoint#equals(point)
+#### #equals(point)
 
-#### taaspace.SpacePoint#offset(dx, dy)
+#### #offset(dx, dy)
 
-#### taaspace.SpacePoint#polarOffset(distance, radians)
+#### #polarOffset(distance, radians)
 
-#### taaspace.SpacePoint#to(targetPlane)
+#### #to(targetPlane)
 
 Return a new SpacePoint on the coordinate system of `targetPlane`.
 
-#### taaspace.SpacePoint#toSpace()
+#### #toSpace()
 
 Return a new SpacePoint on the space coordinate system.
 
-#### taaspace.SpacePoint#transform(tr)
+#### #transform(tr)
 
 Return a new SpacePoint by transforming this by the given Transform.
 
@@ -146,31 +146,31 @@ Upgrade a Transformer to a SpaceRectangle.
 
 Emit: `resized`
 
-#### taaspace.SpaceRectangle#atNorm(xy)
+#### #atNorm(xy)
 
-#### taaspace.SpaceRectangle#atMid()
+#### #atMid()
 
-#### taaspace.SpaceRectangle#atMidN()
+#### #atMidN()
 
-#### taaspace.SpaceRectangle#atMidW()
+#### #atMidW()
 
-#### taaspace.SpaceRectangle#atMidE()
+#### #atMidE()
 
-#### taaspace.SpaceRectangle#atMidS()
+#### #atMidS()
 
-#### taaspace.SpaceRectangle#atNW()
+#### #atNW()
 
-#### taaspace.SpaceRectangle#atNE()
+#### #atNE()
 
-#### taaspace.SpaceRectangle#atSW()
+#### #atSW()
 
-#### taaspace.SpaceRectangle#atSE()
+#### #atSE()
 
-#### taaspace.SpaceRectangle#getSize()
+#### #getSize()
 
 Return [width, height] as array.
 
-#### taaspace.SpaceRectangle#resize(dimensions)
+#### #resize(dimensions)
 
 Update dimensions [width, height]. Emit `resized`.
 
@@ -206,23 +206,23 @@ Upgrade a given SpacePlane to a Transformer.
 
 Listens events: `removed`
 
-#### Transformer#setTransform(t)
+#### #setTransform(t)
 
-#### taaspace.Transformer#setGlobalTransform(t)
+#### #setGlobalTransform(t)
 
-#### translate(domain, range)
+#### #translate(domain, range)
 
 #### #scale(pivot, multiplierOrDomain, range)
 
 #### #rotate(pivot, radiansOrDomain, range)
 
-#### translateScale(domain, range)
+#### #translateScale(domain, range)
 
-#### translateRotate(domain, range)
+#### #translateRotate(domain, range)
 
-#### scaleRotate(domain, range)
+#### #scaleRotate(domain, range)
 
-#### translateScaleRotate(domain, range)
+#### #translateScaleRotate(domain, range)
 
 
 
