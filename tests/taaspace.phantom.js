@@ -95,9 +95,57 @@ describe('taaspace', function () {
       var el2 = document.elementFromPoint(300, 300); // null if outside window
       el2.should.equal(el1);
     });
+
+    it('should remove removed node', function () {
+      // Create SpaceNode
+      var node = new taaspace.SpaceHTML(space, 'foo');
+      node.resize([100,100]);
+      // Test if representation is removed.
+      var el1 = document.elementFromPoint(50, 50);
+      node.remove();
+      var el2 = document.elementFromPoint(50, 50);
+      el1.should.not.equal(el2);
+      el2.id.should.equal('taaspace-sandbox');
+    });
+
+    it('should remove node reparented to another space', function () {
+      var space2 = new taaspace.Space();
+      var node = new taaspace.SpaceHTML(space, 'foo');
+      node.resize([100, 100]);
+      // Test if representation is removed.
+      var el1 = document.elementFromPoint(50, 50);
+      node.setParent(space2);
+      var el2 = document.elementFromPoint(50, 50);
+      el1.should.not.equal(el2);
+      el2.id.should.equal('taaspace-sandbox');
+    });
+
+    it('should not become child of non-Space', function () {
+      var node = new taaspace.SpaceHTML(space, 'foo');
+      (function () {
+        view.setParent(node);
+      }).should.throw(/child/);
+    });
+
+    /*it('should be able to switch space', function () {
+      // Setup
+      var node = new taaspace.SpaceHTML(space, 'foo');
+      node.resize([100, 100]);
+      var space2 = new taaspace.Space();
+      var node2 = new taaspace.SpaceHTML(space2, 'bar');
+      node2.resize([100, 100]);
+      var node3 = new taaspace.SpaceHTML(node2, 'baz');
+      node3.resize([100, 100]);
+      var node4 = new taaspace.SpaceHTML(space2, 'qux');
+      node4.resize([100, 100]);
+      // Test the setup
+      var el = document.elementFromPoint(50, 50);
+      view.getSpaceNodeByElementId(el.id).should.equal(node);
+      // Reparent
+      view.setParent(node2);
+      // Test that view content has changed.
+    });*/
   });
-
-
 
   describe('SpaceTaa', function () {
     var space, view, taa;

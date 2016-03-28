@@ -10,12 +10,17 @@ var Transformer = require('./Transformer');
 var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = require('./SpaceTaa');
 var SpaceHTML = require('./SpaceHTML');
+var Space = require('./Space');
 var move = require('movejs');
 
 // Disable animations by default.
 move.defaults = { duration: 0 };
 
 var HTMLSpaceView = function (space, htmlContainer) {
+  // Test if valid space
+  if (!(space instanceof Space)) {
+    throw 'Parent of a View must be a Space.';
+  }
   // Test if valid dom element
   if (!('tagName' in htmlContainer)) {
     throw 'Container should be a DOM Element';
@@ -242,6 +247,14 @@ var HTMLSpaceView = function (space, htmlContainer) {
 
   this.getRootElement = function () {
     return this._el;
+  };
+
+  var superSetParent = this.setParent;
+  this.setParent = function (space) {
+    if (!(space instanceof Space)) {
+      throw 'A View can only be a child of a Space';
+    }
+    superSetParent.call(this, space);
   };
 
   // View ready to be added to Space.
