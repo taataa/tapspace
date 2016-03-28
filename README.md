@@ -1,8 +1,9 @@
 # taaspace.js<sup>3.0.0</sup>
 
-A JavaScript library for zoomable web user interface layouts. Great for experimental UI concepts such as photo album browsers and graph-based UIs.
+A JavaScript library for zoomable web user interface layouts. Great for experimental UI concepts such as photo album browsers and graph-based UIs. Provides infinite space where you can scale, rotate, and translate HTML elements. To support any types of HTML elements such as iframes, Canvas, SVG, and WebGL, we position and render elements using pure CSS3 and DOM.
 
 ![taaspace.js Logo](docs/taaspace-logo-128.png?raw=true)
+
 
 ## Example apps
 
@@ -14,16 +15,6 @@ A JavaScript library for zoomable web user interface layouts. Great for experime
 ## Documentation
 
 - [API](docs/api.md)
-
-## Features
-
-- Scalable, rotatable, and translatable infinite space for HTML elements.
-- Uses CSS3 and DOM elements, **no** HTML5 Canvas, SVG or WebGL
-
-## Todo
-
-- View children of added spacecontent.
-- Animate transformations, like moving an image, simply by passing some parameters. Animation support by [Move.js](http://visionmedia.github.io/move.js/)
 
 
 ## Notes for Devs
