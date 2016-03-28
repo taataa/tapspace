@@ -93,6 +93,13 @@ var HTMLSpaceView = function (space, htmlContainer) {
     // SpaceView, SpaceTaa ...
     node = spaceNode;
 
+    // Ensure the spaceNode is in same space. Otherwise,
+    // if view's space has been just changed, a waiting
+    // contentAdded event could add spaceNode from the old space.
+    if (spaceNode.getRootParent() !== this2.getRootParent()) {
+      return;
+    }
+
     if (this2._elements.hasOwnProperty(node.id)) {
       // Content is already drawn.
     } else {
@@ -197,19 +204,45 @@ var HTMLSpaceView = function (space, htmlContainer) {
   };
 
   // View added to new parent.
-  this.on('added', function (self, newParent) {
-    // TODO add content of the new space if the space contains
-    // nodes.
-    newParent.on('contentAdded', contentAddedHandler);
-    newParent.on('contentRemoved', contentRemovedHandler);
-    newParent.on('contentTransformed', contentTransformedHandler);
+  this.on('added', function (self, newSpace, oldSpace) {
+    var des, i;
+
+    if (oldSpace === newSpace) {
+      // Already set up. Do nothing.
+      return;
+    }
+
+    // Render nodes from the new space.
+    des = newSpace.getDescendants();
+    for (i = 0; i < des.length; i += 1) {
+      contentAddedHandler(des[i]);
+    }
+
+    // Start to listen for changes.
+    newSpace.on('contentAdded', contentAddedHandler);
+    newSpace.on('contentRemoved', contentRemovedHandler);
+    newSpace.on('contentTransformed', contentTransformedHandler);
   });
+
   // View removed from parent.
-  this.on('removed', function (self, oldParent) {
-    // TODO remove content of the old space.
-    oldParent.off('contentAdded', contentAddedHandler);
-    oldParent.off('contentRemoved', contentRemovedHandler);
-    oldParent.off('contentTransformed', contentTransformedHandler);
+  this.on('removed', function (self, oldSpace, newSpace) {
+    var des, i;
+
+    if (newSpace === oldSpace) {
+      // Already set up. Do nothing.
+      return;
+    }
+
+    // Stop listening for changes.
+    oldSpace.off('contentAdded', contentAddedHandler);
+    oldSpace.off('contentRemoved', contentRemovedHandler);
+    oldSpace.off('contentTransformed', contentTransformedHandler);
+
+    // Remove all nodes from old space.
+    des = oldSpace.getDescendants();
+    for (i = 0; i < des.length; i += 1) {
+      contentRemovedHandler(des[i]);
+    }
   });
 
   // If the view is transformed, we of course need to retransform everything.
@@ -226,9 +259,11 @@ var HTMLSpaceView = function (space, htmlContainer) {
 
   this.getElementBySpaceNode = function (spaceNode) {
     // Get HTML element representation of the space taa.
+    // Return null if not found.
     if (this._elements.hasOwnProperty(spaceNode.id)) {
       return this._elements[spaceNode.id];
     }
+    return null;
   };
 
   this.getSpaceNodeByElementId = function (id) {
@@ -246,9 +281,12 @@ var HTMLSpaceView = function (space, htmlContainer) {
   };
 
   this.getRootElement = function () {
+    // Return the container HTML element.
     return this._el;
   };
 
+  // Override the setParent so that only a Space
+  // is allowed to become the parent.
   var superSetParent = this.setParent;
   this.setParent = function (space) {
     if (!(space instanceof Space)) {

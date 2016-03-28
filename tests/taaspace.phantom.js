@@ -127,8 +127,10 @@ describe('taaspace', function () {
       }).should.throw(/child/);
     });
 
-    /*it('should be able to switch space', function () {
-      // Setup
+    it('should be able to switch space', function () {
+      // Setup:
+      //   Another space with one child node C.
+      //   C has a child D that is located next to C.
       var node = new taaspace.SpaceHTML(space, 'foo');
       node.resize([100, 100]);
       var space2 = new taaspace.Space();
@@ -136,15 +138,19 @@ describe('taaspace', function () {
       node2.resize([100, 100]);
       var node3 = new taaspace.SpaceHTML(node2, 'baz');
       node3.resize([100, 100]);
-      var node4 = new taaspace.SpaceHTML(space2, 'qux');
-      node4.resize([100, 100]);
+      node3.translate(node3.atNW(), node2.atSE());
       // Test the setup
       var el = document.elementFromPoint(50, 50);
       view.getSpaceNodeByElementId(el.id).should.equal(node);
       // Reparent
-      view.setParent(node2);
+      view.setParent(space2);
       // Test that view content has changed.
-    });*/
+      el = document.elementFromPoint(50, 50);
+      el.should.equal(view.getElementBySpaceNode(node2));
+      el = document.elementFromPoint(150, 150);
+      el.should.equal(view.getElementBySpaceNode(node3));
+      should.equal(view.getElementBySpaceNode(node), null);
+    });
   });
 
   describe('SpaceTaa', function () {
