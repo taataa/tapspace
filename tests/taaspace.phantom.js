@@ -23,6 +23,14 @@ describe('taaspace', function () {
         done();
       });
     });
+
+    it('should result in error if file not found', function (done) {
+      var taa = new taaspace.Taa('imnotreal.png', function (err, taa2) {
+        should.not.equal(err, null);
+        should.equal(taa2, null);
+        done();
+      });
+    });
   });
 
   describe('HTMLSpaceView', function () {

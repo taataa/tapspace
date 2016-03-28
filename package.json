@@ -48,7 +48,10 @@
     "build:min": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.min.js.map --output taaspace.min.js.map] > taaspace.min.js",
     "build:debug": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
     "test": "npm run test:lint && npm run test:headless",
-    "test:headless": "mocha-phantomjs --view 512x512 tests/testrunner.html",
+
+    "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
+    "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
+    
     "test:lint": "jshint src/* tests/*.js",
     "test:examples-play": "jshint examples/play/src/*.js",
     "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js"

@@ -29,18 +29,28 @@ var Taa = function (imgSrc, onLoaded) {
   var notCached = false;
 
   loadimages(imgSrc, function (err, image) {
-    this2.image = image;
+    var emiterr, emittaa;
+    if (err) {
+      emiterr = err;
+      emittaa = null;
+    } else {
+      this2.image = image;
+      emiterr = null;
+      emittaa = this2;
+    }
 
     if (notCached) {
-      this2.emit('loaded', err, this2);
-      onLoaded(err, this2);
+      this2.emit('loaded', emiterr, emittaa);
+      onLoaded(emiterr, emittaa);
     } else {
+      // Postpone emitting of the loaded event
       setTimeout(function () {
-        this2.emit('loaded', err, this2);
-        onLoaded(err, this2);
+        this2.emit('loaded', emiterr, emittaa);
+        onLoaded(emiterr, emittaa);
       }, 0);
     }
   });
+
   notCached = true;
 };
 
