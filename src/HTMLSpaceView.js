@@ -49,14 +49,16 @@ var HTMLSpaceView = function (space, htmlContainer) {
     this2.resize([w, h]);
   }());
 
+  var _hasNodeId = function (nodeid) {
+    return this2._elements.hasOwnProperty(nodeid);
+  };
+
   var transformNode = function (htmlElement, spaceNode) {
     // Transform elements because the view orientation.
     // See 2016-03-05-09 for math.
     var node_global_T = spaceNode.getGlobalTransform();
     var T = this2._T.inverse().multiplyBy(node_global_T);
-    // TODO What if view parent is not the root?
-    //   Solution: getTransformTo(plane)
-    // TODO Current move.js does not prevent scientific notation reaching CSS
+    // Current move.js does not prevent scientific notation reaching CSS
     // which leads to problems with Safari and Opera. Therefore we must
     // prevent the notation here.
     // Of course this will cause error in the presentation.
@@ -73,10 +75,47 @@ var HTMLSpaceView = function (space, htmlContainer) {
     // Each rendered element has own ID. The ID differs from
     // the id of space nodes because a space node can become
     // visualized through multiple views.
-    return this2.id + '/' + spaceNodeId;
+    return this2.id + '-' + spaceNodeId;
   };
 
-  // Listen the space for new or removed taas or transformations
+
+  // Listen the space for new or removed nodes or transformations
+
+  var transformedHandler = function (spaceNode) {
+    // Update css transformation.
+    // If the node has children, they must also be transformed
+    // because the children do not emit transformed by themselves.
+    var nodes, i, node, el;
+    nodes = spaceNode.getDescendants();
+    nodes.push(spaceNode);
+
+    for (i = 0; i < nodes.length; i += 1) {
+      node = nodes[i];
+      if (_hasNodeId(node.id)) {
+        if (node instanceof SpaceTaa) {
+          el = this2._elements[node.id];
+          transformNode(el, node);
+        } else if (node instanceof SpaceHTML) {
+          el = this2._elements[node.id];
+          transformNode(el, node);
+        }
+        // Else: no transformable representation for Views.
+      }
+    }
+  };
+
+  var resizedHandler = function (node) {
+    var el, wh;
+    if (_hasNodeId(node.id)) {
+      // Safeguard: if is a SpaceRectangle
+      if (node.hasOwnProperty('resize')) {
+        wh = node.getSize();
+        el = this2._elements[node.id];
+        el.style.width = wh[0] + 'px';
+        el.style.height = wh[1] + 'px';
+      }
+    }
+  };
 
   var contentAddedHandler = function (spaceNode, newParent, oldParent) {
     // Parameters:
@@ -100,7 +139,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
       return;
     }
 
-    if (this2._elements.hasOwnProperty(node.id)) {
+    if (_hasNodeId(node.id)) {
       // Content is already drawn.
     } else {
       if (node instanceof SpaceTaa) {
@@ -115,6 +154,9 @@ var HTMLSpaceView = function (space, htmlContainer) {
         this2._nodes[node.id] = node;
         // Make transformation
         transformNode(el, node);
+        // Listen to further transformations
+        node.on('transformed', transformedHandler);
+        node.on('resized', resizedHandler);
       } else if (node instanceof SpaceHTML) {
         // Create container div.
         el = document.createElement('div');
@@ -125,14 +167,6 @@ var HTMLSpaceView = function (space, htmlContainer) {
         wh = node.getSize();
         el.style.width = wh[0] + 'px';
         el.style.height = wh[1] + 'px';
-        // TODO react to size change
-        // on resize reset the style.width and style.height
-        node.on('resized', function () {
-          // TODO remove listener
-          var wh = node.getSize();
-          el.style.width = wh[0] + 'px';
-          el.style.height = wh[1] + 'px';
-        });
         // Render
         this2._el.appendChild(el);
         // Make referencable
@@ -140,6 +174,9 @@ var HTMLSpaceView = function (space, htmlContainer) {
         this2._nodes[node.id] = node;
         // Make transformation
         transformNode(el, node);
+        // Listen to further transformations
+        node.on('transformed', transformedHandler);
+        node.on('resized', resizedHandler);
       } else if (node instanceof HTMLSpaceView) {
         // No representation for views.
       } else {
@@ -167,7 +204,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
       // No reason to remove and then add again.
     } else {
       // New parent in different space, so not displayed in this view anymore.
-      if (this2._elements.hasOwnProperty(node.id)) {
+      if (_hasNodeId(node.id)) {
         // Remove HTML element
         el = this2._elements[node.id];
         this2._el.removeChild(el);
@@ -175,32 +212,12 @@ var HTMLSpaceView = function (space, htmlContainer) {
         // JS feature of delete: does not throw if key does not exist
         delete this2._elements[node.id];
         delete this2._nodes[node.id];
+        // Remove handlers.
+        node.off('transformed', transformedHandler);
+        node.off('resized', resizedHandler);
       }
     }
 
-  };
-
-  var contentTransformedHandler = function (spaceNode) {
-    // Update css transformation.
-    // If the node has children, they must also be transformed.
-    var nodes, i, node, el;
-    nodes = spaceNode.getDescendants();
-    nodes.push(spaceNode);
-
-    for (i = 0; i < nodes.length; i += 1) {
-      node = nodes[i];
-      if (this2._elements.hasOwnProperty(node.id)) {
-        if (node instanceof SpaceTaa) {
-          el = this2._elements[node.id];
-          // Make transformation
-          transformNode(el, node);
-        } else if (node instanceof SpaceHTML) {
-          el = this2._elements[node.id];
-          transformNode(el, node);
-        }
-        // Else: no transformable representation for Views.
-      }
-    }
   };
 
   // View added to new parent.
@@ -221,7 +238,6 @@ var HTMLSpaceView = function (space, htmlContainer) {
     // Start to listen for changes.
     newSpace.on('contentAdded', contentAddedHandler);
     newSpace.on('contentRemoved', contentRemovedHandler);
-    newSpace.on('contentTransformed', contentTransformedHandler);
   });
 
   // View removed from parent.
@@ -236,7 +252,6 @@ var HTMLSpaceView = function (space, htmlContainer) {
     // Stop listening for changes.
     oldSpace.off('contentAdded', contentAddedHandler);
     oldSpace.off('contentRemoved', contentRemovedHandler);
-    oldSpace.off('contentTransformed', contentTransformedHandler);
 
     // Remove all nodes from old space.
     des = oldSpace.getDescendants();
@@ -260,7 +275,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
   this.getElementBySpaceNode = function (spaceNode) {
     // Get HTML element representation of the space taa.
     // Return null if not found.
-    if (this._elements.hasOwnProperty(spaceNode.id)) {
+    if (_hasNodeId(spaceNode.id)) {
       return this._elements[spaceNode.id];
     }
     return null;
@@ -269,11 +284,11 @@ var HTMLSpaceView = function (space, htmlContainer) {
   this.getSpaceNodeByElementId = function (id) {
     // Get space taa by HTML element id
     // Return null if no space taa for such id.
-    var i = id.split('/');
+    var i = id.split('-');
     var spaceViewId = i[0];
     var spaceNodeId = i[1];
     if (this.id === spaceViewId) {
-      if (this._nodes.hasOwnProperty(spaceNodeId)) {
+      if (_hasNodeId(spaceNodeId)) {
         return this._nodes[spaceNodeId];
       }
     }

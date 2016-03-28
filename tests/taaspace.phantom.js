@@ -223,6 +223,13 @@ describe('taaspace', function () {
       view = new taaspace.HTMLSpaceView(space, cont);
     });
 
+    // Easier to debug
+    afterEach(function () {
+      if (this.currentTest.state === 'failed') {
+        takeScreenshot();
+      }
+    });
+
     it('should allow creation', function () {
       var a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>');
       var el = $('.taaspace-html');
@@ -230,6 +237,17 @@ describe('taaspace', function () {
       h1.should.exist;
       var b = view.getSpaceNodeByElementId(el.attr('id'));
       b.should.equal(a);
+    });
+
+    it('should be resizable', function () {
+      var a, a0, a1;
+      a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>');
+      a.resize([100, 100]);
+      a0 = document.elementFromPoint(150, 150);
+      a0.should.equal(view.getRootElement());
+      a.resize([200, 200]);
+      a1 = document.elementFromPoint(150, 150);
+      a1.should.equal(view.getElementBySpaceNode(a));
     });
   });
 

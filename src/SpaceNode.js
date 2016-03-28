@@ -1,9 +1,10 @@
 /*
+API v3.0.0
+
 Emits
   contentAdded
   contentRemoved
     not thrown if the content to remove did not exist in the first place.
-  contentTransformed
 */
 var Emitter = require('component-emitter');
 
@@ -30,13 +31,13 @@ var SpaceNode = function (emitter) {
   // to be able to remove the handlers when child is removed.
   emitter._addedHandlers = {};
   emitter._removedHandlers = {};
-  emitter._transformedHandlers = {};
 
   emitter.getParent = function () {
     return this._parent;
   };
 
   emitter.getRootParent = function () {
+    // Get the predecessor without parents in recursive manner.
     if (this._parent === null) {
       return this;
     } // else
@@ -69,7 +70,7 @@ var SpaceNode = function (emitter) {
 
   emitter.hasChild = function (spaceNode) {
     // Return
-    //   true if spacetaa in space
+    //   true if spaceNode is a child of this.
     return spaceNode._parent === this;
   };
 
@@ -144,19 +145,13 @@ var SpaceNode = function (emitter) {
     var removedHandler = function (a, b, c) {
       self.emit('contentRemoved', a, b, c);
     };
-    var transformedHandler = function (a, b, c) {
-      self.emit('contentTransformed', a, b, c);
-    };
     // added and removed events are not listened because
     // for after successfully made add or remove,
     // contentAdded and contentRemoved are fired in setParent.
     sc.on('contentAdded', addedHandler);
     sc.on('contentRemoved', removedHandler);
-    sc.on('transformed', transformedHandler);
-    sc.on('contentTransformed', transformedHandler);
     this._addedHandlers[sc.id] = addedHandler;
     this._removedHandlers[sc.id] = removedHandler;
-    this._transformedHandlers[sc.id] = transformedHandler;
   };
 
   emitter._removeChild = function (child) {
@@ -175,11 +170,6 @@ var SpaceNode = function (emitter) {
     h = this._removedHandlers[sc.id];
     delete this._removedHandlers[sc.id];
     sc.off('contentRemoved', h);
-
-    h = this._transformedHandlers[sc.id];
-    delete this._transformedHandlers[sc.id];
-    sc.off('transformed', h);
-    sc.off('contentTransformed', h);
   };
 };
 

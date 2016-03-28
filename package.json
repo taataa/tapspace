@@ -51,9 +51,9 @@
 
     "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
     "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
-    
     "test:lint": "jshint src/* tests/*.js",
-    "test:examples-play": "jshint examples/play/src/*.js",
-    "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js"
+
+    "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
+    "test:examples-play": "jshint examples/play/src/*.js"
   }
 }

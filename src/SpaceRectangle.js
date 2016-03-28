@@ -1,4 +1,4 @@
-// API v0.6.0
+// API v3.0.0
 
 var SpacePoint = require('./SpacePoint');
 

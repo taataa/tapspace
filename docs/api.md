@@ -18,7 +18,7 @@ Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www
 
 Is an Emitter, SpaceNode, SpacePlane, Transformer, and SpaceRectangle.
 
-Listens events: added, removed, transformed, contentAdded, contentRemoved, contentTransformed
+Listens events: added, removed, transformed, resized, contentAdded, contentRemoved
 
 #### #getElementBySpaceNode(spaceNode)
 
