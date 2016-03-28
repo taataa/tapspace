@@ -35,6 +35,11 @@ var SpacePoint = function (xy, reference) {
 
 var proto = SpacePoint.prototype;
 
+proto.equals = function (point) {
+  return (this.xy[0] === point.xy[0] &&
+    this.xy[1] === point.xy[1] &&
+    this._T.equals(point._T));
+  };
 
 proto.offset = function (dx, dy) {
   // Create a new point nearby.
@@ -53,12 +58,6 @@ proto.polarOffset = function (radius, radians) {
   var x = this.xy[0] + radius * Math.cos(radians);
   var y = this.xy[1] + radius * Math.sin(radians);
   return new SpacePoint([x, y], this);
-};
-
-proto.equals = function (point) {
-  return (this.xy[0] === point.xy[0] &&
-          this.xy[1] === point.xy[1] &&
-          this._T.equals(point._T));
 };
 
 proto.to = function (target) {

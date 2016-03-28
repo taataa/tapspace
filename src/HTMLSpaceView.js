@@ -172,7 +172,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
     // Update css transformation.
     // If the node has children, they must also be transformed.
     var nodes, i, node, el;
-    nodes = spaceNode.getAllChildren();
+    nodes = spaceNode.getDescendants();
     nodes.push(spaceNode);
 
     for (i = 0; i < nodes.length; i += 1) {

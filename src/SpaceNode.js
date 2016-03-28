@@ -32,12 +32,6 @@ var SpaceNode = function (emitter) {
   emitter._removedHandlers = {};
   emitter._transformedHandlers = {};
 
-  emitter.has = function (spaceNode) {
-    // Return
-    //   true if spacetaa in space
-    return spaceNode._parent === this;
-  };
-
   emitter.getParent = function () {
     return this._parent;
   };
@@ -61,16 +55,22 @@ var SpaceNode = function (emitter) {
     return arr;
   };
 
-  emitter.getAllChildren = function () {
+  emitter.getDescendants = function () {
     // All descendants in a list, including the children.
     var i, children, child, arr;
     arr = [];
     children = this.getChildren();
     for (i = 0; i < children.length; i += 1) {
       child = children[i];
-      arr = arr.concat(child, child.getAllChildren());
+      arr = arr.concat(child, child.getDescendants());
     }
     return arr;
+  };
+
+  emitter.hasChild = function (spaceNode) {
+    // Return
+    //   true if spacetaa in space
+    return spaceNode._parent === this;
   };
 
   emitter.setParent = function (newParent) {

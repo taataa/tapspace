@@ -27,6 +27,11 @@ var SpaceHTML = function (parent, html) {
   this.html = html;
   this.resize([256, 256]);  // Initial element size.
 
+  this.getHTML = function () {
+    return this.html;
+  };
+
+  // Ready
   this.setParent(parent);
 };
 

@@ -1,4 +1,4 @@
-// API v0.6.0
+// API v3.0.0
 var nudged = require('nudged');
 var Transform = require('./Transform');
 var SpacePoint = require('./SpacePoint');
@@ -194,6 +194,8 @@ var Transformer = function (plane) {
   // plane.translateAndScaleToFit, not sure if necessary for now
 
   plane.on('removed', function (self, oldParent, newParent) {
+    // Maintain global location
+    
     if (typeof oldParent === 'undefined') { oldParent = null; }
     if (typeof newParent === 'undefined') { newParent = null; }
 

@@ -154,9 +154,9 @@ describe('taaspace', function () {
       var b = new taaspace.SpaceTaa(a, taa);
       var c = new taaspace.SpaceTaa(b, taa);
       a.getChildren().should.eql([b]);
-      a.getAllChildren()[0].should.equal(b);
-      a.getAllChildren()[1].should.equal(c);
-      c.getAllChildren().should.eql([]);
+      a.getDescendants()[0].should.equal(b);
+      a.getDescendants()[1].should.equal(c);
+      c.getDescendants().should.eql([]);
     });
   });
 

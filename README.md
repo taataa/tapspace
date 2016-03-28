@@ -11,6 +11,10 @@ A JavaScript library for zoomable web user interface layouts. Great for experime
 - [Interaction](https://rawgit.com/taataa/taaspace/development/examples/play/index.html)
 
 
+## Documentation
+
+- [API](docs/api.md)
+
 ## Features
 
 - Scalable, rotatable, and translatable infinite space for HTML elements.

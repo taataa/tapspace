@@ -13,19 +13,6 @@ var SpaceRectangle = function (transformer) {
   var width = 1;
   var height = 1;
 
-  t.resize = function (dimensions) {
-    // Parameter
-    //   dimensions, [width, height]
-    width = dimensions[0];
-    height = dimensions[1];
-
-    this.emit('resized', t);
-  };
-
-  t.getSize = function () {
-    return [width, height];
-  };
-
   t.atNorm = function (xy) {
     // Return a SpacePoint by coordinates normalized about the size.
     // atNorm([1,0]) returns the point at the right upper corner.
@@ -66,6 +53,19 @@ var SpaceRectangle = function (transformer) {
 
   t.atSE = function () {
     return new SpacePoint([width, height], t);
+  };
+
+  t.getSize = function () {
+    return [width, height];
+  };
+
+  t.resize = function (dimensions) {
+    // Parameter
+    //   dimensions, [width, height]
+    width = dimensions[0];
+    height = dimensions[1];
+
+    this.emit('resized', t);
   };
 
 };
