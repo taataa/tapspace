@@ -55,7 +55,7 @@ var transformByEstimate = function (plane, type, domain, range, pivot) {
 };
 
 
-var Transformer = function (plane) {
+var SpaceTransformer = function (plane) {
   //
   // Parameters
   //   plane
@@ -195,7 +195,7 @@ var Transformer = function (plane) {
 
   plane.on('removed', function (self, oldParent, newParent) {
     // Maintain global location
-    
+
     if (typeof oldParent === 'undefined') { oldParent = null; }
     if (typeof newParent === 'undefined') { newParent = null; }
 
@@ -241,4 +241,4 @@ var Transformer = function (plane) {
   });
 };
 
-module.exports = Transformer;
+module.exports = SpaceTransformer;

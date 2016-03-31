@@ -9,7 +9,7 @@ A HTMLElement [1] in the space.
 var Emitter = require('component-emitter');
 var SpaceNode = require('./SpaceNode');
 var SpacePlane = require('./SpacePlane');
-var Transformer = require('./Transformer');
+var SpaceTransformer = require('./SpaceTransformer');
 var SpaceRectangle = require('./SpaceRectangle');
 
 var SpaceHTML = function (parent, html) {
@@ -21,7 +21,7 @@ var SpaceHTML = function (parent, html) {
   Emitter(this);
   SpaceNode(this);
   SpacePlane(this);
-  Transformer(this);
+  SpaceTransformer(this);
   SpaceRectangle(this);
 
   this.html = html;

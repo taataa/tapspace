@@ -3,7 +3,7 @@
 var Emitter = require('component-emitter');
 var SpaceNode = require('./SpaceNode');
 var SpacePlane = require('./SpacePlane');
-var Transformer = require('./Transformer');
+var SpaceTransformer = require('./SpaceTransformer');
 var SpaceRectangle = require('./SpaceRectangle');
 
 var SpaceTaa = function (parent, taa) {
@@ -15,7 +15,7 @@ var SpaceTaa = function (parent, taa) {
   Emitter(this);
   SpaceNode(this);
   SpacePlane(this);
-  Transformer(this);
+  SpaceTransformer(this);
   SpaceRectangle(this);
 
   this.taa = taa;

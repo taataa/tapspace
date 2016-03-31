@@ -16,7 +16,7 @@ Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www
 
 ## taaspace.HTMLSpaceView(space, htmlContainer)
 
-Is an Emitter, SpaceNode, SpacePlane, Transformer, and SpaceRectangle.
+Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, and SpaceRectangle.
 
 Listens events: added, removed, transformed, resized, contentAdded, contentRemoved
 
@@ -48,7 +48,7 @@ Cannot have a parent SpaceNode.
 
 ## taaspace.SpaceHTML(parent, html)
 
-Is an Emitter, SpaceNode, SpacePlane, Transformer, and SpaceRectangle.
+Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, and SpaceRectangle.
 
 #### #getHTML()
 
@@ -142,7 +142,7 @@ Return a new SpacePoint by transforming this by the given Transform.
 
 ## taaspace.SpaceRectangle(transformer)
 
-Upgrade a Transformer to a SpaceRectangle.
+Upgrade a SpaceTransformer to a SpaceRectangle.
 
 Emit: `resized`
 
@@ -178,7 +178,7 @@ Update dimensions [width, height]. Emit `resized`.
 
 ## taaspace.SpaceTaa(parent, taa)
 
-Is an Emitter, SpaceNode, SpacePlane, Transformer, SpaceRectangle.
+Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, SpaceRectangle.
 
 Properties: taa
 
@@ -200,9 +200,9 @@ For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransfo
 
 
 
-## taaspace.Transformer(plane)
+## taaspace.SpaceTransformer(plane)
 
-Upgrade a given SpacePlane to a Transformer.
+Upgrade a given SpacePlane to a SpaceTransformer.
 
 Listens events: `removed`
 

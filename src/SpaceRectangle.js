@@ -2,9 +2,9 @@
 
 var SpacePoint = require('./SpacePoint');
 
-var SpaceRectangle = function (transformer) {
+var SpaceRectangle = function (spaceTransformer) {
 
-  var t = transformer;  // Alias
+  var t = spaceTransformer;  // Alias
 
   // Rectangles have size.
   // In its own coordinates, rectangle's right bottom corner

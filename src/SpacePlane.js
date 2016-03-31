@@ -3,7 +3,7 @@ SpacePlane
 API v0.6.0
 
 A SpacePlane represents a coordinate system. It does not include
-methods to transform the system. SpacePlane and Transformer are separated
+methods to transform the system. SpacePlane and SpaceTransformer are separated
 because we want to have planes that cannot be transformed, as the Space.
 
 */

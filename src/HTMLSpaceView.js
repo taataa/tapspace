@@ -6,7 +6,7 @@ View
 var Emitter = require('component-emitter');
 var SpaceNode = require('./SpaceNode');
 var SpacePlane = require('./SpacePlane');
-var Transformer = require('./Transformer');
+var SpaceTransformer = require('./SpaceTransformer');
 var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = require('./SpaceTaa');
 var SpaceHTML = require('./SpaceHTML');
@@ -29,7 +29,7 @@ var HTMLSpaceView = function (space, htmlContainer) {
   Emitter(this);
   SpaceNode(this);
   SpacePlane(this);
-  Transformer(this);
+  SpaceTransformer(this);
   SpaceRectangle(this);
   var this2 = this;
 
