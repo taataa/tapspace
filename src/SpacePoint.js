@@ -1,4 +1,4 @@
-// API v0.6.0
+// API v3.0.0
 
 var Transform = require('./Transform');
 
@@ -39,7 +39,7 @@ proto.equals = function (point) {
   return (this.xy[0] === point.xy[0] &&
     this.xy[1] === point.xy[1] &&
     this._T.equals(point._T));
-  };
+};
 
 proto.offset = function (dx, dy) {
   // Create a new point nearby.
@@ -106,9 +106,9 @@ proto.toSpace = function () {
   // Implementation note:
   //   We already have coord. transf. from the current plane to the space:
   //     plane._T
-  var xy_space = this._T.transform(this.xy);
-  var space_mock = {'_T': Transform.IDENTITY};
-  return new SpacePoint(xy_space, space_mock);
+  var xySpace = this._T.transform(this.xy);
+  var spaceMock = {'_T': Transform.IDENTITY};
+  return new SpacePoint(xySpace, spaceMock);
 };
 
 proto.transform = function (tr) {

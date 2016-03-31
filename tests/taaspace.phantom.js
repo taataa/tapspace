@@ -10,8 +10,8 @@ describe('taaspace', function () {
   }
 
   it('should have submodules', function () {
-    taaspace.should.have.keys('Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView',
-      'version', 'SpaceHTML');
+    taaspace.should.have.keys('SpacePoint', 'Transform', 'SpaceTransform',
+      'Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView', 'version', 'SpaceHTML');
   });
 
   describe('Taa', function () {
@@ -277,6 +277,40 @@ describe('taaspace', function () {
         a.xy.should.be.shallowDeepAlmostEqual(b.xy);
       });
     });
+  });
+
+  describe('SpaceTransform', function () {
+
+    describe('#equals', function () {
+      it('should detect small difference', function () {
+        var s = new taaspace.Space();
+        var t1 = new taaspace.Transform(1.0, 2.0, 3.0, 4.0);
+        var t2 = new taaspace.Transform(1.0, 2.0, 3.0, 4.01);
+        var st1 = new taaspace.SpaceTransform(t1, s);
+        var st2 = new taaspace.SpaceTransform(t2, s);
+        st1.equals(st2).should.be.True;
+      });
+    });
+
+    describe('#to', function () {
+      var space;
+
+      beforeEach(function () {
+        space = new taaspace.Space();
+      });
+
+      it('should convert simple translation', function () {
+        var txt = new taaspace.SpaceHTML(space, '');
+        txt.scale(space.at([0,0]), 2.0);
+        // On txt, 1 unit is 2 space units.
+        var t = taaspace.Transform.IDENTITY.translateBy(1, 1);
+        var st = new taaspace.SpaceTransform(t, txt);
+        // Convert +1,+1 translation to space.
+        var stOnSpace = st.to(space);
+        stOnSpace.T.transform([1,1]).should.eql([3,3]);
+      });
+    });
+
   });
 
 });
