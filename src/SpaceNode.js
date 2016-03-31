@@ -32,18 +32,6 @@ var SpaceNode = function (emitter) {
   emitter._addedHandlers = {};
   emitter._removedHandlers = {};
 
-  emitter.getParent = function () {
-    return this._parent;
-  };
-
-  emitter.getRootParent = function () {
-    // Get the predecessor without parents in recursive manner.
-    if (this._parent === null) {
-      return this;
-    } // else
-    return this._parent.getRootParent();
-  };
-
   emitter.getChildren = function () {
     // Return child SpaceNodes in a list.
     // Does not include the children of the children.
@@ -68,10 +56,28 @@ var SpaceNode = function (emitter) {
     return arr;
   };
 
+  emitter.getParent = function () {
+    return this._parent;
+  };
+
+  emitter.getRootParent = function () {
+    // Get the predecessor without parents in recursive manner.
+    if (this._parent === null) {
+      return this;
+    } // else
+    return this._parent.getRootParent();
+  };
+
   emitter.hasChild = function (spaceNode) {
     // Return
     //   true if spaceNode is a child of this.
     return spaceNode._parent === this;
+  };
+
+  emitter.remove = function () {
+    // Remove this space node from its parent.
+    // Return: see setParent
+    return this.setParent(null);
   };
 
   emitter.setParent = function (newParent) {
@@ -111,12 +117,6 @@ var SpaceNode = function (emitter) {
       }
     }
 
-  };
-
-  emitter.remove = function () {
-    // Remove this space node from its parent.
-    // Return: see setParent
-    return this.setParent(null);
   };
 
   emitter._addChild = function (child) {
