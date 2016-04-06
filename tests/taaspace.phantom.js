@@ -11,7 +11,8 @@ describe('taaspace', function () {
 
   it('should have submodules', function () {
     taaspace.should.have.keys('SpacePoint', 'Transform', 'SpaceTransform',
-      'Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView', 'version', 'SpaceHTML');
+      'Taa', 'SpaceTaa', 'Space', 'HTMLSpaceView', 'version', 'SpaceHTML',
+      'SpacePixel');
   });
 
   describe('Taa', function () {
@@ -214,6 +215,35 @@ describe('taaspace', function () {
     });
   });
 
+  describe('SpaceTransformer', function () {
+    var space;
+
+    beforeEach(function () {
+      space = new taaspace.Space();
+    });
+
+    describe('#applySpaceTransform', function () {
+      it('should take a identity SpaceTransform', function () {
+        var a = new taaspace.SpacePixel(space);
+        var t = new taaspace.SpaceTransform(space);
+        a.applySpaceTransform(t);
+        a.atSE().xy.should.eql([1,1]);
+      });
+
+      it('should take a simple translation', function () {
+        var a = new taaspace.SpacePixel(space);
+        var t = new taaspace.SpaceTransform(space);
+        t = t.translate(space.at([0,0]), space.at([1,1]));
+        a.atSE().xy.should.eql([1,1]);
+        a.applySpaceTransform(t);
+        a.atSE().to(space).xy.should.eql([2,2]);
+        a.applySpaceTransform(t);
+        a.atSE().to(space).xy.should.eql([3,3]);
+      });
+    });
+
+  });
+
   describe('SpaceHTML', function () {
     var space, view, taa;
 
@@ -286,8 +316,8 @@ describe('taaspace', function () {
         var s = new taaspace.Space();
         var t1 = new taaspace.Transform(1.0, 2.0, 3.0, 4.0);
         var t2 = new taaspace.Transform(1.0, 2.0, 3.0, 4.01);
-        var st1 = new taaspace.SpaceTransform(t1, s);
-        var st2 = new taaspace.SpaceTransform(t2, s);
+        var st1 = new taaspace.SpaceTransform(s, t1);
+        var st2 = new taaspace.SpaceTransform(s, t2);
         st1.equals(st2).should.be.True;
       });
     });
@@ -304,7 +334,7 @@ describe('taaspace', function () {
         txt.scale(space.at([0,0]), 2.0);
         // On txt, 1 unit is 2 space units.
         var t = taaspace.Transform.IDENTITY.translateBy(1, 1);
-        var st = new taaspace.SpaceTransform(t, txt);
+        var st = new taaspace.SpaceTransform(txt, t);
         // Convert +1,+1 translation to space.
         var stOnSpace = st.to(space);
         stOnSpace.T.transform([1,1]).should.eql([3,3]);

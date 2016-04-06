@@ -4,7 +4,7 @@ var Transform = require('./Transform');
 var SpacePoint = require('./SpacePoint');
 
 var normalize = function (points, plane) {
-  // Transform all the points onto the parent and
+  // Transform all the points onto the plane and
   // represent them in array [[x0,y0], [x1,y1], ...].
   //
   // Arguments:
@@ -14,20 +14,38 @@ var normalize = function (points, plane) {
   //   array of xy points in space.
   var i, p, np, normalized;
 
-  if (!Array.isArray(points)) {
-    // Single SpacePoint
-    p = points;
-    np = p.to(plane).xy;
-    return [np];
-  } // else
+  // Single SpacePoint
+  if (!Array.isArray(points)) { points = [points]; }
+
+  // To same plane
+  np = SpacePoint.normalize(points, plane);
+
+  // Convert to [[x0,y0], [x1,y1], ...]
   normalized = [];
-  for (i = 0; i < points.length; i += 1) {
-    p = points[i];
-    np = p.to(plane).xy;
-    normalized.push(np);
+  for (i = 0; i < np.length; i += 1) {
+    normalized.push(np[i].xy);
   }
   return normalized;
 };
+
+// DEPRECATED
+// var normalize = function (points, plane) {
+//   var i, p, np, normalized;
+//
+//   if (!Array.isArray(points)) {
+//     // Single SpacePoint
+//     p = points;
+//     np = p.to(plane).xy;
+//     return [np];
+//   } // else
+//   normalized = [];
+//   for (i = 0; i < points.length; i += 1) {
+//     p = points[i];
+//     np = p.to(plane).xy;
+//     normalized.push(np);
+//   }
+//   return normalized;
+// };
 
 
 var transformByEstimate = function (plane, type, domain, range, pivot) {
@@ -87,6 +105,20 @@ var SpaceTransformer = function (plane) {
     }
     var parent_global = this._parent.getGlobalTransform();
     this._T = parent_global.inverse().multiplyBy(T);
+    this.emit('transformed', this);
+  };
+
+  plane.applySpaceTransform = function (spaceTransform) {
+    // Apply a SpaceTransform to the node.
+    // Root nodes cannot be transformed.
+
+    if (this._parent === null) {
+      // We are root, cannot set.
+      return;
+    }
+    // Convert on parent plane so we can multiply.
+    var normST = spaceTransform.to(this._parent);
+    this._T = normST.T.multiplyBy(this._T);
     this.emit('transformed', this);
   };
 

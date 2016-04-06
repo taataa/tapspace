@@ -122,4 +122,32 @@ proto.transform = function (tr) {
 };
 
 
+SpacePoint.normalize = function (points, plane) {
+  // Convert all the space points onto same plane and.
+  //
+  // Arguments:
+  //   points, array of SpacePoints
+  //   plane, a SpacePlane onto normalize. null = space
+  // Return:
+  //   array of SpacePoints
+  var i, p, normalized;
+  normalized = [];
+  for (i = 0; i < points.length; i += 1) {
+    p = points[i];
+    normalized.push(p.to(plane));
+  }
+  return normalized;
+};
+
+SpacePoint.toXY = function (points) {
+  // Convert SpacePoints to [[x1,y1], [x2,y2], ...]
+  var i, xys;
+  xys = [];
+  for (i = 0; i < points.length; i += 1) {
+    xys.push(points[i].xy);
+  }
+  return xys;
+};
+
+
 module.exports = SpacePoint;

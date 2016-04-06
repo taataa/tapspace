@@ -6,21 +6,29 @@ are converted to other representations, we have SpaceTransform.
 The API is similar to SpacePoint. However, instead of offset methods, we have
 a set of similarity transformation methods.
 */
+var Transform = require('./Transform');
+var SpacePoint = require('./SpacePoint');
+var nudged = require('nudged');
 
-var SpaceTransform = function (T, reference) {
+var SpaceTransform = function (reference, T) {
   // Immutable i.e. new instances are returned.
   //
   // Example
-  //   var t = taaspace.SpaceTransform(taaspace.Transform.IDENTITY, taa);
+  //   var t = taaspace.SpaceTransform(taa, taaspace.Transform.IDENTITY);
   //
   // Parameter
-  //   T
-  //     a taaspace.Transform
   //   reference
   //     a SpacePlane, SpacePoint, or SpaceTransform
   //       an item in space, enabling coord projections.
+  //   T
+  //     Optional. A taaspace.Transform. Default to identity transform.
+
+  // DEBUG
+  if (!reference.hasOwnProperty('_T')) throw 'invalid reference';
+  if (T && !T.hasOwnProperty('tx')) throw 'invalid transform';
 
   // A transformation on the plane.
+  if (typeof T === 'undefined') { T = Transform.IDENTITY; }
   this.T = T;
 
   // The coordinate transformation of the plane.
@@ -77,7 +85,7 @@ proto.to = function (target) {
   //   x_space = T_plane * x_plane
   this2target = targetGT.inverse().multiplyBy(this._T);
   tOnTarget = this2target.multiplyBy(this.T.multiplyBy(this2target.inverse()));
-  return new SpaceTransform(tOnTarget, target);
+  return new SpaceTransform(target, tOnTarget);
 };
 
 proto.toSpace = function () {
@@ -94,7 +102,42 @@ proto.toSpace = function () {
   // 3) convert from plane back to the space: this._T
   var tOnSpace = this._T.multiplyBy(this.T.multiplyBy(this._T.inverse()));
   var spaceMock = {'_T': Transform.IDENTITY};
-  return new SpaceTransform(tOnSpace, spaceMock);
+  return new SpaceTransform(spaceMock, tOnSpace);
+};
+
+proto.translate = function (domain, range) {
+  // Move transform image horizontally and vertically by example.
+  //
+  // Translate the plane so that after the translation, the domain points
+  // would be as close to given range points as possible.
+  //
+  // Parameter
+  //   domain
+  //   range
+  var ndom, nran, spaceE, planeE, spaceMock;
+
+  // Allow single points
+  if (domain.hasOwnProperty('_T')) { domain = [domain]; }
+  if (range.hasOwnProperty('_T')) { range = [range]; }
+
+  // Normalize to space
+  ndom = SpacePoint.normalize(domain, null);
+  nran = SpacePoint.normalize(range, null);
+
+  // Convert to nudged compatible.
+  ndom = SpacePoint.toXY(ndom);
+  nran = SpacePoint.toXY(nran);
+
+  // Estimate transformation on space
+  spaceE = nudged.estimate('T', ndom, nran);
+
+  // Convert it to this plane
+  // x_space = this._T * x_plane
+  planeE = this._T.inverse().multiplyBy(spaceE.multiplyBy(this._T));
+
+  // Apply
+  spaceMock = {'_T': this._T};
+  return new SpaceTransform(spaceMock, planeE.multiplyBy(this.T));
 };
 
 module.exports = SpaceTransform;

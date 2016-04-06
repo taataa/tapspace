@@ -1,7 +1,5 @@
-// API v0.6.0
-var nudged = require('nudged');
+// API v3.0.0
 
-// TODO
-// monkeypatch "to(plane)"
+var nudged = require('nudged');
 
 module.exports = nudged.Transform;

@@ -6,22 +6,20 @@ var SpacePlane = require('./SpacePlane');
 var SpaceTransformer = require('./SpaceTransformer');
 var SpaceRectangle = require('./SpaceRectangle');
 
-var SpaceTaa = function (parent, taa) {
+var SpacePixel = function (parent) {
+  // A 1x1 rectangle
+  //
   // Parameters:
   //   parent
   //     a SpaceNode
-  //   taa
-  //     a Taa
   Emitter(this);
   SpaceNode(this);
   SpacePlane(this);
   SpaceTransformer(this);
   SpaceRectangle(this);
 
-  this.taa = taa;
-  this.resize([256, 256]);  // Size of taa.
-
+  this.resize([1, 1]);
   this.setParent(parent);
 };
 
-module.exports = SpaceTaa;
+module.exports = SpacePixel;
