@@ -15,25 +15,6 @@ describe('taaspace', function () {
       'SpacePixel');
   });
 
-  describe('Taa', function () {
-    it('should fire "loaded" event', function (done) {
-      var taa = new taaspace.Taa('assets/taa.png');
-      taa.on('loaded', function (err, taa2) {
-        should.equal(err, null);
-        taa2.image.should.equal(taa.image);
-        done();
-      });
-    });
-
-    it('should result in error if file not found', function (done) {
-      var taa = new taaspace.Taa('imnotreal.png', function (err, taa2) {
-        should.not.equal(err, null);
-        should.equal(taa2, null);
-        done();
-      });
-    });
-  });
-
   describe('HTMLSpaceView', function () {
     var space;
     var view;
@@ -154,95 +135,18 @@ describe('taaspace', function () {
     });
   });
 
-  describe('SpaceTaa', function () {
-    var space, view, taa;
-
-    beforeEach(function (done) {
-      var cont = getEmptyContainer();
-      space = new taaspace.Space();
-      view = new taaspace.HTMLSpaceView(space, cont);
-      taa = new taaspace.Taa('assets/taa.png', done);
+  describe('Space', function () {
+    it('cannot have parent', function () {
+      var sp1 = new taaspace.Space();
+      var sp2 = new taaspace.Space();
+      (function () {
+        sp2.setParent(sp1);
+      }).should.throw(/parent/);
+      sp1.hasChild(sp2).should.be.False;
+      (function () {
+        sp2.remove();
+      }).should.not.throw();
     });
-
-    it('should have an id', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      var b = new taaspace.SpaceTaa(space, taa);
-      a.should.have.property('id');
-      a.id.should.be.a.String;
-      b.id.should.be.a.String;
-      a.id.should.not.equal(b.id);
-    });
-
-    it('should be removable', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      a.remove();
-      space._children.hasOwnProperty(a.id).should.equal(false);
-    });
-
-    it('should be able to return a SpacePoint', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      var p = a.atNorm([1,1]);
-      var vp = p.to(view);
-      var epsilon = 0.01;
-      var val = 256;
-      vp.xy[0].should.be.within(val - epsilon, val + epsilon);
-      vp.xy[1].should.be.within(val - epsilon, val + epsilon);
-    });
-
-    it('should be able to give and take Transform objects', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      // Move to unit square.
-      a.translateScale(
-        [a.atNW(), a.atSE()],
-        [space.at([0,0]), space.at([1,1])]
-      );
-      var t = a.getTransform();
-      var rt = t.rotateBy(1);
-      a.setTransform(rt);
-      a.atSE().to(space).xy.should.not.eql([1,1]);
-      a.setTransform(t);
-      a.atSE().to(space).xy.should.eql([1,1]);
-    });
-
-    it('should allow children', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      var b = new taaspace.SpaceTaa(a, taa);
-      var c = new taaspace.SpaceTaa(b, taa);
-      a.getChildren().should.eql([b]);
-      a.getDescendants()[0].should.equal(b);
-      a.getDescendants()[1].should.equal(c);
-      c.getDescendants().should.eql([]);
-    });
-  });
-
-  describe('SpaceTransformer', function () {
-    var space;
-
-    beforeEach(function () {
-      space = new taaspace.Space();
-    });
-
-    describe('#transformBy', function () {
-      it('should take a identity SpaceTransform', function () {
-        var a = new taaspace.SpacePixel(space);
-        var t = new taaspace.SpaceTransform(space);
-        a.transformBy(t);
-        a.atSE().xy.should.eql([1,1]);
-        a.atSE().to(space).xy.should.eql([1,1]);
-      });
-
-      it('should take a simple translation', function () {
-        var a = new taaspace.SpacePixel(space);
-        var t = new taaspace.SpaceTransform(space);
-        t = t.translate(space.at([0,0]), space.at([1,1]));
-        a.atSE().xy.should.eql([1,1]);
-        a.transformBy(t);
-        a.atSE().to(space).xy.should.eql([2,2]);
-        a.transformBy(t);
-        a.atSE().to(space).xy.should.eql([3,3]);
-      });
-    });
-
   });
 
   describe('SpaceHTML', function () {
@@ -310,6 +214,67 @@ describe('taaspace', function () {
     });
   });
 
+  describe('SpaceTaa', function () {
+    var space, view, taa;
+
+    beforeEach(function (done) {
+      var cont = getEmptyContainer();
+      space = new taaspace.Space();
+      view = new taaspace.HTMLSpaceView(space, cont);
+      taa = new taaspace.Taa('assets/taa.png', done);
+    });
+
+    it('should have an id', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      var b = new taaspace.SpaceTaa(space, taa);
+      a.should.have.property('id');
+      a.id.should.be.a.String;
+      b.id.should.be.a.String;
+      a.id.should.not.equal(b.id);
+    });
+
+    it('should be removable', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      a.remove();
+      space._children.hasOwnProperty(a.id).should.equal(false);
+    });
+
+    it('should be able to return a SpacePoint', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      var p = a.atNorm([1,1]);
+      var vp = p.to(view);
+      var epsilon = 0.01;
+      var val = 256;
+      vp.xy[0].should.be.within(val - epsilon, val + epsilon);
+      vp.xy[1].should.be.within(val - epsilon, val + epsilon);
+    });
+
+    it('should be able to give and take Transform objects', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      // Move to unit square.
+      a.translateScale(
+        [a.atNW(), a.atSE()],
+        [space.at([0,0]), space.at([1,1])]
+      );
+      var t = a.getTransform();
+      var rt = t.rotateBy(1);
+      a.setTransform(rt);
+      a.atSE().to(space).xy.should.not.eql([1,1]);
+      a.setTransform(t);
+      a.atSE().to(space).xy.should.eql([1,1]);
+    });
+
+    it('should allow children', function () {
+      var a = new taaspace.SpaceTaa(space, taa);
+      var b = new taaspace.SpaceTaa(a, taa);
+      var c = new taaspace.SpaceTaa(b, taa);
+      a.getChildren().should.eql([b]);
+      a.getDescendants()[0].should.equal(b);
+      a.getDescendants()[1].should.equal(c);
+      c.getDescendants().should.eql([]);
+    });
+  });
+
   describe('SpaceTransform', function () {
 
     describe('#equals', function () {
@@ -341,7 +306,54 @@ describe('taaspace', function () {
         stOnSpace.T.transform([1,1]).should.eql([3,3]);
       });
     });
+  });
 
+  describe('SpaceTransformer', function () {
+    var space;
+
+    beforeEach(function () {
+      space = new taaspace.Space();
+    });
+
+    describe('#transformBy', function () {
+      it('should take a identity SpaceTransform', function () {
+        var a = new taaspace.SpacePixel(space);
+        var t = new taaspace.SpaceTransform(space);
+        a.transformBy(t);
+        a.atSE().xy.should.eql([1,1]);
+        a.atSE().to(space).xy.should.eql([1,1]);
+      });
+
+      it('should take a simple translation', function () {
+        var a = new taaspace.SpacePixel(space);
+        var t = new taaspace.SpaceTransform(space);
+        t = t.translate(space.at([0,0]), space.at([1,1]));
+        a.atSE().xy.should.eql([1,1]);
+        a.transformBy(t);
+        a.atSE().to(space).xy.should.eql([2,2]);
+        a.transformBy(t);
+        a.atSE().to(space).xy.should.eql([3,3]);
+      });
+    });
+  });
+
+  describe('Taa', function () {
+    it('should fire "loaded" event', function (done) {
+      var taa = new taaspace.Taa('assets/taa.png');
+      taa.on('loaded', function (err, taa2) {
+        should.equal(err, null);
+        taa2.image.should.equal(taa.image);
+        done();
+      });
+    });
+
+    it('should result in error if file not found', function (done) {
+      var taa = new taaspace.Taa('imnotreal.png', function (err, taa2) {
+        should.not.equal(err, null);
+        should.equal(taa2, null);
+        done();
+      });
+    });
   });
 
 });
