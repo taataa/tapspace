@@ -111,14 +111,14 @@ proto.toSpace = function () {
   return new SpacePoint(xySpace, spaceMock);
 };
 
-proto.transform = function (tr) {
-  // Create a new point by transformation.
-  // TODO rename to transformBy and take a SpaceTransform
+proto.transformBy = function (tr) {
+  // Create a new SpacePoint by SpaceTransform.
   //
   // Parameter
   //   tr
-  //     a Transform
-  var xy_hat = tr.transform(this.xy);
+  //     a SpaceTransform
+  var t = tr.to(this);
+  var xy_hat = t.T.transform(this.xy);
   return new SpacePoint(xy_hat, this);
 };
 
