@@ -1,4 +1,8 @@
 // API v3.0.0
+//
+// SpacePixel
+// A simple rectangular object in space with size 1x1
+// Created for testing purposes.
 
 var Emitter = require('component-emitter');
 var SpaceNode = require('./SpaceNode');

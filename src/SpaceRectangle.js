@@ -16,43 +16,43 @@ var SpaceRectangle = function (spaceTransformer) {
   t.atNorm = function (xy) {
     // Return a SpacePoint by coordinates normalized about the size.
     // atNorm([1,0]) returns the point at the right upper corner.
-    return new SpacePoint([width * xy[0], height * xy[1]], t);
+    return new SpacePoint(t, [width * xy[0], height * xy[1]]);
   };
 
   t.atMid = function () {
-    return new SpacePoint([width / 2, height / 2], t);
+    return new SpacePoint(t, [width / 2, height / 2]);
   };
 
   t.atMidN = function () {
-    return new SpacePoint([width / 2, 0], t);
+    return new SpacePoint(t, [width / 2, 0]);
   };
 
   t.atMidW = function () {
-    return new SpacePoint([0, height / 2], t);
+    return new SpacePoint(t, [0, height / 2]);
   };
 
   t.atMidE = function () {
-    return new SpacePoint([width, height / 2], t);
+    return new SpacePoint(t, [width, height / 2]);
   };
 
   t.atMidS = function () {
-    return new SpacePoint([width / 2, height], t);
+    return new SpacePoint(t, [width / 2, height]);
   };
 
   t.atNW = function () {
-    return new SpacePoint([0, 0], t);
+    return new SpacePoint(t, [0, 0]);
   };
 
   t.atNE = function () {
-    return new SpacePoint([width, 0], t);
+    return new SpacePoint(t, [width, 0]);
   };
 
   t.atSW = function () {
-    return new SpacePoint([0, height], t);
+    return new SpacePoint(t, [0, height]);
   };
 
   t.atSE = function () {
-    return new SpacePoint([width, height], t);
+    return new SpacePoint(t, [width, height]);
   };
 
   t.getSize = function () {

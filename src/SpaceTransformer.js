@@ -19,33 +19,10 @@ var normalize = function (points, plane) {
 
   // To same plane
   np = SpacePoint.normalize(points, plane);
+  normalized = SpacePoint.toXY(np);
 
-  // Convert to [[x0,y0], [x1,y1], ...]
-  normalized = [];
-  for (i = 0; i < np.length; i += 1) {
-    normalized.push(np[i].xy);
-  }
   return normalized;
 };
-
-// DEPRECATED
-// var normalize = function (points, plane) {
-//   var i, p, np, normalized;
-//
-//   if (!Array.isArray(points)) {
-//     // Single SpacePoint
-//     p = points;
-//     np = p.to(plane).xy;
-//     return [np];
-//   } // else
-//   normalized = [];
-//   for (i = 0; i < points.length; i += 1) {
-//     p = points[i];
-//     np = p.to(plane).xy;
-//     normalized.push(np);
-//   }
-//   return normalized;
-// };
 
 
 var transformByEstimate = function (plane, type, domain, range, pivot) {

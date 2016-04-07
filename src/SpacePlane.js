@@ -17,7 +17,7 @@ var at = function (xy) {
   if (xy.length !== 2) {  // DEBUG TODO remove this
     throw 'Invalid point, use array [x, y]';
   }
-  return new SpacePoint(xy, this);  // Note: this === spaceNode
+  return new SpacePoint(this, xy);  // Note: this === spaceNode
 };
 
 var SpacePlane = function (spaceNode) {

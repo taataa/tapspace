@@ -2,16 +2,18 @@
 
 var Transform = require('./Transform');
 
-var SpacePoint = function (xy, reference) {
+var SpacePoint = function (reference, xy) {
   // Example
-  //   var p = taaspace.SpacePoint([x, y], taa);
+  //   var p = taaspace.SpacePoint(taa, [x, y]);
   //
   // Parameter
-  //   xy
-  //     2D array
   //   reference
-  //     a SpaceNode or SpacePoint
+  //     a SpaceNode, SpacePoint, or SpaceTransform
   //       an item in space, enabling coord projections.
+  //   xy
+  //     [x, y] array. Optional, defaults to [0,0]
+
+  if (typeof xy === 'undefined') { xy = [0, 0]; }
   this.xy = xy;
 
   // The SpacePlane's transformation the xy are on.
@@ -50,14 +52,14 @@ proto.offset = function (dx, dy) {
   //   dy
   //     ...
   var xy = [this.xy[0] + dx, this.xy[1] + dy];
-  return new SpacePoint(xy, this);
+  return new SpacePoint(this, xy);
 };
 
 proto.polarOffset = function (radius, radians) {
   // Create a new point moved by the polar coordinates
   var x = this.xy[0] + radius * Math.cos(radians);
   var y = this.xy[1] + radius * Math.sin(radians);
-  return new SpacePoint([x, y], this);
+  return new SpacePoint(this, [x, y]);
 };
 
 proto.to = function (target) {
@@ -97,7 +99,7 @@ proto.to = function (target) {
   } // else
   var C = target_gT.inverse().multiplyBy(this._T);
   var xy_target = C.transform(this.xy);
-  return new SpacePoint(xy_target, target);
+  return new SpacePoint(target, xy_target);
 };
 
 proto.toSpace = function () {
@@ -108,7 +110,7 @@ proto.toSpace = function () {
   //     plane._T
   var xySpace = this._T.transform(this.xy);
   var spaceMock = {'_T': Transform.IDENTITY};
-  return new SpacePoint(xySpace, spaceMock);
+  return new SpacePoint(spaceMock, xySpace);
 };
 
 proto.transformBy = function (tr) {
@@ -119,7 +121,7 @@ proto.transformBy = function (tr) {
   //     a SpaceTransform
   var t = tr.to(this);
   var xy_hat = t.T.transform(this.xy);
-  return new SpacePoint(xy_hat, this);
+  return new SpacePoint(this, xy_hat);
 };
 
 
