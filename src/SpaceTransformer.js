@@ -108,7 +108,7 @@ var SpaceTransformer = function (plane) {
     this.emit('transformed', this);
   };
 
-  plane.applySpaceTransform = function (spaceTransform) {
+  plane.transformBy = function (spaceTransform) {
     // Apply a SpaceTransform to the node.
     // Root nodes cannot be transformed.
 

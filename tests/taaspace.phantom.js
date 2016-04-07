@@ -222,11 +222,11 @@ describe('taaspace', function () {
       space = new taaspace.Space();
     });
 
-    describe('#applySpaceTransform', function () {
+    describe('#transformBy', function () {
       it('should take a identity SpaceTransform', function () {
         var a = new taaspace.SpacePixel(space);
         var t = new taaspace.SpaceTransform(space);
-        a.applySpaceTransform(t);
+        a.transformBy(t);
         a.atSE().xy.should.eql([1,1]);
         a.atSE().to(space).xy.should.eql([1,1]);
       });
@@ -236,9 +236,9 @@ describe('taaspace', function () {
         var t = new taaspace.SpaceTransform(space);
         t = t.translate(space.at([0,0]), space.at([1,1]));
         a.atSE().xy.should.eql([1,1]);
-        a.applySpaceTransform(t);
+        a.transformBy(t);
         a.atSE().to(space).xy.should.eql([2,2]);
-        a.applySpaceTransform(t);
+        a.transformBy(t);
         a.atSE().to(space).xy.should.eql([3,3]);
       });
     });

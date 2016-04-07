@@ -113,6 +113,7 @@ proto.toSpace = function () {
 
 proto.transform = function (tr) {
   // Create a new point by transformation.
+  // TODO rename to transformBy and take a SpaceTransform
   //
   // Parameter
   //   tr
