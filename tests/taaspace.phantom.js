@@ -228,6 +228,7 @@ describe('taaspace', function () {
         var t = new taaspace.SpaceTransform(space);
         a.applySpaceTransform(t);
         a.atSE().xy.should.eql([1,1]);
+        a.atSE().to(space).xy.should.eql([1,1]);
       });
 
       it('should take a simple translation', function () {
