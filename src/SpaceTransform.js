@@ -65,10 +65,12 @@ proto.to = function (target) {
   }
 
   // Target's global transformation. This._T is already global.
-  if (target.hasOwnProperty('getGlobalTransform')) {
+  if (target.hasOwnProperty('_T')) {
+    targetGT = target._T;
+  } else if ('getGlobalTransform' in target) {
     targetGT = target.getGlobalTransform();
   } else {
-    targetGT = target._T;
+    throw new Error('Cannot convert SpaceTransform to: ' + target);
   }
 
   // Avoid unnecessary, probably rounding errors inducing computation.
@@ -111,33 +113,125 @@ proto.translate = function (domain, range) {
   // Translate the plane so that after the translation, the domain points
   // would be as close to given range points as possible.
   //
-  // Parameter
-  //   domain
-  //   range
-  var ndom, nran, spaceE, planeE, spaceMock;
+  // Parameters:
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var st = SpaceTransform.estimate(this, 'T', domain, range);
+  return new SpaceTransform(this, st.T.multiplyBy(this.T));
+};
+
+proto.scale = function (pivot, multiplierOrDomain, range) {
+  // Parameters:
+  //   pivot: a SpacePoint
+  //   multiplier: the scale factor, > 0
+  //  OR
+  //   pivot: a SpacePoint
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var useMultiplier, normPivot, domain, t, st;
+
+  useMultiplier = (typeof range === 'undefined');
+
+  if (useMultiplier) {
+    normPivot = pivot.to(this);
+    // Multiplier does not depend on plane.
+    t = this.T.scaleBy(multiplierOrDomain, normPivot.xy);
+    return new SpaceTransform(this, t);
+  } else {
+    domain = multiplierOrDomain;
+    st = SpaceTransform.estimate(this, 'S', domain, range, pivot);
+    // Combine it with the current transformation
+    t = st.T.multiplyBy(this.T);
+    return new SpaceTransform(this, t);
+  }
+};
+
+proto.rotate = function (pivot, radiansOrDomain, range) {
+  // Parameters:
+  //   pivot: a SpacePoint
+  //   radians: rotation angle
+  //  OR
+  //   pivot: a SpacePoint
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var useRadians, normPivot, domain, t, st;
+
+  useRadians = (typeof range === 'undefined');
+
+  if (useRadians) {
+    normPivot = pivot.to(this);
+    // Radians do not depend on plane.
+    t = this.T.rotateBy(radiansOrDomain, normPivot.xy);
+    return new SpaceTransform(this, t);
+  } else {
+    domain = radiansOrDomain;
+    st = SpaceTransform.estimate(this, 'R', domain, range, pivot);
+    // Combine it with the current transformation
+    t = st.T.multiplyBy(this.T);
+    return new SpaceTransform(this, t);
+  }
+};
+
+proto.translateScale = function (domain, range) {
+  // Parameters:
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var st = SpaceTransform.estimate(this, 'TS', domain, range);
+  return new SpaceTransform(this, st.T.multiplyBy(this.T));
+};
+
+proto.translateRotate = function (domain, range) {
+  // Parameters:
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var st = SpaceTransform.estimate(this, 'TR', domain, range);
+  return new SpaceTransform(this, st.T.multiplyBy(this.T));
+};
+
+proto.scaleRotate = function (pivot, domain, range) {
+  // Parameters:
+  //   pivot: SpacePoint
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var st = SpaceTransform.estimate(this, 'SR', domain, range, pivot);
+  return new SpaceTransform(this, st.T.multiplyBy(this.T));
+};
+
+proto.translateScaleRotate = function (domain, range) {
+  // Parameters:
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  var st = SpaceTransform.estimate(this, 'TSR', domain, range);
+  return new SpaceTransform(this, st.T.multiplyBy(this.T));
+};
+
+SpaceTransform.estimate = function (plane, type, domain, range, pivot) {
+  // Estimate SpaceTransform.
+  //
+  // Parameters:
+  //   plane: SpacePlane, the plane of the returned SpaceTransform
+  //   types: transformation type.
+  //     Available types: T,S,R,TS,TR,SR,TSR (see nudged for further details)
+  //   domain: array of SpacePoints
+  //   range: array of SpacePoints
+  //   pivot: SpacePoint, optional pivot, used with types S,R,SR
+
+  var normPivot;
+  if (typeof pivot !== 'undefined') {
+    normPivot = SpacePoint.normalizeXY([pivot])[0];
+  }
 
   // Allow single points
   if (domain.hasOwnProperty('_T')) { domain = [domain]; }
   if (range.hasOwnProperty('_T')) { range = [range]; }
 
-  // Normalize to space
-  ndom = SpacePoint.normalize(domain, null);
-  nran = SpacePoint.normalize(range, null);
+  // Convert all SpacePoints onto the plane and to arrays
+  var normDomain = SpacePoint.normalizeXY(domain, plane);
+  var normRange = SpacePoint.normalizeXY(range, plane);
 
-  // Convert to nudged compatible.
-  ndom = SpacePoint.toXY(ndom);
-  nran = SpacePoint.toXY(nran);
-
-  // Estimate transformation on space
-  spaceE = nudged.estimate('T', ndom, nran);
-
-  // Convert it to this plane
-  // x_space = this._T * x_plane
-  planeE = this._T.inverse().multiplyBy(spaceE.multiplyBy(this._T));
-
-  // Apply
-  spaceMock = {'_T': this._T};
-  return new SpaceTransform(spaceMock, planeE.multiplyBy(this.T));
+  // Then compute optimal transformation on the plane
+  var T = nudged.estimate(type, normDomain, normRange, normPivot);
+  return new SpaceTransform(plane, T);
 };
 
 module.exports = SpaceTransform;

@@ -2,55 +2,11 @@
 var nudged = require('nudged');
 var Transform = require('./Transform');
 var SpacePoint = require('./SpacePoint');
-
-var normalize = function (points, plane) {
-  // Transform all the points onto the plane and
-  // represent them in array [[x0,y0], [x1,y1], ...].
-  //
-  // Arguments:
-  //   points, a single spacepoint or a list of spacepoints
-  //   plane, a SpacePlane e.g. a SpaceTaa onto normalize.
-  // Return:
-  //   array of xy points in space.
-  var i, p, np, normalized;
-
-  // Single SpacePoint
-  if (!Array.isArray(points)) { points = [points]; }
-
-  // To same plane
-  np = SpacePoint.normalize(points, plane);
-  normalized = SpacePoint.toXY(np);
-
-  return normalized;
-};
-
-
-var transformByEstimate = function (plane, type, domain, range, pivot) {
-  // Types: T,S,R,TS,TR,SR,TSR (see nudged for further details)
-
-  var normPivot;
-  if (typeof pivot !== 'undefined') {
-    normPivot = normalize(pivot, plane._parent)[0];
-  }
-
-  // Convert all SpacePoints onto the space and to arrays
-  var normDomain = normalize(domain, plane._parent);
-  var normRange = normalize(range, plane._parent);
-
-  // Then compute optimal transformation in space
-  var H_space = nudged.estimate(type, normDomain, normRange, normPivot);
-  // See 2016-03-05-11:
-  //   To apply transformation to a space object:
-  //     T_hat = toParent(H) * T
-  // Therefore:
-  plane._T = H_space.multiplyBy(plane._T);
-
-  // Notify especially view about transformation.
-  plane.emit('transformed', plane);
-};
+var SpaceTransform = require('./SpaceTransform');
 
 
 var SpaceTransformer = function (plane) {
+  // Upgrades SpacePlanes to SpaceTransformers
   //
   // Parameters
   //   plane
@@ -105,99 +61,45 @@ var SpaceTransformer = function (plane) {
     // Translate the plane so that after the translation, the domain points
     // would be as close to given range points as possible.
     //
-    // Parameter
-    //   domain
-    //   range
-
-    transformByEstimate(this, 'T', domain, range);
+    // Parameters: see SpaceTransform.prototype.translate
+    var st = SpaceTransform.estimate(this, 'T', domain, range);
+    this.transformBy(st);
   };
 
   plane.scale = function (pivot, multiplierOrDomain, range) {
-    // Parameter
-    //   pivot, a SpacePoint
-    //   multiplier, the scale factor, > 0
-    //  OR
-    //   pivot
-    //   domain
-    //   range
-
-    var useMultiplier = (typeof range === 'undefined');
-
-    if (useMultiplier) {
-      var normPivot = normalize(pivot, this._parent)[0];
-      var multiplier = multiplierOrDomain;
-      // Multiplier does not depend on plane.
-      // We create a pivoted scaling transform on parent.
-      var S_parent = Transform.IDENTITY.scaleBy(multiplier, normPivot);
-      // See 2016-03-05-11
-      //   We transform space objects by:
-      //   T_hat = H_space * T
-      this._T = S_parent.multiplyBy(this._T);
-      this.emit('transformed', this);
-    } else {
-      var domain = multiplierOrDomain;
-      transformByEstimate(this, 'S', domain, range, pivot);
-    }
+    // Parameters: see SpaceTransform.prototype.scale
+    var st = new SpaceTransform(this).scale(pivot, multiplierOrDomain, range);
+    this.transformBy(st);
   };
 
   plane.rotate = function (pivot, radiansOrDomain, range) {
-    // Parameter
-    //   pivot
-    //   radians
-    //  OR
-    //   pivot
-    //   domain
-    //   range
-
-    var useRadians = (typeof range === 'undefined');
-
-    if (useRadians) {
-      var normPivot = normalize(pivot, this._parent)[0];
-      var radians = radiansOrDomain;
-      // Radians do not depend on plane.
-      // We create a pivoted rotation transform on parent.
-      var R_parent = Transform.IDENTITY.rotateBy(radians, normPivot);
-      // See 2016-03-05-11
-      //   We transform space objects by:
-      //   T_hat = H_space * T
-      this._T = R_parent.multiplyBy(this._T);
-      this.emit('transformed', this);
-    } else {
-      var domain = radiansOrDomain;
-      transformByEstimate(this, 'R', domain, range, pivot);
-    }
+    // Parameters: see SpaceTransform.prototype.rotate
+    var st = new SpaceTransform(this).rotate(pivot, radiansOrDomain, range);
+    this.transformBy(st);
   };
 
   plane.translateScale = function (domain, range) {
-    // Parameter
-    //   domain
-    //   range
-
-    transformByEstimate(this, 'TS', domain, range);
+    // Parameters: see SpaceTransform.prototype.translateScale
+    var st = SpaceTransform.estimate(this, 'TS', domain, range);
+    this.transformBy(st);
   };
 
   plane.translateRotate = function (domain, range) {
-    // Parameter
-    //   domain
-    //   range
-
-    transformByEstimate(this, 'TR', domain, range);
+    // Parameters: see SpaceTransform.prototype.translateRotate
+    var st = SpaceTransform.estimate(this, 'TR', domain, range);
+    this.transformBy(st);
   };
 
   plane.scaleRotate = function (pivot, domain, range) {
-    // Parameter
-    //   domain
-    //   range
-
-    transformByEstimate(this, 'SR', domain, range, pivot);
+    // Parameters: see SpaceTransform.prototype.scaleRotate
+    var st = SpaceTransform.estimate(this, 'SR', domain, range, pivot);
+    this.transformBy(st);
   };
 
   plane.translateScaleRotate = function (domain, range) {
-    // Parameter
-    //   domain
-    //   range
-
-    transformByEstimate(this, 'TSR', domain, range);
+    // Parameters: see SpaceTransform.prototype.translateScaleRotate
+    var st = SpaceTransform.estimate(this, 'TSR', domain, range);
+    this.transformBy(st);
   };
 
   // plane.translateAndScaleToFit, not sure if necessary for now

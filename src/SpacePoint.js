@@ -92,7 +92,16 @@ proto.to = function (target) {
   }
 
   // Target's global transformation. This._T is already global.
-  var target_gT = target.getGlobalTransform();
+  var target_gT;
+  if (target.hasOwnProperty('_T')) {
+    // SpacePoint or SpaceTransform
+    target_gT = target._T;
+  } else if ('getGlobalTransform' in target) {
+    // SpacePlane
+    target_gT = target.getGlobalTransform();
+  } else {
+    throw new Error('Cannot convert SpacePoint to: ' + target);
+  }
 
   if (target_gT.equals(this._T)) {
     return this;
@@ -126,7 +135,7 @@ proto.transformBy = function (tr) {
 
 
 SpacePoint.normalize = function (points, plane) {
-  // Convert all the space points onto same plane and.
+  // Convert all the space points onto same plane.
   //
   // Arguments:
   //   points, array of SpacePoints
@@ -150,6 +159,24 @@ SpacePoint.toXY = function (points) {
     xys.push(points[i].xy);
   }
   return xys;
+};
+
+SpacePoint.normalizeXY = function (points, plane) {
+  // Convert all the space points onto same plane and
+  // represent the as xy list: [[x1,y1], [x2,y2], ...].
+  //
+  // Arguments:
+  //   points, array of SpacePoints
+  //   plane, a SpacePlane onto normalize. null = space
+  // Return:
+  //   array of [x,y] points
+  var i, p, normalized;
+  normalized = [];
+  for (i = 0; i < points.length; i += 1) {
+    p = points[i];
+    normalized.push(p.to(plane).xy);
+  }
+  return normalized;
 };
 
 
