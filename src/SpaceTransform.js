@@ -34,7 +34,7 @@ var SpaceTransform = function (reference, T) {
   // The coordinate transformation of the plane.
   if (reference.hasOwnProperty('getGlobalTransform')) {
     // Is a SpacePlane
-    this._T = reference.getGlobalTransform();
+    this._T = reference.getGlobalTransform().T;
   } else {
     // Is a SpacePoint or SpaceTransform
     this._T = reference._T;
@@ -47,6 +47,11 @@ proto.equals = function (st) {
   // Parameters:
   //   st: a SpaceTransform
   return (this.T.equals(st.T) && this._T.equals(st._T));
+};
+
+proto.inverse = function () {
+  // Return inversed transformation on the same plane.
+  return new SpaceTransform(this, this.T.inverse());
 };
 
 proto.to = function (target) {
@@ -68,7 +73,7 @@ proto.to = function (target) {
   if (target.hasOwnProperty('_T')) {
     targetGT = target._T;
   } else if ('getGlobalTransform' in target) {
-    targetGT = target.getGlobalTransform();
+    targetGT = target.getGlobalTransform().T;
   } else {
     throw new Error('Cannot convert SpaceTransform to: ' + target);
   }
@@ -103,8 +108,15 @@ proto.toSpace = function () {
   // 2) apply the transformation
   // 3) convert from plane back to the space: this._T
   var tOnSpace = this._T.multiplyBy(this.T.multiplyBy(this._T.inverse()));
-  var spaceMock = {'_T': Transform.IDENTITY};
+  var spaceMock = { '_T': Transform.IDENTITY };
   return new SpaceTransform(spaceMock, tOnSpace);
+};
+
+proto.transformBy = function (spaceTransform) {
+  // Transform the image of this by given SpaceTransform.
+  var t = spaceTransform.to(this).T;
+  var nt = t.multiplyBy(this.T);
+  return new SpaceTransform(this, nt);
 };
 
 proto.translate = function (domain, range) {

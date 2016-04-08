@@ -1,6 +1,6 @@
 // API v3.0.0
 
-var Transform = require('./Transform');
+var nudged = require('nudged');
 
 var SpacePoint = function (reference, xy) {
   // Example
@@ -28,7 +28,7 @@ var SpacePoint = function (reference, xy) {
 
   if (reference.hasOwnProperty('getGlobalTransform')) {
     // Is a SpacePlane
-    this._T = reference.getGlobalTransform();
+    this._T = reference.getGlobalTransform().T;
   } else {
     // Is a SpacePoint
     this._T = reference._T;
@@ -98,7 +98,7 @@ proto.to = function (target) {
     target_gT = target._T;
   } else if ('getGlobalTransform' in target) {
     // SpacePlane
-    target_gT = target.getGlobalTransform();
+    target_gT = target.getGlobalTransform().T;
   } else {
     throw new Error('Cannot convert SpacePoint to: ' + target);
   }
@@ -118,7 +118,7 @@ proto.toSpace = function () {
   //   We already have coord. transf. from the current plane to the space:
   //     plane._T
   var xySpace = this._T.transform(this.xy);
-  var spaceMock = {'_T': Transform.IDENTITY};
+  var spaceMock = { '_T': nudged.Transform.IDENTITY };
   return new SpacePoint(spaceMock, xySpace);
 };
 

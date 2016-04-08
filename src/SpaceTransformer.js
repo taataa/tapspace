@@ -6,25 +6,29 @@ var SpaceTransform = require('./SpaceTransform');
 
 
 var SpaceTransformer = function (plane) {
-  // Upgrades SpacePlanes to SpaceTransformers
+  // Upgrades SpacePlane to SpaceTransformer
   //
   // Parameters
   //   plane
   //     a SpacePlane
 
-  plane.setTransform = function (T) {
-    // Needed when we whan to restore stored position, maybe after
-    // modification.
-    if (this._parent === null) {
-      // We are root, cannot set.
-      return;
-    }
-    this._T = T;
+  plane.setLocalTransform = function (spaceTransform) {
+    // Transform the plane so that it would be equivalent to
+    // transform plane from initial position by the SpaceTransform.
+    //
+    // This method is needed when we whan to restore stored position,
+    // maybe after modification.
+
+    // If we are root, cannot set.
+    if (this._parent === null) { return; }
+
+    this._T = spaceTransform.to(this._parent).T;
     this.emit('transformed', this);
   };
 
-  plane.setGlobalTransform = function (T) {
-    // Set local transform so that the global transform becomes the given T.
+  plane.setGlobalTransform = function (spaceTransform) {
+    // Set local transform so that the global transform becomes equal to
+    // the given SpaceTransform.
     //
     // Dev note:
     //   Given T is coord. transf. from the plane to root (space).
@@ -32,12 +36,13 @@ var SpaceTransformer = function (plane) {
     //   current_glob_trans = parent_glob_trans * this_T
     //   new_glob_trans = parent_glob_trans * X
     //   <=> X = inv(parent_glob_trans) * new_glob_trans
-    if (this._parent === null) {
-      // We are root, cannot set.
-      return;
-    }
-    var parent_global = this._parent.getGlobalTransform();
-    this._T = parent_global.inverse().multiplyBy(T);
+
+    // If we are root, cannot set.
+    if (this._parent === null) { return; }
+
+    var parent_gt = this._parent.getGlobalTransform().T;
+    var new_gt = spaceTransform.toSpace().T;
+    this._T = parent_gt.inverse().multiplyBy(new_gt);
     this.emit('transformed', this);
   };
 
@@ -105,50 +110,31 @@ var SpaceTransformer = function (plane) {
   // plane.translateAndScaleToFit, not sure if necessary for now
 
   plane.on('removed', function (self, oldParent, newParent) {
-    // Maintain global location
+    // Maintain global location.
+    // Why? To make it easy to attach to view temporarily.
+    // On the other hand, same relative location would be convenient
+    // when moving subelements from group to another.
+    // Would it be easier to do explicitly:
+    //   gt = taa.getGlobalTransform()
+    //   taa.setParent(foo)
+    //   taa.setGlobalTransform(gt)
+    // Yes it would. Therefore, do not maintain global location!
 
     if (typeof oldParent === 'undefined') { oldParent = null; }
     if (typeof newParent === 'undefined') { newParent = null; }
 
-    var sameRoot;
     if (newParent === null) {
       // Root nodes cannot move.
-      this.resetTransform();
+      self.resetTransform();
     } else {
+      // Assert: removed from null parent?
       if (oldParent === null) {
-        // Removed from null parent?
-        throw new Exception('Cannot remove from null parent');
-      } else {
-        // Moved onto another parent.
-        // Let us keep the location in space the same if possible.
-        // It is possible only if the parents share same root i.e.
-        // are in the same space.
-        sameRoot = oldParent.getRootParent() === newParent.getRootParent();
-        if (sameRoot) {
-          // Keep the location.
-          // Let
-          //   OT be the old local coord. transformation.
-          //   NT be the unknown new local coord. transf.
-          //   OPGT be the global coord. transf. of old parent
-          //   NPGT be the global coord. transf. of new parent
-          // Now, we want to keep global transf. unchanged.
-          //   OPGT * OT = NPGT * NT
-          //   <=> NT = inv(NPGT) * OPGT * OT
-          var opgt = oldParent.getGlobalTransform();
-          var npgt = newParent.getGlobalTransform();
-          var ot = this._T;
-          var nt = npgt.inverse().multiplyBy(opgt).multiplyBy(ot);
-          this._T = nt;
-          this.emit('transformed', this); // TODO Is needed because inplace?
-        } else {
-          // In different space: reset
-          this.resetTransform();
-        }
-        // Note: there could be a need to change parent with the same
-        // local transformation. Not needed for now.
+        throw new Error('Cannot remove from null parent');
       }
-
     }
+
+    // Reparenting probably changes the global transform.
+    this.emit('transformed', self);
   });
 };
 

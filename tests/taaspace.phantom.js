@@ -69,11 +69,14 @@ describe('taaspace', function () {
       var spacetaa = new taaspace.SpaceTaa(space, taa);
       spacetaa.translate(spacetaa.atNW(), spacetaa.atSE());
       spacetaa.setParent(view);
+      // This should keep taa's local transform.
+      // Because view has not moved, the taa should appear at same place.
       // Let's see if spacetaa is still in place.
       var el1 = document.elementFromPoint(300, 300); // null if outside window
       el1.should.equal(view.getElementBySpaceNode(spacetaa));
       // Let's see if spacetaa follows the view.
-      view.translate(space.at([0,0]), space.at([1000,1000]));
+      // If it does, it should stay visually at the same place.
+      view.translate(space.at([0,0]), space.at([2000, 2000]));
       var el2 = document.elementFromPoint(300, 300); // null if outside window
       el2.should.equal(el1);
     });
@@ -186,6 +189,31 @@ describe('taaspace', function () {
     });
   });
 
+  describe('SpacePlane', function () {
+    var space;
+
+    beforeEach(function () {
+      space = new taaspace.Space();
+    });
+
+    describe('#getGlobalTransform', function () {
+      it('should return identity for space', function () {
+        var gt = space.getGlobalTransform();
+        var id = new taaspace.SpaceTransform(space);
+        gt.equals(id);
+      });
+
+      it('should return the local transform for a space child', function () {
+        var px = new taaspace.SpacePixel(space);
+        px.translate(space.at([0, 0]), space.at([1, 1]));
+        // var tr = new taaspace.SpaceTransform(space);
+        // tr = tr.translate(space.at([0, 0]), space.at([1, 1]))
+        var gt = px.getGlobalTransform();
+        gt.equals(px.getLocalTransform());
+      });
+    });
+  });
+
   describe('SpacePoint', function () {
     describe('#polarOffset', function () {
       var space, p;
@@ -256,11 +284,11 @@ describe('taaspace', function () {
         [a.atNW(), a.atSE()],
         [space.at([0,0]), space.at([1,1])]
       );
-      var t = a.getTransform();
-      var rt = t.rotateBy(1);
-      a.setTransform(rt);
+      var t = a.getLocalTransform();
+      var rt = t.rotate(space.at([0,0]), 1);
+      a.setLocalTransform(rt);
       a.atSE().to(space).xy.should.not.eql([1,1]);
-      a.setTransform(t);
+      a.setLocalTransform(t);
       a.atSE().to(space).xy.should.eql([1,1]);
     });
 
@@ -276,25 +304,33 @@ describe('taaspace', function () {
   });
 
   describe('SpaceTransform', function () {
+    var space;
+
+    beforeEach(function () {
+      space = new taaspace.Space();
+    });
 
     describe('#equals', function () {
       it('should detect small difference', function () {
-        var s = new taaspace.Space();
         var t1 = new taaspace.Transform(1.0, 2.0, 3.0, 4.0);
         var t2 = new taaspace.Transform(1.0, 2.0, 3.0, 4.01);
-        var st1 = new taaspace.SpaceTransform(s, t1);
-        var st2 = new taaspace.SpaceTransform(s, t2);
+        var st1 = new taaspace.SpaceTransform(space, t1);
+        var st2 = new taaspace.SpaceTransform(space, t2);
         st1.equals(st2).should.be.True;
       });
     });
 
-    describe('#to', function () {
-      var space;
-
-      beforeEach(function () {
-        space = new taaspace.Space();
+    describe('#inverse', function () {
+      it('should return true inverse', function () {
+        var t = new taaspace.Transform(1.0, 2.0, 3.0, 4.0);
+        var st = new taaspace.SpaceTransform(space, t);
+        var id = st.transformBy(st.inverse());
+        var idst = new taaspace.SpaceTransform(space);
+        id.equals(idst);
       });
+    });
 
+    describe('#to', function () {
       it('should convert simple translation', function () {
         var txt = new taaspace.SpaceHTML(space, '');
         txt.scale(space.at([0,0]), 2.0);
@@ -304,6 +340,18 @@ describe('taaspace', function () {
         // Convert +1,+1 translation to space.
         var stOnSpace = st.to(space);
         stOnSpace.T.transform([1,1]).should.eql([3,3]);
+      });
+    });
+
+    describe('#transformBy', function () {
+      it('should take another SpaceTransform', function () {
+        var s = new taaspace.SpaceTransform(space).scale(space.at([0, 0]), 2);
+        var s2 = s.transformBy(s);
+        var px = new taaspace.SpacePixel(space);
+        px.atSE().to(space).xy.should.eql([1,1]);
+        px.transformBy(s2);
+        px.atNW().to(space).xy.should.eql([0,0]);
+        px.atSE().to(space).xy.should.eql([4,4]);
       });
     });
   });
@@ -335,6 +383,26 @@ describe('taaspace', function () {
         a.atSE().to(space).xy.should.eql([3,3]);
       });
     });
+
+    describe('#setGlobalTransform', function () {
+      it('should keep transformer still during setParent', function () {
+        // Setup
+        var px1 = new taaspace.SpacePixel(space);
+        var px2 = new taaspace.SpacePixel(px1);
+        var px3 = new taaspace.SpacePixel(px2);
+        px1.translate(space.at([0,0]), space.at([2,2]));
+        px2.scale(px2.atMid(), 2);
+        // Take test point for comparison
+        var ne = px3.atNE().to(space);
+        // Reparent px3 so that it should keep still.
+        var gt = px3.getGlobalTransform();
+        px3.setParent(space);
+        px3.setGlobalTransform(gt);
+        // Test if the point remains at same place.
+        px3.atNE().to(space).xy.should.eql(ne.xy);
+      });
+    });
+
   });
 
   describe('Taa', function () {

@@ -36,30 +36,25 @@ var container = document.getElementById('space');
 var space = new taaspace.Space();
 var view = new taaspace.HTMLSpaceView(space, container);
 
-(function makeSpaceTransformable() {
+(function makeViewTransformable() {
   var hand = new TouchHandler(container);
-  var elTr;
+  var tr;
   hand.on('start', function () {
     // Store the initial transformation from view to space.
-    elTr = view.getTransform();
+    tr = view.getLocalTransform();
   });
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
-    if (elTr === null) { return; }
-    // We get a new transformation on view: transformOnView
-    // See note 2016-03-05-12
-    //   Given transformation H_view on view and we want
-    //   to apply it so that it looks that whole space is moving:
-    //      V_hat = V * inv(H_view)
-    //   Where V is the original view coordinate transformation.
-    var tOV = transformOnView;
-    var finalTr = elTr.multiplyBy(tOV.inverse());
-    // Apply it.
-    view.setTransform(finalTr);
+    if (tr === null) { return; }
+    // Turn to SpaceTransform.
+    var t = new taaspace.SpaceTransform(view, transformOnView);
+    var ft = tr.transformBy(t.inverse());
+    // Apply
+    view.setLocalTransform(ft);
   });
   hand.on('end', function () {
     // We do not need the initial transformation anymore.
-    elTr = null;
+    tr = null;
   });
 }());
 
@@ -71,23 +66,29 @@ var makeSpaceTaaTransformable = function (spacetaa) {
   hand.on('start', function () {
     // Store original parent so we can return spacetaa onto it after gesture.
     originalParent = spacetaa.getParent();
+    // Store the initial transformation from taa to space.
+    originalTransf = spacetaa.getGlobalTransform();
     // Change parent to view => not dependent on how view is transformed.
     spacetaa.setParent(view);
-    // Store the initial transformation from taa to space.
-    originalTransf = spacetaa.getTransform();
-    // Show in touch order
+    // Keep the location
+    spacetaa.setGlobalTransform(originalTransf);
+    // Render in touch order
     el.style.zIndex = utils.getIncrementalZIndex();
   });
-  hand.on('move', function (transformOnView) {
+  hand.on('move', function (transfOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
     if (originalTransf === null) { return; }
+    // Turn to SpaceTransform
+    transfOnView = new taaspace.SpaceTransform(view, transfOnView);
     // Apply to spacetaa
-    var newTransf = transformOnView.multiplyBy(originalTransf);
-    spacetaa.setTransform(newTransf);
+    var newTransf = originalTransf.transformBy(transfOnView);
+    spacetaa.setGlobalTransform(newTransf);
   });
   hand.on('end', function () {
     // Drop back to original parent.
+    var t = spacetaa.getGlobalTransform();
     spacetaa.setParent(originalParent);
+    spacetaa.setGlobalTransform(t);
     // We do not need the initial transformation and parent anymore.
     originalTransf = null;
     originalParent = null;

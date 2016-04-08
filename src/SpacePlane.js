@@ -1,6 +1,6 @@
 /*
 SpacePlane
-API v0.6.0
+API v3.0.0
 
 A SpacePlane represents a coordinate system. It does not include
 methods to transform the system. SpacePlane and SpaceTransformer are separated
@@ -10,6 +10,7 @@ because we want to have planes that cannot be transformed, as the Space.
 
 var nudged = require('nudged');
 var SpacePoint = require('./SpacePoint');
+var SpaceTransform = require('./SpaceTransform');
 
 var at = function (xy) {
   // Return
@@ -41,19 +42,25 @@ var SpacePlane = function (spaceNode) {
 
   spaceNode.at = at;
 
-  spaceNode.getTransform = function () {
-    // Local transform from plane to parent
+  spaceNode.getLocalTransform = function () {
+    // Local transform from plane to parent, represented as SpaceTransform.
     //
     // Return
-    //   transformation from plane to parent, i.e.
+    //   SpaceTransform
+    //
+    // Note:
+    //   return transformation from plane to parent, i.e.
     //     xy_parent = T * xy_plane
     // Needed when we want to store transformer's position for later use.
-    return this._T;
+    if (this._parent === null) {
+      return new SpaceTransform(this);
+    } // else
+    return new SpaceTransform(this._parent, this._T);
   };
 
   spaceNode.getGlobalTransform = function () {
     // Return
-    //   transformation from the plane to root container.
+    //   SpaceTransform, transformation from the plane to root.
     //
     // Dev note:
     //   Local transformations go like:
@@ -63,11 +70,26 @@ var SpacePlane = function (spaceNode) {
     //     xy_root = T_parent_parent..._parent * xy_parent_parent..._parent
     //   Therefore global transformation is:
     //     xy_root = T_parent_..._parent * ... * T_parent * T_plane * xy_plane
+    var T, plane;
+
     if (this._parent === null) {
-      // TODO maybe too far: this._parent._parent might be sufficient.
-      return this._T;
+      // We must mock the space. Otherwise, if we put self to
+      // SpaceTransform as reference, SpaceTransform constructor
+      // will ask for self.getGlobalTransform and thus we end up
+      // in a endless loop.
+      plane = { _T: nudged.Transform.IDENTITY };
+      return new SpaceTransform(plane);  // We are root, thus identity
     } // else
-    return this._parent.getGlobalTransform().multiplyBy(this._T);
+
+    T = this._T;
+    plane = this._parent;
+    while (plane._parent !== null) {
+      T = plane._T.multiplyBy(T);
+      plane = plane._parent;
+    }
+
+    // plane._parent === null, hence plane is the root.
+    return new SpaceTransform(plane, T);
   };
 
   spaceNode.resetTransform = function () {

@@ -55,9 +55,11 @@ var HTMLSpaceView = function (space, htmlContainer) {
 
   var transformNode = function (htmlElement, spaceNode) {
     // Transform elements because the view orientation.
+    // Special handling because now we transform HTMLElements
+    // that are parented on view, not space.
     // See 2016-03-05-09 for math.
-    var node_global_T = spaceNode.getGlobalTransform();
-    var T = this2._T.inverse().multiplyBy(node_global_T);
+    var gT = spaceNode.getGlobalTransform().T;
+    var T = this2._T.inverse().multiplyBy(gT);
     // Current move.js does not prevent scientific notation reaching CSS
     // which leads to problems with Safari and Opera. Therefore we must
     // prevent the notation here.
