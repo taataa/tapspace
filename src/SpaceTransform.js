@@ -43,6 +43,12 @@ var SpaceTransform = function (reference, T) {
 
 var proto = SpaceTransform.prototype;
 
+proto.switchTo = function (newReference) {
+  // Combine the transformation to a new coordinate system.
+  // Return new SpaceTransform.
+  return new SpaceTransform(newReference, this.T);
+};
+
 proto.equals = function (st) {
   // Parameters:
   //   st: a SpaceTransform

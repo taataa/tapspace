@@ -310,6 +310,16 @@ describe('taaspace', function () {
       space = new taaspace.Space();
     });
 
+    describe('#graft', function () {
+      it('should not equal', function () {
+        var t = new taaspace.SpaceTransform(space);
+        var x = new taaspace.SpacePixel(space);
+        x.translate(space.at([-10,-10]), space.at([10, 10]));
+        var xt = t.switchTo(x);
+        xt.equals(t).should.be.False;
+      });
+    });
+
     describe('#equals', function () {
       it('should detect small difference', function () {
         var t1 = new taaspace.Transform(1.0, 2.0, 3.0, 4.0);
@@ -400,6 +410,19 @@ describe('taaspace', function () {
         px3.setGlobalTransform(gt);
         // Test if the point remains at same place.
         px3.atNE().to(space).xy.should.eql(ne.xy);
+      });
+      it('should work with getLocalTransform', function () {
+        var x, t, gt;
+        x = new taaspace.SpacePixel(space);
+        t = new taaspace.SpaceTransform(space)
+          .translate(space.at([0,0]), space.at([100,100]))
+          .rotate(x.atMid(), Math.PI / 4)
+          .scale(x.atMid(), 2);
+        x.transformBy(t);
+        gt = x.getGlobalTransform();
+        x.setGlobalTransform(gt);
+        gt = x.getGlobalTransform();
+        gt.equals(t).should.be.True;
       });
     });
 

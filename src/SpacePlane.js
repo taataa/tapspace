@@ -43,7 +43,8 @@ var SpacePlane = function (spaceNode) {
   spaceNode.at = at;
 
   spaceNode.getLocalTransform = function () {
-    // Local transform from plane to parent, represented as SpaceTransform.
+    // Local coordinate transform from plane to parent,
+    // represented as SpaceTransform on the plane.
     //
     // Return
     //   SpaceTransform
@@ -55,12 +56,20 @@ var SpacePlane = function (spaceNode) {
     if (this._parent === null) {
       return new SpaceTransform(this);
     } // else
-    return new SpaceTransform(this._parent, this._T);
+    return new SpaceTransform(this, this._T);
+    // An alternative would have been to graft to the parent's coords:
+    //   return new SpaceTransform(this._parent, this._T);
+    // This is kind of equivalent because:
+    //   this_T_on_plane = this_T * this_T * inv(this_T) = this_T
+    // However, it is more natural if getLocalTransform is represented on
+    // the local coord system.
   };
 
   spaceNode.getGlobalTransform = function () {
-    // Return
-    //   SpaceTransform, transformation from the plane to root.
+    // Return:
+    //   SpaceTransform
+    //     Transformation from the plane to root.
+    //     Represented on the root.
     //
     // Dev note:
     //   Local transformations go like:
