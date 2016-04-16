@@ -16,10 +16,7 @@
     "type": "git",
     "url": "git://github.com/taataa/taaspace.git"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "dependencies": {
     "seqid": "^1.0.1",
     "loadimages": "^0.2.2",

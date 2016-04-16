@@ -30,4 +30,4 @@ Run debug build & tests:
 
 ## License
 
-[MIT License](../blob/master/LICENSE)
+[MIT](LICENSE)
