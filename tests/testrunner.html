@@ -27,7 +27,6 @@
     <script src="../node_modules/chai-jquery/chai-jquery.js"></script>
     <script>
       mocha.ui('bdd');
-      mocha.reporter('html');
       var should = chai.should(); // 'var' important, otherwise RangeError
     </script>
     <script src="../taaspace.min.js"></script>
@@ -42,9 +41,7 @@
           callPhantom({'screenshot': filename});
         }
       };
-
-      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-      else { mocha.run(); }
+      mocha.run();
     </script>
   </body>
 </html>

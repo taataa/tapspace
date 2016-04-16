@@ -27,6 +27,12 @@ Run debug build & tests:
 
     $ npm run build:dev
 
+Upgrade dependencies:
+
+    $ npm install -g npm-check-updates
+    $ ncu  # to view available upgrades
+    $ ncu  # to upgrade
+
 
 ## License
 
