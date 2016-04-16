@@ -11,7 +11,7 @@ var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = require('./SpaceTaa');
 var SpaceHTML = require('./SpaceHTML');
 var Space = require('./Space');
-var move = require('movejs');
+var move = require('move-js');
 
 // Disable animations by default.
 move.defaults = { duration: 0 };
