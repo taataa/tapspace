@@ -196,6 +196,16 @@ describe('taaspace', function () {
       space = new taaspace.Space();
     });
 
+    describe('#getLocalTransform', function () {
+      it('should be in plane\'s coordinate system', function () {
+        var p = new taaspace.SpacePixel(space);
+        var x = new taaspace.SpacePixel(p);
+        p.translate(space.at([0,0]), space.at([1,1]));
+        var t = x.getLocalTransform();
+        t._T.equals(p._T);
+      });
+    });
+
     describe('#getGlobalTransform', function () {
       it('should return identity for space', function () {
         var gt = space.getGlobalTransform();
