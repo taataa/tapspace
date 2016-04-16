@@ -310,13 +310,16 @@ describe('taaspace', function () {
       space = new taaspace.Space();
     });
 
-    describe('#graft', function () {
-      it('should not equal', function () {
+    describe('#switchTo', function () {
+      it('should not equal the original but new', function () {
         var t = new taaspace.SpaceTransform(space);
         var x = new taaspace.SpacePixel(space);
         x.translate(space.at([-10,-10]), space.at([10, 10]));
         var xt = t.switchTo(x);
         xt.equals(t).should.be.False;
+
+        var n = new taaspace.SpaceTransform(x, t.T);
+        n.equals(xt).should.be.True;
       });
     });
 
