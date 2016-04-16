@@ -46,6 +46,10 @@
     "build:debug": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
     "test": "npm run test:lint && npm run test:headless",
 
+    "#": "semver does not provide client support",
+    "build:test-deps": "npm run build:semver",
+    "build:semver": "browserify --standalone semver node_modules/semver/semver.js > tests/assets/semver.js",
+
     "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
     "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
     "test:lint": "jshint src/* tests/*.js",
