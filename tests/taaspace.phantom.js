@@ -189,6 +189,40 @@ describe('taaspace', function () {
     });
   });
 
+  describe('SpaceNode', function () {
+    var space;
+
+    beforeEach(function () {
+      space = new taaspace.Space();
+    });
+
+    describe('#hasDescendant', function () {
+      it('should travel parent hierarchy', function () {
+        var x = new taaspace.SpacePixel(space);
+        var y = new taaspace.SpacePixel(x);
+        var z = new taaspace.SpacePixel(space);
+        space.hasDescendant(y).should.be.True;
+        y.hasDescendant(space).should.be.False;
+        x.hasDescendant(z).should.be.False;
+        x.hasDescendant(x).should.be.False;
+      });
+    });
+
+    describe('#setParent', function () {
+      it('should prevent cyclic child-parent relationships', function () {
+        var x = new taaspace.SpacePixel(space);
+        (function () {
+          x.setParent(x);
+        }).should.throw(/cyclic/i);
+
+        var y = new taaspace.SpacePixel(x);
+        (function () {
+          x.setParent(y);
+        }).should.throw(/cyclic/i);
+      });
+    });
+  });
+
   describe('SpacePlane', function () {
     var space;
 

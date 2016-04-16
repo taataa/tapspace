@@ -64,7 +64,7 @@ var SpaceNode = function (emitter) {
     // Get the predecessor without parents in recursive manner.
     if (this._parent === null) {
       return this;
-    } // else
+    }  // else
     return this._parent.getRootParent();
   };
 
@@ -72,6 +72,19 @@ var SpaceNode = function (emitter) {
     // Return
     //   true if spaceNode is a child of this.
     return spaceNode._parent === this;
+  };
+
+  emitter.hasDescendant = function (spaceNode) {
+    // Return
+    //   true if spaceNode is a descendant of this.
+    var p = spaceNode._parent;
+    while (p !== null && p !== this) {
+      p = p._parent;
+    }
+    if (p === null) {
+      return false;
+    }  // else
+    return true;
   };
 
   emitter.remove = function () {
@@ -83,6 +96,26 @@ var SpaceNode = function (emitter) {
   emitter.setParent = function (newParent) {
     // Add to new parent.
 
+    // Dev note about cyclic relationship detection:
+    //   A
+    //   |
+    //  / \
+    // B   C
+    //
+    // Different cases. The emitter relationship status changes...
+    //   from root to root:
+    //     no worries about cyclic structures
+    //   from root to child:
+    //     If the new parent is a descendant of the emitter, problems.
+    //     If the new parent the emitter itself, problems.
+    //   from child to root:
+    //     Loses parenthood. No cyclic worries.
+    //   from child to child:
+    //     If the new parent is a descendant of the emitter, problems.
+    //     If the new parent the emitter itself, problems.
+    // If new parent has the emitter as descendant already...
+    //   then no worries because emitter would only create a new branch.
+
     var oldParent = this._parent;
 
     if (oldParent === null) {
@@ -91,6 +124,10 @@ var SpaceNode = function (emitter) {
         // Do nothing
       } else {
         // From root to child.
+        // Prevent cycles.
+        if (this === newParent || this.hasDescendant(newParent)) {
+          throw new Error('Cyclic parent-child relationships are forbidden.');
+        }
         this._parent = newParent;
         this._parent._addChild(this);
         this.emit('added', this, this._parent, null);
@@ -99,12 +136,16 @@ var SpaceNode = function (emitter) {
     } else {
       if (newParent === null) {
         // From child to root.
-        this._parent = null; // Becomes new root node.
+        this._parent = null;  // Becomes new root node.
         oldParent._removeChild(this);
         this.emit('removed', this, oldParent, null);
         oldParent.emit('contentRemoved', this, oldParent, null);
       } else {
         // From child to child.
+        // Prevent cycles.
+        if (this === newParent || this.hasDescendant(newParent)) {
+          throw new Error('Cyclic parent-child relationships are forbidden.');
+        }
         this._parent = newParent;
         oldParent._removeChild(this);
         newParent._addChild(this);
@@ -121,6 +162,7 @@ var SpaceNode = function (emitter) {
 
   emitter._addChild = function (child) {
     // To be called from child.setParent().
+    // If called from anywhere else, ensure cyclic relationships are detected.
     //
     // Parameters
     //   child, A SpaceNode
