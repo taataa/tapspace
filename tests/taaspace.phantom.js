@@ -196,6 +196,19 @@ describe('taaspace', function () {
       space = new taaspace.Space();
     });
 
+    describe('#getDescendants', function () {
+      it('should order correctly', function () {
+        var a = new taaspace.SpacePixel(space);
+        var b = new taaspace.SpacePixel(a);
+        var c = new taaspace.SpacePixel(b);
+        a.getChildren().should.eql([b]);
+        // Order from children to children of children.
+        a.getDescendants()[0].should.equal(b);
+        a.getDescendants()[1].should.equal(c);
+        c.getDescendants().should.eql([]);
+      });
+    });
+
     describe('#hasDescendant', function () {
       it('should travel parent hierarchy', function () {
         var x = new taaspace.SpacePixel(space);
@@ -334,16 +347,6 @@ describe('taaspace', function () {
       a.atSE().to(space).xy.should.not.eql([1,1]);
       a.setLocalTransform(t);
       a.atSE().to(space).xy.should.eql([1,1]);
-    });
-
-    it('should allow children', function () {
-      var a = new taaspace.SpaceTaa(space, taa);
-      var b = new taaspace.SpaceTaa(a, taa);
-      var c = new taaspace.SpaceTaa(b, taa);
-      a.getChildren().should.eql([b]);
-      a.getDescendants()[0].should.equal(b);
-      a.getDescendants()[1].should.equal(c);
-      c.getDescendants().should.eql([]);
     });
   });
 
