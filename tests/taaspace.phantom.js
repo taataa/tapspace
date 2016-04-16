@@ -460,4 +460,10 @@ describe('taaspace', function () {
     });
   });
 
+  describe('version', function () {
+    it('should be correctly formatted', function () {
+      semver.valid(taaspace.version).should.be.True;
+    });
+  });
+
 });
