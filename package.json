@@ -21,7 +21,6 @@
     "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
   },
   "dependencies": {
-    "kld-affine": "git+https://github.com/thelonious/kld-affine.git#development",
     "seqid": "^1.0.1",
     "loadimages": "^0.2.2",
     "nudged": "^1.0.1",
