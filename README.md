@@ -13,6 +13,7 @@ A JavaScript library for zoomable web user interface layouts. Great for experime
 - [HTML elements](https://rawgit.com/taataa/taaspace/development/examples/html/index.html)
 - [Interaction](https://rawgit.com/taataa/taaspace/development/examples/play/index.html)
 - [Hammer.js integration](https://rawgit.com/taataa/taaspace/development/examples/hammerjs/index.html)
+- [Canvas animation](https://rawgit.com/taataa/taaspace/development/examples/canvas/index.html)
 
 
 ## Documentation

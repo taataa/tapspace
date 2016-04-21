@@ -50,6 +50,9 @@
     "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
     "test:lint": "jshint src/* tests/*.js",
     "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
-    "test:examples-play": "jshint examples/play/src/*.js"
+    "test:examples-play": "jshint examples/play/src/*.js",
+
+    "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js",
+    "test:examples-canvas": "jshint examples/canvas/src/*.js"
   }
 }
