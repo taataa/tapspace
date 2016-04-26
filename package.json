@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A zoomable user interface lib for HTML elements.",
   "keywords": [
     "zoomable",
@@ -35,7 +35,7 @@
     "jshint": "^2.9.2",
     "minifyify": "^7.1.0",
     "mocha": "^2.3.3",
-    "mocha-phantomjs": "^4.0.1",
+    "mocha-phantomjs-core": "^2.0.1",
     "phantomjs-prebuilt": "^2.1.7",
     "semver": "^5.1.0"
   },
@@ -50,7 +50,7 @@
     "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
     "build:test-deps": "npm run build:semver",
     "build:semver": "browserify --standalone semver node_modules/semver/semver.js > tests/assets/semver.js",
-    "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
+    "test:headless": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js tests/testrunner.html spec '{\"viewportSize\": {\"width\":512, \"height\":512}, \"ignoreResourceErrors\": true}'",
     "test:lint": "jshint src/* tests/*.js",
     "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
     "test:examples-play": "jshint examples/play/src/*.js",
