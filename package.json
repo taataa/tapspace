@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A zoomable user interface lib for HTML elements.",
   "keywords": [
     "zoomable",
