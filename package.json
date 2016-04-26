@@ -18,10 +18,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "seqid": "^1.0.1",
+    "component-emitter": "^1.2.1",
     "loadimages": "^0.2.2",
+    "move-js": "^0.5.0",
     "nudged": "^1.0.1",
-    "move-js": "^0.5.0"
+    "seqid": "^1.0.1"
   },
   "devDependencies": {
     "browserify": "^13.0.0",
@@ -51,7 +52,6 @@
     "test:lint": "jshint src/* tests/*.js",
     "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
     "test:examples-play": "jshint examples/play/src/*.js",
-
     "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js",
     "test:examples-canvas": "jshint examples/canvas/src/*.js"
   }
