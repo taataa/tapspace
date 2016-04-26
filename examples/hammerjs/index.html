@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Taaspace Hammer.js Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../taaspace.css">
+</head>
+<body>
+  <div id="spaceview" class="taaspace-container"></div>
+  <script src="hammer.min.js"></script>
+  <script src="../../taaspace.min.js"></script>
+  <script>
+    var container = document.getElementById('spaceview');
+    var space = new taaspace.Space();
+    var view = new taaspace.HTMLSpaceView(space, container);
+
+    // Single image.
+    var taa = new taaspace.Taa('img/chellah_star.jpg');
+    var staa = new taaspace.SpaceTaa(space, taa);
+
+    // Expose HTML element for Hammer.
+    var el = view.getElementBySpaceNode(staa);
+
+    // Center view to the image.
+    view.translateScale(
+      [view.atMidW(), view.atMidE()],
+      [staa.atMidW(), staa.atMidE()]
+    );
+    view.scale(view.atMid(), 2);
+
+    // Hammer.js setup. Allow translation (pan) and scaling (pinch).
+    // Rotation with Hammer.js's rotation parameter turned out to be
+    // difficult and unpredictable.
+    var mc = new Hammer.Manager(el);
+    var pan = new Hammer.Pan({ pointers: 0, threshold: 0 });
+    var pinch = new Hammer.Pinch({ pointers: 0 });
+    pinch.recognizeWith(pan);
+    mc.add(pan);
+
+    // Setup gesture effects.
+    // At gesture start (panstart) we store the pointer location on the image
+    // and its initial position (transformation). Hammer.js tells us how
+    // the gesture has changed from the start, so we apply this to
+    // the initial location by each update.
+    var originalC = null;
+    var originalT = null;
+    mc.on('panstart', function (ev) {
+      originalC = view.at([ev.center.x, ev.center.y]).to(staa);
+      originalT = staa.getLocalTransform();
+    });
+    mc.on('panmove', function (ev) {
+      // Secure if panmove called before panstart.
+      if (originalC === null) { return; }
+      // Current gesture center as SpacePoint.
+      var c = view.at([ev.center.x, ev.center.y]);
+      // Move and scale the initial transformation.
+      var t = originalT.translate(originalC, c);
+      t = t.scale(c, ev.scale);
+      // Apply the result.
+      staa.setLocalTransform(t);
+    });
+    // To prevent browser doing anything funny, prevent defaults.
+    mc.on('hammer.input', function (ev) {
+      ev.preventDefault();
+    })
+  </script>
+</body>
+</html>

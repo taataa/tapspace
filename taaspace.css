@@ -1,0 +1,21 @@
+.taaspace-container {
+  /*
+    Note:
+    "position: relative" is needed to enable "overflow: hidden".
+    Without "overflow: hidden", if transformed elements get outside the initial
+    viewport, Chrome on Android increases the dimensions of the document.
+  */
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.taaspace-taa, .taaspace-html {
+  display: inline-block;
+  position: absolute;
+  /*
+    The default transform-origin is at the middle of the image.
+    That would mess up the top-left based coordinate system.
+  */
+  transform-origin: 0% 0%;
+}

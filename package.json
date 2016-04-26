@@ -1,7 +1,11 @@
 {
   "name": "taaspace",
-  "version": "2.10.1",
-  "description": "A javascript library for zooming user interfaces.",
+  "version": "3.0.0",
+  "description": "A ZUI positioning lib for squareformatted images.",
+  "keywords": [
+    "zoomable",
+    "user interface"
+  ],
   "homepage": "https://github.com/taataa/taaspace",
   "main": "taaspace.js",
   "author": {
@@ -12,20 +16,43 @@
     "type": "git",
     "url": "git://github.com/taataa/taaspace.git"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/taataa/taaspace/blob/master/LICENSE"
+  "license": "MIT",
+  "dependencies": {
+    "component-emitter": "^1.2.1",
+    "loadimages": "^0.2.2",
+    "move-js": "^0.5.0",
+    "nudged": "^1.0.1",
+    "seqid": "^1.0.1"
   },
-  "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-concat": "0.3.x",
-    "grunt-contrib-uglify": "~0.2.7",
-    "grunt-contrib-jshint": "0.7.x",
-    "grunt-replace": "~0.5.1",
-    "grunt-contrib-qunit": "~0.3.0",
-    "connect": "~2.12.0",
-    "grunt-contrib-connect": "~0.6.0",
-    "grunt-available-tasks": "~0.4.2"
+    "browserify": "^13.0.0",
+    "chai": "^3.3.0",
+    "chai-jquery": "^2.0.0",
+    "chai-shallow-deep-almost-equal": "^1.3.0",
+    "jquery": "^2.1.4",
+    "jshint": "^2.8.0",
+    "minifyify": "^7.1.0",
+    "mocha": "^2.3.3",
+    "mocha-phantomjs": "^4.0.1",
+    "phantomjs-prebuilt": "^2.1.7",
+    "semver": "^5.1.0"
+  },
+  "scripts": {
+    "start": "python -m SimpleHTTPServer",
+    "serve": "ifconfig | grep inet && python3 -m http.server 8000",
+    "build": "npm run test:lint && npm run build:min && npm run test:headless",
+    "build:dev": "npm run test:lint && npm run build:debug && npm run test:headless",
+    "build:min": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.min.js.map --output taaspace.min.js.map] > taaspace.min.js",
+    "build:debug": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
+    "test": "npm run test:lint && npm run test:headless",
+    "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
+    "build:test-deps": "npm run build:semver",
+    "build:semver": "browserify --standalone semver node_modules/semver/semver.js > tests/assets/semver.js",
+    "test:headless": "mocha-phantomjs --view 512x512 --ignore-resource-errors tests/testrunner.html",
+    "test:lint": "jshint src/* tests/*.js",
+    "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
+    "test:examples-play": "jshint examples/play/src/*.js",
+    "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js",
+    "test:examples-canvas": "jshint examples/canvas/src/*.js"
   }
 }
