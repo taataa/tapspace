@@ -1,6 +1,8 @@
 # Taaspace API
 
+![taaspace module dependency graph](taaspace_api_3.png?raw=true)
 
+Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: SpaceTaa has a Taa. Arrow head denotes inheritance: SpaceRectangle is a SpaceTransformer, SpaceTransformer is a SpacePlane et cetera. Arrow head with dotted line denotes some weak dependency between SpacePlane and SpacePoint :)
 
 ## taaspace.Emitter(obj)
 
