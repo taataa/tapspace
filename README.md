@@ -1,4 +1,4 @@
-# taaspace.js
+# taaspace
 
 [![Build Status](https://travis-ci.org/taataa/taaspace.svg?branch=development)](https://travis-ci.org/taataa/taaspace)
 [![NPM Version](https://badge.fury.io/js/taaspace.svg)](https://www.npmjs.com/package/taaspace)
@@ -27,23 +27,6 @@ With [npm](https://www.npmjs.com/package/taaspace):
 ## Documentation
 
 - [API](docs/api.md)
-
-
-## Notes for Devs
-
-Run release build & tests:
-
-    $ npm run build
-
-Run debug build & tests:
-
-    $ npm run build:dev
-
-Upgrade dependencies:
-
-    $ npm install -g npm-check-updates
-    $ ncu  # to view available upgrades
-    $ ncu  # to upgrade
 
 
 ## License
