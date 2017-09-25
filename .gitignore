@@ -1,3 +1,9 @@
+# Project related build files
+taaspace.js
+taaspace.min.js
+taaspace.min.js.map
+
+
 # Logs
 logs
 *.log
@@ -29,11 +35,6 @@ node_modules
 
 # OS X Related
 *.DS_Store
-
-# Project related, temporary
-#taaspace.min.js
-#taaspace.min.js.map
-#taaspace.js
 
 # Test output
 tests/screenshots/*

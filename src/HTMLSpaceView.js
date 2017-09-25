@@ -9,6 +9,7 @@ var SpacePlane = require('./SpacePlane');
 var SpaceTransformer = require('./SpaceTransformer');
 var SpaceRectangle = require('./SpaceRectangle');
 var SpaceTaa = require('./SpaceTaa');
+var SpaceImage = require('./SpaceImage');
 var SpaceHTML = require('./SpaceHTML');
 var Space = require('./Space');
 var move = require('move-js');
@@ -94,14 +95,8 @@ var HTMLSpaceView = function (space, htmlContainer) {
     for (i = 0; i < nodes.length; i += 1) {
       node = nodes[i];
       if (_hasNodeId(node.id)) {
-        if (node instanceof SpaceTaa) {
-          el = this2._elements[node.id];
-          transformNode(el, node);
-        } else if (node instanceof SpaceHTML) {
-          el = this2._elements[node.id];
-          transformNode(el, node);
-        }
-        // Else: no transformable representation for Views.
+        el = this2._elements[node.id];
+        transformNode(el, node);
       }
     }
   };
@@ -144,7 +139,21 @@ var HTMLSpaceView = function (space, htmlContainer) {
     if (_hasNodeId(node.id)) {
       // Content is already drawn.
     } else {
-      if (node instanceof SpaceTaa) {
+      if (node instanceof SpaceImage) {
+        el = node.image.cloneNode();
+        el.id = getViewSpecificId(node.id);
+        el.className = 'taaspace-image';
+        // Show to client
+        this2._el.appendChild(el);
+        // Make referencable
+        this2._elements[node.id] = el;
+        this2._nodes[node.id] = node;
+        // Make transformation
+        transformNode(el, node);
+        // Listen to further transformations
+        node.on('transformed', transformedHandler);
+        node.on('resized', resizedHandler);
+      } else if (node instanceof SpaceTaa) {
         el = new Image(256, 256);
         el.src = node.taa.image.src;
         el.id = getViewSpecificId(node.id);

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace Example / Basic Usage</title>
+  <title>Taaspace Example / Simple Image</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -18,10 +18,11 @@
     var container = document.getElementById('space');
     var space = new taaspace.Space();
     var view = new taaspace.HTMLSpaceView(space, container);
-    var taa = new taaspace.Taa('assets/taa00.jpg', function (err, taa) {
-      var spacetaa = new taaspace.SpaceTaa(space, taa);
-      spacetaa.translate(spacetaa.at([0,0]), view.at([256,256]));
-      spacetaa.rotate(spacetaa.atMid(), Math.PI / 4);
+
+    taaspace.preload('assets/taa00.jpg', function (err, img) {
+      var spaceimg = new taaspace.SpaceImage(space, img);
+      spaceimg.translate(spaceimg.at([0, 0]), view.at([256, 256]));
+      spaceimg.rotate(spaceimg.atMid(), Math.PI / 4);
     });
   }());
   </script>
