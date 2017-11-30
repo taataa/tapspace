@@ -29,76 +29,75 @@ Future notes:
 
 */
 
-var TouchHandler = require('./TouchHandler');
-var utils = require('./utils');
+var TouchHandler = require('./TouchHandler')
+var utils = require('./utils')
 
-var container = document.getElementById('space');
-var space = new taaspace.Space();
+var container = document.getElementById('space')
+var space = new taaspace.Space()
 var view = new taaspace.HTMLSpaceView(space, container);
 
-(function makeViewTransformable() {
-  var hand = new TouchHandler(container);
-  var tr = null;
+(function makeViewTransformable () {
+  var hand = new TouchHandler(container)
+  var tr = null
   hand.on('start', function () {
     // Store the initial transformation from view to space.
-    tr = view.getLocalTransform();
-  });
+    tr = view.getLocalTransform()
+  })
   hand.on('move', function (transformOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
-    if (tr === null) { return; }
+    if (tr === null) { return }
     // Turn to SpaceTransform on original view.
-    var t = new taaspace.SpaceTransform(tr, transformOnView);
-    var ft = tr.transformBy(t.inverse());
+    var t = new taaspace.SpaceTransform(tr, transformOnView)
+    var ft = tr.transformBy(t.inverse())
     // Apply
-    view.setLocalTransform(ft);
-  });
+    view.setLocalTransform(ft)
+  })
   hand.on('end', function () {
     // We do not need the initial transformation anymore.
-    tr = null;
-  });
-}());
+    tr = null
+  })
+}())
 
 var makeSpaceTaaTransformable = function (spacetaa) {
-  var el = view.getElementBySpaceNode(spacetaa);
-  var hand = new TouchHandler(el);
-  var originalParent = null;
-  var originalLocal = null;
+  var el = view.getElementBySpaceNode(spacetaa)
+  var hand = new TouchHandler(el)
+  var originalParent = null
+  var originalLocal = null
   hand.on('start', function () {
     // Store original parent so we can return spacetaa onto it after gesture.
-    originalParent = spacetaa.getParent();
+    originalParent = spacetaa.getParent()
     // Change parent to view => not dependent on how view is transformed.
     // Keep location the same.
-    var t = spacetaa.getGlobalTransform();
-    spacetaa.setParent(view);
-    spacetaa.setGlobalTransform(t);
+    var t = spacetaa.getGlobalTransform()
+    spacetaa.setParent(view)
+    spacetaa.setGlobalTransform(t)
     // Store new local transformation. Gesture modifies it instead
     // of global transform so therefore view location does not affect.
-    originalLocal = spacetaa.getLocalTransform();
+    originalLocal = spacetaa.getLocalTransform()
     // Render in touch order
-    el.style.zIndex = utils.getIncrementalZIndex();
-  });
+    el.style.zIndex = utils.getIncrementalZIndex()
+  })
   hand.on('move', function (transfOnView) {
     // A safety feature to protect from invalid TouchAPI implementations.
-    if (originalLocal === null) { return; }
+    if (originalLocal === null) { return }
     // Turn to SpaceTransform
-    var spaceGesture = new taaspace.SpaceTransform(view, transfOnView);
+    var spaceGesture = new taaspace.SpaceTransform(view, transfOnView)
     // View might be transformed, therefore we graft a new
     // local transformation. We transform the result.
-    var t = originalLocal.switchTo(view).transformBy(spaceGesture);
+    var t = originalLocal.switchTo(view).transformBy(spaceGesture)
     // Apply to spacetaa
-    spacetaa.setLocalTransform(t);
-  });
+    spacetaa.setLocalTransform(t)
+  })
   hand.on('end', function () {
     // Drop back to original parent.
-    var t = spacetaa.getGlobalTransform();
-    spacetaa.setParent(originalParent);
-    spacetaa.setGlobalTransform(t);
+    var t = spacetaa.getGlobalTransform()
+    spacetaa.setParent(originalParent)
+    spacetaa.setGlobalTransform(t)
     // We do not need the initial transformation and parent anymore.
-    originalLocal = null;
-    originalParent = null;
-  });
-};
-
+    originalLocal = null
+    originalParent = null
+  })
+}
 
 var imgs = [
   'img/chellah_star.jpg',
@@ -108,27 +107,27 @@ var imgs = [
   'img/rabat_sand.jpg',
   'img/oudaya_door.jpg',
   'img/chellah_nw.jpg'
-];
+]
 
-var c = space.at([0,0]);
-var n = imgs.length;
+var c = space.at([0, 0])
+var n = imgs.length
 var putOnCircle = function (spacetaa, i) {
-  var rads = i * 2 * Math.PI / n - (Math.PI / n);
-  var midn = spacetaa.atMidN();
-  var mids = spacetaa.atMidS();
-  var offn = c.polarOffset(1.382, rads);
-  var offs = c.polarOffset(0.382, rads);
-  spacetaa.translateScaleRotate([midn, mids], [offn, offs]);
-};
+  var rads = i * 2 * Math.PI / n - (Math.PI / n)
+  var midn = spacetaa.atMidN()
+  var mids = spacetaa.atMidS()
+  var offn = c.polarOffset(1.382, rads)
+  var offs = c.polarOffset(0.382, rads)
+  spacetaa.translateScaleRotate([midn, mids], [offn, offs])
+}
 
 imgs.forEach(function (src, i) {
-  taa = new taaspace.Taa(src);
-  staa = new taaspace.SpaceTaa(space, taa);
-  putOnCircle(staa, i);
-  makeSpaceTaaTransformable(staa);
-});
+  taa = new taaspace.Taa(src)
+  staa = new taaspace.SpaceTaa(space, taa)
+  putOnCircle(staa, i)
+  makeSpaceTaaTransformable(staa)
+})
 
 view.translateScale(
   [view.atNW(), view.atSE()],
-  [space.at([-3,-3]), space.at([3,3])]
-);
+  [space.at([-3, -3]), space.at([3, 3])]
+)
