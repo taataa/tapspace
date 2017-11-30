@@ -1,7 +1,5 @@
-.eslintignore
-.eslintrc.js
 .travis.yml
 
 /doc
 /examples
-/tests
+/test

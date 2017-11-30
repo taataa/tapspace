@@ -1,8 +1,6 @@
-# Project related build files
-taaspace.js
-taaspace.min.js
-taaspace.min.js.map
-
+# Bundle builds
+/dist/*
+!/dist/.gitkeep
 
 # Logs
 logs
