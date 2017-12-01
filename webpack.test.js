@@ -8,7 +8,7 @@ module.exports = {
   context: path.join(__dirname, 'test'),
 
   node: {
-    fs: 'empty',
+    fs: 'empty',  // otherwise require('tape') throws
   },
 
   output: {
@@ -20,6 +20,7 @@ module.exports = {
     new webpackTapeRun({
       tapeRun: {
         browser: 'electron',
+        node: true,  // allows fs
         keepOpen: false,
       },
       reporter: 'tap-spec',
