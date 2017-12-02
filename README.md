@@ -28,6 +28,13 @@ With [npm](https://www.npmjs.com/package/taaspace):
 
 - [API](docs/api.md)
 
+## Developers
+
+Tests are run in a browser.
+
+- Start webpack watch process `$ npm run test:watch`
+- Open 'test/taperunner.html' with a browser.
+- Refresh browser after edit.
 
 ## License
 
