@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   entry: {
-    'smoke': './smoke.test.js',
+    'index': './index.test.js',
   },
   context: __dirname,
 
@@ -48,5 +48,7 @@ module.exports = {
     // }),
   ],
 
-  stats: 'errors-only',
+  devtool: 'eval-source-map',
+
+  stats: 'minimal',
 }
