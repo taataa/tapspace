@@ -265,7 +265,7 @@ Future notes:
 
     var container = document.getElementById('space')
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, container);
+    var view = new taaspace.SpaceViewHTML(space, container);
 
     (function makeViewTransformable () {
       var hand = new TouchHandler(container)

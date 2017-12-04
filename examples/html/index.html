@@ -17,7 +17,7 @@
   (function () {
     var container = document.getElementById('space');
     var space = new taaspace.Space();
-    var view = new taaspace.HTMLSpaceView(space, container);
+    var view = new taaspace.SpaceViewHTML(space, container);
 
     var spacehtml = new taaspace.SpaceHTML(space, '<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>taaspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>');
     spacehtml.resize([300, 300]);

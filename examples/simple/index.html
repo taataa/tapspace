@@ -17,7 +17,7 @@
   (function () {
     var container = document.getElementById('space');
     var space = new taaspace.Space();
-    var view = new taaspace.HTMLSpaceView(space, container);
+    var view = new taaspace.SpaceViewHTML(space, container);
 
     taaspace.preload('assets/taa00.jpg', function (err, img) {
       var spaceimg = new taaspace.SpaceImage(space, img);

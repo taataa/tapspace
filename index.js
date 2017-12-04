@@ -7,7 +7,7 @@ exports.SpaceHTML = require('./lib/SpaceHTML')
 exports.SpaceImage = require('./lib/SpaceImage')
 exports.SpacePixel = require('./lib/SpacePixel')
 exports.Space = require('./lib/Space')
-exports.HTMLSpaceView = require('./lib/HTMLSpaceView')
+exports.SpaceViewHTML = require('./lib/SpaceViewHTML')
 
 exports.preload = require('loadimages')
 exports.version = require('./lib/version')

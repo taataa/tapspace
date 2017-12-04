@@ -4,7 +4,7 @@ var harness = require('./lib/harness')
 
 var UNITS = {
   meta: require('./meta.test'),
-  HTMLSpaceView: require('./HTMLSpaceView.test'),
+  SpaceViewHTML: require('./SpaceViewHTML.test'),
   Space: require('./Space.test'),
   SpaceHTML: require('./SpaceHTML.test'),
   SpaceNode: require('./SpaceNode.test'),

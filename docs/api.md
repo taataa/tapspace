@@ -16,7 +16,7 @@ Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www
 
 
 
-## taaspace.HTMLSpaceView(space, htmlContainer)
+## taaspace.SpaceViewHTML(space, htmlContainer)
 
 Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, and SpaceRectangle.
 

@@ -22,7 +22,7 @@ module.exports = function (test) {
 
   test('should be able to return a SpacePoint', function (t, ctx) {
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var a = new taaspace.SpacePixel(space)
     var p = a.atNorm([1, 1])
     var vp = p.to(view)

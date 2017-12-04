@@ -7,7 +7,7 @@ module.exports = function (test) {
     // Without need to wait for the image to load
 
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
 
     var img = new Image()
     img.src = 'lib/black256.png'
@@ -26,7 +26,7 @@ module.exports = function (test) {
   test('should position the image correctly', function (t, ctx) {
 
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
 
     t.deepEqual(si.at([0, 0]).to(view).xy, [0, 0])
@@ -44,7 +44,7 @@ module.exports = function (test) {
   test('should be able to translate', function (t, ctx) {
 
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
 
     si.translate(si.atNorm([0, 0]), si.atNorm([1, 1]))
@@ -61,7 +61,7 @@ module.exports = function (test) {
   test('present reparented nodes', function (t, ctx) {
 
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
 
     // Move a bit and reparent to view
@@ -84,7 +84,7 @@ module.exports = function (test) {
   test('remove node', function (t, ctx) {
     // Create SpaceNode
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var node = new taaspace.SpaceHTML(space, 'foo')
 
     node.resize([100, 100])
@@ -102,7 +102,7 @@ module.exports = function (test) {
     // Create two spaces but only other is viewed.
     var space = new taaspace.Space()
     var space2 = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
 
     var node = new taaspace.SpaceHTML(space, 'foo')
     node.resize([100, 100])
@@ -119,7 +119,7 @@ module.exports = function (test) {
 
   test('do not become child of non-Space', function (t, ctx) {
     var space = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var node = new taaspace.SpaceHTML(space, 'foo')
 
     t.throws(function () {
@@ -136,7 +136,7 @@ module.exports = function (test) {
 
     var space = new taaspace.Space()
     var space2 = new taaspace.Space()
-    var view = new taaspace.HTMLSpaceView(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space, ctx.container)
 
     var nodeB = new taaspace.SpaceHTML(space, 'foo')
     nodeB.resize([100, 100])
