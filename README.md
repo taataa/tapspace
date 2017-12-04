@@ -1,6 +1,5 @@
 # taaspace
 
-[![Build Status](https://travis-ci.org/taataa/taaspace.svg?branch=development)](https://travis-ci.org/taataa/taaspace)
 [![NPM Version](https://badge.fury.io/js/taaspace.svg)](https://www.npmjs.com/package/taaspace)
 
 We dream touch user interfaces should be beautiful, easy to use, and smooth as pudding. A physical paper like movable zoomable interface is how it can be done. Taaspace is a JavaScript library for that kind of interfaces. It is designed for modern UI concepts such as zoomable UIs and graph-based UIs. Taaspace provides an infinite space where your fingers can scale, rotate, and translate HTML elements. To support all types of HTML elements such as iframes, Canvas, SVG, and WebGL, we position and render elements using pure CSS3 and DOM, driven by optimized JavaScript.
