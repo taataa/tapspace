@@ -2,7 +2,7 @@
 /dist/*
 !/dist/.gitkeep
 /test/dist/*
-!/dist/.gitkeep
+!/test/dist/.gitkeep
 
 # Logs
 logs
