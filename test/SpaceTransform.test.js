@@ -4,22 +4,18 @@ module.exports = function (test) {
 
   test('#switchTo: preserve equivalence', function (t) {
     var space = new taaspace.Space()
+    var px = new taaspace.SpacePixel(space)
 
     // Identity transformation
     var tr = new taaspace.SpaceTransform(space)
 
-    var px = new taaspace.SpacePixel(space)
     // Move away from trivial 0,0
     px.translate(space.at([-10, -10]), space.at([10, 10]))
 
-    // Represent identity transform on spacepixel
+    // Represent the identity transform on spacepixel
     var pxtr = tr.switchTo(px)
 
-    t.ok(pxtr.equals(tr), 'switchTo does not affect')
-    t.notOk(pxtr.T.equals(tr.T))
-
-    var n = new taaspace.SpaceTransform(px, tr.T)
-    t.ok(n.equals(pxtr))
+    t.ok(pxtr.equals(tr), 'switchTo preserves equivalence')
     t.end()
   })
 
