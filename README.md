@@ -28,13 +28,14 @@ With [npm](https://www.npmjs.com/package/taaspace):
 
 - [API](docs/api.md)
 
+
 ## Developers
 
-Tests are run in a browser.
+Tests are run in a browser and built on [tape](https://github.com/substack/tape).
 
-- Start webpack watch process `$ npm run test:watch`
-- Open 'test/taperunner.html' with a browser.
-- Refresh browser after edit.
+- Build the test suite by `$ npm run test:watch`. Uses `webpack --watch` under the hood so rebuilds are automatic.
+- Open [test/index.html](test/index.html) with a browser and open console. Uses `webpack-livereload-plugin` so expect automatic page refresh at each rebuild.
+
 
 ## License
 

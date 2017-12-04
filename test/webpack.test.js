@@ -1,4 +1,5 @@
-var webpackTapeRun = require('webpack-tape-run')
+//var webpackTapeRun = require('webpack-tape-run')
+var liveReloadPlugin = require('webpack-livereload-plugin')
 var path = require('path')
 
 module.exports = {
@@ -35,6 +36,7 @@ module.exports = {
   },
 
   plugins: [
+    new liveReloadPlugin()
     // new webpackTapeRun({
     //   tapeRun: {
     //     browser: 'electron',
