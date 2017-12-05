@@ -1,4 +1,3 @@
-//var webpackTapeRun = require('webpack-tape-run')
 var liveReloadPlugin = require('webpack-livereload-plugin')
 var path = require('path')
 
@@ -37,17 +36,6 @@ module.exports = {
 
   plugins: [
     new liveReloadPlugin()
-    // new webpackTapeRun({
-    //   tapeRun: {
-    //     browser: 'electron',
-    //     port: 8000,
-    //     //node: true,  // allows fs
-    //     keepOpen: false,
-    //     //static: path.join(__dirname, 'assets'),
-    //     //basedir: path.join(__dirname, 'dist'),
-    //   },
-    //   reporter: 'tap-spec',
-    // }),
   ],
 
   devtool: 'eval-source-map',

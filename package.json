@@ -9,7 +9,7 @@
     "layout"
   ],
   "homepage": "https://github.com/taataa/taaspace",
-  "main": "src/index.js",
+  "main": "index.js",
   "author": {
     "name": "Akseli Palen",
     "email": "akseli.palen@gmail.com"
@@ -28,26 +28,16 @@
   },
   "devDependencies": {
     "async": "^2.6.0",
-    "browserify": "^14.4.0",
-    "chai": "^4.1.2",
-    "chai-jquery": "^2.0.0",
-    "chai-shallow-deep-almost-equal": "^1.3.0",
     "css-loader": "^0.28.7",
-    "electron": "^1.7.9",
     "file-loader": "^1.1.5",
     "genversion": "^1.1.3",
     "jquery": "^3.2.1",
-    "jshint": "^2.9.5",
-    "minifyify": "^7.3.5",
-    "mocha": "^3.5.3",
-    "mocha-phantomjs-core": "^2.1.2",
-    "phantomjs-prebuilt": "^2.1.15",
     "semver": "^5.4.1",
     "standard": "*",
     "style-loader": "^0.19.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0",
-    "tape-run": "^3.0.0",
+    "tape-run": "^3.0.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.9.0",
     "webpack-livereload-plugin": "^1.0.0",
@@ -56,20 +46,13 @@
   "scripts": {
     "start": "python3 -m http.server 8000",
     "serve": "ifconfig | grep inet && python3 -m http.server 8000",
-    "build": "npm run test && npm run build:min && npm run test:headless",
-    "build:dev": "npm run test:lint && npm run build:debug && npm run test:headless",
-    "build:min": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.min.js.map --output taaspace.min.js.map] > taaspace.min.js",
-    "build:debug": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
-    "test:watch": "webpack --watch --config test/webpack.test.js",
-    "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
-    "build:test-deps": "npm run build:semver",
-    "build:semver": "browserify --standalone semver node_modules/semver/semver.js > test/assets/semver.js",
-    "test:headless": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/testrunner.html spec '{\"viewportSize\": {\"width\":512, \"height\":512}, \"ignoreResourceErrors\": true}'",
+    "build": "npm run lint && npm run test:headless && npm run build:min",
+    "build:min": "webpack",
+    "test:headless": "webpack --config test/webpack.taperun.config.js",
+    "test:watch": "webpack --watch --config test/webpack.browser.config.js",
     "lint": "standard",
     "lintfix": "standard --fix",
     "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
-    "test:examples-play": "jshint examples/play/src/*.js",
-    "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js",
-    "test:examples-canvas": "jshint examples/canvas/src/*.js"
+    "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js"
   }
 }
