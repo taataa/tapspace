@@ -1,7 +1,6 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   test('should have an id', function (t) {
     var space = new taaspace.Space()
     var a = new taaspace.SpacePixel(space)
@@ -22,7 +21,9 @@ module.exports = function (test) {
 
   test('should be able to return a SpacePoint', function (t, ctx) {
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
+
     var a = new taaspace.SpacePixel(space)
     var p = a.atNorm([1, 1])
     var vp = p.to(view)
@@ -51,5 +52,4 @@ module.exports = function (test) {
     t.deepEqual(px.atSE().to(space).xy, [1, 1], 'corner back')
     t.end()
   })
-
 }

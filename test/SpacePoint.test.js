@@ -4,6 +4,19 @@ var taaspace = require('../index')
 var delta = 0.0001
 
 module.exports = function (test) {
+  test('#toPointOn', function (t) {
+    var space = new taaspace.Space()
+    var px = new taaspace.SpacePixel(space)
+
+    t.deepEqual(px.atSE().toPointOn(space), [1, 1], 'trivial')
+    t.deepEqual(px.atSE().toPointOn(px), [1, 1], 'trivial')
+
+    px.translate(space.at([0, 0]), space.at([10, 10]))
+    t.deepEqual(px.atSE().toPointOn(space), [11, 11], 'corner moved along')
+    t.deepEqual(px.atSE().toPointOn(px), [1, 1], 'corner remains still')
+
+    t.end()
+  })
 
   test('#polarOffset: should allow 0 and 2PI', function (t) {
     var space = new taaspace.Space()
@@ -32,5 +45,4 @@ module.exports = function (test) {
     t.ok(a.xy[1] - b.xy[1] < delta, 'y match')
     t.end()
   })
-
 }

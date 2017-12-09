@@ -1,19 +1,19 @@
-var liveReloadPlugin = require('webpack-livereload-plugin')
+var LiveReloadPlugin = require('webpack-livereload-plugin')
 var path = require('path')
 
 module.exports = {
   entry: {
-    'index': './index.test.js',
+    'index': './index.test.js'
   },
   context: __dirname,
 
   node: {
-    fs: 'empty',  // otherwise require('tape') throws
+    fs: 'empty'  // otherwise require('tape') throws
   },
 
   output: {
     filename: '[name].test.js',
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist')
   },
 
   module: {
@@ -22,23 +22,23 @@ module.exports = {
       // we import images as data URLs.
       {
         test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader',
+        loader: 'url-loader'
       },
       {
         test: /\.css$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" }
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
         ]
-      },
-    ],
+      }
+    ]
   },
 
   plugins: [
-    new liveReloadPlugin()
+    new LiveReloadPlugin()
   ],
 
   devtool: 'eval-source-map',
 
-  stats: 'minimal',
+  stats: 'minimal'
 }

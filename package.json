@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "component-emitter": "^1.2.1",
+    "extend": "^3.0.1",
     "loadimages": "^1.0.0",
     "move-js": "^0.5.0",
     "nudged": "^1.2.0",

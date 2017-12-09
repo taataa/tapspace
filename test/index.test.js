@@ -17,7 +17,7 @@ var UNITS = {
   version: require('./version.test')
 }
 
-for (unit in UNITS) {
+for (var unit in UNITS) {
   if (UNITS.hasOwnProperty(unit)) {
     UNITS[unit](harness(unit))
   }

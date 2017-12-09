@@ -2,11 +2,10 @@ var taaspace = require('../index')
 var $ = require('jquery')
 
 module.exports = function (test) {
-
   test('should allow creation', function (t, ctx) {
-
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
 
     var a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>')
     var el = $('.taaspace-html')
@@ -21,13 +20,14 @@ module.exports = function (test) {
   test('should be resizable', function (t, ctx) {
     var a, a0, a1
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
 
     a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>')
     a.resize([100, 100])
     a0 = document.elementFromPoint(150, 150)
 
-    t.equal(a0, view.getRootElement())
+    t.equal(a0, view.getHtmlContainer())
 
     a.resize([200, 200])
     a1 = document.elementFromPoint(150, 150)

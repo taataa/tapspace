@@ -1,7 +1,6 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   test('cannot have parent', function (t) {
     var sp1 = new taaspace.Space()
     var sp2 = new taaspace.Space()

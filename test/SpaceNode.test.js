@@ -1,8 +1,6 @@
 var taaspace = require('../index')
-var $ = require('jquery')
 
 module.exports = function (test) {
-
   test('#getDescendants: should order correctly', function (t) {
     var space = new taaspace.Space()
     var a = new taaspace.SpacePixel(space)
@@ -31,13 +29,13 @@ module.exports = function (test) {
 
   test('#setParent: no cyclic child-parent relationships', function (t) {
     var space = new taaspace.Space()
-    var x = new taaspace.SpacePixel(space);
+    var x = new taaspace.SpacePixel(space)
 
     t.throws(function () {
       x.setParent(x)
     }, /cyclic/i, 'no child of self')
 
-    var y = new taaspace.SpacePixel(x);
+    var y = new taaspace.SpacePixel(x)
     t.throws(function () {
       x.setParent(y)
     }, /cyclic/i, 'child cannot be its own grandparent')

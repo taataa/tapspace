@@ -14,20 +14,20 @@ Usage:
 var loadimages = require('loadimages')
 var tape = require('tape')
 var asyn = require('async')
-var $ = require('jquery')
+var $ = require('jquery')
 
 // Problems with tape-run static file serving
 // => import images as data urls by webpack url-loader
+// Note: static file serving fixed in tape-run 3.0.1
 var black256png = require('./black256.png')
-var style = require('./style.css')
+require('./style.css')
 
-DEFAULT_WINDOW_WIDTH = window.innerWidth
-DEFAULT_WINDOW_HEIGHT = window.outerHeight
+// var DEFAULT_WINDOW_WIDTH = window.innerWidth
+// var DEFAULT_WINDOW_HEIGHT = window.outerHeight
 
 var test = function (msg, testCase) {
   // add setUp routine to test call
   tape(msg, function (t) {
-
     // Context is passed to each test case:
     //   test(function (t, ctx) { ... })
     var caseContext = {
@@ -79,11 +79,11 @@ var test = function (msg, testCase) {
           $(document.body).prepend('<div id="taaspace-sandbox" "taaspace-container"></div>')
           container = document.getElementById('taaspace-sandbox')
         }
-        caseContext.container = container;
+        caseContext.container = container
         done()
-      },
+      }
 
-    ], function afterSetUp(err) {
+    ], function afterSetUp (err) {
       if (err) {
         return t.end(err)
       }

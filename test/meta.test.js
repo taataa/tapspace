@@ -1,7 +1,6 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   // test('window size/resize test', function (t) {
   //   // To resize window there is two options:
   //   //   1) electron.remote
@@ -69,5 +68,4 @@ module.exports = function (test) {
          typeof taaspace.Space === 'function', 'has .Space class')
     t.end()
   })
-
 }

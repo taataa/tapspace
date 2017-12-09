@@ -7,22 +7,39 @@
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="../../taaspace.css">
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      background: #222;
+      font-family: sans-serif;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <div id="space"></div>
-  <script src="../../taaspace.min.js"></script>
+  <script src="../../dist/taaspace.min.js"></script>
   <script>
   (function () {
-    var container = document.getElementById('space');
-    var space = new taaspace.Space();
-    var view = new taaspace.SpaceViewHTML(space, container);
+    var container = document.getElementById('space')
+    var space = new taaspace.Space()
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(container)
 
-    taaspace.preload('assets/taa00.jpg', function (err, img) {
-      var spaceimg = new taaspace.SpaceImage(space, img);
-      spaceimg.translate(spaceimg.at([0, 0]), view.at([256, 256]));
-      spaceimg.rotate(spaceimg.atMid(), Math.PI / 4);
+    taaspace.preload('assets/leaf.jpg', function (err, img) {
+      if (err) {
+        throw err
+      }
+      var spaceimg = new taaspace.SpaceImage(space, img)
+      spaceimg.translate(spaceimg.at([0, 0]), view.at([256, 256]))
+      spaceimg.rotate(spaceimg.atMid(), Math.PI / 4)
     });
   }());
   </script>

@@ -8,12 +8,12 @@ module.exports = {
     path: path.join(__dirname, '/dist'),
     sourceMapFilename: '[file].map',
     library: 'taaspace',  // module name in global scope
-    libraryTarget: 'umd',
+    libraryTarget: 'umd'
   },
 
   devtool: 'source-map',
 
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
-  ],
+    new webpack.optimize.UglifyJsPlugin({ sourceMap: true })
+  ]
 }

@@ -1,13 +1,14 @@
-var $ = require('jquery')
+/* global Image */
+var $ = require('jquery')
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   test('create img element immediately', function (t, ctx) {
     // Without need to wait for the image to load
 
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
 
     var img = new Image()
     img.src = 'lib/black256.png'
@@ -22,12 +23,11 @@ module.exports = function (test) {
     t.end()
   })
 
-
   test('should position the image correctly', function (t, ctx) {
-
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
+    view.mount(ctx.container)
 
     t.deepEqual(si.at([0, 0]).to(view).xy, [0, 0])
     t.deepEqual(si.atNorm([0.5, 0.5]).to(view).xy, [128, 128])
@@ -42,9 +42,9 @@ module.exports = function (test) {
   })
 
   test('should be able to translate', function (t, ctx) {
-
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
 
     si.translate(si.atNorm([0, 0]), si.atNorm([1, 1]))
@@ -59,10 +59,10 @@ module.exports = function (test) {
   })
 
   test('present reparented nodes', function (t, ctx) {
-
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
+    view.mount(ctx.container)
 
     // Move a bit and reparent to view
     si.translate(si.atNW(), si.atSE())
@@ -84,9 +84,10 @@ module.exports = function (test) {
   test('remove node', function (t, ctx) {
     // Create SpaceNode
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
     var node = new taaspace.SpaceHTML(space, 'foo')
+    var view = new taaspace.SpaceViewHTML(space)
 
+    view.mount(ctx.container)
     node.resize([100, 100])
 
     // Test if representation is removed.
@@ -102,7 +103,8 @@ module.exports = function (test) {
     // Create two spaces but only other is viewed.
     var space = new taaspace.Space()
     var space2 = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
 
     var node = new taaspace.SpaceHTML(space, 'foo')
     node.resize([100, 100])
@@ -119,8 +121,9 @@ module.exports = function (test) {
 
   test('do not become child of non-Space', function (t, ctx) {
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
     var node = new taaspace.SpaceHTML(space, 'foo')
+    view.mount(ctx.container)
 
     t.throws(function () {
       view.setParent(node)
@@ -136,7 +139,8 @@ module.exports = function (test) {
 
     var space = new taaspace.Space()
     var space2 = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space, ctx.container)
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
 
     var nodeB = new taaspace.SpaceHTML(space, 'foo')
     nodeB.resize([100, 100])
@@ -149,21 +153,25 @@ module.exports = function (test) {
 
     // Test the setup is rendered correctly
     var el = document.elementFromPoint(50, 50)
-    t.equal(view.getSpaceNodeByElementId(el.id), nodeB)
+    t.equal(view.getSpaceNodeByElementId(el.id), nodeB, 'B at left-top')
 
     // Reparent the view
+    console.log('before setParent')
     view.setParent(space2)
+    console.log('after setParent')
+
     // Test that view content has changed.
     t.equal(
       document.elementFromPoint(50, 50),
-      view.getElementBySpaceNode(nodeC)
+      view.getElementBySpaceNode(nodeC),
+      'C at left-top corner'
     )
     t.equal(
       document.elementFromPoint(150, 150),
-      view.getElementBySpaceNode(nodeD)
+      view.getElementBySpaceNode(nodeD),
+      'D at the middle'
     )
     t.equal(view.getElementBySpaceNode(nodeB), null, 'no element for B')
     t.end()
   })
-
 }

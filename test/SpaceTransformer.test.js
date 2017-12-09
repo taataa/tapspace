@@ -1,7 +1,6 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   test('#transformBy: should take a identity SpaceTransform', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel(space)
@@ -36,16 +35,26 @@ module.exports = function (test) {
     var px2 = new taaspace.SpacePixel(px1)
     var px3 = new taaspace.SpacePixel(px2)
 
+    //
     px1.translate(space.at([0, 0]), space.at([2, 2]))
     px2.scale(px2.atMid(), 2)
-    // Take test point for comparison
-    var ne = px3.atNE().to(space)
+
+    // Ensure location of px3
+    t.ok(px2.atMid().equals(px3.atMid()), 'px2 and px3 fully overlap')
+    t.deepEqual(px3.atMid().toPointOn(space), [2.5, 2.5], 'px3 at correct pos')
+
+    // Take test points for comparison
+    var tp1 = px3.atNE()
+    var tp2 = px3.atSW()
+
     // Reparent px3 so that it should keep still.
     var gt = px3.getGlobalTransform()
     px3.setParent(space)
     px3.setGlobalTransform(gt)
+
     // Test if the point remains at same place.
-    t.deepEqual(px3.atNE().to(space).xy, ne.xy)
+    t.ok(px3.atNE().equals(tp1), 'north-east remains still')
+    t.ok(px3.atSW().equals(tp2), 'south-west remains still')
     t.end()
   })
 

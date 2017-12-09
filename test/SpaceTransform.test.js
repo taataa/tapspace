@@ -1,7 +1,6 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-
   test('#switchTo: preserve equivalence', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel(space)
@@ -71,5 +70,4 @@ module.exports = function (test) {
     t.deepEqual(px.atSE().to(space).xy, [4, 4])
     t.end()
   })
-
 }
