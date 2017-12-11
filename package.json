@@ -49,6 +49,7 @@
     "serve": "ifconfig | grep inet && python3 -m http.server 8000",
     "build": "npm run lint && npm run gv && npm run test:headless && npm run build:min",
     "build:min": "webpack",
+    "build:watch": "webpack --watch",
     "test:headless": "webpack --config test/webpack.taperun.config.js",
     "test:watch": "webpack --watch --config test/webpack.browser.config.js",
     "lint": "standard",
