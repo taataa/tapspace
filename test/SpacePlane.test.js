@@ -18,7 +18,6 @@ module.exports = function (test) {
 
     // Global transform of x should equal the local transform of p
     // because x has not moved yet.
-    //t.deepEqual(xlt1._T, p._T, 'local transforms match')
     var plt1 = p.getLocalTransform()
     t.ok(plt1.equals(xgt1), 'transforms match')
     t.end()
