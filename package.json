@@ -57,7 +57,7 @@
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lintfix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "gv": "genversion lib/version.js",
-    "watch": "npm-watch | grep --invert-match --line-buffered nodemon"
+    "watch": "npm-watch | grep --invert-match nodemon"
   },
   "watch": {
     "lint": {
