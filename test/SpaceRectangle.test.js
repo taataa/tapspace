@@ -15,7 +15,7 @@ module.exports = function (test) {
     var space = new taaspace.Space()
     var a = new taaspace.SpacePixel(space)
     a.remove()
-    t.equal(space._children.hasOwnProperty(a.id), false)
+    t.equal(space._children.hasOwnProperty(a.id), false, 'removed ok')
     t.end()
   })
 
@@ -25,31 +25,41 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var a = new taaspace.SpacePixel(space)
-    var p = a.atNorm([1, 1])
+    var p = a.atNorm(1, 1)
     var vp = p.to(view)
-    t.deepEqual(vp.xy, [1, 1])
+    t.equal(vp.x, 1)
+    t.equal(vp.y, 1)
     t.end()
   })
 
   test('should be able to give and take Transform objects', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel(space)
+
     // Move to to unit square.
     px.translateScale(
       [px.atNW(), px.atSE()],
-      [space.at([0, 0]), space.at([1, 1])]
+      [space.at(-10, -10), space.at(10, 10)]
     )
+    // Store position
     var lt = px.getLocalTransform()
 
     // Rotate 1/2π radians
-    var rt = lt.rotate(space.at([0, 0]), 1)
+    var rt = lt.rotate(space.at(0, 0), 1)
     px.setLocalTransform(rt)
 
-    t.notDeepEqual(px.atSE().to(space).xy, [1, 1], 'corner moved')
+    // Ensure movement
+    var se = px.atSE().to(space)
+    t.notEqual(se.x, 10, 'corner moved')
+    t.notEqual(se.y, 10, 'corner moved')
 
     // Revert back
     px.setLocalTransform(lt)
-    t.deepEqual(px.atSE().to(space).xy, [1, 1], 'corner back')
+
+    // Ensure
+    var seb = px.atSE().to(space)
+    t.equal(seb.x, 10, 'corner back')
+    t.equal(seb.y, 10, 'corner back')
     t.end()
   })
 }

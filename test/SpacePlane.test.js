@@ -1,7 +1,7 @@
 var taaspace = require('../index')
 
 module.exports = function (test) {
-  test('#getLocalTransform: in plane\'s coord system', function (t) {
+  test('#getLocalTransform: in parent\'s coord system', function (t) {
     var space = new taaspace.Space()
     var p = new taaspace.SpacePixel(space)
     var x = new taaspace.SpacePixel(p)  // a child of p
@@ -10,11 +10,15 @@ module.exports = function (test) {
     // The global transform of x should change when p moves
     var xlt0 = x.getLocalTransform()
     var xgt0 = x.getGlobalTransform()
-    p.translate(space.at([0, 0]), space.at([1, 1]))
+
+    // Move p
+    p.translate(space.at(0, 0), space.at(1, 1))
+
     var xlt1 = x.getLocalTransform()
     var xgt1 = x.getGlobalTransform()
-    t.ok(xlt0._T.equals(xlt1._T), 'local tr. should not change')
-    t.notOk(xgt0.equals(xgt1), 'global tr. should change')
+
+    t.ok(xlt0.equals(xlt1), 'local tr. of x should not change')
+    t.notOk(xgt0.equals(xgt1), 'global tr. of x should change')
 
     // Global transform of x should equal the local transform of p
     // because x has not moved yet.
@@ -26,7 +30,7 @@ module.exports = function (test) {
   test('#getGlobalTransform: return identity tr. for space', function (t) {
     var space = new taaspace.Space()
     var gt = space.getGlobalTransform()
-    var id = new taaspace.SpaceTransform(space)
+    var id = taaspace.InvariantTransform.IDENTITY
     t.ok(gt.equals(id), 'identity transform')
     t.end()
   })
@@ -35,11 +39,11 @@ module.exports = function (test) {
     var space = new taaspace.Space()
     // SpacePixel is a SpacePlane
     var px = new taaspace.SpacePixel(space)
-    px.translate(space.at([0, 0]), space.at([1, 1]))
+    px.translate(space.at(0, 0), space.at(1, 1))
     var gt = px.getGlobalTransform()
     var lt = px.getLocalTransform()
     // Represents same transformation
-    t.ok(gt.equals(lt))
+    t.ok(gt.equals(lt), 'local match global')
     t.end()
   })
 }
