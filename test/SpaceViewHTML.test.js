@@ -29,14 +29,16 @@ module.exports = function (test) {
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
     view.mount(ctx.container)
 
-    t.deepEqual(si.at([0, 0]).to(view).xy, [0, 0])
-    t.deepEqual(si.atNorm([0.5, 0.5]).to(view).xy, [128, 128])
-    t.deepEqual(si.atNorm([1, 1]).xy, [256, 256])
+    t.ok(si.at(0, 0).equals(view.at(0,0)), 'north-west')
+    t.ok(si.atNorm(0.5, 0.5).equals(view.at(128, 128)), 'center')
+    t.ok(si.atNorm(1, 1).equals(view.at(256, 256)), 'south-east')
 
-    si.translate(si.at([0, 0]), view.at([256, 256]))
-    // Allow time for translation to take place
+    // Move one tile right and down
+    si.translate(si.at(0, 0), view.at(256, 256))
+
+    // Allow time for browser to render the translation
     setTimeout(function () {
-      t.deepEqual(si.atNorm([1, 1]).to(view).xy, [512, 512])
+      t.ok(si.atNorm(1, 1).equals(view.at(512, 512)))
       t.end()
     }, 200)
   })
@@ -47,7 +49,7 @@ module.exports = function (test) {
     view.mount(ctx.container)
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
 
-    si.translate(si.atNorm([0, 0]), si.atNorm([1, 1]))
+    si.translate(si.atNorm(0, 0), si.atNorm(1, 1))
 
     var el1 = document.elementFromPoint(300, 300) // null if outside window
     var el2 = $('img.taaspace-image')[0]
@@ -75,7 +77,7 @@ module.exports = function (test) {
     t.equal(el1, view.getElementBySpaceNode(si))
     // Let's see if spacenode follows the view.
     // If it does, it should stay visually at the same place.
-    view.translate(space.at([0, 0]), space.at([2000, 2000]))
+    view.translate(space.at(0, 0), space.at(2000, 2000))
     var el2 = document.elementFromPoint(300, 300) // null if outside window
     t.equal(el2, el1)
     t.end()
@@ -88,7 +90,7 @@ module.exports = function (test) {
     var view = new taaspace.SpaceViewHTML(space)
 
     view.mount(ctx.container)
-    node.resize([100, 100])
+    node.setLocalSize(new taaspace.Vector(100, 100))
 
     // Test if representation is removed.
     var el1 = document.elementFromPoint(50, 50)
@@ -107,7 +109,7 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var node = new taaspace.SpaceHTML(space, 'foo')
-    node.resize([100, 100])
+    node.setLocalSize(new taaspace.Vector(100, 100))
 
     // Test if representation is removed when node is reparented.
     var el1 = document.elementFromPoint(50, 50)
@@ -143,12 +145,12 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var nodeB = new taaspace.SpaceHTML(space, 'foo')
-    nodeB.resize([100, 100])
+    nodeB.setLocalSize(new taaspace.Vector(100, 100))
 
     var nodeC = new taaspace.SpaceHTML(space2, 'bar')
-    nodeC.resize([100, 100])
+    nodeC.setLocalSize(new taaspace.Vector(100, 100))
     var nodeD = new taaspace.SpaceHTML(nodeC, 'baz')
-    nodeD.resize([100, 100])
+    nodeD.setLocalSize(new taaspace.Vector(100, 100))
     nodeD.translate(nodeD.atNW(), nodeC.atSE())
 
     // Test the setup is rendered correctly
@@ -156,9 +158,7 @@ module.exports = function (test) {
     t.equal(view.getSpaceNodeByElementId(el.id), nodeB, 'B at left-top')
 
     // Reparent the view
-    console.log('before setParent')
     view.setParent(space2)
-    console.log('after setParent')
 
     // Test that view content has changed.
     t.equal(

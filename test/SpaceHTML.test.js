@@ -24,12 +24,12 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>')
-    a.resize([100, 100])
+    a.setLocalSize(new taaspace.Vector(100, 100))
     a0 = document.elementFromPoint(150, 150)
 
     t.equal(a0, view.getHtmlContainer())
 
-    a.resize([200, 200])
+    a.setLocalSize(new taaspace.Vector(200, 200))
     a1 = document.elementFromPoint(150, 150)
 
     t.equal(a1, view.getElementBySpaceNode(a))
