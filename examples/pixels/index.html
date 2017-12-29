@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pixels / Taaspace Example</title>
+
+  <!--
+    Pixels
+
+    In this example we create and handle a large number of SpacePixels.
+    The SpacePixels are created by reading an image in pixelwise manner.
+
+    In the comments of this example we assume the following earlier examples
+    are familiar for the reader.
+    - minimal
+  -->
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+  <script src="../../dist/taaspace.min.js"></script>
+
+  <script>
+    // Define a helper function to load the image and call an iterator
+    // function for each pixel.
+    var forEachPixel = function (imgUrl, iterator, callback) {
+      taaspace.preload(imgUrl, function (err, img) {
+        if (err) {
+          throw err
+        }
+
+        var canvas = document.createElement('canvas')
+        canvas.width = img.width
+        canvas.height = img.height
+        var context = canvas.getContext('2d')
+        context.drawImage(img, 0, 0)
+        var pixels = context.getImageData(0, 0, img.width, img.height)
+
+        // ImageData has an array of pixel data.
+        // [<red#0>, <green#0>, <blue#0>, <alpha#0>, <red#1>, <green#1>, ...]
+        var i, x, y, r, g, b, rx, gx, bx
+        for (i = 0; i + 3 < pixels.data.length; i += 4) {
+          y = Math.floor(i / (4 * pixels.width))
+          x = (i - y * 4 * pixels.width) / 4
+          r = pixels.data[i]
+          g = pixels.data[i + 1]
+          b = pixels.data[i + 2]
+          // To CSS Color string e.g. #ABCDEF
+          rx = (r < 16 ? '0' : '') + r.toString(16)
+          gx = (g < 16 ? '0' : '') + g.toString(16)
+          bx = (b < 16 ? '0' : '') + b.toString(16)
+          iterator(x, y, '#' + rx + gx + bx)
+        }
+
+        if (typeof callback === 'function') {
+          return callback()
+        }
+      })
+    }
+
+    // Our test image as data URI. In this example, we use data URI instead of
+    // URLs to avoid canvas-related CORS issues on localhost.
+    var lenna32 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAALEwAACxMBAJqcGAAABCJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICAgICAgICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyI+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDx0aWZmOkNvbXByZXNzaW9uPjU8L3RpZmY6Q29tcHJlc3Npb24+CiAgICAgICAgIDx0aWZmOlhSZXNvbHV0aW9uPjcyPC90aWZmOlhSZXNvbHV0aW9uPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj43MjwvdGlmZjpZUmVzb2x1dGlvbj4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjMyPC9leGlmOlBpeGVsWERpbWVuc2lvbj4KICAgICAgICAgPGV4aWY6Q29sb3JTcGFjZT4xPC9leGlmOkNvbG9yU3BhY2U+CiAgICAgICAgIDxleGlmOlBpeGVsWURpbWVuc2lvbj4zMjwvZXhpZjpQaXhlbFlEaW1lbnNpb24+CiAgICAgICAgIDxkYzpzdWJqZWN0PgogICAgICAgICAgICA8cmRmOkJhZy8+CiAgICAgICAgIDwvZGM6c3ViamVjdD4KICAgICAgICAgPHhtcDpNb2RpZnlEYXRlPjIwMTctMTItMjlUMjE6MTI6NDg8L3htcDpNb2RpZnlEYXRlPgogICAgICAgICA8eG1wOkNyZWF0b3JUb29sPlBpeGVsbWF0b3IgMy43PC94bXA6Q3JlYXRvclRvb2w+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgoXGnyNAAAJgUlEQVRIDR1WWY8cZxX9tlq7qrt6mZ59xh7HkxkPxiRRcIIdsoJIQInyFMQDSJH4E7zygoT4BzwgEcQjCkJ5iJSFBGHZ8RKbJJ7xOlvbPTPd00vt38ptt1pqdXXXV+eee865F+/+4XdKZoQix2aXP+8qKSxmopD5nm0wYpggjAwm0iBqFMFIaaw00gYNxuXMUlhrOEhrYwTx3daPVi795SbOhEUxxYhSkmpNEI+pFpQazXMsciw5lgLOwEpSbbBWRGkiFZMSKYU0mlzREh5GMU4GkjJm2ZgSImIuevHCD9qy4AgZ1yI37w8++HiHYIKZa1GGFdfISGQAzuSllDESPpBRBgup8kIUQpQKrmBtiNY2RrJQsiQaEYwpI3Rw6/HiM7PedEC0uXJn+N/NIUGGUahHlioV1LLgLKMRRZgawG4IMdgQRZgMA9SssWaAy0LuHKBBTLHGWiMkRVIiQ4lWRqgy5dn9/pmfn/ng959efxgzSiTnxPFIZ6uXpdKiiAtVSCM1ktLALVBNovEQOxm1FFARBcHGcv2tF836U4NMFSX8SdvAVyJ1rkwpKMHFncO9u0df7yaMYKm0V7FJsj+6ey/BgBbQG4QQVQhaio1BOZdZWqIyZyIn4zHJc8QN84L5t15qvP3q0agQErkOPXg0POwWwLLDrPFA/PlPl5AEeHh2rvXr986RK5cfcyAaKkYMgWZAMvAFLiCUlCAfwhzLeVIdtIS5FcJsU/LZ59ZnfvHjOM2A/kyYz652eCZBGh9depSWBsQW1oKfvHKqMVcjI4FBiBM+EQZWNDQXAfMEBY4WGo52LMILwdpNb6pmpNAlV1LzJF9780J145QsOdyzJxl/4cXuyve+2UstiyDKXnp+eW7eAw4ZsGRBP7EmDMQ7OdnS0vYBKVITphCIx59rBq1QQ6U6M1JRrQRCzOCln15QX31WXVt8/1dvT60ulDs9bNGyKM+eWT670UJaAkRmEUyBeIqoQxgF9oyUmrikGrJjNGmLX61Qg+Q4Z8AeIzovoAhtO3KYaUbUM88vRDVsOWIw7N7ZLbNyKgovnl+mNpYSGomZAl8iDFwDR9CDJyRpw3Bjzu09YNT3jNKKSzzKihxhC9lw56AEebuR4zYryAux7fLhOL597/onm4DhuXPLjbYLx4IKgRkGVnSRAuzQ4AlguIgmnrUi1/JtoZESCiH96Fhu7j+2Gq1er6/k+J1fPuPN1CSxAdnBzTvj2/f6pbl3a7fZDNfWWxpsK8An0FvFHMdC5URWTyqAqxpZOO7GnCzSis9TCA728LC8tn2cJJnTK+yq8867G8FMmKVcFem1z+6eirAi4pOPt0RWnl5biKYdTUCJQAaYCaSJEGQEcIChrZOmAiZKCjnugdwAOt7aT2/sxqBQoYWvxi+/drE57/NhXmtELjPx3b3d5dkvPv0WOue69omVhpqQrSF74DQghGkJP0FGQCxgzOBF4Dffo/G9HirYZie+ujOGv9g+azYr77696p4M8dGgZWHXZcF8Y6ru3H/YY9BkVczMRIvLIedwJMQa5I1mEMDQQ4AN7QbkGGwGjzcGLH44kpuH5puBpagFItAyf/3Vhfpya3zt1v6X34hRiouse/t+Fqe8LP3QhTNPrUy5LhwD8I0wJi5xLzGQCibnSikBIwEijGleGOSfntvuo6/2FPN8CMyS84312tMvrl7/8PKl/zzsC5Le3h12R//865Vvtw4pQTaj8F5aDEDjqBCYQ7brUmjpWDBRSFZKARxZDDi1fCdpLH94OT0cRchSYavZffBttcJeePXpoy+/OzfT2jh1wg89vduhTvDsiWbW6RQADeNW04/qLpwMKuGlFgQvrzph3SYHQ95PFIeSFEwmpL1WJ/F6I4cgOert0mSvUffOX1y9v9Xhd/bqU8Hs6aZLS2wUJNTclNcKXM1LaOjSXGB7FPRdclMos3LWbp/wrFpESo1SqAVGIiiVOrHyxgl3qjUEcS5SR8TtdsWr2tc//c5mSA5j2RuKwagYjdVwKJXajWEKFWHNX1ysGsgGZLjQU7O01nKM1yBuCN4XVQf7FR/BYAJXpaM0r0hh6u22GezkzF9dja5cehBYDCaTLgo1zjC12GwTomanM9xPVdM30w233fZLGLWTXFDNGQd5EcBF2CFHMZcaU9cB1RPbBeclaQKpyTOxembttTdWt77bG3f6MFkLqF+JvD/Iuz0vDEU/ubx1NLGUVFUfBheDdAAWIDedWoiYAzjAUeQgA0khghQEnsbuWEDa89r8HHP9pblWZ+fRg+0hSCQu5Z2DOE5gABCqDI3Fg83O7f1+QI3NiO1ZxrawRRTGEhFarWPLA4pdkrAkl2XAIIFBYeD9bkyU4kWaRK12N82/uvxo0m6NYbr970AQdLyxFkYrS6RiX/t6O5fIdlgFsCOcZBocw0Emtg1bBMPiaPtg6+oefe/CK0l/fGLGnZ6v7/bRjft9l9m252HYAeyKbaGifwS9g30FlH5msR6GHqQiityFi2vg5qNOP7BZezoUaTk6TEbHaRDSpzainRt7f//jl9s3uqR1cn795XPjFDaciY7icQJjYXzUHex3JJfRVMuq1SYhYrF6xbIY8cE5oHIkZ0Pz/m/Pv/mb13qDzIbYaNe8KLQNn4t0kfJ//+3mtGefXKyTLz664k43jUWYZZIYRAemU2WW5PGwSFLqVrx6jRoJ+9tySIAuC0tomEmL8jjNxvmFnz07t74AKwTsVBBu86eap18+/ejGTkWoSmBzy4dVoYRDQSQAX0mYO7C6wZ4l8nRclEWRFrooLdc+GdFW5Hsew2AqcGohdMb5kz3s/OtnJ+2d7CW62bYguo6/7lCkC03jYoIG5ryC4iG8PRsUQDmH3Q/BHgZd7+11jruHUMrJppMJXQtdmJpgY1MWOs1UnJR5sXLmROdBb3frAKYxkDB68Hj77nCsWGFIvzcg68u1qO5T3wGH5BwCXMMDIbVlkTGCtMiPj0eLkZ2WohGAXOHRsCcSeIBJcz2KRZo6Uc2rVg8eHt26ulNbqnz+j83dIcqJxRFJspINAJhGXg2cjHsxBBeFbbZSa3hQYzwuyzJy8FJkLTT8ds3WUsCUxI5DYOOA/EoKMRw69UZ1eSbojU/67Oa/9na3clxxiOcOwQFCkd4wBd9Wm4EUKM4gX2lUrQINQRBmowFsNOcXg+/Pe43qZETBsJ4s3mBM2JZgG4N8zDKZZ62FRQjKmQqqwU7u2pbtuIH3uNP/4XL1/+bq6MmvcJ4jAAAAAElFTkSuQmCC'
+
+    var space = new taaspace.Space()
+    var container = document.getElementById('space')
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(container)
+
+    var g = new taaspace.SpaceGroup(space)
+
+    // Render a SpacePixel for each image pixel.
+    forEachPixel(lenna32, function (x, y, color) {
+      var px = new taaspace.SpacePixel(g, color)
+      px.translate(px.atNW(), space.at(x, y))
+    })
+
+    // Move the view to a just above the middle of the SpacePixels.
+    view.translate(view.atMid(), space.at(16, 20))
+    view.scale(view.atMid(), 0.1)
+  </script>
+</body>
+</html>
