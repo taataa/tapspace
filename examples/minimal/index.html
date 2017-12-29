@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minimal / Taaspace Example</title>
+
+  <style>
+    /* Define area for the example. Here we give it the 100% browser view. */
+    html, body, #minimalspace {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing Space -->
+  <div id="minimalspace"></div>
+
+  <!-- Import taaspace -->
+  <script src="../../dist/taaspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Create a Space. It will contain stuff.
+    var space = new taaspace.Space()
+
+    // Create a View to the Space. The view connects Space to HTML DOM.
+    var view = new taaspace.SpaceViewHTML(space)
+    var container = document.getElementById('minimalspace')
+    view.mount(container)
+
+    // Create a black SpacePixel, one of the simplest items in Space.
+    // The SpacePixel is initially represented as 1x1 <div> with black
+    // background color.
+    var px = new taaspace.SpacePixel(space, '#000000')
+
+    // We move and scale the view so that the SpacePixel ends up magnified
+    // and at the middle of the view.
+    view.translate(view.atMid(), px.atMid())
+    view.scale(view.atMid(), 0.1)
+  </script>
+</body>
+</html>
