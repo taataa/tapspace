@@ -80,6 +80,11 @@
     // Render a SpacePixel for each image pixel.
     forEachPixel(lenna32, function (x, y, color) {
       var px = new taaspace.SpacePixel(g, color)
+
+      // Provide random discrete drops of pixels.
+      y = y + Math.round(Math.random() * y * y / 128)
+
+      // Move the pixel
       px.translate(px.atNW(), space.at(x, y))
     })
 
