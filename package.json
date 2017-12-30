@@ -57,7 +57,7 @@
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lintfix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "gv": "genversion lib/version.js",
-    "watch": "npm-watch | grep --invert-match nodemon"
+    "watch": "npm-watch"
   },
   "watch": {
     "lint": {
@@ -65,6 +65,15 @@
         "lib/**/*.js",
         "test/**/*.js"
       ]
+    },
+    "build:min": {
+      "patterns": [
+        "index.js",
+        "lib/**/*.js"
+      ]
+    },
+    "gv": {
+      "patterns": ["package.json"]
     }
   }
 }
