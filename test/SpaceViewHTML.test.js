@@ -29,7 +29,7 @@ module.exports = function (test) {
     var si = new taaspace.SpaceImage(space, ctx.images.black256)
     view.mount(ctx.container)
 
-    t.ok(si.at(0, 0).equals(view.at(0,0)), 'north-west')
+    t.ok(si.at(0, 0).equals(view.at(0, 0)), 'north-west')
     t.ok(si.atNorm(0.5, 0.5).equals(view.at(128, 128)), 'center')
     t.ok(si.atNorm(1, 1).equals(view.at(256, 256)), 'south-east')
 
