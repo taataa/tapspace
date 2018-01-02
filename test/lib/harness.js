@@ -20,7 +20,6 @@ var $ = require('jquery')
 // => import images as data urls by webpack url-loader
 // Note: static file serving fixed in tape-run 3.0.1
 var black256png = require('./black256.png')
-require('./style.css')
 
 // var DEFAULT_WINDOW_WIDTH = window.innerWidth
 // var DEFAULT_WINDOW_HEIGHT = window.outerHeight
@@ -76,7 +75,7 @@ var test = function (msg, testCase) {
         if (container) {
           container.innerHTML = ''
         } else {
-          $(document.body).prepend('<div id="taaspace-sandbox" "taaspace-container"></div>')
+          $(document.body).prepend('<div id="taaspace-sandbox"></div>')
           container = document.getElementById('taaspace-sandbox')
         }
         caseContext.container = container
