@@ -5,10 +5,10 @@
   <title>Pixels / Taaspace Example</title>
 
   <!--
-    Pixels
+    SpacePixels
 
     In this example we create and handle a large number of SpacePixels.
-    The SpacePixels are created by reading an image in pixelwise manner.
+    The SpacePixels are created by reading an image pixel per pixel.
 
     In the comments of this example we assume the following earlier examples
     are familiar for the reader.
@@ -21,6 +21,10 @@
       padding: 0;
       width: 100%;
       height: 100%;
+    }
+
+    #space {
+      background: #2a1505;
     }
   </style>
 </head>
@@ -77,20 +81,28 @@
 
     var g = new taaspace.SpaceGroup(space)
 
-    // Render a SpacePixel for each image pixel.
+    // # Render a SpacePixel for each image pixel.
+    //
     forEachPixel(lenna32, function (x, y, color) {
+      // Create a pixel.
       var px = new taaspace.SpacePixel(g, color)
 
-      // Provide random discrete drops of pixels.
+      // Move the pixel.
+      // Continuous movement to left
+      x = x - 0.003 * y * y
+      // Provide a random down movement in the pixel.
       y = y + Math.round(Math.random() * y * y / 128)
 
       // Move the pixel
       px.translate(px.atNW(), space.at(x, y))
     })
 
+    // At this point, we have moved the pixel
+
     // Move the view to a just above the middle of the SpacePixels.
     view.translate(view.atMid(), space.at(16, 20))
     view.scale(view.atMid(), 0.1)
+    view.rotate(g.atMid(), 0.1)
   </script>
 </body>
 </html>
