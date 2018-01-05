@@ -174,4 +174,19 @@ module.exports = function (test) {
     t.equal(view.getElementBySpaceNode(nodeB), null, 'no element for B')
     t.end()
   })
+
+  test('getElementBySpaceNode', function (t, ctx) {
+    var space = new taaspace.Space()
+    var view = new taaspace.SpaceViewHTML(space)
+
+    t.equal(view.getElementBySpaceNode(view), null, 'no container yet')
+    t.equal(view.getHtmlContainer(), null, 'no container yet')
+
+    view.mount(ctx.container)
+
+    t.equal(view.getElementBySpaceNode(view), ctx.container, 'has container')
+    t.equal(view.getHtmlContainer(), ctx.container, 'has container')
+
+    t.end()
+  })
 }
