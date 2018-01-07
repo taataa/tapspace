@@ -1,12 +1,13 @@
 // API v4
 
 exports.Vector = require('./lib/Vector')
+exports.Path = require('./lib/Path')
 exports.Transform = require('./lib/Transform')
 exports.InvariantScalar = require('./lib/InvariantScalar')
 exports.InvariantVector = require('./lib/InvariantVector')
+exports.InvariantPath = require('./lib/InvariantPath')
 exports.InvariantTransform = require('./lib/InvariantTransform')
 // exports.SpacePoint = require('./lib/SpacePoint')
-exports.Transform = require('./lib/Transform')
 // exports.SpaceTransform = require('./lib/SpaceTransform')
 exports.SpaceGroup = require('./lib/SpaceGroup')
 exports.SpaceHTML = require('./lib/SpaceHTML')
