@@ -19,7 +19,7 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('should be able to return a SpacePoint', function (t, ctx) {
+  test('should be able to return a InvariantVector', function (t, ctx) {
     var space = new taaspace.Space()
     var view = new taaspace.SpaceViewHTML(space)
     view.mount(ctx.container)
@@ -60,6 +60,19 @@ module.exports = function (test) {
     var seb = px.atSE().to(space)
     t.equal(seb.x, 10, 'corner back')
     t.equal(seb.y, 10, 'corner back')
+    t.end()
+  })
+
+  test('#fit', function (t) {
+    var space = new taaspace.Space()
+
+    var px1 = new taaspace.SpacePixel(space)
+    var px2 = new taaspace.SpacePixel(space)
+
+    px2.scale(px2.atMid(), 7)
+    px2.fit(px1)
+
+    t.ok(px2.getHull().equals(px1.getHull()), 'hulls equal')
     t.end()
   })
 }
