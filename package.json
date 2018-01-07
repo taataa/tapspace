@@ -23,6 +23,7 @@
     "component-emitter": "^1.2.1",
     "extend": "^3.0.1",
     "loadimages": "^1.0.0",
+    "monotone-convex-hull-2d": "^1.0.1",
     "move-js": "^0.5.0",
     "nudged": "^1.2.0",
     "seqid": "^1.0.1"
@@ -73,7 +74,9 @@
       ]
     },
     "gv": {
-      "patterns": ["package.json"]
+      "patterns": [
+        "package.json"
+      ]
     }
   }
 }
