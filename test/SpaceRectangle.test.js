@@ -63,16 +63,59 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('#fit', function (t) {
+  test('#fitScale squares', function (t) {
     var space = new taaspace.Space()
 
     var px1 = new taaspace.SpacePixel(space)
     var px2 = new taaspace.SpacePixel(space)
 
     px2.scale(px2.atMid(), 7)
-    px2.fit(px1)
+    px2.fitScale(px1)
 
     t.ok(px2.getHull().equals(px1.getHull()), 'hulls equal')
+    t.end()
+  })
+
+  test('#fitScale rectangles', function (t) {
+    //
+    //   +--------------+
+    //   |        px1   |
+    //   ++------------++
+    //   ||    px2     ||
+    //   ++------------++
+    //   |              |
+    //   +--------------+
+    //
+    var space = new taaspace.Space()
+
+    var px1 = new taaspace.SpacePixel(space)
+    var px2 = new taaspace.SpacePixel(space)
+
+    px2.setLocalSize(new taaspace.Vector(2, 1))
+    px2.fitScale(px1)
+
+    var h1 = px1.getHull().toSpace()
+    var h2 = px2.getHull().toSpace()
+
+    t.ok(h2.get(0).equals(new taaspace.Vector(-0.5, 0)), 'correct NW')
+    t.ok(h2.get(1).equals(new taaspace.Vector(1.5, 0)), 'correct NE')
+    t.ok(h2.get(2).equals(new taaspace.Vector(1.5, 1)), 'correct SE')
+    t.ok(h2.get(3).equals(new taaspace.Vector(-0.5, 1)), 'correct SW')
+    t.end()
+  })
+
+  test('#fitSize', function (t) {
+    var space = new taaspace.Space()
+
+    var px1 = new taaspace.SpacePixel(space)
+    var px2 = new taaspace.SpacePixel(space)
+
+    // Fit px2's size to upscaled px1
+    px1.scale(px1.atNW(), 4)
+    px2.fitSize(px1)
+
+    t.ok(px1.getLocalSize().equals(new taaspace.Vector(1, 1)), 'only scaled')
+    t.ok(px2.getLocalSize().equals(new taaspace.Vector(4, 4)), 'only resized')
     t.end()
   })
 }
