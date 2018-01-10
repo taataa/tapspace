@@ -17,4 +17,16 @@ module.exports = function (test) {
 
     t.end()
   })
+
+  test('#getHull', function (t) {
+    var sp = new taaspace.Space()
+    t.equal(sp.getHull(), null, 'null hull')
+
+    var px = new taaspace.SpacePixel(sp)
+    console.log(sp.getHull(), px.getHull())
+    t.notEqual(sp.getHull(), null, 'space hull not null')
+    t.ok(sp.getHull().equals(px.getHull()), 'hulls are equal')
+
+    t.end()
+  })
 }

@@ -94,13 +94,12 @@ module.exports = function (test) {
     px2.setLocalSize(new taaspace.Vector(2, 1))
     px2.fitScale(px1)
 
-    var h1 = px1.getHull().toSpace()
     var h2 = px2.getHull().toSpace()
 
     t.ok(h2.get(0).equals(new taaspace.Vector(-0.5, 0)), 'correct NW')
-    t.ok(h2.get(1).equals(new taaspace.Vector(1.5, 0)), 'correct NE')
+    t.ok(h2.get(1).equals(new taaspace.Vector(-0.5, 1)), 'correct SW')
     t.ok(h2.get(2).equals(new taaspace.Vector(1.5, 1)), 'correct SE')
-    t.ok(h2.get(3).equals(new taaspace.Vector(-0.5, 1)), 'correct SW')
+    t.ok(h2.get(3).equals(new taaspace.Vector(1.5, 0)), 'correct NE')
     t.end()
   })
 
