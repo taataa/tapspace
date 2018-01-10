@@ -3,6 +3,7 @@
 var harness = require('./lib/harness')
 
 var UNITS = {
+  Rectangle: require('./Rectangle.test'),
   Vector: require('./Vector.test'),
   InvariantScalar: require('./InvariantScalar.test'),
   InvariantVector: require('./InvariantVector.test'),

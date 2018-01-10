@@ -1,5 +1,6 @@
 // API v4
 
+exports.Rectangle = require('./lib/Rectangle')
 exports.Vector = require('./lib/Vector')
 exports.Path = require('./lib/Path')
 exports.Transform = require('./lib/Transform')
