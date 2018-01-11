@@ -27,6 +27,21 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('#snap scale', function (t) {
+    var tr = Transform.IDENTITY.scaleBy(3.2)
+    var gr = new Grid({
+      scaleStep: 1,
+      scalePhase: 0.5
+    })
+    var snapped = gr.snap(tr)
+
+    t.equal(snapped.getScale(), 3.5, 'snapped scale')
+    t.equal(snapped.getRotation(), 0, 'zero rotation')
+    t.equal(snapped.tx, 0, 'zero tx')
+
+    t.end()
+  })
+
   test('#snap rotate', function (t) {
     var tr = Transform.IDENTITY.rotateBy(Math.PI * 1.8)
     var gr = new Grid({
@@ -38,4 +53,5 @@ module.exports = function (test) {
 
     t.end()
   })
+
 }
