@@ -3,6 +3,7 @@
 exports.Rectangle = require('./lib/Rectangle')
 exports.Vector = require('./lib/Vector')
 exports.Path = require('./lib/Path')
+exports.Grid = require('./lib/Grid')
 exports.Transform = require('./lib/Transform')
 exports.InvariantScalar = require('./lib/InvariantScalar')
 exports.InvariantVector = require('./lib/InvariantVector')
