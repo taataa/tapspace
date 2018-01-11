@@ -9,6 +9,7 @@ var UNITS = {
   InvariantScalar: require('./InvariantScalar.test'),
   InvariantVector: require('./InvariantVector.test'),
   InvariantTransform: require('./InvariantTransform.test'),
+  InvariantGrid: require('./InvariantGrid.test'),
   meta: require('./meta.test'),
   SpaceViewHTML: require('./SpaceViewHTML.test'),
   Space: require('./Space.test'),
