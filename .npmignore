@@ -1,5 +1,9 @@
 .travis.yml
 
+/dist
 /doc
 /examples
 /test
+
+.DS_Store
+.gitignore
