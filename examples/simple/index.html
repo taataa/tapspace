@@ -38,8 +38,7 @@
         throw err
       }
       var spaceimg = new taaspace.SpaceImage(space, img)
-      spaceimg.translate(spaceimg.at([0, 0]), view.at([256, 256]))
-      spaceimg.rotate(spaceimg.atMid(), Math.PI / 4)
+      view.fitScale(spaceimg)
     });
   }());
   </script>
