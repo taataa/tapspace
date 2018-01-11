@@ -18,6 +18,7 @@ var UNITS = {
   SpaceRectangle: require('./SpaceRectangle.test'),
   // SpaceTransform: require('./SpaceTransform.test'),
   SpaceTransformer: require('./SpaceTransformer.test'),
+  SpaceGroup: require('./SpaceGroup.test'),
   preload: require('./preload.test'),
   version: require('./version.test')
 }
