@@ -11,6 +11,12 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('.createFromPolar & #almostEqual', function (t) {
+    var v = Vector.createFromPolar(1, Math.PI / 2)
+    t.ok(v.almostEqual(new Vector(0, 1)))
+    t.end()
+  })
+
   test('#add & #equals', function (t) {
     var v = new Vector(1, 1)
     var v2 = v.add(v)
@@ -49,6 +55,25 @@ module.exports = function (test) {
       v.changeBasis(i, j)
     }, /independent/, 'gives error')
 
+    t.end()
+  })
+
+  test('#changeFromBasis', function (t) {
+    var v = new Vector(-1, 2.5)
+    var i = new Vector(1, 0.5)
+    var j = new Vector(-1, 0.5)
+    var vij = v.changeBasis(i, j)
+
+    var v2 = vij.changeFromBasis(i, j)
+    // Equivalent to
+    var v3 = vij.changeBasis(
+      (new Vector(1, 0)).changeBasis(i, j),
+      (new Vector(0, 1)).changeBasis(i, j)
+    )
+
+    t.ok(v.almostEqual(v2), 'equal to original')
+    t.ok(v2.almostEqual(v3), 'equal to reference')
+    t.ok(v.almostEqual(v3), 'original equal to reference')
     t.end()
   })
 
