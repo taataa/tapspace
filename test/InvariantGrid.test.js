@@ -1,4 +1,5 @@
 var taaspace = require('../index')
+var Vector = taaspace.Vector
 
 module.exports = function (test) {
   // Test cases
@@ -96,6 +97,25 @@ module.exports = function (test) {
     sgt = spx.getGlobalTransform()
     t.ok(ggt.almostEqual(sgt), 'assert positions equal')
 
+    t.end()
+  })
+
+  test('#getHullOf', function (t) {
+    var space = new taaspace.Space()
+    var g = new taaspace.SpaceGroup(space)
+    g.scale(g.at(0, 0), 2)
+    var igrid = new taaspace.InvariantGrid({
+      xStep: 1,
+      yStep: 1
+    }, g)
+    var igrid2 = new taaspace.InvariantGrid({
+      xStep: 2,
+      yStep: 2
+    })
+    var hull = igrid.getHullOf(1, 1).toSpace()
+    var hull2 = igrid2.getHullOf(1, 1).toSpace()
+
+    t.ok(hull.almostEqual(hull2))
     t.end()
   })
 }
