@@ -117,7 +117,7 @@ module.exports = function (test) {
     var grid = new Grid({
       xStep: 10,
       xRotation: Math.PI / 4,
-      yStep: 10,
+      yStep: 10
     })
     var pivot = new taaspace.Vector(0, 0)
     var tr = Transform.IDENTITY.translateBy(4, 0)
