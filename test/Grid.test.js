@@ -107,40 +107,63 @@ module.exports = function (test) {
   test('#snap xRotation', function (t) {
     // Let us build a grid where allowed x values go at 45 degree angle.
     //
-    //     | /         /         /
-    //     |/         /         /
-    //   --+-->      /         /
-    //    /|        /         /
-    //   / |       /         /
-    //  /  V      /         /
+    //     | o         o         o
+    //     |o         o         o
+    //   --o----->   o         o
+    //    o|        o         o
+    //   o |       o         o
+    //  o  V      o         o
     //
     var grid = new Grid({
       xStep: 10,
-      xRotation: Math.PI / 4
+      xRotation: Math.PI / 4,
+      yStep: 10,
     })
     var pivot = new taaspace.Vector(0, 0)
     var tr = Transform.IDENTITY.translateBy(4, 0)
 
     var snapped = grid.snap(pivot, tr)
 
-    var tr2 = Transform.IDENTITY.translateBy(2, -2)
+    var r2 = Math.sqrt(2)
+    var tr2 = Transform.IDENTITY.translateBy(5 * r2, 5 * r2) // (7.07, 7.07)
     t.ok(snapped.almostEqual(tr2), 'snapped to nearest')
-
     t.end()
   })
 
-  test('#transform', function (t) {
+  test('#transform scaling', function (t) {
     var gr1 = new Grid({
-      xStep: 10
+      xStep: 10,
+      yStep: 1
     })
 
     var gr2 = new Grid({
-      xStep: 20
+      xStep: 20,
+      yStep: 2
     })
 
     var gr1X2 = gr1.transform(Transform.X2)
 
     t.ok(gr1X2.equal(gr2), 'grid scaled')
+    t.end()
+  })
+
+  test('#transform translation with pivot', function (t) {
+    var gr1 = new Grid({
+      xStep: 1,
+      yStep: 10,
+      yPhase: 5
+    })
+
+    var gr2 = new Grid({
+      xStep: 1,
+      yStep: 10,
+      yPhase: 8
+    })
+
+    var tr = Transform.IDENTITY.translateBy(0, 3)
+    var gr1tr = gr1.transform(tr)
+
+    t.ok(gr1tr.almostEqual(gr2), 'grid translated')
     t.end()
   })
 }

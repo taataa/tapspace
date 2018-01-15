@@ -10,7 +10,8 @@ module.exports = function (test) {
 
     var igrid = new taaspace.InvariantGrid(new taaspace.Grid({
       xStep: 10,
-      xPhase: 2
+      xPhase: 2,
+      yStep: 100
     }), space)
 
     // Position the first pixel with a grid and second with a translation.
@@ -30,27 +31,28 @@ module.exports = function (test) {
     var px1 = new taaspace.SpacePixel(space)
     var px2 = new taaspace.SpacePixel(space)
 
-    // Move both away from same coordinate system with space.
+    // Move both away from the same coordinate system with the space.
     // This allows us to see problems with correct use of planes.
     px1.translate(space.at(0, 0), space.at(10, 0))
     px2.translate(space.at(0, 0), space.at(10, 0))
 
     var igrid = new taaspace.InvariantGrid(new taaspace.Grid({
       xStep: 10,
+      yStep: 10,
       rotateStep: Math.PI / 2,
       rotatePhase: Math.PI / 4
     }), space)
 
-    // Position the first pixel with a grid and second with a translation.
+    // Position the first pixel with a grid.
     px1.snap(px1.at(2, 2), igrid)
-    px2.translate(px2.at(2, 2), space.at(10, 2))
+    // And second with a good ol' translation
+    px2.translate(px2.at(2, 2), space.at(10, 0))
     px2.rotate(px2.at(2, 2), Math.PI / 4)
 
     // Positions should match
     var gt1 = px1.getGlobalTransform()
     var gt2 = px2.getGlobalTransform()
 
-    console.log(gt1, gt2)
     t.ok(gt1.almostEqual(gt2), 'positions should be same')
     t.end()
   })
@@ -80,21 +82,19 @@ module.exports = function (test) {
     sgt = spx.getGlobalTransform()
     t.ok(ggt.almostEqual(sgt), 'assert positions equal')
 
-    // //console.log(gpx.atNW().toSpace().toArray())
-    // //
-    // var igrid = new taaspace.InvariantGrid({
-    //   xStep: 10
-    // }, space)
-    //
-    // gpx.snap(gpx.at(0, 0), igrid)
-    // // Mimic
-    // spx.translate(spx.at(0, 0), space.at(0, 0))
-    //
-    // // Assert positions still equal
-    // ggt = gpx.getGlobalTransform()
-    // sgt = spx.getGlobalTransform()
-    // //console.log(ggt._tr, sgt._tr)
-    // t.ok(ggt.almostEqual(sgt), 'assert positions equal')
+    var igrid = new taaspace.InvariantGrid({
+      xStep: 10,
+      yStep: 20
+    }, space)
+
+    gpx.snap(gpx.at(0, 0), igrid)
+    // Mimic
+    spx.translate(spx.at(0, 0), space.at(0, 0))
+
+    // Assert positions still equal
+    ggt = gpx.getGlobalTransform()
+    sgt = spx.getGlobalTransform()
+    t.ok(ggt.almostEqual(sgt), 'assert positions equal')
 
     t.end()
   })
