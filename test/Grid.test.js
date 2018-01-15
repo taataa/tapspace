@@ -1,5 +1,6 @@
 var taaspace = require('../index')
 var Transform = taaspace.Transform
+var Vector = taaspace.Vector
 var Grid = taaspace.Grid
 
 module.exports = function (test) {
@@ -164,6 +165,57 @@ module.exports = function (test) {
     var gr1tr = gr1.transform(tr)
 
     t.ok(gr1tr.almostEqual(gr2), 'grid translated')
+    t.end()
+  })
+
+  test('#getHullOf simple grid', function (t) {
+    var grid = new Grid({
+      xStep: 1,
+      yStep: 1
+    })
+
+    var hull00 = grid.getHullOf(0, 0)
+    var path00 = new taaspace.Path([
+      new Vector(0, 0),
+      new Vector(0, 1),
+      new Vector(1, 1),
+      new Vector(1, 0)
+    ])
+
+    t.ok(hull00.almostEqual(path00))
+
+    var hull99 = grid.getHullOf(9, 9)
+    var path99 = new taaspace.Path([
+      new Vector(9, 9),
+      new Vector(9, 10),
+      new Vector(10, 10),
+      new Vector(10, 9)
+    ])
+    t.ok(hull99.almostEqual(path99))
+
+    t.end()
+  })
+
+  test('#getHullOf complex grid', function (t) {
+    // See docs/notes/2018-01-15-21
+    var grid = new Grid({
+      xStep: 8,
+      yStep: 4,
+      xPhase: 2,
+      yPhase: 2,
+      xRotation: Math.PI / 2,
+      yRotation: Math.PI
+    })
+
+    var hull = grid.getHullOf(-1, -1)
+    var path = new taaspace.Path([
+      new Vector(-2, -6),
+      new Vector(-2, 2),
+      new Vector(2, 2),
+      new Vector(2, -6)
+    ])
+
+    t.ok(hull.almostEqual(path))
     t.end()
   })
 }
