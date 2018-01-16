@@ -1,8 +1,18 @@
 var taaspace = require('../index')
-var Vector = taaspace.Vector
+var InvariantGrid = taaspace.InvariantGrid
 
 module.exports = function (test) {
   // Test cases
+
+  test('#at', function (t) {
+    var space = new taaspace.Space()
+    var igrid = new InvariantGrid({
+      xStep: 1,
+      yStep: 1
+    }) // note: default plane is Space
+    t.ok(igrid.at(3, 3).almostEqual(space.at(3, 3)))
+    t.end()
+  })
 
   test('#snap', function (t) {
     var space = new taaspace.Space()
