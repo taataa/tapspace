@@ -5,6 +5,7 @@ var harness = require('./lib/harness')
 var UNITS = {
   Rectangle: require('./Rectangle.test'),
   Vector: require('./Vector.test'),
+  Path: require('./Path.test'),
   Grid: require('./Grid.test'),
   InvariantScalar: require('./InvariantScalar.test'),
   InvariantVector: require('./InvariantVector.test'),
