@@ -12,6 +12,26 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('#at basic', function (t) {
+    var grid = new Grid({
+      xStep: -1,
+      yStep: -1,
+      xPhase: 1,
+      yPhase: 1
+    })
+    t.ok(grid.at(0, 0).almostEqual(new Vector(1, 1)), 'origin')
+    t.ok(grid.at(1, 1).almostEqual(new Vector(0, 0)), 'first')
+    t.ok(grid.at(0, 0).equal(grid.getOrigin()), 'equal origin')
+    t.end()
+  })
+
+  test('#at gridless', function (t) {
+    var grid = new Grid()
+    t.ok(grid.at(0, 0).almostEqual(new Vector(0, 0)), 'origin')
+    t.ok(grid.at(2, -145).almostEqual(new Vector(0, 0)), 'always origin')
+    t.end()
+  })
+
   test('#snap translate', function (t) {
     var tr = Transform.IDENTITY.translateBy(15, 5)
     var grid = new Grid({
@@ -20,13 +40,13 @@ module.exports = function (test) {
       xPhase: 2,
       yPhase: 0
     })
-    var pivot = new taaspace.Vector(0, 0)
+    var pivot = new Vector(0, 0)
     var snapped = grid.snap(pivot, tr)
 
     t.equal(snapped.tx, 12, 'tx')
     t.equal(snapped.ty, 10, 'ty')
 
-    var pivot2 = new taaspace.Vector(8, 8)
+    var pivot2 = new Vector(8, 8)
     // tr maps pivot to (23, 13)
     // nearest point on grid is (22, 10)
     // Therefore a translation of (-1, -3) is required to snap.
@@ -44,7 +64,7 @@ module.exports = function (test) {
       rotateStep: Math.PI / 4,
       rotatePhase: 0
     })
-    var pivot = new taaspace.Vector(0, 0)
+    var pivot = new Vector(0, 0)
     var deg45 = Transform.IDENTITY.rotateBy(Math.PI / 4)
     var snapped = gr.snap(pivot, deg45)
     t.ok(snapped.equals(deg45), 'stay same, pivot 0 0')
@@ -55,7 +75,7 @@ module.exports = function (test) {
     t.ok(snapped2.almostEqual(deg45), 'back to deg45, pivot 0 0')
 
     // Remain same with pivot 1 1
-    var pivot2 = new taaspace.Vector(1, 1)
+    var pivot2 = new Vector(1, 1)
     var snapped3 = gr.snap(pivot2, deg45)
     t.ok(snapped3.equals(deg45), 'stay same, pivot 1 1')
 
@@ -73,7 +93,7 @@ module.exports = function (test) {
       scaleStep: 1,
       scalePhase: 0.5
     })
-    var pivot = new taaspace.Vector(0, 0)
+    var pivot = new Vector(0, 0)
     var snapped = grid.snap(pivot, tr)
 
     t.equal(snapped.getScale(), 3.5, 'snapped scale')
@@ -82,7 +102,7 @@ module.exports = function (test) {
       'pivot stay still')
 
     // With non-origin pivot
-    var pivot2 = new taaspace.Vector(1, 1)
+    var pivot2 = new Vector(1, 1)
     var snapped2 = grid.snap(pivot2, tr)
 
     t.ok(pivot2.transform(tr).equals(pivot2.transform(snapped2)),
@@ -96,7 +116,7 @@ module.exports = function (test) {
     var grid = new Grid({
       rotateStep: Math.PI
     })
-    var pivot = new taaspace.Vector(0, 0)
+    var pivot = new Vector(0, 0)
     var tr = Transform.IDENTITY.rotateBy(Math.PI * 1.8)
     var snapped = grid.snap(pivot, tr)
 
@@ -120,7 +140,7 @@ module.exports = function (test) {
       xRotation: Math.PI / 4,
       yStep: 10
     })
-    var pivot = new taaspace.Vector(0, 0)
+    var pivot = new Vector(0, 0)
     var tr = Transform.IDENTITY.translateBy(4, 0)
 
     var snapped = grid.snap(pivot, tr)
