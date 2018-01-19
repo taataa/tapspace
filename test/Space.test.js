@@ -20,11 +20,11 @@ module.exports = function (test) {
 
   test('#getHull', function (t) {
     var sp = new taaspace.Space()
-    t.equal(sp.getHull(), null, 'null hull')
+    t.equal(sp.getHull().length, 1, 'empty hull has 0 0')
 
     var px = new taaspace.SpacePixel(sp)
 
-    t.notEqual(sp.getHull(), null, 'space hull not null')
+    t.equal(sp.getHull().length, 4, 'space hull not null')
     t.ok(sp.getHull().equals(px.getHull()), 'hulls are equal')
 
     t.end()
