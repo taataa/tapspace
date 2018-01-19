@@ -96,8 +96,10 @@ module.exports = function (test) {
     var el1 = document.elementFromPoint(50, 50)
     node.remove()
     var el2 = document.elementFromPoint(50, 50)
-    t.notEqual(el1, el2)
+
+    t.notEqual(el1, el2, 'element should be removed')
     t.equal(el2.id, 'taaspace-sandbox')
+
     t.end()
   })
 
@@ -156,6 +158,11 @@ module.exports = function (test) {
     // Test the setup is rendered correctly
     var el = document.elementFromPoint(50, 50)
     t.equal(view.getSpaceNodeByElementId(el.id), nodeB, 'B at left-top')
+    t.equal(
+      document.elementFromPoint(150, 50),
+      view.getHtmlContainer(),
+      'container'
+    )
 
     // Reparent the view
     view.setParent(space2)
@@ -179,12 +186,15 @@ module.exports = function (test) {
     var space = new taaspace.Space()
     var view = new taaspace.SpaceViewHTML(space)
 
-    t.equal(view.getElementBySpaceNode(view), null, 'no container yet')
+    t.equal(view.getElementBySpaceNode(view), null, 'no element yet')
     t.equal(view.getHtmlContainer(), null, 'no container yet')
 
     view.mount(ctx.container)
 
-    t.equal(view.getElementBySpaceNode(view), ctx.container, 'has container')
+    // A 0x0 element has been created for the view to contain possible
+    // children of the view.
+    var c = ctx.container.childNodes[0]
+    t.equal(view.getElementBySpaceNode(view), c, 'has container')
     t.equal(view.getHtmlContainer(), ctx.container, 'has container')
 
     t.end()
