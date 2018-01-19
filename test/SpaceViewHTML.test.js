@@ -60,6 +60,25 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('transform view', function (t, ctx) {
+    // Tests that items' HTMLElements are transformed correctly
+    // when only the view transforms.
+    var space = new taaspace.Space()
+    var view = new taaspace.SpaceViewHTML(space)
+    view.mount(ctx.container)
+
+    var si = new taaspace.SpaceImage(space, ctx.images.black256)
+
+    view.translate(view.atMid(), si.atMid())
+
+    // Test that the image can be found where it should be
+    var v = si.atMid().to(view)
+    var el1 = document.elementFromPoint(v.x, v.y)
+
+    t.equal(el1, view.getElementBySpaceNode(si), 'image at middle')
+    t.end()
+  })
+
   test('present reparented nodes', function (t, ctx) {
     var space = new taaspace.Space()
     var view = new taaspace.SpaceViewHTML(space)
@@ -74,12 +93,12 @@ module.exports = function (test) {
     // Let's see if spacenode is still in place.
     var el1 = document.elementFromPoint(300, 300) // null if outside window
 
-    t.equal(el1, view.getElementBySpaceNode(si))
+    t.equal(el1, view.getElementBySpaceNode(si), 'in place after setParent')
     // Let's see if spacenode follows the view.
     // If it does, it should stay visually at the same place.
     view.translate(space.at(0, 0), space.at(2000, 2000))
     var el2 = document.elementFromPoint(300, 300) // null if outside window
-    t.equal(el2, el1)
+    t.equal(el2, el1, 'in place after view translate')
     t.end()
   })
 
@@ -191,11 +210,13 @@ module.exports = function (test) {
 
     view.mount(ctx.container)
 
-    // A 0x0 element has been created for the view to contain possible
-    // children of the view.
-    var c = ctx.container.childNodes[0]
-    t.equal(view.getElementBySpaceNode(view), c, 'has container')
-    t.equal(view.getHtmlContainer(), ctx.container, 'has container')
+    // A 0x0 element has been created for the space to contain children.
+    // A similar 0x0 element has been created for the view.
+    var se = ctx.container.childNodes[0]
+    var ve = se.childNodes[0]
+    t.equal(view.getElementBySpaceNode(space), se, 'space has element')
+    t.equal(view.getElementBySpaceNode(view), ve, 'view has element')
+    t.equal(view.getHtmlContainer(), ctx.container, 'view has container')
 
     t.end()
   })
