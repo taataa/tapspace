@@ -12,8 +12,9 @@ We dream **touch user interfaces** to be minimalistic, natural to use, and physi
 The tutorials are written into source code of the following apps!
 
 - Your first minimal Space [[App]](https://rawgit.com/taataa/taaspace/development/examples/minimal/index.html) [[Source]](examples/minimal/index.html)
-- Transformations []()
-- Group of SpacePixels [[App]](https://rawgit.com/taataa/taaspace/development/examples/pixels/index.html) [[Source]](examples/pixels/index.html)
+- SpaceHTML and transformations [[App]](https://rawgit.com/taataa/taaspace/development/examples/html/index.html) [[Source]](examples/html/index.html)
+- A SpaceGroup of SpacePixels [[App]](https://rawgit.com/taataa/taaspace/development/examples/pixels/index.html) [[Source]](examples/pixels/index.html)
+-
 
 <!---
 - [HTML elements](https://rawgit.com/taataa/taaspace/development/examples/html/index.html)
