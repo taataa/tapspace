@@ -19,7 +19,7 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('should be able to return a InvariantVector', function (t, ctx) {
+  test('should be able to return a IVector', function (t, ctx) {
     var space = new taaspace.Space()
     var view = new taaspace.SpaceViewHTML(space)
     view.mount(ctx.container)

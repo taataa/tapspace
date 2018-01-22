@@ -30,7 +30,7 @@ module.exports = function (test) {
   test('#getGlobalTransform: return identity tr. for space', function (t) {
     var space = new taaspace.Space()
     var gt = space.getGlobalTransform()
-    var id = taaspace.InvariantTransform.IDENTITY
+    var id = taaspace.ITransform.IDENTITY
     t.ok(gt.equals(id), 'identity transform')
     t.end()
   })
@@ -50,7 +50,7 @@ module.exports = function (test) {
   test('#transformBy: should take an identity PITransform', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel(space)
-    var tr = taaspace.InvariantTransform.IDENTITY
+    var tr = taaspace.ITransform.IDENTITY
     px.transformBy(tr)
 
     t.equal(px.atSE().toSpace().x, 1)
@@ -63,7 +63,7 @@ module.exports = function (test) {
   test('#transformBy: should take a simple translation', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel(space)
-    var id = taaspace.InvariantTransform.IDENTITY
+    var id = taaspace.ITransform.IDENTITY
     var tr = id.translate(space.at(0, 0), space.at(1, 1))
 
     var s = px.atSE().toSpace()
@@ -131,7 +131,7 @@ module.exports = function (test) {
     px = new taaspace.SpacePixel(space)
 
     // chain
-    tr = taaspace.InvariantTransform.IDENTITY
+    tr = taaspace.ITransform.IDENTITY
       .translate(space.at(0, 0), space.at(100, 100))
       .rotate(px.atMid(), Math.PI / 4)
       .scale(px.atMid(), 2)

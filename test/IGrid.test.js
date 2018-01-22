@@ -1,12 +1,12 @@
 var taaspace = require('../index')
-var InvariantGrid = taaspace.InvariantGrid
+var IGrid = taaspace.IGrid
 
 module.exports = function (test) {
   // Test cases
 
   test('#at', function (t) {
     var space = new taaspace.Space()
-    var igrid = new InvariantGrid({
+    var igrid = new IGrid({
       xStep: 1,
       yStep: 1
     }) // note: default plane is Space
@@ -19,7 +19,7 @@ module.exports = function (test) {
     var px1 = new taaspace.SpacePixel(space)
     var px2 = new taaspace.SpacePixel(space)
 
-    var igrid = new taaspace.InvariantGrid(new taaspace.Grid({
+    var igrid = new taaspace.IGrid(new taaspace.Grid({
       xStep: 10,
       xPhase: 2,
       yStep: 100
@@ -47,7 +47,7 @@ module.exports = function (test) {
     px1.translate(space.at(0, 0), space.at(10, 0))
     px2.translate(space.at(0, 0), space.at(10, 0))
 
-    var igrid = new taaspace.InvariantGrid(new taaspace.Grid({
+    var igrid = new taaspace.IGrid(new taaspace.Grid({
       xStep: 10,
       yStep: 10,
       rotateStep: Math.PI / 2,
@@ -93,7 +93,7 @@ module.exports = function (test) {
     sgt = spx.getGlobalTransform()
     t.ok(ggt.almostEqual(sgt), 'assert positions equal')
 
-    var igrid = new taaspace.InvariantGrid({
+    var igrid = new taaspace.IGrid({
       xStep: 10,
       yStep: 20
     }, space)
@@ -114,11 +114,11 @@ module.exports = function (test) {
     var space = new taaspace.Space()
     var g = new taaspace.SpaceGroup(space)
     g.scale(g.at(0, 0), 2)
-    var igrid = new taaspace.InvariantGrid({
+    var igrid = new taaspace.IGrid({
       xStep: 1,
       yStep: 1
     }, g)
-    var igrid2 = new taaspace.InvariantGrid({
+    var igrid2 = new taaspace.IGrid({
       xStep: 2,
       yStep: 2
     })
