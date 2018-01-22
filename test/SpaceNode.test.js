@@ -27,6 +27,22 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('#addChild & #hasChild', function (t) {
+    var space = new taaspace.Space()
+    var space2 = new taaspace.Space()
+
+    t.throws(function () {
+      space.addChild()
+    }, 'throw when no parameters')
+
+    var px = new taaspace.SpacePixel(space, 'red')
+    space2.addChild(px)
+
+    t.ok(space2.hasChild(px), 'has child')
+    t.notOk(space.hasChild(px), 'no child anymore')
+    t.end()
+  })
+
   test('#setParent: no cyclic child-parent relationships', function (t) {
     var space = new taaspace.Space()
     var x = new taaspace.SpacePixel(space)
