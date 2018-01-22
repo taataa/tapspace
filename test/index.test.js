@@ -17,10 +17,7 @@ var UNITS = {
   SpaceHTML: require('./SpaceHTML.test'),
   SpaceNode: require('./SpaceNode.test'),
   SpacePlane: require('./SpacePlane.test'),
-  // SpacePoint: require('./SpacePoint.test'),
   SpaceRectangle: require('./SpaceRectangle.test'),
-  // SpaceTransform: require('./SpaceTransform.test'),
-  SpaceTransformer: require('./SpaceTransformer.test'),
   SpaceGroup: require('./SpaceGroup.test'),
   preload: require('./preload.test'),
   version: require('./version.test')
