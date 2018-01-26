@@ -25,8 +25,8 @@ exports.makeViewTransformable = function (view) {
   }())
 }
 
-exports.makeSpaceNode = function (spacetaa) {
-  var el = view.getElementBySpaceNode(spacetaa)
+exports.makeAbstractNode = function (spacetaa) {
+  var el = view.getElementByAbstractNode(spacetaa)
   var hand = new TouchHandler(el)
   var originalParent = null
   var originalLocal = null

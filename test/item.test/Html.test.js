@@ -10,7 +10,7 @@ module.exports = function (test) {
     var a = new taaspace.SpaceHTML(space, '<h1>Hello</h1>')
     var el = $('.taaspace-html')
     var h1 = el.find('h1')
-    var b = view.getSpaceNodeByElementId(el.attr('id'))
+    var b = view.getAbstractNodeByElementId(el.attr('id'))
 
     t.equal(h1.length, 1, 'h1 exists')
     t.equal(b, a)
@@ -32,7 +32,7 @@ module.exports = function (test) {
     a.setLocalSize(new taaspace.Vector(200, 200))
     a1 = document.elementFromPoint(150, 150)
 
-    t.equal(a1, view.getElementBySpaceNode(a))
+    t.equal(a1, view.getElementByAbstractNode(a))
     t.end()
   })
 }

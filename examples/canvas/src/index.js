@@ -8,6 +8,6 @@ var view = new taaspace.SpaceViewHTML(space, viewElement)
 var a = new taaspace.SpaceHTML(space, '<canvas width="300" height="300">Solar system</canvas>')
 a.resize([300, 300])
 a.translate(a.atMid(), view.atMid())
-animate.animateCanvas(view.getElementBySpaceNode(a).firstChild)
+animate.animateCanvas(view.getElementByAbstractNode(a).firstChild)
 
 transformable.makeViewTransformable(view)

@@ -59,7 +59,7 @@ var view = new taaspace.SpaceViewHTML(space, container);
 }())
 
 var makeSpaceTaaTransformable = function (spacetaa) {
-  var el = view.getElementBySpaceNode(spacetaa)
+  var el = view.getElementByAbstractNode(spacetaa)
   var hand = new TouchHandler(el)
   var originalParent = null
   var originalLocal = null

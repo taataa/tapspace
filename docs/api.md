@@ -2,7 +2,7 @@
 
 ![taaspace module dependency graph](taaspace_api_3.png?raw=true)
 
-Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: SpaceTaa has a Taa. Arrow head denotes inheritance: SpaceRectangle is a SpaceTransformer, SpaceTransformer is a SpacePlane et cetera. Arrow head with dotted line denotes some weak dependency between SpacePlane and SpacePoint :)
+Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: SpaceTaa has a Taa. Arrow head denotes inheritance: AbstractRectangle is a SpaceTransformer, SpaceTransformer is a AbstractPlane et cetera. Arrow head with dotted line denotes some weak dependency between AbstractPlane and SpacePoint :)
 
 ## taaspace.Emitter(obj)
 
@@ -18,13 +18,13 @@ Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www
 
 ## taaspace.SpaceViewHTML(space, htmlContainer)
 
-Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, and SpaceRectangle.
+Is an Emitter, AbstractNode, AbstractPlane, SpaceTransformer, and AbstractRectangle.
 
 Listens events: added, removed, transformed, resized, contentAdded, contentRemoved
 
-#### #getElementBySpaceNode(spaceNode)
+#### #getElementByAbstractNode(abstractNode)
 
-Return the HTMLElement that represents the spaceNode in this view.
+Return the HTMLElement that represents the abstractNode in this view.
 
 Return null if no HTMLElement found.
 
@@ -32,25 +32,25 @@ Return null if no HTMLElement found.
 
 Return the container HTMLElement of this view.
 
-#### #getSpaceNodeByElementId(id)
+#### #getAbstractNodeByElementId(id)
 
-Return the SpaceNode that is represented by HTMLElement having the given id attribute.
+Return the AbstractNode that is represented by HTMLElement having the given id attribute.
 
-Return null if SpaceNode not found.
+Return null if AbstractNode not found.
 
 
 
 ## taaspace.Space()
 
-Is an Emitter, SpaceNode, and SpacePlane.
+Is an Emitter, AbstractNode, and AbstractPlane.
 
-Cannot have a parent SpaceNode.
+Cannot have a parent AbstractNode.
 
 
 
 ## taaspace.SpaceHTML(parent, html)
 
-Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, and SpaceRectangle.
+Is an Emitter, AbstractNode, AbstractPlane, SpaceTransformer, and AbstractRectangle.
 
 #### #getHTML()
 
@@ -58,35 +58,35 @@ Return string.
 
 
 
-## taaspace.SpaceNode(emitter)
+## taaspace.AbstractNode(emitter)
 
-Upgrades `emitter` to a SpaceNode.
+Upgrades `emitter` to a AbstractNode.
 
 #### #getParent()
 
-Return a SpaceNode.
+Return a AbstractNode.
 
 Return null if no parent.
 
 #### #getRootParent()
 
-Return a SpaceNode.
+Return a AbstractNode.
 
 #### #getChildren()
 
-Return an array of SpaceNodes.
+Return an array of AbstractNodes.
 
 #### #getDescendants()
 
-Return an array of SpaceNodes.
+Return an array of AbstractNodes.
 
-#### #hasChild(spaceNode)
+#### #hasChild(abstractNode)
 
-Return true if spaceNode is a child of this.
+Return true if abstractNode is a child of this.
 
 #### #setParent(newParent)
 
-Move this onto a parent SpaceNode. Will be removed from the old parent if there was one.
+Move this onto a parent AbstractNode. Will be removed from the old parent if there was one.
 
 #### #remove()
 
@@ -94,25 +94,25 @@ Detach from the current parent.
 
 
 
-## taaspace.SpacePlane(spaceNode)
+## taaspace.AbstractPlane(abstractNode)
 
-Upgrades `spaceNode` to a SpacePlane.
+Upgrades `abstractNode` to a AbstractPlane.
 
-#### taaspace.SpacePlane#at(xy)
+#### taaspace.AbstractPlane#at(xy)
 
 Return a SpacePoint at xy in the coordinate system of this.
 
-#### taaspace.SpacePlane#getTransform()
+#### taaspace.AbstractPlane#getTransform()
 
 Return transform from this to parent.
 
-#### taaspace.SpacePlane#getGlobalTransform()
+#### taaspace.AbstractPlane#getGlobalTransform()
 
 Return transform from this to root parent.
 
-#### taaspace.SpacePlane#resetTransform()
+#### taaspace.AbstractPlane#resetTransform()
 
-Set transform to identity. Now, the coordinate system matches the system of the parent SpacePlane.
+Set transform to identity. Now, the coordinate system matches the system of the parent AbstractPlane.
 
 
 
@@ -142,9 +142,9 @@ Return a new SpacePoint by transforming this by the given Transform.
 
 
 
-## taaspace.SpaceRectangle(transformer)
+## taaspace.AbstractRectangle(transformer)
 
-Upgrade a SpaceTransformer to a SpaceRectangle.
+Upgrade a SpaceTransformer to a AbstractRectangle.
 
 Emit: `resized`
 
@@ -180,7 +180,7 @@ Update dimensions [width, height]. Emit `resized`.
 
 ## taaspace.SpaceTaa(parent, taa)
 
-Is an Emitter, SpaceNode, SpacePlane, SpaceTransformer, SpaceRectangle.
+Is an Emitter, AbstractNode, AbstractPlane, SpaceTransformer, AbstractRectangle.
 
 Properties: taa
 
@@ -204,7 +204,7 @@ For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransfo
 
 ## taaspace.SpaceTransformer(plane)
 
-Upgrade a given SpacePlane to a SpaceTransformer.
+Upgrade a given AbstractPlane to a SpaceTransformer.
 
 Listens events: `removed`
 

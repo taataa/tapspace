@@ -62,7 +62,7 @@
     var a = new taaspace.SpaceHTML(space, '<canvas width="300" height="300">Solar system</canvas>')
     a.resize([300, 300])
     a.translate(a.atMid(), view.atMid())
-    animate.animateCanvas(view.getElementBySpaceNode(a).firstChild)
+    animate.animateCanvas(view.getElementByAbstractNode(a).firstChild)
 
     transformable.makeViewTransformable(view)
   }, {'./animate': 1, './transformable': 5}],
@@ -324,8 +324,8 @@
       }())
     }
 
-    exports.makeSpaceNode = function (spacetaa) {
-      var el = view.getElementBySpaceNode(spacetaa)
+    exports.makeAbstractNode = function (spacetaa) {
+      var el = view.getElementByAbstractNode(spacetaa)
       var hand = new TouchHandler(el)
       var originalParent = null
       var originalLocal = null

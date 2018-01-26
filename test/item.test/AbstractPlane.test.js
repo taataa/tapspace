@@ -37,7 +37,7 @@ module.exports = function (test) {
 
   test('#getGlobalTransform: equal to local transform of child', function (t) {
     var space = new taaspace.Space()
-    // SpacePixel is a SpacePlane
+    // SpacePixel is a AbstractPlane
     var px = new taaspace.SpacePixel(space)
     px.translate(space.at(0, 0), space.at(1, 1))
     var gt = px.getGlobalTransform()

@@ -17,7 +17,7 @@ module.exports = function (test) {
 
     t.equal(el.length, 1, 'img element found')
 
-    var st2 = view.getSpaceNodeByElementId(el.attr('id'))
+    var st2 = view.getAbstractNodeByElementId(el.attr('id'))
     t.equal(st2, spaceimg, 'img element matches space image')
 
     t.end()
@@ -53,10 +53,10 @@ module.exports = function (test) {
 
     var el1 = document.elementFromPoint(300, 300) // null if outside window
     var el2 = $('img.taaspace-image')[0]
-    var el3 = view.getElementBySpaceNode(si)
+    var el3 = view.getElementByAbstractNode(si)
 
     t.equal(el1, el2, 'elementFromPoint matches with jQuery')
-    t.equal(el2, el3, 'jQuery matches with getElementBySpaceNode')
+    t.equal(el2, el3, 'jQuery matches with getElementByAbstractNode')
     t.end()
   })
 
@@ -75,7 +75,7 @@ module.exports = function (test) {
     var v = si.atMid().to(view)
     var el1 = document.elementFromPoint(v.x, v.y)
 
-    t.equal(el1, view.getElementBySpaceNode(si), 'image at middle')
+    t.equal(el1, view.getElementByAbstractNode(si), 'image at middle')
     t.end()
   })
 
@@ -93,7 +93,7 @@ module.exports = function (test) {
     // Let's see if spacenode is still in place.
     var el1 = document.elementFromPoint(300, 300) // null if outside window
 
-    t.equal(el1, view.getElementBySpaceNode(si), 'in place after setParent')
+    t.equal(el1, view.getElementByAbstractNode(si), 'in place after setParent')
     // Let's see if spacenode follows the view.
     // If it does, it should stay visually at the same place.
     view.translate(space.at(0, 0), space.at(2000, 2000))
@@ -103,7 +103,7 @@ module.exports = function (test) {
   })
 
   test('remove node', function (t, ctx) {
-    // Create SpaceNode
+    // Create AbstractNode
     var space = new taaspace.Space()
     var node = new taaspace.SpaceHTML(space, 'foo')
     var view = new taaspace.SpaceViewHTML(space)
@@ -176,7 +176,7 @@ module.exports = function (test) {
 
     // Test the setup is rendered correctly
     var el = document.elementFromPoint(50, 50)
-    t.equal(view.getSpaceNodeByElementId(el.id), nodeB, 'B at left-top')
+    t.equal(view.getAbstractNodeByElementId(el.id), nodeB, 'B at left-top')
     t.equal(
       document.elementFromPoint(150, 50),
       view.getHtmlContainer(),
@@ -189,23 +189,23 @@ module.exports = function (test) {
     // Test that view content has changed.
     t.equal(
       document.elementFromPoint(50, 50),
-      view.getElementBySpaceNode(nodeC),
+      view.getElementByAbstractNode(nodeC),
       'C at left-top corner'
     )
     t.equal(
       document.elementFromPoint(150, 150),
-      view.getElementBySpaceNode(nodeD),
+      view.getElementByAbstractNode(nodeD),
       'D at the middle'
     )
-    t.equal(view.getElementBySpaceNode(nodeB), null, 'no element for B')
+    t.equal(view.getElementByAbstractNode(nodeB), null, 'no element for B')
     t.end()
   })
 
-  test('getElementBySpaceNode', function (t, ctx) {
+  test('getElementByAbstractNode', function (t, ctx) {
     var space = new taaspace.Space()
     var view = new taaspace.SpaceViewHTML(space)
 
-    t.equal(view.getElementBySpaceNode(view), null, 'no element yet')
+    t.equal(view.getElementByAbstractNode(view), null, 'no element yet')
     t.equal(view.getHtmlContainer(), null, 'no container yet')
 
     view.mount(ctx.container)
@@ -214,8 +214,8 @@ module.exports = function (test) {
     // A similar 0x0 element has been created for the view.
     var se = ctx.container.childNodes[0]
     var ve = se.childNodes[0]
-    t.equal(view.getElementBySpaceNode(space), se, 'space has element')
-    t.equal(view.getElementBySpaceNode(view), ve, 'view has element')
+    t.equal(view.getElementByAbstractNode(space), se, 'space has element')
+    t.equal(view.getElementByAbstractNode(view), ve, 'view has element')
     t.equal(view.getHtmlContainer(), ctx.container, 'view has container')
 
     t.end()
