@@ -3,24 +3,26 @@
 var harness = require('./lib/harness')
 
 var UNITS = {
-  Rectangle: require('./Rectangle.test'),
-  Vector: require('./Vector.test'),
-  Path: require('./Path.test'),
-  Grid: require('./Grid.test'),
-  IScalar: require('./IScalar.test'),
-  IVector: require('./IVector.test'),
-  ITransform: require('./ITransform.test'),
-  IGrid: require('./IGrid.test'),
   meta: require('./meta.test'),
-  SpaceViewHTML: require('./SpaceViewHTML.test'),
-  Space: require('./Space.test'),
-  SpaceHTML: require('./SpaceHTML.test'),
-  SpaceNode: require('./SpaceNode.test'),
-  SpacePlane: require('./SpacePlane.test'),
-  SpaceRectangle: require('./SpaceRectangle.test'),
-  SpaceGroup: require('./SpaceGroup.test'),
   preload: require('./preload.test'),
-  version: require('./version.test')
+  version: require('./version.test'),
+
+  Rectangle: require('./geom.test/Rectangle.test'),
+  Vector: require('./geom.test/Vector.test'),
+  Path: require('./geom.test/Path.test'),
+  Grid: require('./geom.test/Grid.test'),
+  IScalar: require('./geom.test/IScalar.test'),
+  IVector: require('./geom.test/IVector.test'),
+  ITransform: require('./geom.test/ITransform.test'),
+  IGrid: require('./geom.test/IGrid.test'),
+
+  AbstractNode: require('./item.test/AbstractNode.test'),
+  AbstractPlane: require('./item.test/AbstractPlane.test'),
+  AbstractRectangle: require('./item.test/AbstractRectangle.test'),
+  Space: require('./item.test/Space.test'),
+  SpaceGroup: require('./item.test/SpaceGroup.test'),
+  SpaceHTML: require('./item.test/SpaceHTML.test'),
+  SpaceView: require('./item.test/SpaceView.test')
 }
 
 for (var unit in UNITS) {

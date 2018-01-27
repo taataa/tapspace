@@ -3,11 +3,11 @@ var animate = require('./animate')
 
 var space = new taaspace.Space()
 var viewElement = document.getElementById('space')
-var view = new taaspace.SpaceViewHTML(space, viewElement)
+var view = new taaspace.SpaceView(space, viewElement)
 
 var a = new taaspace.SpaceHTML(space, '<canvas width="300" height="300">Solar system</canvas>')
 a.resize([300, 300])
 a.translate(a.atMid(), view.atMid())
-animate.animateCanvas(view.getElementBySpaceNode(a).firstChild)
+animate.animateCanvas(view.getElementBySpaceItem(a).firstChild)
 
 transformable.makeViewTransformable(view)

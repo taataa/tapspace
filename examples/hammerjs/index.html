@@ -17,14 +17,14 @@
   <script>
     var container = document.getElementById('spaceview');
     var space = new taaspace.Space();
-    var view = new taaspace.SpaceViewHTML(space, container);
+    var view = new taaspace.SpaceView(space, container);
 
     // Single image.
     var taa = new taaspace.Taa('img/chellah_star.jpg');
     var staa = new taaspace.SpaceTaa(space, taa);
 
     // Expose HTML element for Hammer.
-    var el = view.getElementBySpaceNode(staa);
+    var el = view.getElementBySpaceItem(staa);
 
     // Center view to the image.
     view.translateScale(
