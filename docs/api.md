@@ -16,13 +16,13 @@ Upgrades `obj` to an Emitter. See API details at [component-emitter](https://www
 
 
 
-## taaspace.SpaceViewHTML(space, htmlContainer)
+## taaspace.SpaceView(space, htmlContainer)
 
 Is an Emitter, AbstractNode, AbstractPlane, SpaceTransformer, and AbstractRectangle.
 
 Listens events: added, removed, transformed, resized, contentAdded, contentRemoved
 
-#### #getElementByAbstractNode(abstractNode)
+#### #getElementBySpaceItem(abstractNode)
 
 Return the HTMLElement that represents the abstractNode in this view.
 
@@ -32,7 +32,7 @@ Return null if no HTMLElement found.
 
 Return the container HTMLElement of this view.
 
-#### #getAbstractNodeByElementId(id)
+#### #getSpaceItemByElementId(id)
 
 Return the AbstractNode that is represented by HTMLElement having the given id attribute.
 

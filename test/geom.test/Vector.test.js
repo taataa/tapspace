@@ -1,5 +1,5 @@
-var taaspace = require('../index')
-var Vector = taaspace.Vector
+var taaspace = require('../../index')
+var Vector = taaspace.geom.Vector
 
 module.exports = function (test) {
   // Test cases

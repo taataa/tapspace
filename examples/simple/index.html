@@ -30,7 +30,7 @@
   (function () {
     var container = document.getElementById('space')
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceViewHTML(space)
+    var view = new taaspace.SpaceView(space)
     view.mount(container)
 
     taaspace.preload('assets/leaf.jpg', function (err, img) {

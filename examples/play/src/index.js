@@ -34,7 +34,7 @@ var utils = require('./utils')
 
 var container = document.getElementById('space')
 var space = new taaspace.Space()
-var view = new taaspace.SpaceViewHTML(space, container);
+var view = new taaspace.SpaceView(space, container);
 
 (function makeViewTransformable () {
   var hand = new TouchHandler(container)
@@ -59,7 +59,7 @@ var view = new taaspace.SpaceViewHTML(space, container);
 }())
 
 var makeSpaceTaaTransformable = function (spacetaa) {
-  var el = view.getElementByAbstractNode(spacetaa)
+  var el = view.getElementBySpaceItem(spacetaa)
   var hand = new TouchHandler(el)
   var originalParent = null
   var originalLocal = null

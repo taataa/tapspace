@@ -1,11 +1,15 @@
-var taaspace = require('../index')
-var IGrid = taaspace.IGrid
+var taaspace = require('../../index')
+var Space = taaspace.Space
+var SpaceGroup = taaspace.SpaceGroup
+var SpacePixel = taaspace.SpacePixel
+var Grid = taaspace.geom.Grid
+var IGrid = taaspace.geom.IGrid
 
 module.exports = function (test) {
   // Test cases
 
   test('#at', function (t) {
-    var space = new taaspace.Space()
+    var space = new Space()
     var igrid = new IGrid({
       xStep: 1,
       yStep: 1
@@ -15,11 +19,11 @@ module.exports = function (test) {
   })
 
   test('#snap', function (t) {
-    var space = new taaspace.Space()
-    var px1 = new taaspace.SpacePixel(space)
-    var px2 = new taaspace.SpacePixel(space)
+    var space = new Space()
+    var px1 = new SpacePixel(space)
+    var px2 = new SpacePixel(space)
 
-    var igrid = new taaspace.IGrid(new taaspace.Grid({
+    var igrid = new IGrid(new Grid({
       xStep: 10,
       xPhase: 2,
       yStep: 100
@@ -38,16 +42,16 @@ module.exports = function (test) {
   })
 
   test('#snap with pivot', function (t) {
-    var space = new taaspace.Space()
-    var px1 = new taaspace.SpacePixel(space)
-    var px2 = new taaspace.SpacePixel(space)
+    var space = new Space()
+    var px1 = new SpacePixel(space)
+    var px2 = new SpacePixel(space)
 
     // Move both away from the same coordinate system with the space.
     // This allows us to see problems with correct use of planes.
     px1.translate(space.at(0, 0), space.at(10, 0))
     px2.translate(space.at(0, 0), space.at(10, 0))
 
-    var igrid = new taaspace.IGrid(new taaspace.Grid({
+    var igrid = new IGrid(new Grid({
       xStep: 10,
       yStep: 10,
       rotateStep: Math.PI / 2,
@@ -71,10 +75,10 @@ module.exports = function (test) {
   test('#snap through node hierarchy', function (t) {
     var ggt, sgt
 
-    var space = new taaspace.Space()
-    var g = new taaspace.SpaceGroup(space)
-    var gpx = new taaspace.SpacePixel(g) // Note: on group
-    var spx = new taaspace.SpacePixel(space) // Note: on space
+    var space = new Space()
+    var g = new SpaceGroup(space)
+    var gpx = new SpacePixel(g) // Note: on group
+    var spx = new SpacePixel(space) // Note: on space
 
     // Transform both pixels so that px.atNW()
     // becomes near space.at(-3, -3) with
@@ -93,7 +97,7 @@ module.exports = function (test) {
     sgt = spx.getGlobalTransform()
     t.ok(ggt.almostEqual(sgt), 'assert positions equal')
 
-    var igrid = new taaspace.IGrid({
+    var igrid = new IGrid({
       xStep: 10,
       yStep: 20
     }, space)
@@ -111,14 +115,14 @@ module.exports = function (test) {
   })
 
   test('#getHullOf', function (t) {
-    var space = new taaspace.Space()
-    var g = new taaspace.SpaceGroup(space)
+    var space = new Space()
+    var g = new SpaceGroup(space)
     g.scale(g.at(0, 0), 2)
-    var igrid = new taaspace.IGrid({
+    var igrid = new IGrid({
       xStep: 1,
       yStep: 1
     }, g)
-    var igrid2 = new taaspace.IGrid({
+    var igrid2 = new IGrid({
       xStep: 2,
       yStep: 2
     })

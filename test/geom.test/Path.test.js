@@ -1,6 +1,6 @@
-var taaspace = require('../index')
-var Path = taaspace.Path
-var Vector = taaspace.Vector
+var taaspace = require('../../index')
+var Path = taaspace.geom.Path
+var Vector = taaspace.geom.Vector
 
 module.exports = function (test) {
   // Test cases
@@ -29,7 +29,6 @@ module.exports = function (test) {
       new Vector(-1, 0),
       new Vector(1, 0)
     ])
-    console.log(r.atMid())
     t.ok(r.atMid().equal(new Vector(0, 0)), 'line')
 
     t.end()

@@ -1,4 +1,4 @@
-var taaspace = require('../index')
+var taaspace = require('../../index')
 
 module.exports = function (test) {
   test('#getDescendants: should order correctly', function (t) {

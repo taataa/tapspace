@@ -1,5 +1,5 @@
-var taaspace = require('../index')
-var Rectangle = taaspace.Rectangle
+var taaspace = require('../../index')
+var Rectangle = taaspace.geom.Rectangle
 
 module.exports = function (test) {
   // Test cases

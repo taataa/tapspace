@@ -1,7 +1,8 @@
-var taaspace = require('../index')
-var Transform = taaspace.Transform
-var Vector = taaspace.Vector
-var Grid = taaspace.Grid
+var taaspace = require('../../index')
+var Transform = taaspace.geom.Transform
+var Vector = taaspace.geom.Vector
+var Grid = taaspace.geom.Grid
+var Path = taaspace.geom.Path
 
 module.exports = function (test) {
   // Test cases
@@ -195,7 +196,7 @@ module.exports = function (test) {
     })
 
     var hull00 = grid.getHullOf(0, 0)
-    var path00 = new taaspace.Path([
+    var path00 = new Path([
       new Vector(0, 0),
       new Vector(0, 1),
       new Vector(1, 1),
@@ -205,7 +206,7 @@ module.exports = function (test) {
     t.ok(hull00.almostEqual(path00))
 
     var hull99 = grid.getHullOf(9, 9)
-    var path99 = new taaspace.Path([
+    var path99 = new Path([
       new Vector(9, 9),
       new Vector(9, 10),
       new Vector(10, 10),
@@ -228,7 +229,7 @@ module.exports = function (test) {
     })
 
     var hull = grid.getHullOf(-1, -1)
-    var path = new taaspace.Path([
+    var path = new Path([
       new Vector(-2, -6),
       new Vector(-2, 2),
       new Vector(2, 2),
