@@ -7,6 +7,7 @@ exports.SpaceHTML = require('./lib/SpaceHTML')
 exports.SpaceImage = require('./lib/SpaceImage')
 exports.SpacePixel = require('./lib/SpacePixel')
 exports.SpaceView = require('./lib/SpaceView')
+exports.Touchable = require('./lib/Touchable')
 // Maybe in future:
 // exports.SpacePoint = require('./lib/SpacePoint')
 // exports.SpaceTransform = require('./lib/SpaceTransform')

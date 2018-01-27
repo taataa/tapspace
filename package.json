@@ -26,7 +26,8 @@
     "monotone-convex-hull-2d": "^1.0.1",
     "move-js": "^0.5.0",
     "nudged": "^1.4.0",
-    "seqid": "^1.0.1"
+    "seqid": "^1.0.1",
+    "taach": "^2.0.0"
   },
   "devDependencies": {
     "async": "^2.6.0",
