@@ -1,2 +1,0 @@
-language: node_js
-# Travis runs "npm install" and "npm test" by default

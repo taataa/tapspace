@@ -1,7 +1,7 @@
 {
   "name": "taaspace",
-  "version": "3.0.2",
-  "description": "A zoomable user interface lib for HTML elements.",
+  "version": "4.0.0",
+  "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
     "user interface",
@@ -9,7 +9,7 @@
     "layout"
   ],
   "homepage": "https://github.com/taataa/taaspace",
-  "main": "src/index.js",
+  "main": "index.js",
   "author": {
     "name": "Akseli Palen",
     "email": "akseli.palen@gmail.com"
@@ -21,40 +21,63 @@
   "license": "MIT",
   "dependencies": {
     "component-emitter": "^1.2.1",
-    "loadimages": "^0.2.2",
+    "extend": "^3.0.1",
+    "loadimages": "^1.0.0",
+    "monotone-convex-hull-2d": "^1.0.1",
     "move-js": "^0.5.0",
-    "nudged": "^1.0.1",
-    "seqid": "^1.0.1"
+    "nudged": "^1.4.0",
+    "seqid": "^1.0.1",
+    "taach": "^2.0.2"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "chai": "^3.3.0",
-    "chai-jquery": "^2.0.0",
-    "chai-shallow-deep-almost-equal": "^1.3.0",
-    "jquery": "^2.1.4",
-    "jshint": "^2.9.2",
-    "minifyify": "^7.1.0",
-    "mocha": "^2.3.3",
-    "mocha-phantomjs-core": "^2.0.1",
-    "phantomjs-prebuilt": "^2.1.7",
-    "semver": "^5.1.0"
+    "async": "^2.6.0",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "genversion": "^2.0.1",
+    "jquery": "^3.2.1",
+    "npm-watch": "^0.3.0",
+    "semver": "^5.4.1",
+    "standard": "*",
+    "style-loader": "^0.19.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "tape-run": "^3.0.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.9.0",
+    "webpack-livereload-plugin": "^1.0.0",
+    "webpack-tape-run": "0.0.7"
   },
   "scripts": {
-    "start": "python -m SimpleHTTPServer",
+    "start": "python3 -m http.server 8000",
     "serve": "ifconfig | grep inet && python3 -m http.server 8000",
-    "build": "npm run test:lint && npm run build:min && npm run test:headless",
-    "build:dev": "npm run test:lint && npm run build:debug && npm run test:headless",
-    "build:min": "browserify --debug --standalone taaspace src/index.js -p [minifyify --map taaspace.min.js.map --output taaspace.min.js.map] > taaspace.min.js",
-    "build:debug": "browserify --debug --standalone taaspace src/index.js > taaspace.min.js",
-    "test": "npm run test:lint && npm run test:headless",
-    "#": "--ignore-resource-errors will prevent PhantomJS logging error messages about missing files, as we test initializing Taas with missing image files.",
-    "build:test-deps": "npm run build:semver",
-    "build:semver": "browserify --standalone semver node_modules/semver/semver.js > tests/assets/semver.js",
-    "test:headless": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js tests/testrunner.html spec '{\"viewportSize\": {\"width\":512, \"height\":512}, \"ignoreResourceErrors\": true}'",
-    "test:lint": "jshint src/* tests/*.js",
-    "build:examples-play": "npm run test:examples-play && browserify examples/play/src/index.js -o examples/play/app.js",
-    "test:examples-play": "jshint examples/play/src/*.js",
-    "build:examples-canvas": "npm run test:examples-canvas && browserify examples/canvas/src/index.js -o examples/canvas/app.js",
-    "test:examples-canvas": "jshint examples/canvas/src/*.js"
+    "build": "npm run lint && npm run gv && npm run test:headless && npm run build:min",
+    "build:min": "webpack",
+    "build:watch": "webpack --watch",
+    "test:headless": "webpack --config test/webpack.headless.config.js",
+    "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
+    "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
+    "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
+    "lintfix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
+    "gv": "genversion lib/version.js",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "lint": {
+      "patterns": [
+        "lib/**/*.js",
+        "test/**/*.js"
+      ]
+    },
+    "build:min": {
+      "patterns": [
+        "index.js",
+        "lib/**/*.js"
+      ]
+    },
+    "gv": {
+      "patterns": [
+        "package.json"
+      ]
+    }
   }
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minimal / Taaspace Example</title>
+
+  <!--
+    Minimal Taaspace Application
+
+    In this example we go through the basics of a taaspace app.
+    The three essential components are:
+    - items: a set of media elements
+    - space: a system of two-dimensional planes where the items live.
+    - view: a viewport to the space; a link between the space and HTML DOM.
+  -->
+
+  <style>
+    /*
+      Styles
+
+      Here we define the position of the app on the page.
+      Typically we give it the 100% of the browser's view.
+    */
+    html, body, #minimalspace {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing Space -->
+  <div id="minimalspace"></div>
+
+  <!-- Import taaspace -->
+  <script src="../../dist/taaspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Create a Space. It will contain stuff.
+    var space = new taaspace.Space()
+
+    // Create a View to the Space. The view connects Space to HTML DOM.
+    var view = new taaspace.SpaceView(space)
+    var container = document.getElementById('minimalspace')
+    view.mount(container)
+
+    // Create a black SpacePixel, one of the simplest items in Space.
+    // The SpacePixel is initially represented as 1x1 <div> with black
+    // background color.
+    var px = new taaspace.SpacePixel(space, '#000000')
+
+    // Next we move and scale the view so that the SpacePixel ends up magnified
+    // and at the middle of the view.
+
+    // The next line translates the view in the Space so that the middle point
+    // of the view will be at the middle point of the SpacePixel
+    // after the transformation. You kind of tell that "these should go there".
+    view.translate(view.atMid(), px.atMid())
+
+    // The next line zooms the view closer to the SpacePixel.
+    // The first argument specifies a pivot point around we are scaling.
+    // The second argument is the scaling factor. A factor of 2 would
+    // double the dimensions of the viewport on Space. The factor of 0.01
+    // shrinks the viewport so that our 1x1 SpacePixel looks very large.
+    view.scale(view.atMid(), 0.01)
+  </script>
+</body>
+</html>

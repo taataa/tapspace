@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Multiview / Taaspace Example</title>
+
+  <!--
+    Multiview - Multiple Views to one Space
+
+    In this example we set up multiple views to render a single space.
+
+    We assume the reader is familiar with the earlier examples:
+    - minimal
+  -->
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .row {
+      width: 100%;
+      height: 100%;
+    }
+
+    .column {
+      float: left;
+      width: 50%;
+      height: 100%;
+    }
+
+    #view0 {
+      background-color: black;
+      width: 50%;
+      height: 100%;
+      outline: 1px solid gray;
+    }
+
+    #view1 {
+      background-color: black;
+      width: 100%;
+      height: 50%;
+      outline: 1px solid gray;
+    }
+
+    #view2 {
+      background-color: black;
+      width: 100%;
+      height: 50%;
+      outline: 1px solid gray;
+    }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <div id="view0" class="column"></div>
+    <div class="column">
+      <div id="view1"></div>
+      <div id="view2"></div>
+    </div>
+  </div>
+  <script src="../../dist/taaspace.min.js"></script>
+
+  <script>
+    var space = new taaspace.Space()
+
+    var v = new taaspace.SpaceView(space)
+    var vv = new taaspace.SpaceView(space)
+    var vvv = new taaspace.SpaceView(space)
+
+    var g = new taaspace.SpaceGroup(space)
+
+    var px = new taaspace.SpacePixel(g, 'red')
+    var pxx = new taaspace.SpacePixel(g, 'green')
+    var pxxx = new taaspace.SpacePixel(g, 'blue')
+
+    pxx.translate(pxx.atNW(), px.atSE())
+    pxxx.translate(pxxx.atSW(), pxx.atNE())
+
+    v.mount(document.getElementById('view0'))
+    vv.mount(document.getElementById('view1'))
+    vvv.mount(document.getElementById('view2'))
+
+    v.fitScale(g)
+    vv.fitScale(g)
+    vvv.fitScale(g)
+
+    v.scale(v.atMid(), 1.62)
+    vv.translate(vv.atMid(), pxx.atNW())
+    vv.scale(vv.atMid(), 0.62)
+    vvv.scale(vvv.atMid(), 1.3)
+    vvv.rotate(vvv.atMid(), Math.PI / 5)
+
+  </script>
+</body>
+</html>
