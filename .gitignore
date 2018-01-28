@@ -1,6 +1,7 @@
 # Bundle builds
 /dist/*
 !/dist/.gitkeep
+!/dist/taaspace.min.js
 /test/dist/*
 !/test/dist/.gitkeep
 
