@@ -1,6 +1,6 @@
 {
   "name": "taaspace",
-  "version": "4.0.0-alpha.20",
+  "version": "4.0.0",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -27,7 +27,7 @@
     "move-js": "^0.5.0",
     "nudged": "^1.4.0",
     "seqid": "^1.0.1",
-    "taach": "^2.0.0"
+    "taach": "^2.0.2"
   },
   "devDependencies": {
     "async": "^2.6.0",
