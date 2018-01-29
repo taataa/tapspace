@@ -2,9 +2,15 @@
 
 Contents:
 - [Module](#module)
+  - [taaspace](#taaspace)
+  - [taaspace.version](#taaspace-version)
 - [Items](#items)
+  - [taaspace.Space](#taaspace-space)
+  - [taaspace.SpaceGroup](#taaspace-spacegroup)
 - [Abstract Items](#abstract-items)
 - [Tools](#tools)
+  - [taaspace.geom](#taaspace-geom)
+  - [taaspace.preload](#taaspace-preload)
 
 ![taaspace module dependency graph](taaspace_api_3.png?raw=true)
 
@@ -165,5 +171,3 @@ Set transform to identity. Now, the coordinate system matches the system of the 
 A collection of geometric models, including `Vector` and `Transform`.
 
 ### taaspace.preload
-
-### taaspace.version
