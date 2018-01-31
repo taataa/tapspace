@@ -1,7 +1,8 @@
 
 # taaspace.geom
 
-A collection of geometric models.
+A collection of geometric models. All models under `geom` are *immutable* i.e. their state does not change. For example, `vector.rotate(Math.PI)` does not change `vector` but instead returns a new, rotated `Vector` instance.
+
 
 ## taaspace.geom.Grid
 
@@ -40,6 +41,7 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 
 **Method** `#transform(tr)` returns a new transformed `Grid`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes. This method enables us to represent a grid on different planes, paving a way for the plane invariant `IGrid`.
 
+
 ## taaspace.geom.IGrid
 
 An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `Grid` by calling `#to` method.
@@ -62,12 +64,9 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 
 **Method** `#to(item)` returns a `Grid` in the coordinate plane of the given item. The returned grid is globally equivalent to `this`.
 
-**Method** `#toSpace()` returns a `Grid` in the coordinate plane of the root item.
+**Method** `#toSpace()` returns a `Grid` in the coordinate system of the root item.
 
 **Method** `#transform(itr)` returns an `IGrid`, transformed by the given `ITransform itr`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes.
-
-
-## taaspace.geom.IScalar
 
 
 ## taaspace.geom.Path
@@ -113,7 +112,10 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 
 **Method** `#transform(tr)` returns a new `Path` where each `Vector` has been left-multiplied by the given `Transform`.
 
+
 ## taaspace.geom.IPath
+
+
 
 
 ## taaspace.geom.Rectangle
@@ -157,11 +159,68 @@ An object with width and height, and top-left corner always at (0, 0). The `Rect
 **Method** `#toArray()` returns `[this.w, this.h]`.
 
 
+## taaspace.geom.IScalar
+
+A plane-invariant measure.
+
+**Usage:**
+
+    var s = new taaspace.geom.IScalar(6, sourceItem)
+    var t = s.to(targetItem)
+
+**Method** `#add(isca)` returns a new `IScalar` that is the sum of `this` and the given `IScalar`.
+
+**Method** `#equal(isca)` returns `true` if `this` and the given `IScalar` are globally equal.
+
+**Method** `#to(item)` returns `number` that is `this` represented in the given item's coordinate system.
+
+**Method** `#toSpace()` returns `number` in the coordinate system of the root item.
+
+
 ## taaspace.geom.Transform
 
 For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransforms-r-tx-ty)
 
+
 ## taaspace.geom.ITransform
+
+A plane-invariant `Transform`. Similarly as a `Vector` can be represented in multiple coordinate systems,
+so can a transformation. To free users from thinking about which representation is the correct one for a given situation, we have `ITransform`.
+
+**Constructor** `ITransform(transf, plane)` takes in a `Transform` and an item (instance of `AbstractPlane`) that defines the coordinate system of the given `Transform`.
+
+**Factory** `ITransform.estimate(type, domain, range, pivot)` returns an `ITransform` estimated from the given control points. Parameter `type` is a `string` and defines the set of allowed transformations: `'I'`, `'T'`, `'S'`, `'R'`, `'TS'`, `'TR'`, `'SR'`, or `'TSR'`. Parameters `domain` and `range` are `IPath`s or arrays of `IVector`s and are the control points for the estimation. The optional parameter `pivot` is `IVector` and restricts the transform to keep this point fixed. See package [nudged](https://www.npmjs.com/package/nudged) for details.
+
+**Constant** `ITransform.IDENTITY` gives the default `ITransform`.
+
+**Method** `#almostEqual(itr)` returns `true` if the elements of transformation matrices of `this` and the given `ITransform` match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#equal(itr)` returns `true` if elements in the transformation matrices are strictly equal.
+
+**Method** `#inverse()` returns `ITransform` with the inverse of the original transformation matrix.
+
+**Method** `#to(item)` returns a `Transform` that equals to `this` represented in the coordinate system of the given item.
+
+**Method** `#toSpace()` returns a `Transform` that equals to `this` represented in the coordinate system of the root item.
+
+**Method** `#multiplyRight(itr)` alias `#transformBy(itr)` returns a `ITransform` that is the original multiplied from the right with the given `ITransform`.
+
+**Method** `#relativeTo(itr)` returns `ITransform` needed by the given `ITransform` to become `this`. In other words, if `C = A.relativeTo(B)`, then `A = C * B`.
+
+**Method** `#translate(domain, range)` moves the *image* of `this` horizontally and vertically so that the given domain (an array of `IVector`s) travels as close to the range (a matching length array of `IVector`s) as possible. If only single `IVector`s are given, the array can be omitted.
+
+**Method** `#scale(pivot, multiplier)` or `#scale(pivot, domain, range)` scales the *image* of `this` around the `IVector pivot`. A `multiplier` of `2` would double the space of the image. If `domain` and `range` are given, the image of `this` becomes scaled so that domain becomes as close to range as possible, like described at `#translate`.
+
+**Method** `#rotate(pivot, radians)` or `#rotate(pivot, domain, range)` is similar to `#scale` but rotates instead of scaling.
+
+**Method** `translateScale(domain, range)` is similar to `#scale` but allows both translation and scaling.
+
+**Method** `translateRotate(domain, range)` is similar to `#scale` but allows both translation and rotation.
+
+**Method** `scaleRotate(pivot, domain, range)` is similar to `#scale` but allows both scaling and rotation around a `IVector pivot`.
+
+**Method** `translateScaleRotate(domain, range)` is similar to `#scale` but allows each translation, scaling, and rotation.
+
 
 ## taaspace.geom.Vector
 
