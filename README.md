@@ -6,10 +6,20 @@ We dream **touch user interfaces** to be minimalistic, natural to use, and physi
 
 ![taaspace.js Logo](docs/taaspace-logo-256.png?raw=true)
 
+## Install
 
-## Tutorials
+With [npm](https://www.npmjs.com/package/taaspace):
 
-The tutorials are written into source code of the following apps!
+    $ npm install taaspace
+
+
+## Documentation
+
+See [taataa.github.io/taaspace](http://taataa.github.io/taaspace) for [a tutorial](http://taataa.github.io/taaspace/tutorial), [API reference](http://taataa.github.io/taaspace/api), and [developer's cheat sheet](http://taataa.github.io/taaspace/dev).
+
+## Examples
+
+See the source code for tutoring comments!
 
 - Your first minimal Space [[App]](https://rawgit.com/taataa/taaspace/development/examples/minimal/index.html) [[Source]](examples/minimal/index.html)
 - SpaceHTML and transformations [[App]](https://rawgit.com/taataa/taaspace/development/examples/html/index.html) [[Source]](examples/html/index.html)
@@ -22,35 +32,6 @@ The tutorials are written into source code of the following apps!
 - [Hammer.js integration](https://rawgit.com/taataa/taaspace/development/examples/hammerjs/index.html)
 - [Canvas animation](https://rawgit.com/taataa/taaspace/development/examples/canvas/index.html)
 --->
-
-
-## Install
-
-With [npm](https://www.npmjs.com/package/taaspace):
-
-    $ npm install taaspace
-
-<!---
-## Documentation
-
-- [API](docs/api.md)
---->
-
-## Developers
-
-Tests are run in a browser and built on [tape](https://github.com/substack/tape).
-
-### npm run test:browser:watch
-
-Steps:
-
-1. Start building of the test suite by `$ npm run test:browser:watch`.
-1. Then open a test runner `test/index.html` with your browser of choice.
-
-Features:
-
-- The build uses `webpack --watch` under the hood so any change to lib or test code rebuilds the suite.
-- The runner uses `webpack-livereload-plugin` so expect automatic page refresh at each webpack rebuild.
 
 
 ## License
