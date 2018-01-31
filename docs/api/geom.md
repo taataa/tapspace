@@ -24,7 +24,7 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 - `rotateStep`: rotation step size in radians. E.g. value PI/2 allows rotations of 0, 90, 180, and 270 degrees.
 - `rotatePhase`: addition to rotation. E.g. letting `rotateStep:Math.PI/2` and `rotatePhase:Math.PI/4` allows rotations of 45, 135, 225, and 315 degrees.
 
-**Method** `#almostEqual(grid)` returns `true` if the given grid is equal to `this`, allowing small errors from floating point arithmetics.
+**Method** `#almostEqual(grid)` returns `true` if the given `Grid` is equal to `this`, allowing small errors from floating point arithmetics.
 
 **Method** `#at(i, j)` returns `Vector` at (i, j) in grid's coordinates. E.g. let `xStep:2` and `yStep:2`, then `this.at(1, -1)` returns `Vector(2, -2)`. Also, `this.at(0, 0)` equals `this.getOrigin()`.
 
@@ -32,9 +32,9 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 
 **Method** `#getHullOf(i, j)` returns `Path` representing the hull of (i, j):th eye of the grid.
 
-**Method** `#getOrigin()` returns `Vector` at origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
+**Method** `#getOrigin()` returns `Vector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
 
-**Method** `#snap(pivot, transform)` returns a snapped `Transform`. To describe, if the snapped `Transform` is then applied to the pivot, the result is a `Vector` that fulfils the restrictions of the mode.
+**Method** `#snap(pivot, transform)` returns a snapped `Transform`. To describe, if the snapped `Transform` is then applied to the pivot, the result is a `Vector` that fulfils the restrictions of the mode. In other words, a plane defined by the transform is moved so, that the pivot on the plane hits the grid.
 
 **Method** `#toArray` returns a serializable representation of the grid.
 
@@ -42,7 +42,34 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 
 ## taaspace.geom.IGrid
 
+An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `Grid` by calling `#to` method.
+
+**Usage:**
+
+    > var igrid = new taaspace.geom.IGrid(modeOrGrid, item)
+
+**Method** `#almostEqual(igrid)` returns `true` if the given `IGrid` is equal to `this`, allowing small errors from floating point arithmetics.
+
+**Method** `#at(i, j)` returns `IVector` at (i, j) in grid's coordinates. E.g. let `xStep:2` and `yStep:2`, then `this.at(1, -1)` returns `IVector` for `Vector(2, -2)`. Also, `this.at(0, 0)` equals `this.getOrigin()`.
+
+**Method** `#equal(igrid)` returns `true` if values of the modes of the grids become strictly equal if transformed on the same plane.
+
+**Method** `#getHullOf(i, j)` returns `IPath` representing the hull of (i, j):th eye of the grid.
+
+**Method** `#getOrigin()` returns `IVector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
+
+**Method** `#snap(pivot, itransform)` returns a snapped `ITransform`. To describe, if the snapped `ITransform` is then applied to the given `IVector pivot`, the result is an `IVector` that fulfils the restrictions of the mode. In other words, a plane defined by `itransform` is moved so, that the pivot on the plane hits the grid.
+
+**Method** `#to(item)` returns a `Grid` in the coordinate plane of the given item. The returned grid is globally equivalent to `this`.
+
+**Method** `#toSpace()` returns a `Grid` in the coordinate plane of the root item.
+
+**Method** `#transform(itr)` returns an `IGrid`, transformed by the given `ITransform itr`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes.
+
+
 ## taaspace.geom.IPath
+
+
 
 ## taaspace.geom.IScalar
 
@@ -69,6 +96,48 @@ Return a new SpacePoint on the space coordinate system.
 Return a new SpacePoint by transforming this by the given Transform.
 
 ## taaspace.geom.Path
+
+A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant alternative.
+
+**Usage:**
+
+    var Vec = taaspace.geom.Vector
+    var p = new taaspace.geom.Path([
+      new Vec(x0, y0),
+      new Vec(x1, y1),
+      ...
+    ])
+
+**Method** `#add(path)` returns a new `Path` that is the result of concatenating `this` with the given `path`.
+
+**Method** `#almostEqual(path)` returns `true` if each `Vector` in `this` is almost equal to similarly positioned `Vector` in the given `path`, thus leaving a room for small floating point arithmetic errors.
+
+**Method** `#atMid()` returns the mass centroid of the closed path as a `Vector` and `null` if the path is empty.
+
+**Method** `#bottom()` returns the `Vector` with the largest `y` property. If multiple `Vector`s share the same `y`, the first is returned.
+
+**Method** `#equal(path)` returns `true` if each `Vector` in `this` is equal to similarly positioned `Vector` in the given `path`.
+
+**Method** `#first()` returns the first `Vector` of the path and `null` if empty.
+
+**Method** `#get(i)` return the `i`:th `Vector` of the path and `undefined` if the index is out of range.
+
+**Method** `#getBounds()` returns a bounding box as a `Path` in the hull order.
+
+**Method** `#getHull()` returns the convex hull of `this` as a `Path`.
+
+**Method** `#last()` returns the last `Vector` of the path and `null` if empty.
+
+**Method** `#left()` returns the `Vector` with the smallest `x` property. If multiple `Vector`s share the same `x`, the first is returned.
+
+**Method** `#right()` returns the `Vector` with the largest `x` property. If multiple `Vector`s share the same `x`, the first is returned.
+
+**Method** `#toArray()` returns an array of `Vector`s.
+
+**Method** `#top()` returns the `Vector` with the smallest `y` property. If multiple `Vector`s share the same `y`, the first is returned.
+
+**Method** `#transform(tr)` returns a new `Path` where each `Vector` has been left-multiplied by the given `Transform`.
+
 
 ## taaspace.geom.Rectangle
 
