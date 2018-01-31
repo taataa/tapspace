@@ -94,7 +94,7 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 
 **Method** `#first()` returns the first `Vector` of the path and `null` if empty.
 
-**Method** `#get(i)` return the `i`:th `Vector` of the path and `undefined` if the index is out of range.
+**Method** `#get(i)` returns the `i`:th `Vector` of the path and `undefined` if the index is out of range.
 
 **Method** `#getBounds()` returns a bounding box as a `Path` in the hull order.
 
@@ -115,7 +115,46 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 
 ## taaspace.geom.IPath
 
+A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative for `Path`.
 
+**Usage:**
+
+    var Vec = taaspace.geom.Vector
+    var px = new taaspace.SpacePixel(space)
+    var p = new taaspace.geom.Path([
+      new Vec(x0, y0),
+      new Vec(x1, y1),
+      ...
+    ])
+    var ip = new taaspace.geom.IPath(p, px)
+
+**Constructor** `IPath(path, item)` takes a `Path` and an item that defines the coordinate system of the `path`.
+
+**Property** `#length` equals the number of `Vector`s in the path.
+
+**Method** `#add(ipath)` returns a new `IPath` that is the result of concatenating `this` with the given `IPath`.
+
+**Method** `#almostEqual(ipath)` returns `true` if `this` and the given `IPath` are almost equal when represented on a same coordinate system. See `Path#almostEqual`.
+
+**Method** `#atMid()` returns the mass centroid of the closed path as a `IVector` and `null` if the path is empty.
+
+**Method** `#equal(ipath)` returns `true` if `this` and the given `IPath` are equal when represented in a coordinate system.
+
+**Method** `#first()` returns `IVector` for the first point on the path.
+
+**Method** `#get(i)` returns `IVector` for the `i`:th point on the path.
+
+**Method** `#getHull()` returns the convex hull of `this` as an `IPath`.
+
+**Method** `#last()` returns `IVector` for the last point on the path.
+
+**Method** `#to(item)` returns `Path` represented in the given item's coordinate system.
+
+**Method** `#toArray()` returns an array of `IVector`s.
+
+**Method** `#toSpace()` returns `Path` represented in the coordinate system of the root item.
+
+**Method** `#transform(itr)` returns a new `IPath` where each `IVector` has been left-multiplied by the given `ITransform`.
 
 
 ## taaspace.geom.Rectangle
