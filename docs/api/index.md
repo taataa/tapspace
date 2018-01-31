@@ -14,9 +14,13 @@ Contents:
   - [taaspace.AbstractNode](#taaspace-abstractnode)
   - [taaspace.AbstractPlane](#taaspace-abstractplane)
   - [taaspace.AbstractRectangle](#taaspace-abstractrectangle)
-- [Tools](#tools)
+- [Interaction](#interaction)
+  - [taaspace.Touchable](#taaspace-touchable)
+- [Geometry](#geometry)
   - [taaspace.geom](#taaspace-geom)
+- [Other](#other)
   - [taaspace.preload](#taaspace-preload)
+
 
 ## Module
 
@@ -28,7 +32,7 @@ Usage:
 
 ### taaspace.version
 
-A semantic version string identical to the version in `package.json`.
+A semantic version string identical to the version in the module's `package.json`.
 
 
 
@@ -147,7 +151,7 @@ The items inherit from their abstract prototypes. The image below gives an overv
 
 *Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: AbstractNode has other AbstractNodes. Arrow head denotes inheritance: AbstractRectangle is an AbstractPlane, AbstractPlane is an AbstractNode et cetera.*
 
-## taaspace.AbstractNode
+### taaspace.AbstractNode
 
 Gives an inheriting object the tree node capabilities like fetching the children and ancestor nodes.
 
@@ -183,7 +187,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 
 
-## taaspace.AbstractPlane
+### taaspace.AbstractPlane
 
 Gives an inheriting object capabilities to act as a coordinate plane. Each AbstractPlane has a `Transform` that defines the position of the plane in relation to its parent plane. `Transform` is a transformation matrix that allows rotations, scalings, and translations. The matrix maps a vector on the plane to another vector on the parent plane.
 
@@ -227,7 +231,7 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 
 
-## taaspace.AbstractRectangle
+### taaspace.AbstractRectangle
 
 Gives an inheriting object a rectangular shape and size dimensions.
 
@@ -267,13 +271,20 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#setLocalSize(diag)` updates the diagonal to match the given `Vector`. Emits `resized`.
 
+## Interaction
 
-## Tools
+### taaspace.Touchable
 
-## taaspace.geom
+To allow users to interact with the items, we can make the items touchable. See [api/touchable](touchable) for further documentation.
 
-A module for geometric models, including `Vector`, `Path`, `Transform` and their plane-invariant representations. See [api/geom](geom) for further documentation.
+## Geometry
 
+### taaspace.geom
+
+A module for geometric models, including `Vector`, `Path`, `Transform` and their plane-invariant alternatives. See [api/geom](geom) for further documentation.
+
+
+## Other
 
 ### taaspace.preload
 
