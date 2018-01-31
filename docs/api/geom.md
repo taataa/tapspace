@@ -219,3 +219,35 @@ A point in 2D space.
 
 
 ## taaspace.geom.IVector
+
+A plane-invariant vector that can be converted to `Vector` on given plane when needed.
+
+**Usage:**
+
+    var ox = new taaspace.SpacePixel(space)
+    var v = new taaspace.geom.Vector(4, 2)
+    var iv = new taaspace.geom.IVector(v, px)
+
+**Constructor** `IVector(vec, plane)` takes a `Vector` and an item `plane`. The `plane` defines the coordinate system of `vec`.
+
+**Method** `#add(ivec)` sums `this` to `IVector ivec` and returns a new `IVector`.
+
+**Method** `#almostEqual(ivec)` returns `true` if the `IVector`s match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#distance(ivec)` returns Euclidean (L2) distance between `this` and the given `IVector`.
+
+**Method** `#equal(ivec)` returns `true` if `this` is globally equal to the given `IVector`.
+
+**Method** `#multiply(scalar)` returns `IVector` multiplied by `scalar`.
+
+**Method** `#norm()` returns `IScalar` that represents the euclidean (L2) norm of the vector in plane-invariant manner.
+
+**Method** `#offset(dx, dy, plane)` returns `IVector` that results when `this` is moved by `dx` and `dy`. Optional `plane` defines the plane of the given `dx` and `dy`. The plane defaults to the root.
+
+**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that results when `this` is moved `radius` units to `radians` direction. Optional `plane` defines the coordinate system of the given `radius`. The plane defaults to the root item.
+
+**Method** `#to(item)` returns a `Vector` that equals to `this` represented in the coordinate system of the given item.
+
+**Method** `#toSpace()` returns a `Vector` that equals to `this` represented in the coordinate system of the root item.
+
+**Method** `#transform(itr)` returns an `IVector` that results when `this` is transformed by the given `ITransform itr`.
