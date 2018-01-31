@@ -67,33 +67,8 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 **Method** `#transform(itr)` returns an `IGrid`, transformed by the given `ITransform itr`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes.
 
 
-## taaspace.geom.IPath
-
-
-
 ## taaspace.geom.IScalar
 
-## taaspace.geom.ITransform
-
-## taaspace.geom.IVector
-
-#### #equals(point)
-
-#### #offset(dx, dy)
-
-#### #polarOffset(distance, radians)
-
-#### #to(targetPlane)
-
-Return a new SpacePoint on the coordinate system of `targetPlane`.
-
-#### #toSpace()
-
-Return a new SpacePoint on the space coordinate system.
-
-#### #transform(tr)
-
-Return a new SpacePoint by transforming this by the given Transform.
 
 ## taaspace.geom.Path
 
@@ -138,11 +113,109 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 
 **Method** `#transform(tr)` returns a new `Path` where each `Vector` has been left-multiplied by the given `Transform`.
 
+## taaspace.geom.IPath
+
 
 ## taaspace.geom.Rectangle
+
+An object with width and height, and top-left corner always at (0, 0). The `Rectangle` does not have plane-invariant alternative because rotations would change the aspect ratio. If you need to represent a rectangle on multiple planes, use `IPath` instead.
+
+**Usage:**
+
+    var rect = new taaspace.geom.Rectangle(16, 9)
+
+**Property** `w` gives the width.
+
+**Property** `h` gives the height.
+
+**Method** `#atMid()` returns `Vector` to the middle.
+
+**Method** `#atMidN()` alias `#atMidTop`.
+
+**Method** `#atMidW()` alias `#atMidLeft`.
+
+**Method** `#atMidE()` alias `#atMidRight`.
+
+**Method** `#atMidS()` alias `#atMidBottom`.
+
+**Method** `#atNorm(x, y)` returns a `Vector` for coordinates `x` and `y` relative to width and height. For example, let `r = Rectangle(20, 10)`. Now `r.atNorm(1, 1)` returns `Vector(20, 10)` and `r.atNorm(0.75, 0.4)` returns `Vector(15, 4)`.
+
+**Method** `#atNW()` alias `#atLeftTop`.
+
+**Method** `#atNE()` alias `#atRightTop`.
+
+**Method** `#atSW()` alias `#atLeftBottom`.
+
+**Method** `#atSE()` alias `#atRightBottom`.
+
+**Method** `#equal(rect)` returns `true` if widths and heights match.
+
+**Method** `#getDiagonal()` returns a `Vector`. Alias to `#atRightBottom`.
+
+**Method** `#scale(multiplier)` returns new `Rectangle` where the width and height are multiplied by `multiplier`.
+
+**Method** `#toArray()` returns `[this.w, this.h]`.
+
 
 ## taaspace.geom.Transform
 
 For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransforms-r-tx-ty)
 
+## taaspace.geom.ITransform
+
 ## taaspace.geom.Vector
+
+A point in 2D space.
+
+**Usage:**
+
+    var vec = new taaspace.geom.Vector(2, 1)
+
+**Property** `x` is a number
+
+**Property** `y` is a number
+
+**Alternative constructor** `Vector.createFromPolar(magnitude, direction)` takes the vector length and direction in radians and returns a `Vector`.
+
+**Method** `#add(vec)` sums `this` to `vec` and returns a new `Vector`.
+
+**Method** `#almostEqual(vec)` returns `true` if the vectors match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#changeBasis(vi, vj)` takes two `Vector`s `vi` and `vj` and returns a `Vector` represented in a coordinate system where `vi` and `vj` are the basis vectors. In other words, if `r = this.changeBasis(vi, vj)` then `this` is equal to `r.x` * `vi` + `r.y` * `vj`. Throws `Error` if given basis vectors are linearly dependent.
+
+**Method** `#changeFromBasis(vi, vj)` is opposite of `#changeBasis` so that if `a = b.changeBasis(vi, vj)` then `b = a.changeFromBasis(vi, vj)`.
+
+**Method** `#distance(vec)` returns Euclidean (L2) distance between `this` and `vec`.
+
+**Method** `#equal(vec)` returns `true` if `x`s and `y`s are strictly equal.
+
+**Method** `#getRotation()` returns radians from positive x-axis.
+
+**Method** `#getMagnitude()` alias for `#norm`.
+
+**Method** `#isIndependent(vec)` returns `true` if `this` and `vec` are linearly independent.
+
+**Method** `#opposite()` returns a negation of `this`.
+
+**Method** `#max(vec)` returns `Vector` where the largest `x` and `y` are picked from `this` and `vec`. For example, let `a = Vector(1, 0)` and `b = Vector(0, 1)` so `a.max(b)` equals `Vector(1, 1)`.
+
+**Method** `#min(vec)` returns `Vector` where the smallest `x` and `y` are picked from `this` and `vec`. See `#max`.
+
+**Method** `#multiply(scalar)` returns `Vector` where `x` and `y` are multiplied by `scalar`.
+
+**Method** `#norm()` returns Euclidean (L2) norm of the vector.
+
+**Method** `#offset(dx, dy)` returns `Vector` that is equal to `this.add(Vector(dx, dy))`.
+
+**Method** `#polarOffset(radius, radians)` returns `Vector` that is equal to `this.add(Vector.createFromPolar(radius, radians))`.
+
+**Method** `#rotate(radians)` returns `Vector` where `this` has been rotated about pivot (0, 0).
+
+**Method** `#subtract(vec)` returns `Vector` that is equal to `this.add(vec.opposite())`.
+
+**Method** `#toArray()` returns `[this.x, this.y]`.
+
+**Method** `#transform(tr)` returns `Vector` where `this` has been multiplied from left by the given `Transform`.
+
+
+## taaspace.geom.IVector
