@@ -2,9 +2,7 @@
 
 [![NPM Version](https://badge.fury.io/js/taaspace.svg)](https://www.npmjs.com/package/taaspace)
 
-We dream **touch user interfaces** to be minimalistic, natural to use, and physical as paper. Taaspace is a **JavaScript** library for that kind of interfaces. It is designed for modern UI concepts such as **zoomable UIs** and **graph-based UIs** with **pure direct manipulation**. Taaspace provides an **infinite, transformable space** for you to represent **HTML content** and for your users to directly explore and interact with it. Taaspace uses **pure CSS3 and DOM** and therefore supports any HTML content, including iframe, svg, and Canvas- and WebGL-rendered elements. It provides clean API for you to build cool, **zoomable, and dynamic front-ends**.
-
-![taaspace.js Logo](docs/taaspace-logo-256.png?raw=true)
+We believe **zoomable touch user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Taaspace**, a **JavaScript** library dedicated to build that kind of **dynamic front-ends**. It implements a **scene graph** that provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Taaspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
 ## Install
 
