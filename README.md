@@ -1,4 +1,4 @@
-# taaspace
+# ![tapspace](docs/banner.png?raw=true)
 
 [![NPM Version](https://badge.fury.io/js/taaspace.svg)](https://www.npmjs.com/package/taaspace)
 
