@@ -3,7 +3,7 @@ Taaspace lets you build touchable and zoomable web apps. Whether you dream about
 
 [**Tutorial**](tutorial/) is a good place to start for newcomers.
 
-[**API reference**](api/) comes handy when coding.
+[**API Reference**](api/) comes handy when coding.
 
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Taaspace to a next level.
 
