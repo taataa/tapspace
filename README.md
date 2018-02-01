@@ -15,7 +15,10 @@ With [npm](https://www.npmjs.com/package/taaspace):
 
 ## Documentation
 
-See [taataa.github.io/taaspace](http://taataa.github.io/taaspace) for [a tutorial](http://taataa.github.io/taaspace/tutorial), [API reference](http://taataa.github.io/taaspace/api), and [developer's cheat sheet](http://taataa.github.io/taaspace/dev).
+See [taataa.github.io/taaspace](http://taataa.github.io/taaspace) for:
+- [Tutorial](http://taataa.github.io/taaspace/tutorial)
+- [API Reference](http://taataa.github.io/taaspace/api)
+- [Developer's Cheat Sheet](http://taataa.github.io/taaspace/dev)
 
 ## Examples
 
