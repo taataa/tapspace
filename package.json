@@ -5,8 +5,14 @@
   "keywords": [
     "zoomable",
     "user interface",
+    "ui",
+    "frontend",
+    "scenegraph",
     "html",
-    "layout"
+    "layout",
+    "zui",
+    "css",
+    "transform"
   ],
   "homepage": "https://github.com/taataa/taaspace",
   "main": "index.js",
