@@ -10,6 +10,7 @@ Contents:
   - [taaspace.SpaceHTML](#taaspacespacehtml)
   - [taaspace.SpaceImage](#taaspacespaceimage)
   - [taaspace.SpacePixel](#taaspacespacepixel)
+  - [taaspace.SpaceView](#taaspacespaceview)
 - [Abstract Items](#abstract-items)
   - [taaspace.AbstractNode](#taaspaceabstractnode)
   - [taaspace.AbstractPlane](#taaspaceabstractplane)
