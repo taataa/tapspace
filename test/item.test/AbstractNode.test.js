@@ -3,9 +3,9 @@ var taaspace = require('../../index')
 module.exports = function (test) {
   test('#getDescendants: should order correctly', function (t) {
     var space = new taaspace.Space()
-    var a = new taaspace.SpacePixel(space)
-    var b = new taaspace.SpacePixel(a)
-    var c = new taaspace.SpacePixel(b)
+    var a = new taaspace.SpacePixel('black', space)
+    var b = new taaspace.SpacePixel('black', a)
+    var c = new taaspace.SpacePixel('black', b)
 
     t.deepEqual(a.getChildren(), [b])
     // Order should be from children to children of children.
@@ -17,9 +17,9 @@ module.exports = function (test) {
 
   test('#hasDescendant: should travel parent hierarchy', function (t) {
     var space = new taaspace.Space()
-    var x = new taaspace.SpacePixel(space)
-    var y = new taaspace.SpacePixel(x)
-    var z = new taaspace.SpacePixel(space)
+    var x = new taaspace.SpacePixel('black', space)
+    var y = new taaspace.SpacePixel('black', x)
+    var z = new taaspace.SpacePixel('black', space)
     t.ok(space.hasDescendant(y))
     t.notOk(y.hasDescendant(space))
     t.notOk(x.hasDescendant(z))
@@ -35,7 +35,7 @@ module.exports = function (test) {
       space.addChild()
     }, 'throw when no parameters')
 
-    var px = new taaspace.SpacePixel(space, 'red')
+    var px = new taaspace.SpacePixel('red', space)
     space2.addChild(px)
 
     t.ok(space2.hasChild(px), 'has child')
@@ -45,13 +45,13 @@ module.exports = function (test) {
 
   test('#setParent: no cyclic child-parent relationships', function (t) {
     var space = new taaspace.Space()
-    var x = new taaspace.SpacePixel(space)
+    var x = new taaspace.SpacePixel('black', space)
 
     t.throws(function () {
       x.setParent(x)
     }, /cyclic/i, 'no child of self')
 
-    var y = new taaspace.SpacePixel(x)
+    var y = new taaspace.SpacePixel('black', x)
     t.throws(function () {
       x.setParent(y)
     }, /cyclic/i, 'child cannot be its own grandparent')

@@ -71,12 +71,14 @@ A collection of items. `SpaceGroup` itself has no representation, only its child
 **Usage:**
 
     > var g = new taaspace.SpaceGroup(parent)
-    > var px = new taaspace.SpacePixel(g)
+    > var px = new taaspace.SpacePixel()
+
+**Constructor** `SpaceGroup(parent)` takes an optional parent item.
 
 
 ### taaspace.SpaceHTML
 
-A rectangular item with custom HTML content. `SpaceView` represents the content as-is. Be careful when injecting content from users. Good for example for text, iframes, or canvas elements.
+A rectangular item with custom HTML content. `SpaceView` represents the content as-is. Good for text, iframes, or canvas elements for example. Be careful when injecting content created by users.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -84,16 +86,18 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 
 **Usage:**
 
-    > var h = new taaspace.SpaceHTML(parent, '<h1>Hell-o</h1>')
+    > var h = new taaspace.SpaceHTML('<h1>Hell-o</h1>')
     > h.getHTML()
     '<h1>Hell-o</h1>'
+
+**Constructor** `SpaceHTML(html, parent)` takes in a string and an optional parent item.
 
 **Method** `#getHTML()` returns string.
 
 
 ### taaspace.SpaceImage
 
-An image item. `SpaceView` represents this with an `<img>` tag. The constructor requires an [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement). Use [taaspace.preload](#taaspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
+An image item. `SpaceView` represents this with an `<img>` tag. Use [taaspace.preload](#taaspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -102,15 +106,17 @@ An image item. `SpaceView` represents this with an `<img>` tag. The constructor 
 **Usage:**
 
     > taaspace.preload(function (err, img) {
-    >   var im = new taaspace.SpaceImage(parent, img)
+    >   var im = new taaspace.SpaceImage(img, parent)
     > })
+
+**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
 
 **Method** `#getImage()` returns HTMLImageElement.
 
 
 ### taaspace.SpacePixel
 
-A colored rectangular item. `SpaceView` represents this with a `<div>` styled with CSS `background` property. The constructor takes in a string value for the `background`, defaulting to `#000000`.
+A colored rectangular item. `SpaceView` represents this with a `<div>` styled with CSS `background` property.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -118,7 +124,9 @@ A colored rectangular item. `SpaceView` represents this with a `<div>` styled wi
 
 **Usage:**
 
-    > var px = new taaspace.SpacePixel(parent, 'pink')
+    > var px = new taaspace.SpacePixel('pink', parent)
+
+**Constructor** `SpacePixel(color, parent)` takes in an optional color string and an optional parent item. The string defaults to `#000000`.
 
 **Method** `#getColor()` returns the background property string.
 
@@ -134,6 +142,8 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 **Usage:**
 
     > var view = new taaspace.SpaceView(space)
+
+**Constructor** `SpaceView(space)` takes in an optional instance of `Space`.
 
 **Method** `#fitScale(...)` overrides `AbstractRectangle#fitScale(...)` to throw an error if the view is not mounted.
 
@@ -414,13 +424,12 @@ A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative
 **Usage:**
 
     var Vec = taaspace.geom.Vector
-    var px = new taaspace.SpacePixel(space)
     var p = new taaspace.geom.Path([
       new Vec(x0, y0),
       new Vec(x1, y1),
       ...
     ])
-    var ip = new taaspace.geom.IPath(p, px)
+    var ip = new taaspace.geom.IPath(p, space)
 
 **Constructor** `IPath(path, item)` takes a `Path` and an item that defines the coordinate system of the `path`.
 
@@ -616,7 +625,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 **Usage:**
 
-    var ox = new taaspace.SpacePixel(space)
+    var px = new taaspace.SpacePixel('black', space)
     var v = new taaspace.geom.Vector(4, 2)
     var iv = new taaspace.geom.IVector(v, px)
 

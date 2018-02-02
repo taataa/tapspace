@@ -11,7 +11,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var a = new SpaceHTML(space, '<h1>Hello</h1>')
+    var a = new SpaceHTML('<h1>Hello</h1>', space)
     var el = $('.taaspace-html')
     var h1 = el.find('h1')
     var b = view.getSpaceItemByElementId(el.attr('id'))
@@ -27,7 +27,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    a = new SpaceHTML(space, '<h1>Hello</h1>')
+    a = new SpaceHTML('<h1>Hello</h1>', space)
     a.setLocalSize(new Vector(100, 100))
     a0 = document.elementFromPoint(150, 150)
 

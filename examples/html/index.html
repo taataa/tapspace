@@ -38,27 +38,31 @@
   <script src="../../dist/taaspace.min.js"></script>
   <script>
     var space = new taaspace.Space()
-    var view = new taaspace.SpaceView(space)
+    var view = new taaspace.SpaceView()
     view.mount(document.getElementById('space'))
+    view.setParent(space)
 
     var Vector = taaspace.geom.Vector
 
-    var spacehtml = new taaspace.SpaceHTML(space, '<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>taaspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
+    var spacehtml = new taaspace.SpaceHTML('<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>taaspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
     spacehtml.setLocalSize(new Vector(300, 300))
+    spacehtml.setParent(space)
     spacehtml.translateScaleRotate(
       [spacehtml.atNE(), spacehtml.atSE()],
       [view.atNorm(0.4, 0.3), view.atNorm(0.4, 0.3).offset(0.0, 300.0)]
     )
 
-    var spacewiki = new taaspace.SpaceHTML(space, '<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>')
+    var spacewiki = new taaspace.SpaceHTML('<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>')
     spacewiki.setLocalSize(new Vector(400, 300))
+    spacewiki.setParent(space)
     spacewiki.translateScaleRotate(
       [spacewiki.atSE(), spacewiki.atSW()],
       [view.atNorm(0.4, 0.6), view.atNorm(0.4, 0.6).offset(400.0, 0.0)]
     )
 
-    var spacetube = new taaspace.SpaceHTML(space, '<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>')
+    var spacetube = new taaspace.SpaceHTML('<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>')
     spacetube.setLocalSize(new Vector(500, 300))
+    spacetube.setParent(space)
     spacetube.translateScaleRotate(
       [spacetube.atSW(), spacetube.atSE()],
       [view.atNorm(0.4, 0.3), view.atNorm(0.4, 0.6).offset(400.0, 0.0)]

@@ -17,7 +17,7 @@ module.exports = function (test) {
 
     var img = new Image()
     img.src = 'lib/black256.png'
-    var spaceimg = new SpaceImage(space, img)
+    var spaceimg = new SpaceImage(img, space)
     var el = $('img.taaspace-image')
 
     t.equal(el.length, 1, 'img element found')
@@ -31,7 +31,7 @@ module.exports = function (test) {
   test('should position the image correctly', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
     view.mount(ctx.container)
 
     t.ok(si.at(0, 0).equals(view.at(0, 0)), 'north-west')
@@ -52,7 +52,7 @@ module.exports = function (test) {
     var space = new Space()
     var view = new SpaceView(space)
     view.mount(ctx.container)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
 
     si.translate(si.atNorm(0, 0), si.atNorm(1, 1))
 
@@ -72,7 +72,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
 
     view.translate(view.atMid(), si.atMid())
 
@@ -87,7 +87,7 @@ module.exports = function (test) {
   test('present reparented nodes', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
     view.mount(ctx.container)
 
     // Move a bit and reparent to view
@@ -110,7 +110,7 @@ module.exports = function (test) {
   test('remove node', function (t, ctx) {
     // Create AbstractNode
     var space = new Space()
-    var node = new SpaceHTML(space, 'foo')
+    var node = new SpaceHTML('foo', space)
     var view = new SpaceView(space)
 
     view.mount(ctx.container)
@@ -134,7 +134,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var node = new SpaceHTML(space, 'foo')
+    var node = new SpaceHTML('foo', space)
     node.setLocalSize(new Vector(100, 100))
 
     // Test if representation is removed when node is reparented.
@@ -150,7 +150,7 @@ module.exports = function (test) {
   test('do not become child of non-Space', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var node = new SpaceHTML(space, 'foo')
+    var node = new SpaceHTML('foo', space)
     view.mount(ctx.container)
 
     t.throws(function () {
@@ -170,12 +170,12 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var nodeB = new SpaceHTML(space, 'foo')
+    var nodeB = new SpaceHTML('foo', space)
     nodeB.setLocalSize(new Vector(100, 100))
 
-    var nodeC = new SpaceHTML(space2, 'bar')
+    var nodeC = new SpaceHTML('bar', space2)
     nodeC.setLocalSize(new Vector(100, 100))
-    var nodeD = new SpaceHTML(nodeC, 'baz')
+    var nodeD = new SpaceHTML('baz', nodeC)
     nodeD.setLocalSize(new Vector(100, 100))
     nodeD.translate(nodeD.atNW(), nodeC.atSE())
 
@@ -222,6 +222,24 @@ module.exports = function (test) {
     t.equal(view.getElementBySpaceItem(space), se, 'space has element')
     t.equal(view.getElementBySpaceItem(view), ve, 'view has element')
     t.equal(view.getContainer(), ctx.container, 'view has container')
+
+    t.end()
+  })
+
+  test('mount and unmount before setParent', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView()
+
+    view.mount(ctx.container)
+    view.unmount()
+    view.mount(ctx.container)
+
+    space.addChild(view)
+
+    var se = ctx.container.childNodes[0]
+    var ve = se.childNodes[0]
+    t.equal(view.getElementBySpaceItem(space), se, 'space has element')
+    t.equal(view.getElementBySpaceItem(view), ve, 'view has element')
 
     t.end()
   })

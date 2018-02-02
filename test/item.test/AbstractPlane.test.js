@@ -4,8 +4,8 @@ var ITransform = taaspace.geom.ITransform
 module.exports = function (test) {
   test('#getLocalTransform: in parent\'s coord system', function (t) {
     var space = new taaspace.Space()
-    var p = new taaspace.SpacePixel(space)
-    var x = new taaspace.SpacePixel(p)  // a child of p
+    var p = new taaspace.SpacePixel('black', space)
+    var x = new taaspace.SpacePixel('black', p)  // a child of p
 
     // The local transform of x should remain same regardless of p's move.
     // The global transform of x should change when p moves
@@ -39,7 +39,7 @@ module.exports = function (test) {
   test('#getGlobalTransform: equal to local transform of child', function (t) {
     var space = new taaspace.Space()
     // SpacePixel is a AbstractPlane
-    var px = new taaspace.SpacePixel(space)
+    var px = new taaspace.SpacePixel('black', space)
     px.translate(space.at(0, 0), space.at(1, 1))
     var gt = px.getGlobalTransform()
     var lt = px.getLocalTransform()
@@ -50,7 +50,7 @@ module.exports = function (test) {
 
   test('#transformBy: should take an identity PITransform', function (t) {
     var space = new taaspace.Space()
-    var px = new taaspace.SpacePixel(space)
+    var px = new taaspace.SpacePixel('black', space)
     var tr = ITransform.IDENTITY
     px.transformBy(tr)
 
@@ -63,7 +63,7 @@ module.exports = function (test) {
 
   test('#transformBy: should take a simple translation', function (t) {
     var space = new taaspace.Space()
-    var px = new taaspace.SpacePixel(space)
+    var px = new taaspace.SpacePixel('black', space)
     var id = ITransform.IDENTITY
     var tr = id.translate(space.at(0, 0), space.at(1, 1))
 
@@ -88,9 +88,9 @@ module.exports = function (test) {
     // Setup
     var p
     var space = new taaspace.Space()
-    var px1 = new taaspace.SpacePixel(space)
-    var px2 = new taaspace.SpacePixel(px1)
-    var px3 = new taaspace.SpacePixel(px2)
+    var px1 = new taaspace.SpacePixel('black', space)
+    var px2 = new taaspace.SpacePixel('black', px1)
+    var px3 = new taaspace.SpacePixel('black', px2)
 
     // Ensure initial location of px3
     t.ok(px2.atMid().equals(px3.atMid()), 'px2 and px3 fully overlap before')
@@ -129,7 +129,7 @@ module.exports = function (test) {
     var space = new taaspace.Space()
     var px, tr, lt, gt
 
-    px = new taaspace.SpacePixel(space)
+    px = new taaspace.SpacePixel('black', space)
 
     // chain
     tr = ITransform.IDENTITY

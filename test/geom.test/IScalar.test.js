@@ -14,7 +14,7 @@ module.exports = function (test) {
   test('#to', function (t) {
     var space = new taaspace.Space()
     var g = new taaspace.SpaceGroup(space)
-    var px = new taaspace.SpacePixel(g)
+    var px = new taaspace.SpacePixel('black', g)
     px.scale(px.atNW(), 4)
 
     var is = new IScalar(4, px)

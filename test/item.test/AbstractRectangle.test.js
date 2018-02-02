@@ -7,8 +7,8 @@ var Vector = taaspace.geom.Vector
 module.exports = function (test) {
   test('should have an id', function (t) {
     var space = new Space()
-    var a = new SpacePixel(space)
-    var b = new SpacePixel(space)
+    var a = new SpacePixel('black', space)
+    var b = new SpacePixel('black', space)
     t.equal(typeof a.id, 'string')
     t.equal(typeof b.id, 'string')
     t.notEqual(a.id, b.id)
@@ -17,7 +17,7 @@ module.exports = function (test) {
 
   test('should be removable', function (t) {
     var space = new Space()
-    var a = new SpacePixel(space)
+    var a = new SpacePixel('black', space)
     a.remove()
     t.equal(space._children.hasOwnProperty(a.id), false, 'removed ok')
     t.end()
@@ -28,7 +28,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var a = new SpacePixel(space)
+    var a = new SpacePixel('black', space)
     var p = a.atNorm(1, 1)
     var vp = p.to(view)
     t.equal(vp.x, 1)
@@ -38,7 +38,7 @@ module.exports = function (test) {
 
   test('should be able to give and take Transform objects', function (t) {
     var space = new Space()
-    var px = new SpacePixel(space)
+    var px = new SpacePixel('black', space)
 
     // Move to to unit square.
     px.translateScale(
@@ -70,8 +70,8 @@ module.exports = function (test) {
   test('#fitScale squares', function (t) {
     var space = new Space()
 
-    var px1 = new SpacePixel(space)
-    var px2 = new SpacePixel(space)
+    var px1 = new SpacePixel('black', space)
+    var px2 = new SpacePixel('black', space)
 
     px2.scale(px2.atMid(), 7)
     px2.fitScale(px1)
@@ -92,8 +92,8 @@ module.exports = function (test) {
     //
     var space = new Space()
 
-    var px1 = new SpacePixel(space)
-    var px2 = new SpacePixel(space)
+    var px1 = new SpacePixel('black', space)
+    var px2 = new SpacePixel('black', space)
 
     px2.setLocalSize(new Vector(2, 1))
     px2.fitScale(px1)
@@ -110,8 +110,8 @@ module.exports = function (test) {
   test('#fitSize', function (t) {
     var space = new Space()
 
-    var px1 = new SpacePixel(space)
-    var px2 = new SpacePixel(space)
+    var px1 = new SpacePixel('black', space)
+    var px2 = new SpacePixel('black', space)
 
     // Fit px2's size to upscaled px1
     px1.scale(px1.atNW(), 4)

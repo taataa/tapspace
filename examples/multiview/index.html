@@ -73,9 +73,9 @@
 
     var g = new taaspace.SpaceGroup(space)
 
-    var px = new taaspace.SpacePixel(g, 'red')
-    var pxx = new taaspace.SpacePixel(g, 'green')
-    var pxxx = new taaspace.SpacePixel(g, 'blue')
+    var px = new taaspace.SpacePixel('red', g)
+    var pxx = new taaspace.SpacePixel('green', g)
+    var pxxx = new taaspace.SpacePixel('blue', g)
 
     pxx.translate(pxx.atNW(), px.atSE())
     pxxx.translate(pxxx.atSW(), pxx.atNE())
