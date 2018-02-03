@@ -46,11 +46,11 @@ module.exports = function (test) {
       [space.at(-10, -10), space.at(10, 10)]
     )
     // Store position
-    var lt = px.getLocalTransform()
+    var lt = px.getLocalITransform()
 
     // Rotate 1/2π radians
     var rt = lt.rotate(space.at(0, 0), 1)
-    px.setLocalTransform(rt)
+    px.setLocalITransform(rt)
 
     // Ensure movement
     var se = px.atSE().to(space)
@@ -58,7 +58,7 @@ module.exports = function (test) {
     t.notEqual(se.y, 10, 'corner moved')
 
     // Revert back
-    px.setLocalTransform(lt)
+    px.setLocalITransform(lt)
 
     // Ensure
     var seb = px.atSE().to(space)

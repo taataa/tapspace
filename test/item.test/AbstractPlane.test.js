@@ -28,9 +28,9 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('#getGlobalTransform: return identity tr. for space', function (t) {
+  test('#getGlobalITransform: return identity tr. for space', function (t) {
     var space = new taaspace.Space()
-    var gt = space.getGlobalTransform()
+    var gt = space.getGlobalITransform()
     var id = ITransform.IDENTITY
     t.ok(gt.equals(id), 'identity transform')
     t.end()
@@ -125,7 +125,7 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('#setGlobalTransform: work with getLocalTransform', function (t) {
+  test('#setGlobalITransform: work with getLocalITransform', function (t) {
     var space = new taaspace.Space()
     var px, tr, lt, gt
 
@@ -139,10 +139,10 @@ module.exports = function (test) {
 
     px.transformBy(tr)
 
-    lt = px.getLocalTransform()
-    px.setGlobalTransform(lt)
+    lt = px.getLocalITransform()
+    px.setGlobalITransform(lt)
 
-    gt = px.getGlobalTransform()
+    gt = px.getGlobalITransform()
 
     t.ok(lt.equals(tr))
     t.ok(gt.equals(tr))
