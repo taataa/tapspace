@@ -12,7 +12,9 @@
     "layout",
     "zui",
     "css",
-    "transform"
+    "transform",
+    "transformation",
+    "touch"
   ],
   "homepage": "https://github.com/taataa/taaspace",
   "main": "index.js",
