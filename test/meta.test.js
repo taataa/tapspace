@@ -39,6 +39,11 @@ module.exports = function (test) {
       ctx.container,
       'container at 1,1'
     )
+    t.equal(
+      document.elementFromPoint(100, 100),
+      ctx.container,
+      'container at 100,100'
+    )
     t.end()
   })
 
