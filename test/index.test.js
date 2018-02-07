@@ -10,7 +10,6 @@ var UNITS = {
   Grid: require('./geom.test/Grid.test'),
   IGrid: require('./geom.test/IGrid.test'),
   Path: require('./geom.test/Path.test'),
-  Rectangle: require('./geom.test/Rectangle.test'),
   IScalar: require('./geom.test/IScalar.test'),
   Size: require('./geom.test/Size.test'),
   ISize: require('./geom.test/ISize.test'),

@@ -23,7 +23,6 @@ Contents:
   - [taaspace.geom.IGrid](#taaspacegeomigrid)
   - [taaspace.geom.Path](#taaspacegeompath)
   - [taaspace.geom.IPath](#taaspacegeomipath)
-  - [taaspace.geom.Rectangle](#taaspacegeomrectangle)
   - [taaspace.geom.Size](#taaspacegeomsize)
   - [taaspace.geom.ISize](#taaspacegeomisize)
   - [taaspace.geom.Transform](#taaspacegeomtransform)
@@ -461,47 +460,6 @@ A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative
 **Method** `#toSpace()` returns `Path` represented in the coordinate system of the root item.
 
 **Method** `#transform(itr)` returns a new `IPath` where each `IVector` has been left-multiplied by the given `ITransform`.
-
-
-### taaspace.geom.Rectangle
-
-An object with width and height, and top-left corner always at (0, 0). The `Rectangle` does not have plane-invariant alternative because rotations would change the aspect ratio. If you need to represent a rectangle on multiple planes, use `IPath` instead.
-
-**Usage:**
-
-    var rect = new taaspace.geom.Rectangle(16, 9)
-
-**Property** `w` gives the width.
-
-**Property** `h` gives the height.
-
-**Method** `#atMid()` returns `Vector` to the middle.
-
-**Method** `#atMidN()` alias `#atMidTop`.
-
-**Method** `#atMidW()` alias `#atMidLeft`.
-
-**Method** `#atMidE()` alias `#atMidRight`.
-
-**Method** `#atMidS()` alias `#atMidBottom`.
-
-**Method** `#atNorm(x, y)` returns a `Vector` for coordinates `x` and `y` relative to width and height. For example, let `r = Rectangle(20, 10)`. Now `r.atNorm(1, 1)` returns `Vector(20, 10)` and `r.atNorm(0.75, 0.4)` returns `Vector(15, 4)`.
-
-**Method** `#atNW()` alias `#atLeftTop`.
-
-**Method** `#atNE()` alias `#atRightTop`.
-
-**Method** `#atSW()` alias `#atLeftBottom`.
-
-**Method** `#atSE()` alias `#atRightBottom`.
-
-**Method** `#equal(rect)` returns `true` if widths and heights match.
-
-**Method** `#getDiagonal()` returns a `Vector`. Alias to `#atRightBottom`.
-
-**Method** `#scale(multiplier)` returns new `Rectangle` where the width and height are multiplied by `multiplier`.
-
-**Method** `#toArray()` returns `[this.w, this.h]`.
 
 
 ### taaspace.geom.Size
