@@ -24,6 +24,8 @@ Contents:
   - [taaspace.geom.Path](#taaspacegeompath)
   - [taaspace.geom.IPath](#taaspacegeomipath)
   - [taaspace.geom.Rectangle](#taaspacegeomrectangle)
+  - [taaspace.geom.Size](#taaspacegeomsize)
+  - [taaspace.geom.ISize](#taaspacegeomisize)
   - [taaspace.geom.Transform](#taaspacegeomtransform)
   - [taaspace.geom.ITransform](#taaspacegeomitransform)
   - [taaspace.geom.Vector](#taaspacegeomvector)
@@ -500,6 +502,52 @@ An object with width and height, and top-left corner always at (0, 0). The `Rect
 **Method** `#scale(multiplier)` returns new `Rectangle` where the width and height are multiplied by `multiplier`.
 
 **Method** `#toArray()` returns `[this.w, this.h]`.
+
+
+### taaspace.geom.Size
+
+An object with width and height. The `Size` does not have location or rotation and is affected only by scaling. If you need to represent a rectangular shape on multiple planes, use `IPath` instead.
+
+**Usage:**
+
+    var sz = new taaspace.geom.Size(8, 5)
+
+**Property** `width` gives the width.
+
+**Property** `height` gives the height.
+
+**Method** `#almostEqual(sz)` returns `true` if `this` and the given `Size` are equal, by allowing a small error from floating point arithmetics.
+
+**Method** `#equal(sz)` returns `true` if `this` and the given `Size` have strictly equal width and height.
+
+**Method** `#getWidth()` returns the property `width`.
+
+**Method** `#getHeight()` returns the property `height`.
+
+**Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.
+
+
+### taaspace.geom.ISize
+
+A plane-invariant size, a container of two plane-invariant measures. With `ISize` you can convert `Size` objects into other coordinate systems.
+
+**Usage:**
+
+    var sz = new taaspace.geom.Size(8, 5)
+    var isz = new taaspace.geom.ISize(s, sourceItem)
+    var sizeOnTarget = isz.to(targetItem)
+
+**Method** `#almostEqual(isz)` returns `true` if `this` and the given `ISize` are equal, by allowing a small error from floating point arithmetics.
+
+**Method** `#equal(isz)` returns `true` if `this` and the given `ISize` have strictly equal width and height.
+
+**Method** `#getWidth()` returns `IScalar` representing the width in plane-invariant manner.
+
+**Method** `#getHeight()` returns `IScalar` representing the height in plane-invariant manner.
+
+**Method** `#to(item)` returns `Size` that is `this` represented in the given item's coordinate system.
+
+**Method** `#toSpace()` returns `Size` in the coordinate system of the root item.
 
 
 ### taaspace.geom.IScalar
