@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Minimal / Taaspace Example</title>
+  <title>Minimal – Taaspace Example</title>
 
   <!--
     Minimal Taaspace Application
@@ -34,7 +34,7 @@
   <div id="minimalspace"></div>
 
   <!-- Import taaspace -->
-  <script src="../../dist/taaspace.min.js"></script>
+  <script src="../assets/taaspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -65,6 +65,14 @@
     // double the dimensions of the viewport on Space. The factor of 0.01
     // shrinks the viewport so that our 1x1 SpacePixel looks very large.
     view.scale(view.atMid(), 0.01)
+
+    // We make the black pixel movable. The first line of the two creates
+    // a touch manager that is first inactive, meaning that the SpacePixel
+    // does not react to touch at all. The second line starts the manager
+    // in the given interaction mode. In our example we allow touch to
+    // to translate the pixel.
+    var touch = new taaspace.Touchable(view, px)
+    touch.start({ translate: true })
   </script>
 </body>
 </html>

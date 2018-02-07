@@ -1,5 +1,25 @@
 # Developer's Cheat Sheet
 
+## Architecture
+
+Dependency tree:
+
+- Touchable
+  - Manager
+    - taaspace
+    - nudged
+    - Recognizer
+
+## Build example apps
+
+Play with the apps on devices in the same local network by starting a local static file server. It will give you a QR code of the URL to the examples.
+
+    $ npm start
+
+For testing purposes, it is helpful to watch-build taaspace bundle in another terminal:
+
+    $ npm run build:watch
+
 ## Testing
 
 Tests are run in a browser and built on [tape](https://github.com/substack/tape).

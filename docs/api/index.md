@@ -298,7 +298,59 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 ### taaspace.Touchable
 
-To allow users to interact with the items, make the items touchable. See [taataa/taach](https://www.npmjs.com/package/taach) for further documentation.
+To allow users to interact with the items, make the items touchable. `Touchable` is a manager that maps pointer events on HTML to a transformation and applies the transformation to a given item.
+
+**Usage:**
+
+    > var tou = new taach.Touchable(view, item);
+
+**Constructor** `Touchable(view, item)` takes in the parameters:
+
+- *view:* an instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
+- *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only the gestures made on the HTML representation of the instance are listened and recognized. The instance reacts to the manipulations as specified by the mode.
+
+**Properties:**
+
+- *view:* the given `SpaceView`
+- *item:* the given instance of `AbstractPlane`
+- *element:* the [HTMLElement](https://developer.mozilla.org/en/docs/Web/API/HTMLElement) that receives the original pointer events.
+- *mode:* the current mode object.
+
+**Methods:**
+
+- *start(mode):* activates the manager in the given mode. If no mode is given, the default mode is used. Can be called on already active manager to update the mode.
+- *restart(mode):* alias of `start(mode)` but can make the code more readable when updating the mode of an already active manager.
+- *stop():* deactivates the manager. An inactive manager fires no events and listens no gestures.
+- *resume():* starts the manager with the last known mode.
+
+**Mode:**
+
+The mode object defines the allowed types of manipulation. Some types are not possible together so a type can override another. The full list of the mode properties and their conflicts is given below.
+
+- *translate:* set `true` to allow horizontal and vertical movement. Default is `false`. If `pivot` is specified the value of `translate` has no effect.
+- *rotate:* set `true` to allow rotation. If `translate: false` and `pivot` is not specified the rotation is allowed only around the center of the transformer. Default is `false`.
+- *scale:* set `true` to allow scaling. If `translate: false` and `pivot` is not specified the scaling is allowed only around the center of the transformer. Default is `false`.
+- *pivot:* set to a `IVector` to specify a pivot for rotation and scaling. If `pivot` is specified the value of `translate` has no effect. Default is `null`.
+- *tap:* set to `true` to allow emitting of `tap` event. Default is `false`.
+- *tapMaxTravel:*  Default is 20.
+
+The default mode is accessible at `Touchable.DEFAULT_MODE`.
+
+**Events:**
+
+The manager emits the following events:
+
+- *transformstart:* fired at the beginning of the gesture when the first pointer lands on the element.
+- *transformmove:* fired when a pointer on the element moves so that the transformation changes.
+- *transformend:* fired when the last pointer is lifted off from the element.
+- *tap:* fired if all the following statements are true: 1) mode has `tap: true`, 2) last finger or other pointer was lifted from the element, and 3) pointers did not move during the gesture more in average than what is allowed by a threshold value. The default threshold of `20` can be overridden by an additional mode property `tapMaxTravel`.
+
+The events are fired with an event object. The event object has the following properties:
+
+- *distance:* a number. An average manhattan distance in screen pixels that a pointer has traveled after `transformstart`.
+- *duration:* a number. Milliseconds from the `transformstart`
+- *element:* a `HTMLElement`. The source of the original pointer events.
+- *item:* an `AbstractPlane`. The item of the HTMLElement.
 
 
 
