@@ -5,7 +5,6 @@ var Space = taaspace.Space
 var SpaceView = taaspace.SpaceView
 var SpaceImage = taaspace.SpaceImage
 var SpaceHTML = taaspace.SpaceHTML
-var Vector = taaspace.geom.Vector
 
 module.exports = function (test) {
   test('create img element immediately', function (t, ctx) {
@@ -114,7 +113,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
 
     view.mount(ctx.container)
-    node.setLocalSize(new Vector(100, 100))
+    node.setSize(100, 100)
 
     // Test if representation is removed.
     var el1 = document.elementFromPoint(50, 50)
@@ -135,7 +134,7 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var node = new SpaceHTML('foo', space)
-    node.setLocalSize(new Vector(100, 100))
+    node.setSize(100, 100)
 
     // Test if representation is removed when node is reparented.
     var el1 = document.elementFromPoint(50, 50)
@@ -171,12 +170,12 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var nodeB = new SpaceHTML('foo', space)
-    nodeB.setLocalSize(new Vector(100, 100))
+    nodeB.setSize(100, 100)
 
     var nodeC = new SpaceHTML('bar', space2)
-    nodeC.setLocalSize(new Vector(100, 100))
+    nodeC.setSize(100, 100)
     var nodeD = new SpaceHTML('baz', nodeC)
-    nodeD.setLocalSize(new Vector(100, 100))
+    nodeD.setSize(100, 100)
     nodeD.translate(nodeD.atNW(), nodeC.atSE())
 
     // Test the setup is rendered correctly

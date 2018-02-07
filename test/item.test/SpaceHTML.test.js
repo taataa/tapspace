@@ -3,7 +3,6 @@ var $ = require('jquery')
 var Space = taaspace.Space
 var SpaceView = taaspace.SpaceView
 var SpaceHTML = taaspace.SpaceHTML
-var Vector = taaspace.geom.Vector
 
 module.exports = function (test) {
   test('should allow creation', function (t, ctx) {
@@ -28,12 +27,12 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     a = new SpaceHTML('<h1>Hello</h1>', space)
-    a.setLocalSize(new Vector(100, 100))
+    a.setSize(100, 100)
     a0 = document.elementFromPoint(150, 150)
 
     t.equal(a0, view.getContainer())
 
-    a.setLocalSize(new Vector(200, 200))
+    a.setSize(200, 200)
     a1 = document.elementFromPoint(150, 150)
 
     t.equal(a1, view.getElementBySpaceItem(a))

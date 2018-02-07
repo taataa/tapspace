@@ -48,7 +48,7 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('#transformBy: should take an identity PITransform', function (t) {
+  test('#transformBy: should take an identity ITransform', function (t) {
     var space = new taaspace.Space()
     var px = new taaspace.SpacePixel('black', space)
     var tr = ITransform.IDENTITY

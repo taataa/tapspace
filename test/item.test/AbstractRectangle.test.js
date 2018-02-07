@@ -3,6 +3,7 @@ var Space = taaspace.Space
 var SpaceView = taaspace.SpaceView
 var SpacePixel = taaspace.SpacePixel
 var Vector = taaspace.geom.Vector
+var Size = taaspace.geom.Size
 
 module.exports = function (test) {
   test('should have an id', function (t) {
@@ -95,7 +96,7 @@ module.exports = function (test) {
     var px1 = new SpacePixel('black', space)
     var px2 = new SpacePixel('black', space)
 
-    px2.setLocalSize(new Vector(2, 1))
+    px2.setSize(2, 1)
     px2.fitScale(px1)
 
     var h2 = px2.getHull().toSpace()
@@ -117,8 +118,8 @@ module.exports = function (test) {
     px1.scale(px1.atNW(), 4)
     px2.fitSize(px1)
 
-    t.ok(px1.getLocalSize().equals(new Vector(1, 1)), 'only scaled')
-    t.ok(px2.getLocalSize().equals(new Vector(4, 4)), 'only resized')
+    t.ok(px1.getSize().equal(new Size(1, 1)), 'only scaled')
+    t.ok(px2.getSize().equal(new Size(4, 4)), 'only resized')
     t.end()
   })
 }

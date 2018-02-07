@@ -5,7 +5,6 @@ var Path = taaspace.geom.Path
 var Vector = taaspace.geom.Vector
 
 module.exports = function (test) {
-
   test('#getHull', function (t) {
     var space = new Space()
     var g = new SpaceGroup(space)

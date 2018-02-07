@@ -283,13 +283,14 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#getHull()` returns `IPath` that consists of the corners of the rectangle in counter-clockwise order (the hull order).
 
-**Method** `#getLocalSize()` return `Vector`, representing the diagonal in the local coordinates.
+**Method** `#getSize()` return `Size`, representing the dimensions in the local coordinates.
 
-**Method** `#getSize()` return `IVector`, representing the diagonal.
+**Method** `#getISize()` return `ISize`, representing the dimensions in plane-invariant manner.
 
-**Method** `#setSize(idiag)` updates the diagonal to match the given `IVector`. Dangerous currently because rotations affect the width-height ratio. Emits `resized`.
+**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`.
 
-**Method** `#setLocalSize(diag)` updates the diagonal to match the given `Vector`. Emits `resized`.
+**Method** `#setISize(isize)` updates the local size to match the given `ISize`. Emits `resized`.
+
 
 
 ## Interaction
