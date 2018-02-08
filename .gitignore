@@ -5,6 +5,10 @@
 /test/dist/*
 !/test/dist/.gitkeep
 
+# Built for examples 
+examples/assets/taaspace.min.js
+examples/assets/taaspace.min.js.map
+
 # Logs
 logs
 *.log
