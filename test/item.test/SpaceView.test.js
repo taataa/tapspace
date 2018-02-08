@@ -103,6 +103,7 @@ module.exports = function (test) {
     view.translate(space.at(0, 0), space.at(2000, 2000))
     var el2 = document.elementFromPoint(300, 300) // null if outside window
     t.equal(el2, el1, 'in place after view translate')
+
     t.end()
   })
 
@@ -239,6 +240,40 @@ module.exports = function (test) {
     var ve = se.childNodes[0]
     t.equal(view.getElementBySpaceItem(space), se, 'space has element')
     t.equal(view.getElementBySpaceItem(view), ve, 'view has element')
+
+    t.end()
+  })
+
+  test('reorder elements', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView()
+
+    var a = new SpaceImage(ctx.images.black256, space)
+    var b = new SpaceImage(ctx.images.black256, space)
+    var c = new SpaceImage(ctx.images.black256, space)
+
+    space.addChild(view)
+    view.mount(ctx.container)
+
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(c),
+      'initial order: c on top'
+    )
+
+    c.sendBelow(a)
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(b),
+      'after ordering: b on top'
+    )
+
+    c.bringToFront()
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(c),
+      'back to front: c on top'
+    )
 
     t.end()
   })
