@@ -178,7 +178,11 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Inherits** from `Emitter`. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter).
 
-**Method** `#addChild(item)` does what the name says.
+**Method** `#addChild(item)` inserts `item` to the last child of `this`.
+
+**Method** `#bringBefore(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
+
+**Method** `#bringToFront()` reinserts `this` as the last (topmost) children.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -188,7 +192,15 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#getDescendants()` returns an array of items, including children, the childrens' children, et cetera.
 
-**Method** `#getParent()` returns the parent item and null if no parent.
+**Method** `#getFirstChild()` returns the first (bottommost) child.
+
+**Method** `#getLastChild()` returns the last (topmost) child.
+
+**Method** `#getNextSibling()` returns the next (higher) child of the parent.
+
+**Method** `#getParent()` returns the parent item and `null` if no parent.
+
+**Method** `#getPreviousSibling()` returns the previous (lower) child of the parent.
 
 **Method** `#getRootParent()` returns the most distant ancestor, the one without a parent.
 
@@ -203,6 +215,10 @@ Gives an inheriting object the tree node capabilities like fetching the children
 **Method** `#on(eventName, handlerFn)` registers an event handler. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
 **Method** `#remove()` detaches `this` from the parent.
+
+**Method** `#sendAfter(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
+
+**Method** `#sendToBack()` reinserts `this` as the first (bottommost) children.
 
 **Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`.
 
