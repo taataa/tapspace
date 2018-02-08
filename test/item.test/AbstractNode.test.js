@@ -1,5 +1,7 @@
 var taaspace = require('../../index')
 
+var SpaceGroup = taaspace.SpaceGroup
+
 module.exports = function (test) {
   test('#getDescendants: should order correctly', function (t) {
     var space = new taaspace.Space()
@@ -56,6 +58,35 @@ module.exports = function (test) {
       x.setParent(y)
     }, /cyclic/i, 'child cannot be its own grandparent')
 
+    t.end()
+  })
+
+  test('get siblings and first and last children', function (t) {
+    var g = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var g3 = new SpaceGroup(g)
+
+    t.equal(g.getFirstChild(), g1, 'first')
+    t.equal(g.getLastChild(), g3, 'last')
+    t.equal(g1.getPreviousSibling(), null, 'null previous')
+    t.equal(g1.getNextSibling(), g2, 'next')
+    t.equal(g3.getPreviousSibling(), g2, 'previous')
+    t.equal(g3.getNextSibling(), null, 'null next')
+
+    t.end()
+  })
+
+  test('reorder siblings', function (t) {
+    var g = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var g3 = new SpaceGroup(g)
+
+    g.addChild(g3, 0)
+    g1.setParent(g, 2)
+
+    t.deepEqual(g.getChildren(), [g3, g2, g1], 'correct order')
     t.end()
   })
 }
