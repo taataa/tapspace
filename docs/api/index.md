@@ -180,9 +180,9 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#addChild(item)` inserts `item` to the last child of `this`.
 
-**Method** `#bringBefore(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
+**Method** `#bringAbove(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
 
-**Method** `#bringToFront()` reinserts `this` as the last (topmost) children.
+**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -216,9 +216,9 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#remove()` detaches `this` from the parent.
 
-**Method** `#sendAfter(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
+**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
 
-**Method** `#sendToBack()` reinserts `this` as the first (bottommost) children.
+**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.
 
 **Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`.
 

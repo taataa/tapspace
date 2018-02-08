@@ -78,6 +78,9 @@
         // Define interaction
         var touch = new taaspace.Touchable(view, px)
         touch.start(touchmode)
+        touch.on('transformstart', function () {
+          px.bringToFront()
+        })
         touch.on('transformend', function () {
           px.snap(px.atMid(), grid)
         })
