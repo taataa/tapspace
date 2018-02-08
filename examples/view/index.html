@@ -33,6 +33,10 @@
     var view = new taaspace.SpaceView(space)
     view.mount(viewElement)
 
+    var html = '<p>Some <em>HTML</em> fixed to the view</p>'
+    var infobar = new taaspace.SpaceHTML(html, view)
+    infobar.translate(infobar.atMidN(), view.atMidN())
+
     taaspace.preload('../assets/chellah_star.jpg', function (err, img) {
       if (err) { throw err }
 
