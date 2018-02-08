@@ -82,11 +82,113 @@ module.exports = function (test) {
     var g1 = new SpaceGroup(g)
     var g2 = new SpaceGroup(g)
     var g3 = new SpaceGroup(g)
+    var g4 = new SpaceGroup(g)
 
     g.addChild(g3, 0)
-    g1.setParent(g, 2)
+    t.deepEqual(g.getChildren(), [g3, g1, g2, g4], 'swap left, g3 to first')
 
-    t.deepEqual(g.getChildren(), [g3, g2, g1], 'correct order')
+    g1.setParent(g, 2)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'swap right, g2 to third')
+
+    t.end()
+  })
+
+  test('#bringBefore & #sendAfter', function (t) {
+    var g = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var g3 = new SpaceGroup(g)
+    var g4 = new SpaceGroup(g)
+
+    g3.bringBefore(g2)
+    t.deepEqual(g.getChildren(), [g1, g3, g2, g4], 'swap left, g2 and g3')
+
+    g1.bringBefore(g4)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'swap right, g1 and g4')
+
+    g2.bringBefore(g2)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'g2 self swap, no change')
+
+    g1.sendAfter(g2)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'no change')
+
+    g4.sendAfter(g3)
+    t.deepEqual(g.getChildren(), [g3, g4, g2, g1], 'swap left, g4 to second')
+
+    g4.sendAfter(g1)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'swap right, g4 to last')
+
+    g1.sendAfter(g1)
+    t.deepEqual(g.getChildren(), [g3, g2, g1, g4], 'g1 self swap, no change')
+
+    t.end()
+  })
+
+  test('#bringToFront & #sendToBack', function (t) {
+    var g = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var g3 = new SpaceGroup(g)
+    var g4 = new SpaceGroup(g)
+
+    g1.bringToFront()
+    t.deepEqual(g.getChildren(), [g1, g2, g3, g4], 'g1 front, no change')
+
+    g4.bringToFront()
+    t.deepEqual(g.getChildren(), [g4, g1, g2, g3], 'g4 front')
+
+    g3.sendToBack()
+    t.deepEqual(g.getChildren(), [g4, g1, g2, g3], 'g3 back, no change')
+
+    g4.sendToBack()
+    t.deepEqual(g.getChildren(), [g1, g2, g3, g4], 'g4 back')
+
+    t.end()
+  })
+
+  test('problematic ordering', function (t) {
+    var g1 = new SpaceGroup()
+    var g2 = new SpaceGroup()
+
+    t.throws(function () {
+      g1.sendAfter(g2)
+    }, 'cannot sent after root')
+
+    t.throws(function () {
+      g1.bringBefore(g2)
+    }, 'cannot bring before root')
+
+    t.doesNotThrow(function () {
+      g1.sendToBack()
+      g2.bringToFront()
+    }, 'root is already in place')
+
+    t.end()
+  })
+
+  test('ordering with no previous parent', function (t) {
+    var g = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var g3 = new SpaceGroup() // no parent yet
+
+    g3.sendAfter(g1)
+    t.deepEqual(g.getChildren(), [g1, g3, g2], 'g3 added')
+
+    t.end()
+  })
+
+  test('ordering with different parent', function (t) {
+    var g = new SpaceGroup()
+    var r = new SpaceGroup()
+    var g1 = new SpaceGroup(g)
+    var g2 = new SpaceGroup(g)
+    var r1 = new SpaceGroup(r)
+
+    r1.sendAfter(g2)
+    t.deepEqual(g.getChildren(), [g1, g2, r1], 'r1 added')
+    t.deepEqual(r.getChildren(), [], 'r empty')
+
     t.end()
   })
 }
