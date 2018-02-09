@@ -5,7 +5,7 @@ module.exports = {
   entry: './index',
   output: {
     filename: 'taaspace.min.js',
-    path: path.join(__dirname, '/examples/assets'),
+    path: path.join(__dirname, '/dist'),
     sourceMapFilename: '[file].map',
     library: 'taaspace',  // module name in global scope
     libraryTarget: 'umd'

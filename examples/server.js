@@ -13,6 +13,7 @@
 
 var PORT = 8000
 
+var path = require('path')
 var http = require('http')
 var finalhandler = require('finalhandler')
 var serveIndex = require('serve-index')
@@ -27,13 +28,20 @@ var index = serveIndex(__dirname, {
     return fname !== 'server.js' && fname !== 'assets'
   }
 })
-var serve = serveStatic(__dirname)
+var serveExamples = serveStatic(__dirname)
+var serveBundle = serveStatic(path.resolve(__dirname, '../dist'))
 
 var server = http.createServer(function (req, res) {
   var done = finalhandler(req, res)
-  serve(req, res, function (err) {
+
+  serveExamples(req, res, function (err) {
     if (err) return done(err)
-    index(req, res, done)
+
+    serveBundle(req, res, function (errb) {
+      if (errb) return done(errb)
+
+      index(req, res, done)
+    })
   })
 })
 

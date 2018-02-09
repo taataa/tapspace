@@ -3,11 +3,6 @@
 !/dist/.gitkeep
 /test/dist/*
 !/test/dist/.gitkeep
-/examples/assets/taaspace.min.js.map
-
-# Built for examples 
-examples/assets/taaspace.min.js
-examples/assets/taaspace.min.js.map
 
 # Logs
 logs

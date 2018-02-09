@@ -8,30 +8,29 @@
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <style>
-  html, body, #space {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-  }
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
 
-  body {
-    font-size: 16px;
-    color: white;
-    background: #000;
-    font-family: sans-serif;
-  }
+    body {
+      font-size: 16px;
+      color: white;
+      background: #000;
+      font-family: sans-serif;
+    }
   </style>
   <!-- link rel="stylesheet" href="../../taaspace.css" -->
 </head>
 <body>
   <div id="space" class="taaspace-container"></div>
 
-
-  <script src="../assets/taaspace.min.js"></script>
-
+  <script src="../taaspace.min.js"></script>
 
   <script>
+  // Canvas animation code within animateCanvas is adopted from:
   // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations
 
   function animateCanvas(canvasHtmlElement) {
@@ -84,9 +83,6 @@
     init()
   }
 
-  </script>
-
-  <script>
   var space = new taaspace.Space()
   var viewElement = document.getElementById('space')
   var view = new taaspace.SpaceView(space)
@@ -106,6 +102,5 @@
     rotate: true
   })
   </script>
-
 </body>
 </html>
