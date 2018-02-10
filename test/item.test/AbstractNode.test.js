@@ -1,13 +1,13 @@
-var taaspace = require('../../index')
+var tapspace = require('../../index')
 
-var SpaceGroup = taaspace.SpaceGroup
+var SpaceGroup = tapspace.SpaceGroup
 
 module.exports = function (test) {
   test('#getDescendants: should order correctly', function (t) {
-    var space = new taaspace.Space()
-    var a = new taaspace.SpacePixel('black', space)
-    var b = new taaspace.SpacePixel('black', a)
-    var c = new taaspace.SpacePixel('black', b)
+    var space = new tapspace.Space()
+    var a = new tapspace.SpacePixel('black', space)
+    var b = new tapspace.SpacePixel('black', a)
+    var c = new tapspace.SpacePixel('black', b)
 
     t.deepEqual(a.getChildren(), [b])
     // Order should be from children to children of children.
@@ -18,10 +18,10 @@ module.exports = function (test) {
   })
 
   test('#hasDescendant: should travel parent hierarchy', function (t) {
-    var space = new taaspace.Space()
-    var x = new taaspace.SpacePixel('black', space)
-    var y = new taaspace.SpacePixel('black', x)
-    var z = new taaspace.SpacePixel('black', space)
+    var space = new tapspace.Space()
+    var x = new tapspace.SpacePixel('black', space)
+    var y = new tapspace.SpacePixel('black', x)
+    var z = new tapspace.SpacePixel('black', space)
     t.ok(space.hasDescendant(y))
     t.notOk(y.hasDescendant(space))
     t.notOk(x.hasDescendant(z))
@@ -30,14 +30,14 @@ module.exports = function (test) {
   })
 
   test('#addChild & #hasChild', function (t) {
-    var space = new taaspace.Space()
-    var space2 = new taaspace.Space()
+    var space = new tapspace.Space()
+    var space2 = new tapspace.Space()
 
     t.throws(function () {
       space.addChild()
     }, 'throw when no parameters')
 
-    var px = new taaspace.SpacePixel('red', space)
+    var px = new tapspace.SpacePixel('red', space)
     space2.addChild(px)
 
     t.ok(space2.hasChild(px), 'has child')
@@ -46,14 +46,14 @@ module.exports = function (test) {
   })
 
   test('#setParent: no cyclic child-parent relationships', function (t) {
-    var space = new taaspace.Space()
-    var x = new taaspace.SpacePixel('black', space)
+    var space = new tapspace.Space()
+    var x = new tapspace.SpacePixel('black', space)
 
     t.throws(function () {
       x.setParent(x)
     }, /cyclic/i, 'no child of self')
 
-    var y = new taaspace.SpacePixel('black', x)
+    var y = new tapspace.SpacePixel('black', x)
     t.throws(function () {
       x.setParent(y)
     }, /cyclic/i, 'child cannot be its own grandparent')

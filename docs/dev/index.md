@@ -6,7 +6,7 @@ Dependency tree:
 
 - Touchable
   - Manager
-    - taaspace
+    - tapspace
     - nudged
     - Recognizer
 
@@ -17,9 +17,9 @@ Most of the example apps are targeted for touch screens. Therefore, when develop
 
     $ npm start
 
-Finished example apps load the `taaspace` bundle from [unpkg CDN](https://unpkg.com/). This way we avoid storing compiled files to the repository, although we still need to publish them to NPM. Bundles served by unpkg have URLs similar to `unpkg.com/taaspace@5.0.0/dist/taaspace.min.js`. Although the version tag can be omitted, the most robust practice is to specify the version which for the example app has been designed.
+Finished example apps load the `tapspace` bundle from [unpkg CDN](https://unpkg.com/). This way we avoid storing compiled files to the repository, although we still need to publish them to NPM. Bundles served by unpkg have URLs similar to `unpkg.com/tapspace@5.0.0/dist/tapspace.min.js`. Although the version tag can be omitted, the most robust practice is to specify the version which for the example app has been designed.
 
-Example apps can also be used for **manual testing** while developing taaspace core. In this case, however, the unpkg URL needs to be *temporarily* replaced with a local URL `../taaspace.min.js`. The bundle at the local URL is served from `dist/` by the `examples/server.js`. But first, **build the bundle** into `dist/` by:
+Example apps can also be used for **manual testing** while developing tapspace core. In this case, however, the unpkg URL needs to be *temporarily* replaced with a local URL `../tapspace.min.js`. The bundle at the local URL is served from `dist/` by the `examples/server.js`. But first, **build the bundle** into `dist/` by:
 
     $ npm run build
 
@@ -32,7 +32,7 @@ Tests are run in a browser and built on [tape](https://github.com/substack/tape)
 
 ### npm run build
 
-Build a minified, standalone bundle at `dist/taaspace.min.js` and source maps at `dist/taaspace.min.js.map`.
+Build a minified, standalone bundle at `dist/tapspace.min.js` and source maps at `dist/tapspace.min.js.map`.
 
 ### npm run lint
 

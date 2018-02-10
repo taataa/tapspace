@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace Example / HTML content</title>
+  <title>Tapspace Example / HTML content</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -35,16 +35,16 @@
 </head>
 <body>
   <div id="space"></div>
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
   <script>
-    var space = new taaspace.Space()
-    var view = new taaspace.SpaceView()
+    var space = new tapspace.Space()
+    var view = new tapspace.SpaceView()
     view.mount(document.getElementById('space'))
     view.setParent(space)
 
-    var Vector = taaspace.geom.Vector
+    var Vector = tapspace.geom.Vector
 
-    var spacehtml = new taaspace.SpaceHTML('<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>taaspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
+    var spacehtml = new tapspace.SpaceHTML('<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>tapspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
     spacehtml.setSize(300, 300)
     spacehtml.setParent(space)
     spacehtml.translateScaleRotate(
@@ -52,7 +52,7 @@
       [view.atNorm(0.4, 0.3), view.atNorm(0.4, 0.3).offset(0.0, 300.0)]
     )
 
-    var spacewiki = new taaspace.SpaceHTML('<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>')
+    var spacewiki = new tapspace.SpaceHTML('<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>')
     spacewiki.setSize(400, 300)
     spacewiki.setParent(space)
     spacewiki.translateScaleRotate(
@@ -60,7 +60,7 @@
       [view.atNorm(0.4, 0.6), view.atNorm(0.4, 0.6).offset(400.0, 0.0)]
     )
 
-    var spacetube = new taaspace.SpaceHTML('<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>')
+    var spacetube = new tapspace.SpaceHTML('<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>')
     spacetube.setSize(500, 300)
     spacetube.setParent(space)
     spacetube.translateScaleRotate(

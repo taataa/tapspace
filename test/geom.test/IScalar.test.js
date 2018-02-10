@@ -1,5 +1,5 @@
-var taaspace = require('../../index')
-var IScalar = taaspace.geom.IScalar
+var tapspace = require('../../index')
+var IScalar = tapspace.geom.IScalar
 
 module.exports = function (test) {
   // Test cases
@@ -12,9 +12,9 @@ module.exports = function (test) {
   })
 
   test('#to', function (t) {
-    var space = new taaspace.Space()
-    var g = new taaspace.SpaceGroup(space)
-    var px = new taaspace.SpacePixel('black', g)
+    var space = new tapspace.Space()
+    var g = new tapspace.SpaceGroup(space)
+    var px = new tapspace.SpacePixel('black', g)
     px.scale(px.atNW(), 4)
 
     var is = new IScalar(4, px)

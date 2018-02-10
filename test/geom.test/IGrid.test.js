@@ -1,9 +1,9 @@
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceGroup = taaspace.SpaceGroup
-var SpacePixel = taaspace.SpacePixel
-var Grid = taaspace.geom.Grid
-var IGrid = taaspace.geom.IGrid
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceGroup = tapspace.SpaceGroup
+var SpacePixel = tapspace.SpacePixel
+var Grid = tapspace.geom.Grid
+var IGrid = tapspace.geom.IGrid
 
 module.exports = function (test) {
   // Test cases

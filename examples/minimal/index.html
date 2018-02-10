@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Minimal – Taaspace Example</title>
+  <title>Minimal – Tapspace Example</title>
 
   <!--
-    Minimal Taaspace Application
+    Minimal Tapspace Application
 
-    In this example we go through the basics of a taaspace app.
+    In this example we go through the basics of a tapspace app.
     The three essential components are:
     - items: a set of media elements
     - space: a system of two-dimensional planes where the items live.
@@ -33,23 +33,23 @@
   <!-- Container element for viewing Space -->
   <div id="minimalspace"></div>
 
-  <!-- Import taaspace -->
-  <script src="../taaspace.min.js"></script>
+  <!-- Import tapspace -->
+  <script src="../tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
     // Create a Space. It will contain stuff.
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
 
     // Create a View to the Space. The view connects Space to HTML DOM.
-    var view = new taaspace.SpaceView(space)
+    var view = new tapspace.SpaceView(space)
     var container = document.getElementById('minimalspace')
     view.mount(container)
 
     // Create a black SpacePixel, one of the simplest items in Space.
     // The SpacePixel is initially represented as 1x1 <div> with black
     // background color.
-    var px = new taaspace.SpacePixel('#000000', space)
+    var px = new tapspace.SpacePixel('#000000', space)
 
     // Next we move and scale the view so that the SpacePixel ends up magnified
     // and at the middle of the view.
@@ -71,7 +71,7 @@
     // does not react to touch at all. The second line starts the manager
     // in the given interaction mode. In our example we allow touch to
     // to translate the pixel.
-    var touch = new taaspace.Touchable(view, px)
+    var touch = new tapspace.Touchable(view, px)
     touch.start({ translate: true })
   </script>
 </body>

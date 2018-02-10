@@ -1,8 +1,8 @@
-var taaspace = require('../../index')
-var Transform = taaspace.geom.Transform
-var Vector = taaspace.geom.Vector
-var Grid = taaspace.geom.Grid
-var Path = taaspace.geom.Path
+var tapspace = require('../../index')
+var Transform = tapspace.geom.Transform
+var Vector = tapspace.geom.Vector
+var Grid = tapspace.geom.Grid
+var Path = tapspace.geom.Path
 
 module.exports = function (test) {
   // Test cases

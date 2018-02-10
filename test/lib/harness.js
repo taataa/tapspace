@@ -76,12 +76,12 @@ var test = function (msg, testCase) {
       // },
 
       function resetBody (done) {
-        var container = document.getElementById('taaspace-sandbox')
+        var container = document.getElementById('tapspace-sandbox')
         if (container) {
           container.innerHTML = ''
         } else {
-          $(document.body).prepend('<div id="taaspace-sandbox"></div>')
-          container = document.getElementById('taaspace-sandbox')
+          $(document.body).prepend('<div id="tapspace-sandbox"></div>')
+          container = document.getElementById('tapspace-sandbox')
         }
         caseContext.container = container
         done()

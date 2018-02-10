@@ -1,11 +1,11 @@
-var taaspace = require('../../index')
-var ITransform = taaspace.geom.ITransform
+var tapspace = require('../../index')
+var ITransform = tapspace.geom.ITransform
 
 module.exports = function (test) {
   test('#getLocalTransform: in parent\'s coord system', function (t) {
-    var space = new taaspace.Space()
-    var p = new taaspace.SpacePixel('black', space)
-    var x = new taaspace.SpacePixel('black', p)  // a child of p
+    var space = new tapspace.Space()
+    var p = new tapspace.SpacePixel('black', space)
+    var x = new tapspace.SpacePixel('black', p)  // a child of p
 
     // The local transform of x should remain same regardless of p's move.
     // The global transform of x should change when p moves
@@ -29,7 +29,7 @@ module.exports = function (test) {
   })
 
   test('#getGlobalITransform: return identity tr. for space', function (t) {
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     var gt = space.getGlobalITransform()
     var id = ITransform.IDENTITY
     t.ok(gt.equals(id), 'identity transform')
@@ -37,9 +37,9 @@ module.exports = function (test) {
   })
 
   test('#getGlobalTransform: equal to local transform of child', function (t) {
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     // SpacePixel is a AbstractPlane
-    var px = new taaspace.SpacePixel('black', space)
+    var px = new tapspace.SpacePixel('black', space)
     px.translate(space.at(0, 0), space.at(1, 1))
     var gt = px.getGlobalTransform()
     var lt = px.getLocalTransform()
@@ -49,8 +49,8 @@ module.exports = function (test) {
   })
 
   test('#transformBy: should take an identity ITransform', function (t) {
-    var space = new taaspace.Space()
-    var px = new taaspace.SpacePixel('black', space)
+    var space = new tapspace.Space()
+    var px = new tapspace.SpacePixel('black', space)
     var tr = ITransform.IDENTITY
     px.transformBy(tr)
 
@@ -62,8 +62,8 @@ module.exports = function (test) {
   })
 
   test('#transformBy: should take a simple translation', function (t) {
-    var space = new taaspace.Space()
-    var px = new taaspace.SpacePixel('black', space)
+    var space = new tapspace.Space()
+    var px = new tapspace.SpacePixel('black', space)
     var id = ITransform.IDENTITY
     var tr = id.translate(space.at(0, 0), space.at(1, 1))
 
@@ -87,10 +87,10 @@ module.exports = function (test) {
   test('#setGlobalTransform: keep in place during setParent', function (t) {
     // Setup
     var p
-    var space = new taaspace.Space()
-    var px1 = new taaspace.SpacePixel('black', space)
-    var px2 = new taaspace.SpacePixel('black', px1)
-    var px3 = new taaspace.SpacePixel('black', px2)
+    var space = new tapspace.Space()
+    var px1 = new tapspace.SpacePixel('black', space)
+    var px2 = new tapspace.SpacePixel('black', px1)
+    var px3 = new tapspace.SpacePixel('black', px2)
 
     // Ensure initial location of px3
     t.ok(px2.atMid().equals(px3.atMid()), 'px2 and px3 fully overlap before')
@@ -126,10 +126,10 @@ module.exports = function (test) {
   })
 
   test('#setGlobalITransform: work with getLocalITransform', function (t) {
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     var px, tr, lt, gt
 
-    px = new taaspace.SpacePixel('black', space)
+    px = new tapspace.SpacePixel('black', space)
 
     // chain
     tr = ITransform.IDENTITY

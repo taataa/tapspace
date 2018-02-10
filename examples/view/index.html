@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>View - Taaspace Example</title>
+  <title>View - Tapspace Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -26,33 +26,33 @@
 <body>
   <div id="space"></div>
   <script src="../assets/ghoulog.js"></script>
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
   <script>
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
-    var view = new taaspace.SpaceView(space)
+    var view = new tapspace.SpaceView(space)
     view.mount(viewElement)
 
     var html = '<p>Some <em>HTML</em> fixed to the view</p>'
-    var infobar = new taaspace.SpaceHTML(html, view)
+    var infobar = new tapspace.SpaceHTML(html, view)
     infobar.translate(infobar.atMidN(), view.atMidN())
 
-    taaspace.preload('../assets/chellah_star.jpg', function (err, img) {
+    tapspace.preload('../assets/chellah_star.jpg', function (err, img) {
       if (err) { throw err }
 
-      var g = new taaspace.SpaceGroup(space)
-      var simg1 = new taaspace.SpaceImage(img, g)
-      var simg2 = new taaspace.SpaceImage(img, g)
+      var g = new tapspace.SpaceGroup(space)
+      var simg1 = new tapspace.SpaceImage(img, g)
+      var simg2 = new tapspace.SpaceImage(img, g)
 
       view.fitScale(g)
       view.scale(view.atMid(), 1.618)
 
-      var touch1 = new taaspace.Touchable(view, simg1)
-      var touch2 = new taaspace.Touchable(view, simg2)
+      var touch1 = new tapspace.Touchable(view, simg1)
+      var touch2 = new tapspace.Touchable(view, simg2)
       touch1.start({ translate: true, scale: true, rotate: true })
       touch2.start({ translate: true, scale: true, rotate: true })
 
-      var viewTouch = new taaspace.Touchable(view, view)
+      var viewTouch = new tapspace.Touchable(view, view)
       viewTouch.start({ translate: true, scale: true, rotate: true, tap: true });
 
       (function defineLog () {

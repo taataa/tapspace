@@ -1,5 +1,5 @@
-var taaspace = require('../../index')
-var Size = taaspace.geom.Size
+var tapspace = require('../../index')
+var Size = tapspace.geom.Size
 
 module.exports = function (test) {
   // Test cases
@@ -14,7 +14,7 @@ module.exports = function (test) {
   test('#almostEqual & #equal', function (t) {
     var a = new Size(10, -8)
     var b = new Size(10, -8)
-    var c = new Size(10, -8 + taaspace.geom.EPSILON / 2)
+    var c = new Size(10, -8 + tapspace.geom.EPSILON / 2)
     var d = new Size(10, -9)
 
     t.ok(a.equal(b), 'a b equal')
@@ -34,8 +34,8 @@ module.exports = function (test) {
 
   test('#transform', function (t) {
     var s = new Size(10, -8)
-    var translation = new taaspace.geom.Transform(1, 0, 5, 5)
-    var scaling = taaspace.geom.Transform.X2
+    var translation = new tapspace.geom.Transform(1, 0, 5, 5)
+    var scaling = tapspace.geom.Transform.X2
 
     var ts = s.transform(translation)
     var ss = s.transform(scaling)

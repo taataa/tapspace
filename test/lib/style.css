@@ -1,5 +1,5 @@
 /* Goal is to let the sandbox to fill the whole viewport */
-html, body, #taaspace-sandbox {
+html, body, #tapspace-sandbox {
   margin: 0;
   padding: 0;
   width: 100%;

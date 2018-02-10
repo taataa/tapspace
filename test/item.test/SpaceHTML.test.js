@@ -1,8 +1,8 @@
-var taaspace = require('../../index')
+var tapspace = require('../../index')
 var $ = require('jquery')
-var Space = taaspace.Space
-var SpaceView = taaspace.SpaceView
-var SpaceHTML = taaspace.SpaceHTML
+var Space = tapspace.Space
+var SpaceView = tapspace.SpaceView
+var SpaceHTML = tapspace.SpaceHTML
 
 module.exports = function (test) {
   test('should allow creation', function (t, ctx) {
@@ -11,7 +11,7 @@ module.exports = function (test) {
     view.mount(ctx.container)
 
     var a = new SpaceHTML('<h1>Hello</h1>', space)
-    var el = $('.taaspace-html')
+    var el = $('.tapspace-html')
     var h1 = el.find('h1')
     var b = view.getSpaceItemByElementId(el.attr('id'))
 

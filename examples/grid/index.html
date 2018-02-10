@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Grid - Taaspace Example</title>
+  <title>Grid - Tapspace Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -26,19 +26,19 @@
 <body>
   <div id="space"></div>
   <script src="../assets/ghoulog.js"></script>
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
 
   <script>
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
-    var view = new taaspace.SpaceView(space)
+    var view = new tapspace.SpaceView(space)
     view.mount(viewElement)
 
     // Width and height of a grid tile
     var SIDE = 128
 
     // Snapping grid
-    var grid = new taaspace.geom.IGrid({
+    var grid = new tapspace.geom.IGrid({
       xStep: SIDE,
       xPhase: SIDE / 2,
       yStep: SIDE,
@@ -49,7 +49,7 @@
     }, space)
 
     // Load images
-    taaspace.preload([
+    tapspace.preload([
       '../assets/tile00.png',
       '../assets/tile01.png',
       '../assets/tile02.png',
@@ -60,13 +60,13 @@
         throw err
       }
 
-      var g = new taaspace.SpaceGroup(space)
+      var g = new tapspace.SpaceGroup(space)
       var rows = Math.ceil(Math.sqrt(imgs.length))
       var touchmode = { translate: true, scale: true, rotate: true }
 
       imgs.forEach(function (img, i) {
         // Create
-        var px = new taaspace.SpaceImage(img, g)
+        var px = new tapspace.SpaceImage(img, g)
 
         // Position & snap scale
         var x = i % rows
@@ -76,7 +76,7 @@
         px.snap(px.atMid(), grid)
 
         // Define interaction
-        var touch = new taaspace.Touchable(view, px)
+        var touch = new tapspace.Touchable(view, px)
         touch.start(touchmode)
         touch.on('gesturestart', function () {
           px.bringToFront()
@@ -91,7 +91,7 @@
       view.scale(view.atMid(), 1.618)
 
       // Make view transformable
-      var tView = new taaspace.Touchable(view, view)
+      var tView = new tapspace.Touchable(view, view)
       tView.start(touchmode)
     })
   </script>

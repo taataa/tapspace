@@ -5,7 +5,7 @@
 
 ## Direct manipulation
 
-The `taaspace.Touchable` enables [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Taaspace apps. It recognizes mouse and touch gestures on Taaspace elements and makes the elements react in a natural, paper-like way.
+The `tapspace.Touchable` enables [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Tapspace apps. It recognizes mouse and touch gestures on Tapspace elements and makes the elements react in a natural, paper-like way.
 
 Touchable's simplistic interaction design is based on usability research and ensures good design principles:
 - **No double tap** or triple+ tap gestures. They are hard for users to discover. Instead, updated the interface after each single tap in a way that tells user that another tap is needed.
@@ -21,16 +21,16 @@ Additional design decisions:
 
 ## Let us code
 
-Let us begin with a simple Taaspace application:
+Let us begin with a simple Tapspace application:
 
-    > var space = new taaspace.Space()
-    > var view = new taaspace.SpaceView(space)
+    > var space = new tapspace.Space()
+    > var view = new tapspace.SpaceView(space)
     > view.mount(document.getElementById('space'))
-    > var hello = new taaspace.SpaceHTML(space, '<h1>Hello</h1>')
+    > var hello = new tapspace.SpaceHTML(space, '<h1>Hello</h1>')
 
 Our goal is to make `hello` movable and rotatable. For that we create a touch manager:
 
-    > var tou = new taaspace.Touchable(view, hello)
+    > var tou = new tapspace.Touchable(view, hello)
 
 The manager does two things. First, it recognizes the gestures made on the HTML representation of `hello`. Second, it manipulates `hello` according to the gesture. Note that only the gestures on the given `view` are recognized. This allows unique interface behavior within each view. On the other hand, the consequences are visible also on other views of the same space.
 

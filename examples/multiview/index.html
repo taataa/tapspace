@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Multiview - Taaspace Example</title>
+  <title>Multiview - Tapspace Example</title>
 
   <!--
     Multiview - Multiple Views to one Space
@@ -62,20 +62,20 @@
       <div id="view2"></div>
     </div>
   </div>
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
 
   <script>
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
 
-    var v = new taaspace.SpaceView(space)
-    var vv = new taaspace.SpaceView(space)
-    var vvv = new taaspace.SpaceView(space)
+    var v = new tapspace.SpaceView(space)
+    var vv = new tapspace.SpaceView(space)
+    var vvv = new tapspace.SpaceView(space)
 
-    var g = new taaspace.SpaceGroup(space)
+    var g = new tapspace.SpaceGroup(space)
 
-    var px = new taaspace.SpacePixel('red', g)
-    var pxx = new taaspace.SpacePixel('green', g)
-    var pxxx = new taaspace.SpacePixel('blue', g)
+    var px = new tapspace.SpacePixel('red', g)
+    var pxx = new tapspace.SpacePixel('green', g)
+    var pxxx = new tapspace.SpacePixel('blue', g)
 
     pxx.translate(pxx.atNW(), px.atSE())
     pxxx.translate(pxxx.atSW(), pxx.atNE())

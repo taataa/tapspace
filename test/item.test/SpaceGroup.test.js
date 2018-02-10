@@ -1,8 +1,8 @@
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceGroup = taaspace.SpaceGroup
-var Path = taaspace.geom.Path
-var Vector = taaspace.geom.Vector
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceGroup = tapspace.SpaceGroup
+var Path = tapspace.geom.Path
+var Vector = tapspace.geom.Vector
 
 module.exports = function (test) {
   test('#getHull', function (t) {

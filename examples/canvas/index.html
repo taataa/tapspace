@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace Canvas Animation Example</title>
+  <title>Tapspace Canvas Animation Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -22,12 +22,12 @@
       font-family: sans-serif;
     }
   </style>
-  <!-- link rel="stylesheet" href="../../taaspace.css" -->
+  <!-- link rel="stylesheet" href="../../tapspace.css" -->
 </head>
 <body>
-  <div id="space" class="taaspace-container"></div>
+  <div id="space" class="tapspace-container"></div>
 
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
 
   <script>
   // Canvas animation code within animateCanvas is adopted from:
@@ -83,18 +83,18 @@
     init()
   }
 
-  var space = new taaspace.Space()
+  var space = new tapspace.Space()
   var viewElement = document.getElementById('space')
-  var view = new taaspace.SpaceView(space)
+  var view = new tapspace.SpaceView(space)
   view.mount(viewElement)
 
-  var arto = new taaspace.SpaceHTML('<canvas width="300" height="300">Solar system</canvas>', space)
+  var arto = new tapspace.SpaceHTML('<canvas width="300" height="300">Solar system</canvas>', space)
   arto.setSize(300, 300)
   arto.translate(arto.atMid(), view.atMid())
   animateCanvas(view.getElementBySpaceItem(arto).firstChild)
   //makeViewTransformable(view)
 
-  var touchy = new taaspace.Touchable(view, arto)
+  var touchy = new tapspace.Touchable(view, arto)
 
   touchy.start({
     translate: true,

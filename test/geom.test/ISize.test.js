@@ -1,16 +1,16 @@
-var taaspace = require('../../index')
-var Size = taaspace.geom.Size
-var ISize = taaspace.geom.ISize
+var tapspace = require('../../index')
+var Size = tapspace.geom.Size
+var ISize = tapspace.geom.ISize
 
 module.exports = function (test) {
   // Test cases
 
   test('#to', function (t) {
-    var g = new taaspace.SpaceGroup()
-    var g2 = new taaspace.SpaceGroup()
+    var g = new tapspace.SpaceGroup()
+    var g2 = new tapspace.SpaceGroup()
     g.addChild(g2)
 
-    g2.setLocalTransform(taaspace.geom.Transform.X2)
+    g2.setLocalTransform(tapspace.geom.Transform.X2)
 
     var s = new Size(1, 1)
     var is = new ISize(s, g)

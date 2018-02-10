@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Modes - Taaspace Example</title>
+  <title>Modes - Tapspace Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -26,13 +26,13 @@
 <body>
   <div id="space"></div>
   <script src="../assets/ghoulog.js"></script>
-  <script src="../taaspace.min.js"></script>
+  <script src="../tapspace.min.js"></script>
 
   <script>
 
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
-    var view = new taaspace.SpaceView(space)
+    var view = new tapspace.SpaceView(space)
     view.mount(viewElement)
 
     var data = [
@@ -48,12 +48,12 @@
     ]
     var WIDTH = 3
 
-    var g = new taaspace.SpaceGroup(space)
+    var g = new tapspace.SpaceGroup(space)
 
     data.forEach(function (d, i) {
-      var px = new taaspace.SpacePixel(d[0], g)
+      var px = new tapspace.SpacePixel(d[0], g)
       px.translate(px.atMid(), space.at(i % WIDTH, Math.floor(i / WIDTH)))
-      var touch = new taaspace.Touchable(view, px)
+      var touch = new tapspace.Touchable(view, px)
       var mode = d[1]
       if (!mode.translate) {
         mode.pivot = px.atMid()

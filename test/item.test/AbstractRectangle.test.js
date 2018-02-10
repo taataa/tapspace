@@ -1,9 +1,9 @@
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceView = taaspace.SpaceView
-var SpacePixel = taaspace.SpacePixel
-var Vector = taaspace.geom.Vector
-var Size = taaspace.geom.Size
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceView = tapspace.SpaceView
+var SpacePixel = tapspace.SpacePixel
+var Vector = tapspace.geom.Vector
+var Size = tapspace.geom.Size
 
 module.exports = function (test) {
   test('should have an id', function (t) {

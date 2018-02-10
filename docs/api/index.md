@@ -2,46 +2,46 @@
 
 Contents:
 - [Module](#module)
-  - [taaspace](#taaspace)
-  - [taaspace.version](#taaspaceversion)
+  - [tapspace](#tapspace)
+  - [tapspace.version](#tapspaceversion)
 - [Items](#items)
-  - [taaspace.Space](#taaspacespace)
-  - [taaspace.SpaceGroup](#taaspacespacegroup)
-  - [taaspace.SpaceHTML](#taaspacespacehtml)
-  - [taaspace.SpaceImage](#taaspacespaceimage)
-  - [taaspace.SpacePixel](#taaspacespacepixel)
-  - [taaspace.SpaceView](#taaspacespaceview)
+  - [tapspace.Space](#tapspacespace)
+  - [tapspace.SpaceGroup](#tapspacespacegroup)
+  - [tapspace.SpaceHTML](#tapspacespacehtml)
+  - [tapspace.SpaceImage](#tapspacespaceimage)
+  - [tapspace.SpacePixel](#tapspacespacepixel)
+  - [tapspace.SpaceView](#tapspacespaceview)
 - [Abstract Items](#abstract-items)
-  - [taaspace.AbstractNode](#taaspaceabstractnode)
-  - [taaspace.AbstractPlane](#taaspaceabstractplane)
-  - [taaspace.AbstractRectangle](#taaspaceabstractrectangle)
+  - [tapspace.AbstractNode](#tapspaceabstractnode)
+  - [tapspace.AbstractPlane](#tapspaceabstractplane)
+  - [tapspace.AbstractRectangle](#tapspaceabstractrectangle)
 - [Interaction](#interaction)
-  - [taaspace.Touchable](#taaspacetouchable)
+  - [tapspace.Touchable](#tapspacetouchable)
 - [Geometry](#geometry)
-  - [taaspace.geom](#taaspacegeom)
-  - [taaspace.geom.Grid](#taaspacegeomgrid)
-  - [taaspace.geom.IGrid](#taaspacegeomigrid)
-  - [taaspace.geom.Path](#taaspacegeompath)
-  - [taaspace.geom.IPath](#taaspacegeomipath)
-  - [taaspace.geom.Size](#taaspacegeomsize)
-  - [taaspace.geom.ISize](#taaspacegeomisize)
-  - [taaspace.geom.Transform](#taaspacegeomtransform)
-  - [taaspace.geom.ITransform](#taaspacegeomitransform)
-  - [taaspace.geom.Vector](#taaspacegeomvector)
-  - [taaspace.geom.IVector](#taaspacegeomivector)
+  - [tapspace.geom](#tapspacegeom)
+  - [tapspace.geom.Grid](#tapspacegeomgrid)
+  - [tapspace.geom.IGrid](#tapspacegeomigrid)
+  - [tapspace.geom.Path](#tapspacegeompath)
+  - [tapspace.geom.IPath](#tapspacegeomipath)
+  - [tapspace.geom.Size](#tapspacegeomsize)
+  - [tapspace.geom.ISize](#tapspacegeomisize)
+  - [tapspace.geom.Transform](#tapspacegeomtransform)
+  - [tapspace.geom.ITransform](#tapspacegeomitransform)
+  - [tapspace.geom.Vector](#tapspacegeomvector)
+  - [tapspace.geom.IVector](#tapspacegeomivector)
 - [Other](#other)
-  - [taaspace.preload](#taaspacepreload)
+  - [tapspace.preload](#tapspacepreload)
 
 
 ## Module
 
-### taaspace
+### tapspace
 
 Usage:
 
-    var taaspace = require('taaspace')
+    var tapspace = require('tapspace')
 
-### taaspace.version
+### tapspace.version
 
 A semantic version string identical to the version in the module's `package.json`.
 
@@ -50,7 +50,7 @@ A semantic version string identical to the version in the module's `package.json
 ## Items
 
 
-### taaspace.Space
+### tapspace.Space
 
 The root for other items.
 
@@ -60,10 +60,10 @@ The root for other items.
 
 **Usage:**
 
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
 
 
-### taaspace.SpaceGroup
+### tapspace.SpaceGroup
 
 A collection of items. `SpaceGroup` itself has no representation, only its children.
 
@@ -71,13 +71,13 @@ A collection of items. `SpaceGroup` itself has no representation, only its child
 
 **Usage:**
 
-    > var g = new taaspace.SpaceGroup(parent)
-    > var px = new taaspace.SpacePixel()
+    > var g = new tapspace.SpaceGroup(parent)
+    > var px = new tapspace.SpacePixel()
 
 **Constructor** `SpaceGroup(parent)` takes an optional parent item.
 
 
-### taaspace.SpaceHTML
+### tapspace.SpaceHTML
 
 A rectangular item with custom HTML content. `SpaceView` represents the content as-is. Good for text, iframes, or canvas elements for example. Be careful when injecting content created by users.
 
@@ -87,7 +87,7 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 
 **Usage:**
 
-    > var h = new taaspace.SpaceHTML('<h1>Hell-o</h1>')
+    > var h = new tapspace.SpaceHTML('<h1>Hell-o</h1>')
     > h.getHTML()
     '<h1>Hell-o</h1>'
 
@@ -96,9 +96,9 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 **Method** `#getHTML()` returns string.
 
 
-### taaspace.SpaceImage
+### tapspace.SpaceImage
 
-An image item. `SpaceView` represents this with an `<img>` tag. Use [taaspace.preload](#taaspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
+An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -106,8 +106,8 @@ An image item. `SpaceView` represents this with an `<img>` tag. Use [taaspace.pr
 
 **Usage:**
 
-    > taaspace.preload(function (err, img) {
-    >   var im = new taaspace.SpaceImage(img, parent)
+    > tapspace.preload(function (err, img) {
+    >   var im = new tapspace.SpaceImage(img, parent)
     > })
 
 **Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
@@ -115,7 +115,7 @@ An image item. `SpaceView` represents this with an `<img>` tag. Use [taaspace.pr
 **Method** `#getImage()` returns HTMLImageElement.
 
 
-### taaspace.SpacePixel
+### tapspace.SpacePixel
 
 A colored rectangular item. `SpaceView` represents this with a `<div>` styled with CSS `background` property.
 
@@ -125,14 +125,14 @@ A colored rectangular item. `SpaceView` represents this with a `<div>` styled wi
 
 **Usage:**
 
-    > var px = new taaspace.SpacePixel('pink', parent)
+    > var px = new tapspace.SpacePixel('pink', parent)
 
 **Constructor** `SpacePixel(color, parent)` takes in an optional color string and an optional parent item. The string defaults to `#000000`.
 
 **Method** `#getColor()` returns the background property string.
 
 
-### taaspace.SpaceView
+### tapspace.SpaceView
 
 A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rendered elements with [CSS3 transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
 
@@ -142,7 +142,7 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Usage:**
 
-    > var view = new taaspace.SpaceView(space)
+    > var view = new tapspace.SpaceView(space)
 
 **Constructor** `SpaceView(space)` takes in an optional instance of `Space`.
 
@@ -168,11 +168,11 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 The items inherit from their abstract prototypes. The image below gives an overview on the prototype chain.
 
-![taaspace module dependency graph](taaspace_api_3.png?raw=true)
+![tapspace module dependency graph](tapspace_api_3.png?raw=true)
 
-*Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: AbstractNode has other AbstractNodes. Arrow head denotes inheritance: AbstractRectangle is an AbstractPlane, AbstractPlane is an AbstractNode et cetera.*
+*Image: The module dependency graph represents the relationships between Tapspace modules. Diamond denotes composition: AbstractNode has other AbstractNodes. Arrow head denotes inheritance: AbstractRectangle is an AbstractPlane, AbstractPlane is an AbstractNode et cetera.*
 
-### taaspace.AbstractNode
+### tapspace.AbstractNode
 
 Gives an inheriting object the tree node capabilities like fetching the children and ancestor nodes.
 
@@ -224,7 +224,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 
 
-### taaspace.AbstractPlane
+### tapspace.AbstractPlane
 
 Gives an inheriting object capabilities to act as a coordinate plane. Each AbstractPlane has a `Transform` that defines the position of the plane in relation to its parent plane. `Transform` is a transformation matrix that allows rotations, scalings, and translations. The matrix maps a vector on the plane to another vector on the parent plane.
 
@@ -268,7 +268,7 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 
 
-### taaspace.AbstractRectangle
+### tapspace.AbstractRectangle
 
 Gives an inheriting object a rectangular shape and size dimensions.
 
@@ -312,13 +312,13 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 ## Interaction
 
-### taaspace.Touchable
+### tapspace.Touchable
 
 To allow users to interact with the items, make the items touchable. `Touchable` is a manager that maps pointer events on HTML to a transformation and applies the transformation to a given item.
 
 **Usage:**
 
-    > var tou = new taach.Touchable(view, item);
+    > var tou = new tapspace.Touchable(view, item);
 
 **Constructor** `Touchable(view, item)` takes in the parameters:
 
@@ -373,18 +373,18 @@ The events are fired with an event object. The event object has the following pr
 ## Geometry
 
 
-### taaspace.geom
+### tapspace.geom
 
 A collection of geometric models. All models under `geom` are *immutable* i.e. their state does not change. For example, `vector.rotate(Math.PI)` does not change `vector` but instead returns a new, rotated `Vector` instance.
 
 
-### taaspace.geom.Grid
+### tapspace.geom.Grid
 
 A `Grid` is a tool to round transformations to their closest alternatives allowed by the grid. In other words, you can snap items to discrete positions. In addition to xy-lattice, you can also snap scales and rotations.
 
 **Usage:**
 
-    > var grid = new taaspace.geom.Grid(mode)
+    > var grid = new tapspace.geom.Grid(mode)
     > var snappedTr = grid.snap(space.at(0,0), transform)
 
 **Mode** is an object that defines the grid. Following properties are available:
@@ -416,13 +416,13 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 **Method** `#transform(tr)` returns a new transformed `Grid`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes. This method enables us to represent a grid on different planes, paving a way for the plane invariant `IGrid`.
 
 
-### taaspace.geom.IGrid
+### tapspace.geom.IGrid
 
 An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `Grid` by calling `#to` method.
 
 **Usage:**
 
-    > var igrid = new taaspace.geom.IGrid(modeOrGrid, item)
+    > var igrid = new tapspace.geom.IGrid(modeOrGrid, item)
 
 **Method** `#almostEqual(igrid)` returns `true` if the given `IGrid` is equal to `this`, allowing small errors from floating point arithmetics.
 
@@ -443,14 +443,14 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 **Method** `#transform(itr)` returns an `IGrid`, transformed by the given `ITransform itr`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes.
 
 
-### taaspace.geom.Path
+### tapspace.geom.Path
 
 A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant alternative.
 
 **Usage:**
 
-    var Vec = taaspace.geom.Vector
-    var p = new taaspace.geom.Path([
+    var Vec = tapspace.geom.Vector
+    var p = new tapspace.geom.Path([
       new Vec(x0, y0),
       new Vec(x1, y1),
       ...
@@ -487,19 +487,19 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 **Method** `#transform(tr)` returns a new `Path` where each `Vector` has been left-multiplied by the given `Transform`.
 
 
-### taaspace.geom.IPath
+### tapspace.geom.IPath
 
 A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative for `Path`.
 
 **Usage:**
 
-    var Vec = taaspace.geom.Vector
-    var p = new taaspace.geom.Path([
+    var Vec = tapspace.geom.Vector
+    var p = new tapspace.geom.Path([
       new Vec(x0, y0),
       new Vec(x1, y1),
       ...
     ])
-    var ip = new taaspace.geom.IPath(p, space)
+    var ip = new tapspace.geom.IPath(p, space)
 
 **Constructor** `IPath(path, item)` takes a `Path` and an item that defines the coordinate system of the `path`.
 
@@ -530,13 +530,13 @@ A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative
 **Method** `#transform(itr)` returns a new `IPath` where each `IVector` has been left-multiplied by the given `ITransform`.
 
 
-### taaspace.geom.Size
+### tapspace.geom.Size
 
 An object with width and height. The `Size` does not have location or rotation and is affected only by scaling. If you need to represent a rectangular shape on multiple planes, use `IPath` instead.
 
 **Usage:**
 
-    var sz = new taaspace.geom.Size(8, 5)
+    var sz = new tapspace.geom.Size(8, 5)
 
 **Property** `width` gives the width.
 
@@ -553,14 +553,14 @@ An object with width and height. The `Size` does not have location or rotation a
 **Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.
 
 
-### taaspace.geom.ISize
+### tapspace.geom.ISize
 
 A plane-invariant size, a container of two plane-invariant measures. With `ISize` you can convert `Size` objects into other coordinate systems.
 
 **Usage:**
 
-    var sz = new taaspace.geom.Size(8, 5)
-    var isz = new taaspace.geom.ISize(s, sourceItem)
+    var sz = new tapspace.geom.Size(8, 5)
+    var isz = new tapspace.geom.ISize(s, sourceItem)
     var sizeOnTarget = isz.to(targetItem)
 
 **Method** `#almostEqual(isz)` returns `true` if `this` and the given `ISize` are equal, by allowing a small error from floating point arithmetics.
@@ -576,13 +576,13 @@ A plane-invariant size, a container of two plane-invariant measures. With `ISize
 **Method** `#toSpace()` returns `Size` in the coordinate system of the root item.
 
 
-### taaspace.geom.IScalar
+### tapspace.geom.IScalar
 
 A plane-invariant measure.
 
 **Usage:**
 
-    var s = new taaspace.geom.IScalar(6, sourceItem)
+    var s = new tapspace.geom.IScalar(6, sourceItem)
     var t = s.to(targetItem)
 
 **Method** `#add(isca)` returns a new `IScalar` that is the sum of `this` and the given `IScalar`.
@@ -594,12 +594,12 @@ A plane-invariant measure.
 **Method** `#toSpace()` returns `number` in the coordinate system of the root item.
 
 
-### taaspace.geom.Transform
+### tapspace.geom.Transform
 
 For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransforms-r-tx-ty)
 
 
-### taaspace.geom.ITransform
+### tapspace.geom.ITransform
 
 A plane-invariant `Transform`. Similarly as a `Vector` can be represented in multiple coordinate systems,
 so can a transformation. To free users from thinking about which representation is the correct one for a given situation, we have `ITransform`.
@@ -639,13 +639,13 @@ so can a transformation. To free users from thinking about which representation 
 **Method** `translateScaleRotate(domain, range)` is similar to `#scale` but allows each translation, scaling, and rotation.
 
 
-### taaspace.geom.Vector
+### tapspace.geom.Vector
 
 A point in 2D space.
 
 **Usage:**
 
-    var vec = new taaspace.geom.Vector(2, 1)
+    var vec = new tapspace.geom.Vector(2, 1)
 
 **Property** `x` is a number
 
@@ -694,15 +694,15 @@ A point in 2D space.
 **Method** `#transform(tr)` returns `Vector` where `this` has been multiplied from left by the given `Transform`.
 
 
-### taaspace.geom.IVector
+### tapspace.geom.IVector
 
 A plane-invariant vector that can be converted to `Vector` on given plane when needed.
 
 **Usage:**
 
-    var px = new taaspace.SpacePixel('black', space)
-    var v = new taaspace.geom.Vector(4, 2)
-    var iv = new taaspace.geom.IVector(v, px)
+    var px = new tapspace.SpacePixel('black', space)
+    var v = new tapspace.geom.Vector(4, 2)
+    var iv = new tapspace.geom.IVector(v, px)
 
 **Constructor** `IVector(vec, plane)` takes a `Vector` and an item `plane`. The `plane` defines the coordinate system of `vec`.
 
@@ -732,7 +732,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 ## Other
 
-### taaspace.preload
+### tapspace.preload
 
 A function to preload an image file or an array of them and call back when finished. As the main benefit, code in the callback can trust the dimensions of the image object.
 
@@ -740,8 +740,8 @@ A function to preload an image file or an array of them and call back when finis
 
 **Usage:**
 
-    taaspace.preload('mylittle.png', function (err, img) {
+    tapspace.preload('mylittle.png', function (err, img) {
       if (err) { throw err }
       // img is now loaded and has correct dimensions instead of 0x0.
-      var si = new taaspace.SpaceImage(space, img)
+      var si = new tapspace.SpaceImage(space, img)
     })

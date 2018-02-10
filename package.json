@@ -1,6 +1,6 @@
 {
-  "name": "taaspace",
-  "version": "5.0.0-rc",
+  "name": "tapspace",
+  "version": "1.0.0",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -16,16 +16,16 @@
     "transformation",
     "touch"
   ],
-  "homepage": "https://github.com/taataa/taaspace",
+  "homepage": "https://github.com/taataa/tapspace",
   "main": "index.js",
-  "unpkg": "dist/taaspace.min.js",
+  "unpkg": "dist/tapspace.min.js",
   "author": {
     "name": "Akseli Palen",
     "email": "akseli.palen@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/taataa/taaspace.git"
+    "url": "git://github.com/taataa/tapspace.git"
   },
   "license": "MIT",
   "dependencies": {
@@ -35,8 +35,7 @@
     "monotone-convex-hull-2d": "^1.0.1",
     "move-js": "^0.5.0",
     "nudged": "^1.4.0",
-    "seqid": "^1.0.1",
-    "taach": "^2.0.2"
+    "seqid": "^1.0.1"
   },
   "devDependencies": {
     "async": "^2.6.0",

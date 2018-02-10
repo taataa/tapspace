@@ -1,10 +1,10 @@
 /* global Image */
 var $ = require('jquery')
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceView = taaspace.SpaceView
-var SpaceImage = taaspace.SpaceImage
-var SpaceHTML = taaspace.SpaceHTML
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceView = tapspace.SpaceView
+var SpaceImage = tapspace.SpaceImage
+var SpaceHTML = tapspace.SpaceHTML
 
 module.exports = function (test) {
   test('create img element immediately', function (t, ctx) {
@@ -17,7 +17,7 @@ module.exports = function (test) {
     var img = new Image()
     img.src = 'lib/black256.png'
     var spaceimg = new SpaceImage(img, space)
-    var el = $('img.taaspace-image')
+    var el = $('img.tapspace-image')
 
     t.equal(el.length, 1, 'img element found')
 
@@ -56,7 +56,7 @@ module.exports = function (test) {
     si.translate(si.atNorm(0, 0), si.atNorm(1, 1))
 
     var el1 = document.elementFromPoint(300, 300) // null if outside window
-    var el2 = $('img.taaspace-image')[0]
+    var el2 = $('img.tapspace-image')[0]
     var el3 = view.getElementBySpaceItem(si)
 
     t.equal(el1, el2, 'elementFromPoint matches with jQuery')
@@ -93,7 +93,7 @@ module.exports = function (test) {
     si.translate(si.atNW(), si.atSE())
     si.setParent(view)
     // This should keep node's local transform.
-    // Because view has not moved, the taa should appear at same place.
+    // Because view has not moved, the item should appear at same place.
     // Let's see if spacenode is still in place.
     var el1 = document.elementFromPoint(300, 300) // null if outside window
 
@@ -122,7 +122,7 @@ module.exports = function (test) {
     var el2 = document.elementFromPoint(50, 50)
 
     t.notEqual(el1, el2, 'element should be removed')
-    t.equal(el2.id, 'taaspace-sandbox')
+    t.equal(el2.id, 'tapspace-sandbox')
 
     t.end()
   })
@@ -143,7 +143,7 @@ module.exports = function (test) {
     var el2 = document.elementFromPoint(50, 50)
 
     t.notEqual(el1, el2)
-    t.equal(el2.id, 'taaspace-sandbox')
+    t.equal(el2.id, 'tapspace-sandbox')
     t.end()
   })
 
