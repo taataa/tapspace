@@ -56,14 +56,14 @@
       viewTouch.start({ translate: true, scale: true, rotate: true, tap: true });
 
       (function defineLog () {
-        viewTouch.on('transformstart', function () {
-          console.log('view:transformstart')
+        viewTouch.on('gesturestart', function () {
+          console.log('view:gesturestart')
         })
-        viewTouch.on('transformmove', function () {
-          console.log('view:transformmove')
+        viewTouch.on('gesturemove', function () {
+          console.log('view:gesturemove')
         })
-        viewTouch.on('transformend', function () {
-          console.log('view:transformend')
+        viewTouch.on('gestureend', function () {
+          console.log('view:gestureend')
         })
         viewTouch.on('tap', function () {
           console.log('view:tap')

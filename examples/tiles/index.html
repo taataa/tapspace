@@ -113,7 +113,7 @@
         rotateStep: Math.PI / 12
       }, space)
 
-      tView.on('transformend', function () {
+      tView.on('gestureend', function () {
         view.snap(view.atMid(), viewGrid)
       })
     })

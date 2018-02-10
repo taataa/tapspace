@@ -57,7 +57,7 @@ The workings of the manager can be deactivated by calling `stop` method. An inac
 
 An active manager emits events about the recognized gestures. You can bind to these events in your code. One of such events is `tap` which is fired after short click-like gestures if `tap: true`. Each event is accompanied with an event object and can be listened in the following manner:
 
-    > tou.on('transformend', function (ev) {
+    > tou.on('gestureend', function (ev) {
         console.log(ev.duration)
       })
 

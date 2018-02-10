@@ -356,15 +356,15 @@ The default mode is accessible at `Touchable.DEFAULT_MODE`.
 
 The manager emits the following events:
 
-- *transformstart:* fired at the beginning of the gesture when the first pointer lands on the element.
-- *transformmove:* fired when a pointer on the element moves so that the transformation changes.
-- *transformend:* fired when the last pointer is lifted off from the element.
+- *gesturestart:* fired at the beginning of the gesture when the first pointer lands on the element.
+- *gesturemove:* fired when a pointer on the element moves so that the transformation changes.
+- *gestureend:* fired when the last pointer is lifted off from the element.
 - *tap:* fired if all the following statements are true: 1) mode has `tap: true`, 2) last finger or other pointer was lifted from the element, and 3) pointers did not move during the gesture more in average than what is allowed by a threshold value. The default threshold of `20` can be overridden by an additional mode property `tapMaxTravel`.
 
 The events are fired with an event object. The event object has the following properties:
 
-- *distance:* a number. An average manhattan distance in screen pixels that a pointer has traveled after `transformstart`.
-- *duration:* a number. Milliseconds from the `transformstart`
+- *distance:* a number. An average manhattan distance in screen pixels that a pointer has traveled after `gesturestart`.
+- *duration:* a number. Milliseconds from the `gesturestart`
 - *element:* a `HTMLElement`. The source of the original pointer events.
 - *item:* an `AbstractPlane`. The item of the HTMLElement.
 
