@@ -66,6 +66,7 @@
     "build:watch": "webpack --watch",
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
+    "test": "npm run lint && npm run test:headless",
     "test:headless": "webpack --config test/webpack.headless.config.js",
     "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
