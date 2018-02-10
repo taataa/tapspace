@@ -70,7 +70,7 @@
     "test:headless": "webpack --config test/webpack.headless.config.js",
     "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "release": "npm run lint && npm run gv && npm run test:headless && npm run build:min && npm publish",
+    "release": "npm run lint && npm run gv && npm run test:headless && npm run build && npm publish",
     "gv": "genversion lib/version.js",
     "watch": "npm-watch"
   },
