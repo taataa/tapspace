@@ -18,6 +18,7 @@
   ],
   "homepage": "https://github.com/taataa/taaspace",
   "main": "index.js",
+  "unpkg": "dist/taaspace.min.js",
   "author": {
     "name": "Akseli Palen",
     "email": "akseli.palen@gmail.com"
