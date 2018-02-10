@@ -62,14 +62,14 @@
   },
   "scripts": {
     "start": "node examples/server.js",
-    "build": "npm run lint && npm run gv && npm run test:headless && npm run build:min",
-    "build:min": "webpack",
+    "build": "webpack",
     "build:watch": "webpack --watch",
+    "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
+    "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "test:headless": "webpack --config test/webpack.headless.config.js",
     "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
-    "lintfix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
+    "release": "npm run lint && npm run gv && npm run test:headless && npm run build:min && npm publish",
     "gv": "genversion lib/version.js",
     "watch": "npm-watch"
   },
