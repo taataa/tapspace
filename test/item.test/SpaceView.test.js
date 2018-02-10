@@ -1,11 +1,10 @@
 /* global Image */
 var $ = require('jquery')
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceView = taaspace.SpaceView
-var SpaceImage = taaspace.SpaceImage
-var SpaceHTML = taaspace.SpaceHTML
-var Vector = taaspace.geom.Vector
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceView = tapspace.SpaceView
+var SpaceImage = tapspace.SpaceImage
+var SpaceHTML = tapspace.SpaceHTML
 
 module.exports = function (test) {
   test('create img element immediately', function (t, ctx) {
@@ -17,8 +16,8 @@ module.exports = function (test) {
 
     var img = new Image()
     img.src = 'lib/black256.png'
-    var spaceimg = new SpaceImage(space, img)
-    var el = $('img.taaspace-image')
+    var spaceimg = new SpaceImage(img, space)
+    var el = $('img.tapspace-image')
 
     t.equal(el.length, 1, 'img element found')
 
@@ -31,7 +30,7 @@ module.exports = function (test) {
   test('should position the image correctly', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
     view.mount(ctx.container)
 
     t.ok(si.at(0, 0).equals(view.at(0, 0)), 'north-west')
@@ -52,12 +51,12 @@ module.exports = function (test) {
     var space = new Space()
     var view = new SpaceView(space)
     view.mount(ctx.container)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
 
     si.translate(si.atNorm(0, 0), si.atNorm(1, 1))
 
     var el1 = document.elementFromPoint(300, 300) // null if outside window
-    var el2 = $('img.taaspace-image')[0]
+    var el2 = $('img.tapspace-image')[0]
     var el3 = view.getElementBySpaceItem(si)
 
     t.equal(el1, el2, 'elementFromPoint matches with jQuery')
@@ -72,7 +71,7 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
 
     view.translate(view.atMid(), si.atMid())
 
@@ -87,14 +86,14 @@ module.exports = function (test) {
   test('present reparented nodes', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var si = new SpaceImage(space, ctx.images.black256)
+    var si = new SpaceImage(ctx.images.black256, space)
     view.mount(ctx.container)
 
     // Move a bit and reparent to view
     si.translate(si.atNW(), si.atSE())
     si.setParent(view)
     // This should keep node's local transform.
-    // Because view has not moved, the taa should appear at same place.
+    // Because view has not moved, the item should appear at same place.
     // Let's see if spacenode is still in place.
     var el1 = document.elementFromPoint(300, 300) // null if outside window
 
@@ -104,17 +103,18 @@ module.exports = function (test) {
     view.translate(space.at(0, 0), space.at(2000, 2000))
     var el2 = document.elementFromPoint(300, 300) // null if outside window
     t.equal(el2, el1, 'in place after view translate')
+
     t.end()
   })
 
   test('remove node', function (t, ctx) {
     // Create AbstractNode
     var space = new Space()
-    var node = new SpaceHTML(space, 'foo')
+    var node = new SpaceHTML('foo', space)
     var view = new SpaceView(space)
 
     view.mount(ctx.container)
-    node.setLocalSize(new Vector(100, 100))
+    node.setSize(100, 100)
 
     // Test if representation is removed.
     var el1 = document.elementFromPoint(50, 50)
@@ -122,7 +122,7 @@ module.exports = function (test) {
     var el2 = document.elementFromPoint(50, 50)
 
     t.notEqual(el1, el2, 'element should be removed')
-    t.equal(el2.id, 'taaspace-sandbox')
+    t.equal(el2.id, 'tapspace-sandbox')
 
     t.end()
   })
@@ -134,8 +134,8 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var node = new SpaceHTML(space, 'foo')
-    node.setLocalSize(new Vector(100, 100))
+    var node = new SpaceHTML('foo', space)
+    node.setSize(100, 100)
 
     // Test if representation is removed when node is reparented.
     var el1 = document.elementFromPoint(50, 50)
@@ -143,14 +143,14 @@ module.exports = function (test) {
     var el2 = document.elementFromPoint(50, 50)
 
     t.notEqual(el1, el2)
-    t.equal(el2.id, 'taaspace-sandbox')
+    t.equal(el2.id, 'tapspace-sandbox')
     t.end()
   })
 
   test('do not become child of non-Space', function (t, ctx) {
     var space = new Space()
     var view = new SpaceView(space)
-    var node = new SpaceHTML(space, 'foo')
+    var node = new SpaceHTML('foo', space)
     view.mount(ctx.container)
 
     t.throws(function () {
@@ -170,13 +170,13 @@ module.exports = function (test) {
     var view = new SpaceView(space)
     view.mount(ctx.container)
 
-    var nodeB = new SpaceHTML(space, 'foo')
-    nodeB.setLocalSize(new Vector(100, 100))
+    var nodeB = new SpaceHTML('foo', space)
+    nodeB.setSize(100, 100)
 
-    var nodeC = new SpaceHTML(space2, 'bar')
-    nodeC.setLocalSize(new Vector(100, 100))
-    var nodeD = new SpaceHTML(nodeC, 'baz')
-    nodeD.setLocalSize(new Vector(100, 100))
+    var nodeC = new SpaceHTML('bar', space2)
+    nodeC.setSize(100, 100)
+    var nodeD = new SpaceHTML('baz', nodeC)
+    nodeD.setSize(100, 100)
     nodeD.translate(nodeD.atNW(), nodeC.atSE())
 
     // Test the setup is rendered correctly
@@ -222,6 +222,58 @@ module.exports = function (test) {
     t.equal(view.getElementBySpaceItem(space), se, 'space has element')
     t.equal(view.getElementBySpaceItem(view), ve, 'view has element')
     t.equal(view.getContainer(), ctx.container, 'view has container')
+
+    t.end()
+  })
+
+  test('mount and unmount before setParent', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView()
+
+    view.mount(ctx.container)
+    view.unmount()
+    view.mount(ctx.container)
+
+    space.addChild(view)
+
+    var se = ctx.container.childNodes[0]
+    var ve = se.childNodes[0]
+    t.equal(view.getElementBySpaceItem(space), se, 'space has element')
+    t.equal(view.getElementBySpaceItem(view), ve, 'view has element')
+
+    t.end()
+  })
+
+  test('reorder elements', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView()
+
+    var a = new SpaceImage(ctx.images.black256, space)
+    var b = new SpaceImage(ctx.images.black256, space)
+    var c = new SpaceImage(ctx.images.black256, space)
+
+    space.addChild(view)
+    view.mount(ctx.container)
+
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(c),
+      'initial order: c on top'
+    )
+
+    c.sendBelow(a)
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(b),
+      'after ordering: b on top'
+    )
+
+    c.bringToFront()
+    t.equal(
+      document.elementFromPoint(150, 150),
+      view.getElementBySpaceItem(c),
+      'back to front: c on top'
+    )
 
     t.end()
   })

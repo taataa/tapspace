@@ -1,6 +1,6 @@
 .travis.yml
 
-/dist
+/dist/.gitkeep
 /doc
 /examples
 /test

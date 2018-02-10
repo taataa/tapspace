@@ -1,9 +1,9 @@
-var taaspace = require('../../index')
-var Space = taaspace.Space
-var SpaceGroup = taaspace.SpaceGroup
-var SpacePixel = taaspace.SpacePixel
-var Grid = taaspace.geom.Grid
-var IGrid = taaspace.geom.IGrid
+var tapspace = require('../../index')
+var Space = tapspace.Space
+var SpaceGroup = tapspace.SpaceGroup
+var SpacePixel = tapspace.SpacePixel
+var Grid = tapspace.geom.Grid
+var IGrid = tapspace.geom.IGrid
 
 module.exports = function (test) {
   // Test cases
@@ -20,8 +20,8 @@ module.exports = function (test) {
 
   test('#snap', function (t) {
     var space = new Space()
-    var px1 = new SpacePixel(space)
-    var px2 = new SpacePixel(space)
+    var px1 = new SpacePixel('black', space)
+    var px2 = new SpacePixel('black', space)
 
     var igrid = new IGrid(new Grid({
       xStep: 10,
@@ -43,8 +43,8 @@ module.exports = function (test) {
 
   test('#snap with pivot', function (t) {
     var space = new Space()
-    var px1 = new SpacePixel(space)
-    var px2 = new SpacePixel(space)
+    var px1 = new SpacePixel('black', space)
+    var px2 = new SpacePixel('black', space)
 
     // Move both away from the same coordinate system with the space.
     // This allows us to see problems with correct use of planes.
@@ -77,8 +77,8 @@ module.exports = function (test) {
 
     var space = new Space()
     var g = new SpaceGroup(space)
-    var gpx = new SpacePixel(g) // Note: on group
-    var spx = new SpacePixel(space) // Note: on space
+    var gpx = new SpacePixel('black', g) // Note: on group
+    var spx = new SpacePixel('black', space) // Note: on space
 
     // Transform both pixels so that px.atNW()
     // becomes near space.at(-3, -3) with

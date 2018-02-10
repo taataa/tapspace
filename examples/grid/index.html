@@ -2,60 +2,98 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace Example / Basic Usage</title>
+  <title>Grid - Tapspace Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="../../taaspace.css">
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: white;
+      background: #000;
+      font-family: sans-serif;
+    }
+  </style>
 </head>
 <body>
   <div id="space"></div>
-  <script src="../../taaspace.min.js"></script>
+  <script src="../assets/ghoulog.js"></script>
+  <script src="../tapspace.min.js"></script>
+
   <script>
-  (function () {
-    var container = document.getElementById('space');
-    var space = new taaspace.Space();
-    var view = new taaspace.SpaceView(space, container);
+    var space = new tapspace.Space()
+    var viewElement = document.getElementById('space')
+    var view = new tapspace.SpaceView(space)
+    view.mount(viewElement)
 
-    var imgs = [
-      ['assets/chellah_nw.jpg', 'assets/chellah_ne.jpg'],
-      ['assets/chellah_sw.jpg', 'assets/chellah_se.jpg']
-    ];
+    // Width and height of a grid tile
+    var SIDE = 128
 
-    var createSpaceTaa = function (src, x, y) {
-      new taaspace.Taa(src, function (err, taa) {
-        if (err) { throw err; }
-        var staa = new taaspace.SpaceTaa(space, taa);
-        staa.translateScaleRotate(
-          [staa.atNorm([0,0]), staa.atNorm([1,1])],
-          [space.at([x, y]), space.at([x + 1, y + 1])]
-        );
-      });
-    };
+    // Snapping grid
+    var grid = new tapspace.geom.IGrid({
+      xStep: SIDE,
+      xPhase: SIDE / 2,
+      yStep: SIDE,
+      yPhase: SIDE / 2,
+      rotateStep: Math.PI / 2,
+      scaleStep: 10000,
+      scalePhase: 1
+    }, space)
 
-    var i, j; // rows, columns
-    for (i = 0; i < imgs.length; i += 1) {
-      for (j = 0; j < imgs[i].length; j += 1) {
-        createSpaceTaa(imgs[i][j], j, i);
+    // Load images
+    tapspace.preload([
+      '../assets/tile00.png',
+      '../assets/tile01.png',
+      '../assets/tile02.png',
+      '../assets/tile03.png'
+    ], function (err, imgs) {
+      if (err) {
+        console.error(err)
+        throw err
       }
-    }
 
-    // View on taas.
-    view.translateScale(
-      [view.atNorm([0,0]), view.atNorm([1,0]),
-       view.atNorm([0,1]), view.atNorm([1,1])],
-      [space.at([-1,-1]), space.at([3,-1]),
-       space.at([-1,3]),  space.at([3,3])]
-    );
+      var g = new tapspace.SpaceGroup(space)
+      var rows = Math.ceil(Math.sqrt(imgs.length))
+      var touchmode = { translate: true, scale: true, rotate: true }
 
-    view.translateRotate(
-      [view.atNW(), view.atSE()],
-      [space.at([0,0]), space.at([2,2])]
-    );
+      imgs.forEach(function (img, i) {
+        // Create
+        var px = new tapspace.SpaceImage(img, g)
 
-  }());
+        // Position & snap scale
+        var x = i % rows
+        var y = Math.floor(i / rows)
+        px.setSize(SIDE, SIDE)
+        px.translate(px.atMid(), grid.at(x, y))
+        px.snap(px.atMid(), grid)
+
+        // Define interaction
+        var touch = new tapspace.Touchable(view, px)
+        touch.start(touchmode)
+        touch.on('gesturestart', function () {
+          px.bringToFront()
+        })
+        touch.on('gestureend', function () {
+          px.snap(px.atMid(), grid)
+        })
+      })
+
+      // Initial view position
+      view.fitScale(g)
+      view.scale(view.atMid(), 1.618)
+
+      // Make view transformable
+      var tView = new tapspace.Touchable(view, view)
+      tView.start(touchmode)
+    })
   </script>
 </body>
 </html>

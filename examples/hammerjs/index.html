@@ -2,26 +2,26 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Taaspace Hammer.js Example</title>
+  <title>Tapspace Hammer.js Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../../taaspace.css">
+  <link rel="stylesheet" href="../../tapspace.css">
 </head>
 <body>
-  <div id="spaceview" class="taaspace-container"></div>
+  <div id="spaceview" class="tapspace-container"></div>
   <script src="hammer.min.js"></script>
-  <script src="../../taaspace.min.js"></script>
+  <script src="../../tapspace.min.js"></script>
   <script>
     var container = document.getElementById('spaceview');
-    var space = new taaspace.Space();
-    var view = new taaspace.SpaceView(space, container);
+    var space = new tapspace.Space();
+    var view = new tapspace.SpaceView(space, container);
 
     // Single image.
-    var taa = new taaspace.Taa('img/chellah_star.jpg');
-    var staa = new taaspace.SpaceTaa(space, taa);
+    var taa = new tapspace.Taa('img/chellah_star.jpg');
+    var staa = new tapspace.SpaceTaa(space, taa);
 
     // Expose HTML element for Hammer.
     var el = view.getElementBySpaceItem(staa);

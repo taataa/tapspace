@@ -1,22 +1,31 @@
 {
-  "name": "taaspace",
-  "version": "4.0.1",
+  "name": "tapspace",
+  "version": "1.0.0",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
     "user interface",
+    "ui",
+    "frontend",
+    "scenegraph",
     "html",
-    "layout"
+    "layout",
+    "zui",
+    "css",
+    "transform",
+    "transformation",
+    "touch"
   ],
-  "homepage": "https://github.com/taataa/taaspace",
+  "homepage": "https://github.com/taataa/tapspace",
   "main": "index.js",
+  "unpkg": "dist/tapspace.min.js",
   "author": {
     "name": "Akseli Palen",
     "email": "akseli.palen@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/taataa/taaspace.git"
+    "url": "git://github.com/taataa/tapspace.git"
   },
   "license": "MIT",
   "dependencies": {
@@ -26,17 +35,21 @@
     "monotone-convex-hull-2d": "^1.0.1",
     "move-js": "^0.5.0",
     "nudged": "^1.4.0",
-    "seqid": "^1.0.1",
-    "taach": "^2.0.2"
+    "seqid": "^1.0.1"
   },
   "devDependencies": {
     "async": "^2.6.0",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
+    "finalhandler": "^1.1.0",
     "genversion": "^2.0.1",
+    "ip": "^1.1.5",
     "jquery": "^3.2.1",
     "npm-watch": "^0.3.0",
+    "qrcode-terminal": "^0.11.0",
     "semver": "^5.4.1",
+    "serve-index": "^1.9.1",
+    "serve-static": "^1.13.1",
     "standard": "*",
     "style-loader": "^0.19.0",
     "tap-spec": "^4.1.1",
@@ -48,16 +61,16 @@
     "webpack-tape-run": "0.0.7"
   },
   "scripts": {
-    "start": "python3 -m http.server 8000",
-    "serve": "ifconfig | grep inet && python3 -m http.server 8000",
-    "build": "npm run lint && npm run gv && npm run test:headless && npm run build:min",
-    "build:min": "webpack",
+    "start": "node examples/server.js",
+    "build": "webpack",
     "build:watch": "webpack --watch",
+    "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
+    "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
+    "test": "npm run lint && npm run test:headless",
     "test:headless": "webpack --config test/webpack.headless.config.js",
     "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
-    "lintfix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
+    "release": "npm run lint && npm run gv && npm run test:headless && npm run build:min && npm publish",
     "gv": "genversion lib/version.js",
     "watch": "npm-watch"
   },

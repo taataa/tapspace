@@ -1,6 +1,6 @@
-var taaspace = require('../../index')
-var Path = taaspace.geom.Path
-var Vector = taaspace.geom.Vector
+var tapspace = require('../../index')
+var Path = tapspace.geom.Path
+var Vector = tapspace.geom.Vector
 
 module.exports = function (test) {
   // Test cases

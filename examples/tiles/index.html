@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tiles - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: white;
+      background: #000;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+  <script src="../assets/ghoulog.js"></script>
+  <script src="../tapspace.min.js"></script>
+
+  <script>
+    var space = new tapspace.Space()
+    var viewElement = document.getElementById('space')
+    var view = new tapspace.SpaceView(space)
+    view.mount(viewElement)
+
+    // Width and height of a grid tile
+    var SIDE = 256
+
+    // Snapping grid
+    var grid = new tapspace.geom.IGrid({
+      xStep: SIDE,
+      yStep: SIDE,
+      rotateStep: Math.PI / 2,
+      scaleStep: 100000000,
+      scalePhase: 1
+    }, space)
+
+    var pickRandom = function (arr) {
+      var i = Math.floor(Math.random() * 4)
+      return arr[i]
+    }
+
+    // Load images
+    tapspace.preload([
+      '../assets/tile00.png',
+      '../assets/tile01.png',
+      '../assets/tile02.png',
+      '../assets/tile03.png'
+    ], function (err, imgs) {
+      if (err) {
+        console.error(err)
+        throw err
+      }
+
+      // Space size
+      var W = 20
+
+      // Additional container
+      var g = new tapspace.SpaceGroup(space)
+
+      // Handler for tap events. Better here than inside a loop.
+      var tapHandler = function (ev) {
+        var n = ev.plane
+        n.rotate(n.atMid(), Math.PI / 2)
+      }
+
+      var i, j, px, img, touch
+      for (i = 0; i < W; i += 1) {
+        for (j = 0; j < W; j += 1) {
+          img = pickRandom(imgs)
+          px = new tapspace.SpaceImage(img, g)
+          px.translate(px.atMid(), grid.at(i, j))
+          px.rotate(px.atMid(), pickRandom([
+            0, Math.PI / 2, Math.PI, -Math.PI / 2
+          ]))
+
+          // Define interaction.
+          // Setting "propagate: true" we allow transformations on the view
+          // in addition to tap event recognition.
+          touch = new tapspace.Touchable(view, px)
+          touch.start({
+            tap: true,
+            propagate: true
+          })
+          touch.on('tap', tapHandler)
+        }
+      }
+
+      // Initial view position
+      view.translate(view.atMid(), g.getHull().atMid())
+
+      // Make view transformable
+      var tView = new tapspace.Touchable(view, view)
+      tView.start({
+        translate: true,
+        scale: true,
+        rotate: true
+      })
+
+      // Snapping grid
+      var viewGrid = new tapspace.geom.IGrid({
+        rotateStep: Math.PI / 12
+      }, space)
+
+      tView.on('gestureend', function () {
+        view.snap(view.atMid(), viewGrid)
+      })
+    })
+  </script>
+</body>
+</html>

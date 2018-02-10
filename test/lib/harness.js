@@ -21,6 +21,11 @@ var $ = require('jquery')
 // Note: static file serving fixed in tape-run 3.0.1
 var black256png = require('./black256.png')
 
+// Import styles. WebpackTapeRun has its internal index.html
+// and also static file serving is problematic so therefore
+// this is the cleanest way to import the styles.
+require('./style.css')
+
 // var DEFAULT_WINDOW_WIDTH = window.innerWidth
 // var DEFAULT_WINDOW_HEIGHT = window.outerHeight
 
@@ -71,12 +76,12 @@ var test = function (msg, testCase) {
       // },
 
       function resetBody (done) {
-        var container = document.getElementById('taaspace-sandbox')
+        var container = document.getElementById('tapspace-sandbox')
         if (container) {
           container.innerHTML = ''
         } else {
-          $(document.body).prepend('<div id="taaspace-sandbox"></div>')
-          container = document.getElementById('taaspace-sandbox')
+          $(document.body).prepend('<div id="tapspace-sandbox"></div>')
+          container = document.getElementById('tapspace-sandbox')
         }
         caseContext.container = container
         done()

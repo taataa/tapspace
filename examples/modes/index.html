@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Modes - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: white;
+      background: #666;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+  <script src="../assets/ghoulog.js"></script>
+  <script src="../tapspace.min.js"></script>
+
+  <script>
+
+    var space = new tapspace.Space()
+    var viewElement = document.getElementById('space')
+    var view = new tapspace.SpaceView(space)
+    view.mount(viewElement)
+
+    var data = [
+      // RRGGBB
+      ['#000000', {}],
+      ['#FF0000', { translate: true }],
+      ['#00FF00', { scale: true }],
+      ['#0000FF', { rotate: true }],
+      ['#FFFF00', { translate: true, scale: true }],
+      ['#FF00FF', { translate: true, rotate: true }],
+      ['#00FFFF', { scale: true, rotate: true }],
+      ['#FFFFFF', { translate: true, scale: true, rotate: true }]
+    ]
+    var WIDTH = 3
+
+    var g = new tapspace.SpaceGroup(space)
+
+    data.forEach(function (d, i) {
+      var px = new tapspace.SpacePixel(d[0], g)
+      px.translate(px.atMid(), space.at(i % WIDTH, Math.floor(i / WIDTH)))
+      var touch = new tapspace.Touchable(view, px)
+      var mode = d[1]
+      if (!mode.translate) {
+        mode.pivot = px.atMid()
+      }
+      touch.start(mode)
+    })
+
+    view.fitScale(g)
+
+  </script>
+</body>
+</html>

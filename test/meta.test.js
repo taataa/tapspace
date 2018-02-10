@@ -1,4 +1,4 @@
-var taaspace = require('../index')
+var tapspace = require('../index')
 
 module.exports = function (test) {
   // test('window size/resize test', function (t) {
@@ -39,11 +39,16 @@ module.exports = function (test) {
       ctx.container,
       'container at 1,1'
     )
+    t.equal(
+      document.elementFromPoint(100, 100),
+      ctx.container,
+      'container at 100,100'
+    )
     t.end()
   })
 
   // test('load a static asset', function (t) {
-  //   window.fetch('taa.png').then(function (response) {
+  //   window.fetch('image.png').then(function (response) {
   //     t.ok(response.ok)
   //     console.log(response.status, Array.from(response.headers.entries()))
   //     console.log(response.url)
@@ -59,13 +64,13 @@ module.exports = function (test) {
   //   })
   // })
 
-  test('taaspace API should be visible', function (t) {
-    t.ok('version' in taaspace &&
-         typeof taaspace.version === 'string', 'has .version string')
-    t.ok('preload' in taaspace &&
-         typeof taaspace.preload === 'function', 'has .preload function')
-    t.ok('Space' in taaspace &&
-         typeof taaspace.Space === 'function', 'has .Space class')
+  test('tapspace API should be visible', function (t) {
+    t.ok('version' in tapspace &&
+         typeof tapspace.version === 'string', 'has .version string')
+    t.ok('preload' in tapspace &&
+         typeof tapspace.preload === 'function', 'has .preload function')
+    t.ok('Space' in tapspace &&
+         typeof tapspace.Space === 'function', 'has .Space class')
     t.end()
   })
 }

@@ -1,36 +1,47 @@
-# Taaspace API
+# API Reference
 
 Contents:
 - [Module](#module)
-  - [taaspace](#taaspace)
-  - [taaspace.version](#taaspace-version)
+  - [tapspace](#tapspace)
+  - [tapspace.version](#tapspaceversion)
 - [Items](#items)
-  - [taaspace.Space](#taaspace-space)
-  - [taaspace.SpaceGroup](#taaspace-spacegroup)
-  - [taaspace.SpaceHTML](#taaspace-spacehtml)
-  - [taaspace.SpaceImage](#taaspace-spaceimage)
-  - [taaspace.SpacePixel](#taaspace-spacepixel)
+  - [tapspace.Space](#tapspacespace)
+  - [tapspace.SpaceGroup](#tapspacespacegroup)
+  - [tapspace.SpaceHTML](#tapspacespacehtml)
+  - [tapspace.SpaceImage](#tapspacespaceimage)
+  - [tapspace.SpacePixel](#tapspacespacepixel)
+  - [tapspace.SpaceView](#tapspacespaceview)
 - [Abstract Items](#abstract-items)
-  - [taaspace.AbstractNode](#taaspace-abstractnode)
-  - [taaspace.AbstractPlane](#taaspace-abstractplane)
-  - [taaspace.AbstractRectangle](#taaspace-abstractrectangle)
+  - [tapspace.AbstractNode](#tapspaceabstractnode)
+  - [tapspace.AbstractPlane](#tapspaceabstractplane)
+  - [tapspace.AbstractRectangle](#tapspaceabstractrectangle)
 - [Interaction](#interaction)
-  - [taaspace.Touchable](#taaspace-touchable)
+  - [tapspace.Touchable](#tapspacetouchable)
 - [Geometry](#geometry)
-  - [taaspace.geom](#taaspace-geom)
+  - [tapspace.geom](#tapspacegeom)
+  - [tapspace.geom.Grid](#tapspacegeomgrid)
+  - [tapspace.geom.IGrid](#tapspacegeomigrid)
+  - [tapspace.geom.Path](#tapspacegeompath)
+  - [tapspace.geom.IPath](#tapspacegeomipath)
+  - [tapspace.geom.Size](#tapspacegeomsize)
+  - [tapspace.geom.ISize](#tapspacegeomisize)
+  - [tapspace.geom.Transform](#tapspacegeomtransform)
+  - [tapspace.geom.ITransform](#tapspacegeomitransform)
+  - [tapspace.geom.Vector](#tapspacegeomvector)
+  - [tapspace.geom.IVector](#tapspacegeomivector)
 - [Other](#other)
-  - [taaspace.preload](#taaspace-preload)
+  - [tapspace.preload](#tapspacepreload)
 
 
 ## Module
 
-### taaspace
+### tapspace
 
 Usage:
 
-    var taaspace = require('taaspace')
+    var tapspace = require('tapspace')
 
-### taaspace.version
+### tapspace.version
 
 A semantic version string identical to the version in the module's `package.json`.
 
@@ -39,7 +50,7 @@ A semantic version string identical to the version in the module's `package.json
 ## Items
 
 
-### taaspace.Space
+### tapspace.Space
 
 The root for other items.
 
@@ -49,10 +60,10 @@ The root for other items.
 
 **Usage:**
 
-    var space = new taaspace.Space()
+    var space = new tapspace.Space()
 
 
-### taaspace.SpaceGroup
+### tapspace.SpaceGroup
 
 A collection of items. `SpaceGroup` itself has no representation, only its children.
 
@@ -60,13 +71,15 @@ A collection of items. `SpaceGroup` itself has no representation, only its child
 
 **Usage:**
 
-    > var g = new taaspace.SpaceGroup(parent)
-    > var px = new taaspace.SpacePixel(g)
+    > var g = new tapspace.SpaceGroup(parent)
+    > var px = new tapspace.SpacePixel()
+
+**Constructor** `SpaceGroup(parent)` takes an optional parent item.
 
 
-### taaspace.SpaceHTML
+### tapspace.SpaceHTML
 
-A rectangular item with custom HTML content. `SpaceView` represents the content as-is. Be careful when injecting content from users. Good for example for text, iframes, or canvas elements.
+A rectangular item with custom HTML content. `SpaceView` represents the content as-is. Good for text, iframes, or canvas elements for example. Be careful when injecting content created by users.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -74,16 +87,18 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 
 **Usage:**
 
-    > var h = new taaspace.SpaceHTML(parent, '<h1>Hell-o</h1>')
+    > var h = new tapspace.SpaceHTML('<h1>Hell-o</h1>')
     > h.getHTML()
     '<h1>Hell-o</h1>'
+
+**Constructor** `SpaceHTML(html, parent)` takes in a string and an optional parent item.
 
 **Method** `#getHTML()` returns string.
 
 
-### taaspace.SpaceImage
+### tapspace.SpaceImage
 
-An image item. `SpaceView` represents this with an `<img>` tag. The constructor requires an [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement). Use [taaspace.preload](#taaspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
+An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -91,16 +106,18 @@ An image item. `SpaceView` represents this with an `<img>` tag. The constructor 
 
 **Usage:**
 
-    > taaspace.preload(function (err, img) {
-    >   var im = new taaspace.SpaceImage(parent, img)
+    > tapspace.preload(function (err, img) {
+    >   var im = new tapspace.SpaceImage(img, parent)
     > })
+
+**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
 
 **Method** `#getImage()` returns HTMLImageElement.
 
 
-### taaspace.SpacePixel
+### tapspace.SpacePixel
 
-A colored rectangular item. `SpaceView` represents this with a `<div>` styled with CSS `background` property. The constructor takes in a string value for the `background`, defaulting to `#000000`.
+A colored rectangular item. `SpaceView` represents this with a `<div>` styled with CSS `background` property.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -108,12 +125,14 @@ A colored rectangular item. `SpaceView` represents this with a `<div>` styled wi
 
 **Usage:**
 
-    > var px = new taaspace.SpacePixel(parent, 'pink')
+    > var px = new tapspace.SpacePixel('pink', parent)
+
+**Constructor** `SpacePixel(color, parent)` takes in an optional color string and an optional parent item. The string defaults to `#000000`.
 
 **Method** `#getColor()` returns the background property string.
 
 
-### taaspace.SpaceView
+### tapspace.SpaceView
 
 A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rendered elements with [CSS3 transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
 
@@ -123,7 +142,9 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Usage:**
 
-    > var view = new taaspace.SpaceView(space)
+    > var view = new tapspace.SpaceView(space)
+
+**Constructor** `SpaceView(space)` takes in an optional instance of `Space`.
 
 **Method** `#fitScale(...)` overrides `AbstractRectangle#fitScale(...)` to throw an error if the view is not mounted.
 
@@ -147,17 +168,21 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 The items inherit from their abstract prototypes. The image below gives an overview on the prototype chain.
 
-![taaspace module dependency graph](taaspace_api_3.png?raw=true)
+![tapspace module dependency graph](tapspace_api_3.png?raw=true)
 
-*Image: The module dependency graph represents the relationships between Taaspace modules. Diamond denotes composition: AbstractNode has other AbstractNodes. Arrow head denotes inheritance: AbstractRectangle is an AbstractPlane, AbstractPlane is an AbstractNode et cetera.*
+*Image: The module dependency graph represents the relationships between Tapspace modules. Diamond denotes composition: AbstractNode has other AbstractNodes. Arrow head denotes inheritance: AbstractRectangle is an AbstractPlane, AbstractPlane is an AbstractNode et cetera.*
 
-### taaspace.AbstractNode
+### tapspace.AbstractNode
 
 Gives an inheriting object the tree node capabilities like fetching the children and ancestor nodes.
 
 **Inherits** from `Emitter`. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter).
 
-**Method** `#addChild(item)` does what the name says.
+**Method** `#addChild(item)` inserts `item` to the last child of `this`.
+
+**Method** `#bringAbove(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
+
+**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -167,7 +192,15 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#getDescendants()` returns an array of items, including children, the childrens' children, et cetera.
 
-**Method** `#getParent()` returns the parent item and null if no parent.
+**Method** `#getFirstChild()` returns the first (bottommost) child.
+
+**Method** `#getLastChild()` returns the last (topmost) child.
+
+**Method** `#getNextSibling()` returns the next (higher) child of the parent.
+
+**Method** `#getParent()` returns the parent item and `null` if no parent.
+
+**Method** `#getPreviousSibling()` returns the previous (lower) child of the parent.
 
 **Method** `#getRootParent()` returns the most distant ancestor, the one without a parent.
 
@@ -183,11 +216,15 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#remove()` detaches `this` from the parent.
 
+**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
+
+**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.
+
 **Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`.
 
 
 
-### taaspace.AbstractPlane
+### tapspace.AbstractPlane
 
 Gives an inheriting object capabilities to act as a coordinate plane. Each AbstractPlane has a `Transform` that defines the position of the plane in relation to its parent plane. `Transform` is a transformation matrix that allows rotations, scalings, and translations. The matrix maps a vector on the plane to another vector on the parent plane.
 
@@ -231,7 +268,7 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 
 
-### taaspace.AbstractRectangle
+### tapspace.AbstractRectangle
 
 Gives an inheriting object a rectangular shape and size dimensions.
 
@@ -263,30 +300,439 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#getHull()` returns `IPath` that consists of the corners of the rectangle in counter-clockwise order (the hull order).
 
-**Method** `#getLocalSize()` return `Vector`, representing the diagonal in the local coordinates.
+**Method** `#getSize()` return `Size`, representing the dimensions in the local coordinates.
 
-**Method** `#getSize()` return `IVector`, representing the diagonal.
+**Method** `#getISize()` return `ISize`, representing the dimensions in plane-invariant manner.
 
-**Method** `#setSize(idiag)` updates the diagonal to match the given `IVector`. Dangerous currently because rotations affect the width-height ratio. Emits `resized`.
+**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`.
 
-**Method** `#setLocalSize(diag)` updates the diagonal to match the given `Vector`. Emits `resized`.
+**Method** `#setISize(isize)` updates the local size to match the given `ISize`. Emits `resized`.
+
+
 
 ## Interaction
 
-### taaspace.Touchable
+### tapspace.Touchable
 
-To allow users to interact with the items, we can make the items touchable. See [api/touchable](touchable) for further documentation.
+To allow users to interact with the items, make the items touchable. `Touchable` is a manager that maps pointer events on HTML to a transformation and applies the transformation to a given item.
+
+**Usage:**
+
+    > var tou = new tapspace.Touchable(view, item);
+
+**Constructor** `Touchable(view, item)` takes in the parameters:
+
+- *view:* an instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
+- *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only the gestures made on the HTML representation of the instance are listened and recognized. The instance reacts to the manipulations as specified by the mode.
+
+**Properties:**
+
+- *view:* the given `SpaceView`
+- *item:* the given instance of `AbstractPlane`
+- *element:* the [HTMLElement](https://developer.mozilla.org/en/docs/Web/API/HTMLElement) that receives the original pointer events.
+- *mode:* the current mode object.
+
+**Methods:**
+
+- *start(mode):* activates the manager in the given mode. If no mode is given, the default mode is used. Can be called on already active manager to update the mode.
+- *restart(mode):* alias of `start(mode)` but can make the code more readable when updating the mode of an already active manager.
+- *stop():* deactivates the manager. An inactive manager fires no events and listens no gestures.
+- *resume():* starts the manager with the last known mode.
+
+**Mode:**
+
+The mode object defines the allowed types of manipulation. Some types are not possible together so a type can override another. The full list of the mode properties and their conflicts is given below.
+
+- *translate:* set `true` to allow horizontal and vertical movement. Default is `false`. If `pivot` is specified the value of `translate` has no effect.
+- *rotate:* set `true` to allow rotation. If `translate: false` and `pivot` is not specified the rotation is allowed only around the center of the transformer. Default is `false`.
+- *scale:* set `true` to allow scaling. If `translate: false` and `pivot` is not specified the scaling is allowed only around the center of the transformer. Default is `false`.
+- *pivot:* set to a `IVector` to specify a pivot for rotation and scaling. If `pivot` is specified the value of `translate` has no effect. Default is `null`.
+- *tap:* set to `true` to allow emitting of `tap` event. Default is `false`.
+- *tapMaxTravel:*  Default is 20.
+
+The default mode is accessible at `Touchable.DEFAULT_MODE`.
+
+**Events:**
+
+The manager emits the following events:
+
+- *gesturestart:* fired at the beginning of the gesture when the first pointer lands on the element.
+- *gesturemove:* fired when a pointer on the element moves so that the transformation changes.
+- *gestureend:* fired when the last pointer is lifted off from the element.
+- *tap:* fired if all the following statements are true: 1) mode has `tap: true`, 2) last finger or other pointer was lifted from the element, and 3) pointers did not move during the gesture more in average than what is allowed by a threshold value. The default threshold of `20` can be overridden by an additional mode property `tapMaxTravel`.
+
+The events are fired with an event object. The event object has the following properties:
+
+- *distance:* a number. An average manhattan distance in screen pixels that a pointer has traveled after `gesturestart`.
+- *duration:* a number. Milliseconds from the `gesturestart`
+- *element:* a `HTMLElement`. The source of the original pointer events.
+- *item:* an `AbstractPlane`. The item of the HTMLElement.
+
+
 
 ## Geometry
 
-### taaspace.geom
 
-A module for geometric models, including `Vector`, `Path`, `Transform` and their plane-invariant alternatives. See [api/geom](geom) for further documentation.
+### tapspace.geom
+
+A collection of geometric models. All models under `geom` are *immutable* i.e. their state does not change. For example, `vector.rotate(Math.PI)` does not change `vector` but instead returns a new, rotated `Vector` instance.
+
+
+### tapspace.geom.Grid
+
+A `Grid` is a tool to round transformations to their closest alternatives allowed by the grid. In other words, you can snap items to discrete positions. In addition to xy-lattice, you can also snap scales and rotations.
+
+**Usage:**
+
+    > var grid = new tapspace.geom.Grid(mode)
+    > var snappedTr = grid.snap(space.at(0,0), transform)
+
+**Mode** is an object that defines the grid. Following properties are available:
+- `xStep`: eye size to x direction.
+- `xPhase`: grid's origin in x direction.
+- `xRotation`: rotation of x direction (defaults to 0)
+- `yStep`: eye size to y direction.
+- `yPhase`: grid's origin in y direction.
+- `yRotation`: rotation of y direction (defaults to PI/2)
+- `scaleStep`: scale multiplier. E.g. value `2` allows scales of 2^i, like `0.5`, `1`, `2`, and `4`.
+- `scalePhase`: addition to exponent. E.g. letting `scaleStep:2` and `scalePhase:0.5` allows scales of 2^(i+0.5), like `0.71`, `1.41`, and `2.83`.
+- `rotateStep`: rotation step size in radians. E.g. value PI/2 allows rotations of 0, 90, 180, and 270 degrees.
+- `rotatePhase`: addition to rotation. E.g. letting `rotateStep:Math.PI/2` and `rotatePhase:Math.PI/4` allows rotations of 45, 135, 225, and 315 degrees.
+
+**Method** `#almostEqual(grid)` returns `true` if the given `Grid` is equal to `this`, allowing small errors from floating point arithmetics.
+
+**Method** `#at(i, j)` returns `Vector` at (i, j) in grid's coordinates. E.g. let `xStep:2` and `yStep:2`, then `this.at(1, -1)` returns `Vector(2, -2)`. Also, `this.at(0, 0)` equals `this.getOrigin()`.
+
+**Method** `#equal(grid)` returns `true` if values of the modes of the grids are strictly equal.
+
+**Method** `#getHullOf(i, j)` returns `Path` representing the hull of (i, j):th eye of the grid.
+
+**Method** `#getOrigin()` returns `Vector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
+
+**Method** `#snap(pivot, transform)` returns a snapped `Transform`. To describe, if the snapped `Transform` is then applied to the pivot, the result is a `Vector` that fulfils the restrictions of the mode. In other words, a plane defined by the transform is moved so, that the pivot on the plane hits the grid.
+
+**Method** `#toArray` returns a serializable representation of the grid.
+
+**Method** `#transform(tr)` returns a new transformed `Grid`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes. This method enables us to represent a grid on different planes, paving a way for the plane invariant `IGrid`.
+
+
+### tapspace.geom.IGrid
+
+An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `Grid` by calling `#to` method.
+
+**Usage:**
+
+    > var igrid = new tapspace.geom.IGrid(modeOrGrid, item)
+
+**Method** `#almostEqual(igrid)` returns `true` if the given `IGrid` is equal to `this`, allowing small errors from floating point arithmetics.
+
+**Method** `#at(i, j)` returns `IVector` at (i, j) in grid's coordinates. E.g. let `xStep:2` and `yStep:2`, then `this.at(1, -1)` returns `IVector` for `Vector(2, -2)`. Also, `this.at(0, 0)` equals `this.getOrigin()`.
+
+**Method** `#equal(igrid)` returns `true` if values of the modes of the grids become strictly equal if transformed on the same plane.
+
+**Method** `#getHullOf(i, j)` returns `IPath` representing the hull of (i, j):th eye of the grid.
+
+**Method** `#getOrigin()` returns `IVector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
+
+**Method** `#snap(pivot, itransform)` returns a snapped `ITransform`. To describe, if the snapped `ITransform` is then applied to the given `IVector pivot`, the result is an `IVector` that fulfils the restrictions of the mode. In other words, a plane defined by `itransform` is moved so, that the pivot on the plane hits the grid.
+
+**Method** `#to(item)` returns a `Grid` in the coordinate plane of the given item. The returned grid is globally equivalent to `this`.
+
+**Method** `#toSpace()` returns a `Grid` in the coordinate system of the root item.
+
+**Method** `#transform(itr)` returns an `IGrid`, transformed by the given `ITransform itr`. E.g. 2x scaling doubles the `xStep` and `yStep` eye sizes.
+
+
+### tapspace.geom.Path
+
+A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant alternative.
+
+**Usage:**
+
+    var Vec = tapspace.geom.Vector
+    var p = new tapspace.geom.Path([
+      new Vec(x0, y0),
+      new Vec(x1, y1),
+      ...
+    ])
+
+**Method** `#add(path)` returns a new `Path` that is the result of concatenating `this` with the given `path`.
+
+**Method** `#almostEqual(path)` returns `true` if each `Vector` in `this` is almost equal to similarly positioned `Vector` in the given `path`, thus leaving a room for small floating point arithmetic errors.
+
+**Method** `#atMid()` returns the mass centroid of the closed path as a `Vector` and `null` if the path is empty.
+
+**Method** `#bottom()` returns the `Vector` with the largest `y` property. If multiple `Vector`s share the same `y`, the first is returned.
+
+**Method** `#equal(path)` returns `true` if each `Vector` in `this` is equal to similarly positioned `Vector` in the given `path`.
+
+**Method** `#first()` returns the first `Vector` of the path and `null` if empty.
+
+**Method** `#get(i)` returns the `i`:th `Vector` of the path and `undefined` if the index is out of range.
+
+**Method** `#getBounds()` returns a bounding box as a `Path` in the hull order.
+
+**Method** `#getHull()` returns the convex hull of `this` as a `Path`.
+
+**Method** `#last()` returns the last `Vector` of the path and `null` if empty.
+
+**Method** `#left()` returns the `Vector` with the smallest `x` property. If multiple `Vector`s share the same `x`, the first is returned.
+
+**Method** `#right()` returns the `Vector` with the largest `x` property. If multiple `Vector`s share the same `x`, the first is returned.
+
+**Method** `#toArray()` returns an array of `Vector`s.
+
+**Method** `#top()` returns the `Vector` with the smallest `y` property. If multiple `Vector`s share the same `y`, the first is returned.
+
+**Method** `#transform(tr)` returns a new `Path` where each `Vector` has been left-multiplied by the given `Transform`.
+
+
+### tapspace.geom.IPath
+
+A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative for `Path`.
+
+**Usage:**
+
+    var Vec = tapspace.geom.Vector
+    var p = new tapspace.geom.Path([
+      new Vec(x0, y0),
+      new Vec(x1, y1),
+      ...
+    ])
+    var ip = new tapspace.geom.IPath(p, space)
+
+**Constructor** `IPath(path, item)` takes a `Path` and an item that defines the coordinate system of the `path`.
+
+**Property** `#length` equals the number of `Vector`s in the path.
+
+**Method** `#add(ipath)` returns a new `IPath` that is the result of concatenating `this` with the given `IPath`.
+
+**Method** `#almostEqual(ipath)` returns `true` if `this` and the given `IPath` are almost equal when represented on a same coordinate system. See `Path#almostEqual`.
+
+**Method** `#atMid()` returns the mass centroid of the closed path as a `IVector` and `null` if the path is empty.
+
+**Method** `#equal(ipath)` returns `true` if `this` and the given `IPath` are equal when represented in a coordinate system.
+
+**Method** `#first()` returns `IVector` for the first point on the path.
+
+**Method** `#get(i)` returns `IVector` for the `i`:th point on the path.
+
+**Method** `#getHull()` returns the convex hull of `this` as an `IPath`.
+
+**Method** `#last()` returns `IVector` for the last point on the path.
+
+**Method** `#to(item)` returns `Path` represented in the given item's coordinate system.
+
+**Method** `#toArray()` returns an array of `IVector`s.
+
+**Method** `#toSpace()` returns `Path` represented in the coordinate system of the root item.
+
+**Method** `#transform(itr)` returns a new `IPath` where each `IVector` has been left-multiplied by the given `ITransform`.
+
+
+### tapspace.geom.Size
+
+An object with width and height. The `Size` does not have location or rotation and is affected only by scaling. If you need to represent a rectangular shape on multiple planes, use `IPath` instead.
+
+**Usage:**
+
+    var sz = new tapspace.geom.Size(8, 5)
+
+**Property** `width` gives the width.
+
+**Property** `height` gives the height.
+
+**Method** `#almostEqual(sz)` returns `true` if `this` and the given `Size` are equal, by allowing a small error from floating point arithmetics.
+
+**Method** `#equal(sz)` returns `true` if `this` and the given `Size` have strictly equal width and height.
+
+**Method** `#getWidth()` returns the property `width`.
+
+**Method** `#getHeight()` returns the property `height`.
+
+**Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.
+
+
+### tapspace.geom.ISize
+
+A plane-invariant size, a container of two plane-invariant measures. With `ISize` you can convert `Size` objects into other coordinate systems.
+
+**Usage:**
+
+    var sz = new tapspace.geom.Size(8, 5)
+    var isz = new tapspace.geom.ISize(s, sourceItem)
+    var sizeOnTarget = isz.to(targetItem)
+
+**Method** `#almostEqual(isz)` returns `true` if `this` and the given `ISize` are equal, by allowing a small error from floating point arithmetics.
+
+**Method** `#equal(isz)` returns `true` if `this` and the given `ISize` have strictly equal width and height.
+
+**Method** `#getWidth()` returns `IScalar` representing the width in plane-invariant manner.
+
+**Method** `#getHeight()` returns `IScalar` representing the height in plane-invariant manner.
+
+**Method** `#to(item)` returns `Size` that is `this` represented in the given item's coordinate system.
+
+**Method** `#toSpace()` returns `Size` in the coordinate system of the root item.
+
+
+### tapspace.geom.IScalar
+
+A plane-invariant measure.
+
+**Usage:**
+
+    var s = new tapspace.geom.IScalar(6, sourceItem)
+    var t = s.to(targetItem)
+
+**Method** `#add(isca)` returns a new `IScalar` that is the sum of `this` and the given `IScalar`.
+
+**Method** `#equal(isca)` returns `true` if `this` and the given `IScalar` are globally equal.
+
+**Method** `#to(item)` returns `number` that is `this` represented in the given item's coordinate system.
+
+**Method** `#toSpace()` returns `number` in the coordinate system of the root item.
+
+
+### tapspace.geom.Transform
+
+For API, see [nudged.Transform](https://github.com/axelpale/nudged#nudgedtransforms-r-tx-ty)
+
+
+### tapspace.geom.ITransform
+
+A plane-invariant `Transform`. Similarly as a `Vector` can be represented in multiple coordinate systems,
+so can a transformation. To free users from thinking about which representation is the correct one for a given situation, we have `ITransform`.
+
+**Constructor** `ITransform(transf, plane)` takes in a `Transform` and an item (instance of `AbstractPlane`) that defines the coordinate system of the given `Transform`.
+
+**Factory** `ITransform.estimate(type, domain, range, pivot)` returns an `ITransform` estimated from the given control points. Parameter `type` is a `string` and defines the set of allowed transformations: `'I'`, `'T'`, `'S'`, `'R'`, `'TS'`, `'TR'`, `'SR'`, or `'TSR'`. Parameters `domain` and `range` are `IPath`s or arrays of `IVector`s and are the control points for the estimation. The optional parameter `pivot` is `IVector` and restricts the transform to keep this point fixed. See package [nudged](https://www.npmjs.com/package/nudged) for details.
+
+**Constant** `ITransform.IDENTITY` gives the default `ITransform`.
+
+**Method** `#almostEqual(itr)` returns `true` if the elements of transformation matrices of `this` and the given `ITransform` match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#equal(itr)` returns `true` if elements in the transformation matrices are strictly equal.
+
+**Method** `#inverse()` returns `ITransform` with the inverse of the original transformation matrix.
+
+**Method** `#to(item)` returns a `Transform` that equals to `this` represented in the coordinate system of the given item.
+
+**Method** `#toSpace()` returns a `Transform` that equals to `this` represented in the coordinate system of the root item.
+
+**Method** `#multiplyRight(itr)` alias `#transformBy(itr)` returns a `ITransform` that is the original multiplied from the right with the given `ITransform`.
+
+**Method** `#relativeTo(itr)` returns `ITransform` needed by the given `ITransform` to become `this`. In other words, if `C = A.relativeTo(B)`, then `A = C * B`.
+
+**Method** `#translate(domain, range)` moves the *image* of `this` horizontally and vertically so that the given domain (an array of `IVector`s) travels as close to the range (a matching length array of `IVector`s) as possible. If only single `IVector`s are given, the array can be omitted.
+
+**Method** `#scale(pivot, multiplier)` or `#scale(pivot, domain, range)` scales the *image* of `this` around the `IVector pivot`. A `multiplier` of `2` would double the space of the image. If `domain` and `range` are given, the image of `this` becomes scaled so that domain becomes as close to range as possible, like described at `#translate`.
+
+**Method** `#rotate(pivot, radians)` or `#rotate(pivot, domain, range)` is similar to `#scale` but rotates instead of scaling.
+
+**Method** `translateScale(domain, range)` is similar to `#scale` but allows both translation and scaling.
+
+**Method** `translateRotate(domain, range)` is similar to `#scale` but allows both translation and rotation.
+
+**Method** `scaleRotate(pivot, domain, range)` is similar to `#scale` but allows both scaling and rotation around a `IVector pivot`.
+
+**Method** `translateScaleRotate(domain, range)` is similar to `#scale` but allows each translation, scaling, and rotation.
+
+
+### tapspace.geom.Vector
+
+A point in 2D space.
+
+**Usage:**
+
+    var vec = new tapspace.geom.Vector(2, 1)
+
+**Property** `x` is a number
+
+**Property** `y` is a number
+
+**Alternative constructor** `Vector.createFromPolar(magnitude, direction)` takes the vector length and direction in radians and returns a `Vector`.
+
+**Method** `#add(vec)` sums `this` to `vec` and returns a new `Vector`.
+
+**Method** `#almostEqual(vec)` returns `true` if the vectors match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#changeBasis(vi, vj)` takes two `Vector`s `vi` and `vj` and returns a `Vector` represented in a coordinate system where `vi` and `vj` are the basis vectors. In other words, if `r = this.changeBasis(vi, vj)` then `this` is equal to `r.x` * `vi` + `r.y` * `vj`. Throws `Error` if given basis vectors are linearly dependent.
+
+**Method** `#changeFromBasis(vi, vj)` is opposite of `#changeBasis` so that if `a = b.changeBasis(vi, vj)` then `b = a.changeFromBasis(vi, vj)`.
+
+**Method** `#distance(vec)` returns Euclidean (L2) distance between `this` and `vec`.
+
+**Method** `#equal(vec)` returns `true` if `x`s and `y`s are strictly equal.
+
+**Method** `#getRotation()` returns radians from positive x-axis.
+
+**Method** `#getMagnitude()` alias for `#norm`.
+
+**Method** `#isIndependent(vec)` returns `true` if `this` and `vec` are linearly independent.
+
+**Method** `#opposite()` returns a negation of `this`.
+
+**Method** `#max(vec)` returns `Vector` where the largest `x` and `y` are picked from `this` and `vec`. For example, let `a = Vector(1, 0)` and `b = Vector(0, 1)` so `a.max(b)` equals `Vector(1, 1)`.
+
+**Method** `#min(vec)` returns `Vector` where the smallest `x` and `y` are picked from `this` and `vec`. See `#max`.
+
+**Method** `#multiply(scalar)` returns `Vector` where `x` and `y` are multiplied by `scalar`.
+
+**Method** `#norm()` returns Euclidean (L2) norm of the vector.
+
+**Method** `#offset(dx, dy)` returns `Vector` that is equal to `this.add(Vector(dx, dy))`.
+
+**Method** `#polarOffset(radius, radians)` returns `Vector` that is equal to `this.add(Vector.createFromPolar(radius, radians))`.
+
+**Method** `#rotate(radians)` returns `Vector` where `this` has been rotated about pivot (0, 0).
+
+**Method** `#subtract(vec)` returns `Vector` that is equal to `this.add(vec.opposite())`.
+
+**Method** `#toArray()` returns `[this.x, this.y]`.
+
+**Method** `#transform(tr)` returns `Vector` where `this` has been multiplied from left by the given `Transform`.
+
+
+### tapspace.geom.IVector
+
+A plane-invariant vector that can be converted to `Vector` on given plane when needed.
+
+**Usage:**
+
+    var px = new tapspace.SpacePixel('black', space)
+    var v = new tapspace.geom.Vector(4, 2)
+    var iv = new tapspace.geom.IVector(v, px)
+
+**Constructor** `IVector(vec, plane)` takes a `Vector` and an item `plane`. The `plane` defines the coordinate system of `vec`.
+
+**Method** `#add(ivec)` sums `this` to `IVector ivec` and returns a new `IVector`.
+
+**Method** `#almostEqual(ivec)` returns `true` if the `IVector`s match. Leaves a room for small floating point arithmetic error.
+
+**Method** `#distance(ivec)` returns Euclidean (L2) distance between `this` and the given `IVector`.
+
+**Method** `#equal(ivec)` returns `true` if `this` is globally equal to the given `IVector`.
+
+**Method** `#multiply(scalar)` returns `IVector` multiplied by `scalar`.
+
+**Method** `#norm()` returns `IScalar` that represents the euclidean (L2) norm of the vector in plane-invariant manner.
+
+**Method** `#offset(dx, dy, plane)` returns `IVector` that results when `this` is moved by `dx` and `dy`. Optional `plane` defines the plane of the given `dx` and `dy`. The plane defaults to the root.
+
+**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that results when `this` is moved `radius` units to `radians` direction. Optional `plane` defines the coordinate system of the given `radius`. The plane defaults to the root item.
+
+**Method** `#to(item)` returns a `Vector` that equals to `this` represented in the coordinate system of the given item.
+
+**Method** `#toSpace()` returns a `Vector` that equals to `this` represented in the coordinate system of the root item.
+
+**Method** `#transform(itr)` returns an `IVector` that results when `this` is transformed by the given `ITransform itr`.
+
 
 
 ## Other
 
-### taaspace.preload
+### tapspace.preload
 
 A function to preload an image file or an array of them and call back when finished. As the main benefit, code in the callback can trust the dimensions of the image object.
 
@@ -294,8 +740,8 @@ A function to preload an image file or an array of them and call back when finis
 
 **Usage:**
 
-    taaspace.preload('mylittle.png', function (err, img) {
+    tapspace.preload('mylittle.png', function (err, img) {
       if (err) { throw err }
       // img is now loaded and has correct dimensions instead of 0x0.
-      var si = new taaspace.SpaceImage(space, img)
+      var si = new tapspace.SpaceImage(space, img)
     })
