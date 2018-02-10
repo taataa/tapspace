@@ -81,3 +81,14 @@ Finally, back in your local environment:
 1. Publish by `npm run release`. It will run the test to double-check everything before publishing.
 1. Switch back to `development` by `git checkout development` to avoid accidentally committing to `master` next time you commit something.
 1. Celebrate your fresh published package version!
+
+See also [a successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/).
+
+
+## Maintenance
+
+Upgrade dependencies:
+
+    $ npm install -g npm-check-updates
+    $ ncu     # to view available upgrades
+    $ ncu -u  # to upgrade
