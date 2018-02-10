@@ -78,7 +78,7 @@ Finally, back in your local environment:
 
 1. Pull `master` by `git pull --all`.
 1. Switch to `master` by `git checkout master`.
-1. Publish by `npm run release`. It will run the test to double-check everything before publishing.
+1. Publish by `npm run release`. It will run the test to double-check everything, build the bundle, and then publish.
 1. Switch back to `development` by `git checkout development` to avoid accidentally committing to `master` next time you commit something.
 1. Celebrate your fresh published package version!
 
