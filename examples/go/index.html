@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Go - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: black;
+      /* Background from https://sftextures.com/2015/10/18/
+         brown-wood-seamless-texture-with-vertical-smooth-cracks/ */
+      background: white url('../assets/wood-cracked.jpg') repeat;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <!--script src="../assets/ghoulog.js"></script-->
+  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
+  <script>
+    var space = new tapspace.Space()
+    var container = document.getElementById('space')
+    var view = new tapspace.SpaceView(space)
+
+    // Connect the view to the browser DOM.
+    view.mount(container)
+
+    // Width and height of a grid tile
+    var SIDE = 256
+    var HALF = SIDE / 2
+
+    // Snapping grid
+    var grid = new tapspace.geom.IGrid({
+      xStep: SIDE,
+      yStep: SIDE
+    }, space)
+
+    var viewMode = { translate: true, scale: true, rotate: true }
+    var stoneMode = { translate: true, rotate: true }
+
+    // Load images
+    tapspace.preload([
+      '../assets/square.png',
+      '../assets/go-stone-white.png',
+      '../assets/go-stone-black.png'
+    ], function (err, imgs) {
+      if (err) {
+        console.error(err)
+        throw err
+      }
+
+      // A group for the stones, just for clarity.
+      var squares = new tapspace.SpaceGroup(space)
+      var whiteStones = new tapspace.SpaceGroup(space)
+      var blackStones = new tapspace.SpaceGroup(space)
+
+      var squareImg = imgs[0]
+      var whiteImg = imgs[1]
+      var blackImg = imgs[2]
+      var tableImg = imgs[3]
+
+      // A spaceSquare for each game grid node
+      var ROWS = 11
+      var COLUMNS = 11
+      var row, col, ssq
+      for (row = 0; row < ROWS; row += 1) {
+        for (col = 0; col < COLUMNS; col += 1) {
+          ssq = new tapspace.SpaceImage(squareImg, squares)
+          ssq.translate(ssq.atMid(), grid.at(row, col).offset(HALF, HALF))
+          squares.addChild(ssq)
+        }
+      }
+
+      // Create lots of stones
+      var WHITES = 100
+      var BLACKS = 100
+
+      var archimedeanSpiral = function (x) {
+        var angle = 3 * Math.sqrt(x)
+        var x = 15 * (1 + angle) * Math.cos(angle)
+        var y = 15 * (1 + angle) * Math.sin(angle)
+        return {
+          x: x,
+          y: y
+        }
+      }
+
+      var jitter = function (xy) {
+        return {
+          x: xy.x + Math.random() * 250,
+          y: xy.y + Math.random() * 250
+        }
+      }
+
+      // For the loops
+      var i, stone, xy, stoneTouch
+
+      var onGestureend = function (ev) {
+        ev.item.snap(ev.item.atMid(), grid)
+      }
+
+      var whitePileMid = space.at(-1000, 600)
+      for (i = WHITES; i >= 0; i -= 1) {
+        stone = new tapspace.SpaceImage(whiteImg, whiteStones)
+        xy = jitter(archimedeanSpiral(i))
+        stoneTouch = new tapspace.Touchable(view, stone)
+        stoneTouch.start(stoneMode)
+        stoneTouch.on('gestureend', onGestureend)
+        stone.translate(stone.atMid(), whitePileMid.offset(xy.x, xy.y))
+      }
+
+      var blackPileMid = space.at(3500, 2000)
+      for (i = BLACKS; i >= 0; i -= 1) {
+        stone = new tapspace.SpaceImage(blackImg, blackStones)
+        xy = jitter(archimedeanSpiral(i))
+        stoneTouch = new tapspace.Touchable(view, stone)
+        stoneTouch.start(stoneMode)
+        stoneTouch.on('gestureend', onGestureend)
+        stone.translate(stone.atMid(), blackPileMid.offset(xy.x, xy.y))
+      }
+
+      // Rotate grid and squares for a little effect.
+      var itr = tapspace.geom.ITransform.IDENTITY.rotate(space.at(0, 0), 0.04)
+      squares.transformBy(itr)
+      grid = grid.transform(itr)
+
+      // Initial view position
+      view.fitScale(squares)
+      view.scale(view.atMid(), 1.618)
+
+      // Make the view transformable
+      var viewTouchable = new tapspace.Touchable(view, view)
+      viewTouchable.start(viewMode)
+    })
+  </script>
+</body>
+</html>

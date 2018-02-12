@@ -27,7 +27,7 @@
   <div id="space"></div>
 
   <script src="../assets/ghoulog.js"></script>
-  <script src="https://unpkg.com/tapspace@1.0.0/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
@@ -71,8 +71,7 @@
 
       // Handler for tap events. Better here than inside a loop.
       var tapHandler = function (ev) {
-        var n = ev.plane
-        n.rotate(n.atMid(), Math.PI / 2)
+        ev.item.rotate(ev.item.atMid(), Math.PI / 2)
       }
 
       var i, j, px, img, touch
