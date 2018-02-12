@@ -29,7 +29,7 @@
   <div id="space"></div>
 
   <!--script src="../assets/ghoulog.js"></script-->
-  <script src="https://unpkg.com/tapspace@1.0.1/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
     var container = document.getElementById('space')
@@ -109,12 +109,7 @@
       var i, stone, xy, stoneTouch
 
       var onGestureend = function (ev) {
-        // Make future compatible.
-        if ('item' in ev) {
-          ev.item.snap(ev.snap.atMid(), grid)
-        } else {
-          ev.plane.snap(ev.plane.atMid(), grid)
-        }
+        ev.item.snap(ev.item.atMid(), grid)
       }
 
       var whitePileMid = space.at(-1000, 600)
