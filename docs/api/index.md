@@ -322,7 +322,7 @@ To allow users to interact with the items, make the items touchable. `Touchable`
 
 **Constructor** `Touchable(view, item)` takes in the parameters:
 
-- *view:* an instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
+- *view:* a mounted instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
 - *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only the gestures made on the HTML representation of the instance are listened and recognized. The instance reacts to the manipulations as specified by the mode.
 
 **Properties:**
