@@ -288,6 +288,8 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Inherits** from `AbstractPlane`.
 
+**Emits** `resized` with a payload `{ source: <AbstractRectangle>, newSize: <Size>, oldSize: <Size> }`.
+
 **Method** `#atNorm(x, y)` returns `IVector` from a point relative to the rectangle dimensions. For example `#atNorm(0, 1)` gives the bottom-left corner and `#atNorm(0.5, 0.5)` gives the middle point.
 
 **Method** `#atMid()` is alias for `#atNorm(0.5, 0.5)`.
@@ -552,9 +554,9 @@ An object with width and height. The `Size` does not have location or rotation a
 
     var sz = new tapspace.geom.Size(8, 5)
 
-**Property** `width` gives the width.
+**Property** `width` gives the width. Always zero or positive.
 
-**Property** `height` gives the height.
+**Property** `height` gives the height. Always zero or positive.
 
 **Method** `#almostEqual(sz)` returns `true` if `this` and the given `Size` are equal, by allowing a small error from floating point arithmetics.
 
