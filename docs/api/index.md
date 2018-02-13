@@ -138,7 +138,7 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Inherits** from `AbstractRectangle`.
 
-**Listens** events: added, removed, transformed, resized, contentAdded, contentRemoved
+**Listens** events: `added`, `removed`, `transformed`, `resized`, `childAdded`, `childRemoved`
 
 **Usage:**
 
@@ -178,11 +178,19 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Inherits** from `Emitter`. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter).
 
-**Method** `#addChild(item)` inserts `item` to the last child of `this`.
+**Emits** `added` when attached to a new parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
 
-**Method** `#bringAbove(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
+**Emits** `removed` when detached from a parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
 
-**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children.
+**Emits** `childAdded` when a child node is added. Has payload `{ source: <AbstractNode>, newChild: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
+
+**Emits** `childRemoved` when a child node is removed. Has payload `{ source: <AbstractNode>, oldChild: <AbstractNode>, newParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
+
+**Method** `#addChild(item)` inserts `item` to the last child of `this`. Emits `childAdded`. The new child `item` emits `removed` if already attached and then emits `added`.
+
+**Method** `#bringAbove(item)` removes `this` from the parent and adds `this` as the next sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+
+**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -216,11 +224,11 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#remove()` detaches `this` from the parent.
 
-**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
+**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.
+**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`.
+**Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`. Emits `removed` if there was a parent and then emits `added`. The old parent emits `childRemoved` and the new parent emits `childAdded`.
 
 
 
