@@ -1,6 +1,10 @@
 
 # Features
 
+## Scene graph
+
+## Multiple views
+
 ## Direct manipulation
 
 The `tapspace.Touchable` enables [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Tapspace apps. It recognizes mouse and touch gestures on Tapspace elements and makes the elements react in a natural, paper-like way.
@@ -16,6 +20,8 @@ Additional design decisions:
 
 [1] [Microsoft touch design guidelines](https://msdn.microsoft.com/en-us/windows/uwp/input-and-devices/guidelines-for-user-interaction)<br />
 [2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
+
+## Multi-user touch interface
 
 # Advanced features
 
