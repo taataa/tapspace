@@ -232,21 +232,27 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 **Listens** event `removed` to ensure a root element has no transformation.
 
-**Method** `#at(x, y)` or `#at(vector)` returns an `IVector` at the position (x, y) on `this`.
+**Emits** `transformed` with a payload `{ source: <AbstractPlane>, newTransform: <Transform>, oldTransform: <Transform> }` that tells what was transformed and how much.
 
-**Method** `#getGlobalITransform()` returns an `ITransform`, a plane-invariant version of the total transformation from `this` to the root's coordinate system.
+**Method** `#at(x, y)` or `#at(vector)` returns an `IVector` at the position (x, y) on `this`.
 
 **Method** `#getGlobalTransform()` returns an `Transform`, the total transformation from `this` to the root's coordinate system.
 
-**Method** `#getLocalITransform()` returns an `ITransform`, a plane-invariant version of the local transform. Where `#getLocalTransform` tells the effect of the plane's local transformation in the parent's coordinate system, `#getLocalITransform` tells the local effect in the global scope.
+**Method** `#getGlobalITransform()` returns an `ITransform`, a plane-invariant version of the total transformation from `this` to the root's coordinate system.
 
 **Method** `#getLocalTransform()` returns a `Transform`, the coordinate mapping from `this` to the parent plane.
 
+**Method** `#getLocalITransform()` returns an `ITransform`, a plane-invariant version of the local transform. Where `#getLocalTransform` tells the effect of the plane's local transformation in the parent's coordinate system, `#getLocalITransform` tells the local effect in the global scope.
+
 **Method** `#resetTransform()` is a shortcut for `#setLocalTransform(Transform.IDENTITY)`. Emits `transformed`.
 
-**Method** `#setLocalTransform(tr)` takes a `Transform` or `ITransform` and replaces the local transformation. Emits `transformed`.
+**Method** `#setGlobalTransform(tr)` takes a `Transform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
 
-**Method** `#setGlobalTransform(tr)` takes a `Transform` or `ITransform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
+**Method** `#setGlobalITransform(itr)` takes a `ITransform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
+
+**Method** `#setLocalTransform(tr)` takes a `Transform` and replaces the local transformation. Emits `transformed`.
+
+**Method** `#setLocalITransform(itr)` takes a `ITransform` and replaces the local transformation. Emits `transformed`.
 
 **Method** `#snap(pivot, igrid)` updates the local transformation so that the given pivot `IVector` snaps to the given `IGrid`. Emits `transformed`.
 
