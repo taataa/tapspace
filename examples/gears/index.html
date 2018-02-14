@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gears - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: white;
+      background: #111;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.1.0/dist/tapspace.min.js"></script>
+  <script>
+    var space = new tapspace.Space()
+    var view = new tapspace.SpaceView(space)
+    view.mount(document.getElementById('space'))
+
+    // Load images
+    tapspace.preload([
+      '../assets/gear18.png',
+      '../assets/gear11.png',
+      '../assets/gearhandle.png'
+    ], function (err, imgs) {
+      if (err) {
+        console.error(err)
+        throw err
+      }
+
+      var gear18Img = imgs[0]
+      var gear11Img = imgs[1]
+      var gearhandleImg = imgs[2]
+
+      var touchmode = { rotate: true }
+
+      // Create
+      var gear18a = new tapspace.SpaceGroup(space)
+      var gear18ai = new tapspace.SpaceImage(gear18Img, gear18a)
+      var gear18ahandle = new tapspace.SpaceImage(gearhandleImg)
+      gear18a.addChild(gear18ahandle)
+
+      var gear18b = new tapspace.SpaceGroup(space)
+      var gear18bi = new tapspace.SpaceImage(gear18Img, gear18b)
+
+      var gear11 = new tapspace.SpaceImage(gear11Img, space)
+
+      // Position
+      gear18a.translate(gear18a.atMid(), space.at(0, 0))
+      gear11.translate(gear11.atMid(), space.at(322, 242))
+      gear18ahandle.translate(
+        gear18ahandle.atMid(),
+        gear18ai.atMidN().offset(0, 160)
+      )
+
+      gear18b.translate(gear18b.atMid(), space.at(642, 0))
+      gear18b.rotate(gear18b.atMid(), 0.17)
+
+      // Define interaction. Redirect manipulation of the handle
+      // to gear18a.
+      var handleTouch = new tapspace.Touchable(view, gear18ahandle, gear18a)
+      handleTouch.start({ rotate: true, pivot: gear18a.atMid() })
+
+      // Connect gear18a to gear11
+      gear18a.on('transformed', function (ev) {
+        var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+        var rads = dT.inverse().getRotation()
+        gear11.rotate(gear11.atMid(), rads * 18 / 11)
+      })
+
+      // Connect gear11 to gear18b
+      gear11.on('transformed', function (ev) {
+        var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+        var rads = dT.inverse().getRotation()
+        gear18b.rotate(gear18b.atMid(), rads * 11 / 18)
+      })
+
+      // Initial view position
+      view.fitScale(space)
+      view.scale(space.atMid(), 1.23)
+    })
+  </script>
+</body>
+</html>

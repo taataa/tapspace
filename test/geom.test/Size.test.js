@@ -12,10 +12,10 @@ module.exports = function (test) {
   })
 
   test('#almostEqual & #equal', function (t) {
-    var a = new Size(10, -8)
-    var b = new Size(10, -8)
-    var c = new Size(10, -8 + tapspace.geom.EPSILON / 2)
-    var d = new Size(10, -9)
+    var a = new Size(10, 8)
+    var b = new Size(10, 8)
+    var c = new Size(10, 8 + tapspace.geom.EPSILON / 2)
+    var d = new Size(10, 9)
 
     t.ok(a.equal(b), 'a b equal')
     t.notOk(a.equal(c), 'a c not equal')
@@ -26,14 +26,14 @@ module.exports = function (test) {
   })
 
   test('#getWidth & #getHeight', function (t) {
-    var s = new Size(10, -8)
+    var s = new Size(10, 8)
     t.equal(s.getWidth(), 10, 'width')
-    t.equal(s.getHeight(), -8, 'height')
+    t.equal(s.getHeight(), 8, 'height')
     t.end()
   })
 
   test('#transform', function (t) {
-    var s = new Size(10, -8)
+    var s = new Size(10, 8)
     var translation = new tapspace.geom.Transform(1, 0, 5, 5)
     var scaling = tapspace.geom.Transform.X2
 
@@ -42,7 +42,7 @@ module.exports = function (test) {
 
     t.ok(s.equal(ts), 'translation does not affect')
     t.notOk(s.equal(ss), 'scaling affects')
-    t.ok(ss.equal(new Size(20, -16)), 'doubled')
+    t.ok(ss.equal(new Size(20, 16)), 'doubled')
 
     t.end()
   })

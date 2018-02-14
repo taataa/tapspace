@@ -122,4 +122,28 @@ module.exports = function (test) {
     t.ok(px2.getSize().equal(new Size(4, 4)), 'only resized')
     t.end()
   })
+
+  test('#setSize emits', function (t) {
+    var px = new SpacePixel('black')
+    var oldSize = px.getSize()
+
+    px.on('resized', function (ev) {
+      t.equal(ev.source, px, 'source')
+      t.ok(ev.oldSize, oldSize, 'old size')
+      t.ok(ev.newSize, px.getSize(), 'new size')
+      t.end()
+    })
+
+    px.setSize(10, 10)
+  })
+
+  test('#setSize negative sizes', function (t) {
+    var px = new SpacePixel('black')
+
+    t.throws(function () {
+      px.setSize(1, -1)
+    })
+
+    t.end()
+  })
 }

@@ -138,7 +138,7 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Inherits** from `AbstractRectangle`.
 
-**Listens** events: added, removed, transformed, resized, contentAdded, contentRemoved
+**Listens** events: `added`, `removed`, `transformed`, `resized`, `childAdded`, `childRemoved`
 
 **Usage:**
 
@@ -178,11 +178,19 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Inherits** from `Emitter`. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter).
 
-**Method** `#addChild(item)` inserts `item` to the last child of `this`.
+**Emits** `added` when attached to a new parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
 
-**Method** `#bringAbove(item)` removes `this` from the old parent and adds `this` as the next sibling of `item`.
+**Emits** `removed` when detached from a parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
 
-**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children.
+**Emits** `childAdded` when a child node is added. Has payload `{ source: <AbstractNode>, newChild: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
+
+**Emits** `childRemoved` when a child node is removed. Has payload `{ source: <AbstractNode>, oldChild: <AbstractNode>, newParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
+
+**Method** `#addChild(item)` inserts `item` to the last child of `this`. Emits `childAdded`. The new child `item` emits `removed` if already attached and then emits `added`.
+
+**Method** `#bringAbove(item)` removes `this` from the parent and adds `this` as the next sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+
+**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -216,11 +224,11 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#remove()` detaches `this` from the parent.
 
-**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`.
+**Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.
+**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`.
+**Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`. Emits `removed` if there was a parent and then emits `added`. The old parent emits `childRemoved` and the new parent emits `childAdded`.
 
 
 
@@ -232,21 +240,27 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 **Listens** event `removed` to ensure a root element has no transformation.
 
-**Method** `#at(x, y)` or `#at(vector)` returns an `IVector` at the position (x, y) on `this`.
+**Emits** `transformed` with a payload `{ source: <AbstractPlane>, newTransform: <Transform>, oldTransform: <Transform> }` that tells what was transformed and how much.
 
-**Method** `#getGlobalITransform()` returns an `ITransform`, a plane-invariant version of the total transformation from `this` to the root's coordinate system.
+**Method** `#at(x, y)` or `#at(vector)` returns an `IVector` at the position (x, y) on `this`.
 
 **Method** `#getGlobalTransform()` returns an `Transform`, the total transformation from `this` to the root's coordinate system.
 
-**Method** `#getLocalITransform()` returns an `ITransform`, a plane-invariant version of the local transform. Where `#getLocalTransform` tells the effect of the plane's local transformation in the parent's coordinate system, `#getLocalITransform` tells the local effect in the global scope.
+**Method** `#getGlobalITransform()` returns an `ITransform`, a plane-invariant version of the total transformation from `this` to the root's coordinate system.
 
 **Method** `#getLocalTransform()` returns a `Transform`, the coordinate mapping from `this` to the parent plane.
 
+**Method** `#getLocalITransform()` returns an `ITransform`, a plane-invariant version of the local transform. Where `#getLocalTransform` tells the effect of the plane's local transformation in the parent's coordinate system, `#getLocalITransform` tells the local effect in the global scope.
+
 **Method** `#resetTransform()` is a shortcut for `#setLocalTransform(Transform.IDENTITY)`. Emits `transformed`.
 
-**Method** `#setLocalTransform(tr)` takes a `Transform` or `ITransform` and replaces the local transformation. Emits `transformed`.
+**Method** `#setGlobalTransform(tr)` takes a `Transform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
 
-**Method** `#setGlobalTransform(tr)` takes a `Transform` or `ITransform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
+**Method** `#setGlobalITransform(itr)` takes a `ITransform` and updates the local transformation so that the global transformation becomes equal to `tr`. Emits `transformed`.
+
+**Method** `#setLocalTransform(tr)` takes a `Transform` and replaces the local transformation. Emits `transformed`.
+
+**Method** `#setLocalITransform(itr)` takes a `ITransform` and replaces the local transformation. Emits `transformed`.
 
 **Method** `#snap(pivot, igrid)` updates the local transformation so that the given pivot `IVector` snaps to the given `IGrid`. Emits `transformed`.
 
@@ -273,6 +287,8 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 Gives an inheriting object a rectangular shape and size dimensions.
 
 **Inherits** from `AbstractPlane`.
+
+**Emits** `resized` with a payload `{ source: <AbstractRectangle>, newSize: <Size>, oldSize: <Size> }`.
 
 **Method** `#atNorm(x, y)` returns `IVector` from a point relative to the rectangle dimensions. For example `#atNorm(0, 1)` gives the bottom-left corner and `#atNorm(0.5, 0.5)` gives the middle point.
 
@@ -324,6 +340,7 @@ To allow users to interact with the items, make the items touchable. `Touchable`
 
 - *view:* a mounted instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
 - *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only the gestures made on the HTML representation of the instance are listened and recognized. The instance reacts to the manipulations as specified by the mode.
+- *targetItem:* optional target instance of `AbstractPlane`. If specified, the recognized transformations are applied to this `targetItem` instead of `item`. This way you can for example implement a drag or rotation handles for a larger item.
 
 **Properties:**
 
@@ -538,9 +555,9 @@ An object with width and height. The `Size` does not have location or rotation a
 
     var sz = new tapspace.geom.Size(8, 5)
 
-**Property** `width` gives the width.
+**Property** `width` gives the width. Always zero or positive.
 
-**Property** `height` gives the height.
+**Property** `height` gives the height. Always zero or positive.
 
 **Method** `#almostEqual(sz)` returns `true` if `this` and the given `Size` are equal, by allowing a small error from floating point arithmetics.
 
