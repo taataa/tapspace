@@ -18,7 +18,7 @@ module.exports = function (test) {
     var px = new SpacePixel('black') // not added to space
 
     t.throws(function () {
-      var tou = new tapspace.Touchable(view, px)
+      var tou = new Touchable(view, px) // eslint-disable-line no-unused-vars
     }, /No HTMLElement found/, 'note for programmer')
 
     t.end()
