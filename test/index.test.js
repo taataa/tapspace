@@ -23,7 +23,9 @@ var UNITS = {
   Space: require('./item.test/Space.test'),
   SpaceGroup: require('./item.test/SpaceGroup.test'),
   SpaceHTML: require('./item.test/SpaceHTML.test'),
-  SpaceView: require('./item.test/SpaceView.test')
+  SpaceView: require('./item.test/SpaceView.test'),
+
+  Touchable: require('./interaction.test/Touchable.test')
 }
 
 for (var unit in UNITS) {
