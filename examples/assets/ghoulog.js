@@ -28,7 +28,11 @@
   var table = console.table ? console.table.bind(console) : null
   var id = 'logdiv'
 
-  function createOuterElement () {
+  // Turn false at the first call. Used to detect the first printToDiv
+  // call and reveal the log. Empty log looks and acts weird.
+  var firstPrintToDivFlag = true
+
+  var outerElement = (function createOuterElement () {
     var outer = document.getElementById(id)
     if (!outer) {
       outer = document.createElement('fieldset')
@@ -45,23 +49,31 @@
     style.padding = '10px 10px'
     style.position = 'absolute'
     style.left = '0px'
-    style.top = '0px'
+    style.bottom = '0px'
     style.color = '#1AFF80'
     style.border = '1px dotted #1AFF80'
     style.overflow = 'hidden'
     style.fontSize = '8px'
+
+    // Hide until the first log entry
+    style.display = 'none'
+
     return outer
-  }
+  }())
 
   var logTo = (function createLogDiv () {
-    var outer = createOuterElement()
     var div = document.createElement('div')
     div.id = 'console-log-text'
-    outer.appendChild(div)
+    outerElement.appendChild(div)
     return div
   }())
 
   function printToDiv () {
+    if (firstPrintToDivFlag) {
+      firstPrintToDivFlag = false
+      outerElement.style.display = 'block'
+    }
+
     var msg = Array.prototype.slice.call(arguments, 0)
       .map(toString)
       .join(' ')
