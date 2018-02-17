@@ -27,6 +27,7 @@
   var warn = console.warn.bind(console)
   var table = console.table ? console.table.bind(console) : null
   var id = 'logdiv'
+  var rownum = 0
 
   // Turn false at the first call. Used to detect the first printToDiv
   // call and reveal the log. Empty log looks and acts weird.
@@ -77,8 +78,10 @@
     var msg = Array.prototype.slice.call(arguments, 0)
       .map(toString)
       .join(' ')
+
+    rownum += 1
     var text = logTo.textContent
-    logTo.textContent = msg + '\n' + text
+    logTo.textContent = rownum + ': ' + msg + '\n' + text
   }
 
   function logWithCopy () {
