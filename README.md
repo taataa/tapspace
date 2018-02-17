@@ -21,16 +21,16 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 
 ## Examples
 
-See the source code for tutoring comments!
+ To get the most out of them, use a touch device. See the source code for tutoring comments!
 
 - Your first minimal Space [[App]](https://rawgit.com/taataa/tapspace/development/examples/minimal/index.html) [[Source]](examples/minimal/index.html)
 - Play Go! [[App]](https://rawgit.com/taataa/tapspace/development/examples/go/index.html) [[Source]](examples/go/index.html)
 - Pinch-zoomable grid of 400 tile images [[App]](https://rawgit.com/taataa/tapspace/development/examples/tiles/index.html) [[Source]](examples/tiles/index.html)
 - An arrangement of custom HTML content, including YouTube video [[App]](https://rawgit.com/taataa/tapspace/development/examples/html/index.html) [[Source]](examples/html/index.html)
-- Animated zoomable canvas [[App]](https://rawgit.com/taataa/tapspace/development/examples/canvas/index.html) [[Source]](examples/canvas/index.html)
+- Animated zoomable HTML5 Canvas [[App]](https://rawgit.com/taataa/tapspace/development/examples/canvas/index.html) [[Source]](examples/canvas/index.html)
 - Gears with rotation handles [[App]](https://rawgit.com/taataa/tapspace/development/examples/gears/index.html) [[Source]](examples/gears/index.html)
 - Lenna, a SpaceGroup of SpacePixels [[App]](https://rawgit.com/taataa/tapspace/development/examples/pixels/index.html) [[Source]](examples/pixels/index.html)
-- Multiple SpaceViews to single Space [[App]](https://rawgit.com/taataa/tapspace/development/examples/multiview/index.html) [[Source]](examples/multiview/index.html)
+- Multiple views to single Space [[App]](https://rawgit.com/taataa/tapspace/development/examples/multiview/index.html) [[Source]](examples/multiview/index.html)
 - Modes of direct manipulation [[App]](https://rawgit.com/taataa/tapspace/development/examples/modes/index.html) [[Source]](examples/modes/index.html)
 
 
