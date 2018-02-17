@@ -26,9 +26,19 @@
 <body>
   <div id="space"></div>
 
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding-left: 1em">
+    <h1 style="margin-bottom: 0.38em">Gears – <a style="color: cyan" href="https://www.npmjs.com/package/tapspace">Tapspace</a> example</h1>
+    <p>Images created with <a style="color: cyan" href="http://geargenerator.com/">Gear Generator</a></p>
+  </div>
+
   <script src="../assets/ghoulog.js"></script>
   <script src="https://unpkg.com/tapspace@1.1.0/dist/tapspace.min.js"></script>
   <script>
+    var SpaceGroup = tapspace.SpaceGroup
+    var SpaceImage = tapspace.SpaceImage
+    var SpaceHTML = tapspace.SpaceHTML
+
     var space = new tapspace.Space()
     var view = new tapspace.SpaceView(space)
     view.mount(document.getElementById('space'))
@@ -51,49 +61,78 @@
       var touchmode = { rotate: true }
 
       // Create
-      var gear18a = new tapspace.SpaceGroup(space)
-      var gear18ai = new tapspace.SpaceImage(gear18Img, gear18a)
-      var gear18ahandle = new tapspace.SpaceImage(gearhandleImg)
+      var gears = new SpaceGroup(space)
+      var gear18a = new SpaceGroup(gears)
+      var gear18ai = new SpaceImage(gear18Img, gear18a)
+      var gear18ahandle = new SpaceImage(gearhandleImg)
       gear18a.addChild(gear18ahandle)
 
-      var gear18b = new tapspace.SpaceGroup(space)
-      var gear18bi = new tapspace.SpaceImage(gear18Img, gear18b)
+      var gear18b = new SpaceGroup(gears)
+      var gear18bi = new SpaceImage(gear18Img, gear18b)
+      var gear18bhandle = new SpaceImage(gearhandleImg, gear18b)
 
-      var gear11 = new tapspace.SpaceImage(gear11Img, space)
+      var gear11 = new SpaceImage(gear11Img, gears)
 
       // Position
       gear18a.translate(gear18a.atMid(), space.at(0, 0))
-      gear11.translate(gear11.atMid(), space.at(322, 242))
+      gear11.translate(gear11.atMid(), space.at(321, 245))
       gear18ahandle.translate(
         gear18ahandle.atMid(),
         gear18ai.atMidN().offset(0, 160)
       )
 
-      gear18b.translate(gear18b.atMid(), space.at(642, 0))
-      gear18b.rotate(gear18b.atMid(), 0.17)
+      gear18b.translate(gear18b.atMid(), space.at(641, 0))
+      gear18b.rotate(gear18b.atMid(), 0.163)
+      gear18bhandle.translate(
+        gear18bhandle.atMid(),
+        gear18b.atMid().offset(0, 120)
+      )
 
-      // Define interaction. Redirect manipulation of the handle
-      // to gear18a.
-      var handleTouch = new tapspace.Touchable(view, gear18ahandle, gear18a)
-      handleTouch.start({ rotate: true, pivot: gear18a.atMid() })
+      // Define interaction. Redirect manipulation of the handles
+      // to gear18a. Note that we connect the b-handle to gear a.
+      var ahandleTouch = new tapspace.Touchable(view, gear18ahandle, gear18a)
+      var bhandleTouch = new tapspace.Touchable(view, gear18bhandle, gear18b)
+      ahandleTouch.start({ rotate: true, pivot: gear18a.atMid() })
+      bhandleTouch.start({ rotate: true, pivot: gear18b.atMid() })
 
-      // Connect gear18a to gear11
-      gear18a.on('transformed', function (ev) {
-        var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
-        var rads = dT.inverse().getRotation()
-        gear11.rotate(gear11.atMid(), rads * 18 / 11)
-      })
+      var connectGears = function (gearx, geary, teethx, teethy) {
+        // Connect two gears together.
+        // Note that an infinite recursion would be caused because
+        // transform at x causes transform at y and vice versa.
+        //
+        var recursionLock = false
 
-      // Connect gear11 to gear18b
-      gear11.on('transformed', function (ev) {
-        var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
-        var rads = dT.inverse().getRotation()
-        gear18b.rotate(gear18b.atMid(), rads * 11 / 18)
-      })
+        gearx.on('transformed', function (ev) {
+          if (!recursionLock) {
+            recursionLock = true
+
+            var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+            var rads = dT.inverse().getRotation()
+            geary.rotate(geary.atMid(), rads * teethx / teethy)
+
+            recursionLock = false
+          }
+        })
+
+        geary.on('transformed', function (ev) {
+          if (!recursionLock) {
+            recursionLock = true
+
+            var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+            var rads = dT.inverse().getRotation()
+            gearx.rotate(gearx.atMid(), rads * teethy / teethx)
+
+            recursionLock = false
+          }
+        })
+      }
+
+      connectGears(gear18a, gear11, 18, 11)
+      connectGears(gear18b, gear11, 18, 11)
 
       // Initial view position
-      view.fitScale(space)
-      view.scale(space.atMid(), 1.23)
+      view.fitScale(gears)
+      view.scale(gears.atMid(), 1.23)
     })
   </script>
 </body>

@@ -17,7 +17,7 @@
 
     body {
       font-size: 16px;
-      color: black;
+      color: white;
       /* Background from https://sftextures.com/2015/10/18/
          brown-wood-seamless-texture-with-vertical-smooth-cracks/ */
       background: white url('../assets/wood-cracked.jpg') repeat;
@@ -27,6 +27,12 @@
 </head>
 <body>
   <div id="space"></div>
+
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding-left: 1em">
+    <h1 style="margin-bottom: 0.38em">Go – <a style="color: black" href="https://www.npmjs.com/package/tapspace">Tapspace</a> example</h1>
+    <p>A 13x13 board and 169 stones that snap to the grid</p>
+  </div>
 
   <!--script src="../assets/ghoulog.js"></script-->
   <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
@@ -73,8 +79,8 @@
       var tableImg = imgs[3]
 
       // A spaceSquare for each game grid node
-      var ROWS = 11
-      var COLUMNS = 11
+      var ROWS = 12 // for 13 intersections
+      var COLUMNS = 12
       var row, col, ssq
       for (row = 0; row < ROWS; row += 1) {
         for (col = 0; col < COLUMNS; col += 1) {
@@ -85,8 +91,8 @@
       }
 
       // Create lots of stones
-      var WHITES = 100
-      var BLACKS = 100
+      var WHITES = 84
+      var BLACKS = 85
 
       var archimedeanSpiral = function (x) {
         var angle = 3 * Math.sqrt(x)
@@ -122,7 +128,7 @@
         stone.translate(stone.atMid(), whitePileMid.offset(xy.x, xy.y))
       }
 
-      var blackPileMid = space.at(3500, 2000)
+      var blackPileMid = space.at(3600, 2200)
       for (i = BLACKS; i >= 0; i -= 1) {
         stone = new tapspace.SpaceImage(blackImg, blackStones)
         xy = jitter(archimedeanSpiral(i))

@@ -19,6 +19,8 @@
       padding: 0;
       width: 100%;
       height: 100%;
+      color: lightgray;
+      font-family: sans-serif;
     }
 
     .row {
@@ -63,20 +65,29 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/tapspace@1.0.0/dist/tapspace.min.js"></script>
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding-left: 1em">
+    <h1 style="margin-bottom: 0.38em">Multiview – <a style="color: blue" href="https://www.npmjs.com/package/tapspace">Tapspace</a> example</h1>
+    <p>Movable squares with an additional overview and a movable detail view.</p>
+  </div>
+
+  <script src="https://unpkg.com/tapspace@1.1.0/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
 
+    // Three views to space
     var v = new tapspace.SpaceView(space)
     var vv = new tapspace.SpaceView(space)
     var vvv = new tapspace.SpaceView(space)
 
+    // A group for pixels
     var g = new tapspace.SpaceGroup(space)
 
     var px = new tapspace.SpacePixel('red', g)
     var pxx = new tapspace.SpacePixel('green', g)
     var pxxx = new tapspace.SpacePixel('blue', g)
 
+    // Arrange
     pxx.translate(pxx.atNW(), px.atSE())
     pxxx.translate(pxxx.atSW(), pxx.atNE())
 
@@ -88,11 +99,26 @@
     vv.fitScale(g)
     vvv.fitScale(g)
 
-    v.scale(v.atMid(), 1.62)
-    vv.translate(vv.atMid(), pxx.atNW())
-    vv.scale(vv.atMid(), 0.62)
-    vvv.scale(vvv.atMid(), 1.3)
+    v.scale(v.atMid(), 1.1)
+
+    // Overview
+    vv.scale(vv.atMid(), 2.62)
+
+    // Detail view
+    vvv.scale(vvv.atMid(), 0.62)
     vvv.rotate(vvv.atMid(), Math.PI / 5)
+
+    // Make the pixels interactive in the main view
+    var tx = new tapspace.Touchable(v, px)
+    var txx = new tapspace.Touchable(v, pxx)
+    var txxx = new tapspace.Touchable(v, pxxx)
+    tx.start({ translate: true })
+    txx.start({ translate: true })
+    txxx.start({ translate: true })
+
+    // Make the detail view transformable
+    var tvvv = new tapspace.Touchable(vvv, vvv)
+    tvvv.start({ translate: true, rotate: true })
 
   </script>
 </body>

@@ -1,6 +1,6 @@
 {
   "name": "tapspace",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -15,6 +15,7 @@
     "css",
     "transform",
     "transformation",
+    "multitouch",
     "touch",
     "gesture"
   ],
@@ -35,7 +36,6 @@
     "extend": "^3.0.1",
     "loadimages": "^1.0.0",
     "monotone-convex-hull-2d": "^1.0.1",
-    "move-js": "^0.5.0",
     "nudged": "^1.4.0",
     "seqid": "^1.0.1"
   },

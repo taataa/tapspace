@@ -1,5 +1,6 @@
+![tapspace](banner.png?raw=true)
 
-Tapspace lets you build touchable and zoomable web apps. Whether you dream about a Google Maps clone, a Prezi flavored home page, or a real-time strategy game, the Tapspace's toolbox gives you a major head start in implementing your zoomable user interface and touch integration.
+*Tapspace* lets you build touchable and zoomable web apps. Whether you dream about a *Google Maps* clone, a *Prezi* flavored home page, or a real-time strategy game, the Tapspace's toolbox gives you a major head start in implementing your zoomable user interface and touch integration.
 
 [**Tutorial**](tutorial/) is a good place to start for newcomers.
 
@@ -8,6 +9,8 @@ Tapspace lets you build touchable and zoomable web apps. Whether you dream about
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Tapspace to a next level.
 
 [**GitHub**](https://github.com/taataa/tapspace) for the source code and bug reports.
+
+[**NPM**](https://www.npmjs.com/package/tapspace) for the stable release and popularity statistics.
 
 ## Thanks to
 

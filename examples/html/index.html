@@ -5,7 +5,7 @@
   <title>HTML - Tapspace Example</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <style>
     html, body, #space {
@@ -45,7 +45,7 @@
 
     var Vector = tapspace.geom.Vector
 
-    var spacehtml = new tapspace.SpaceHTML('<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code>tapspace.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
+    var spacehtml = new tapspace.SpaceHTML('<div id="msg"><strong>Hello there!</strong> This is <em>full-blown</em> <a href="https://www.w3.org/TR/html-markup/">HTML markup</a>. <strong>Anything</strong> you can include to a web page, you can include to a <code><a href="http://taataa.github.io/tapspace/">tapspace</a>.Space</code>, including text, images, canvas, buttons, and iframes.</div>')
     spacehtml.setSize(300, 300)
     spacehtml.setParent(space)
     spacehtml.translateScaleRotate(
@@ -53,7 +53,7 @@
       [view.atNorm(0.4, 0.3), view.atNorm(0.4, 0.3).offset(0.0, 300.0)]
     )
 
-    var spacewiki = new tapspace.SpaceHTML('<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0"/>')
+    var spacewiki = new tapspace.SpaceHTML('<iframe type="text/html" width="400" height="300" src="https://en.wikipedia.org/w/index.php?title=Zooming_user_interface&printable=yes" frameborder="0" />')
     spacewiki.setSize(400, 300)
     spacewiki.setParent(space)
     spacewiki.translateScaleRotate(
@@ -61,7 +61,13 @@
       [view.atNorm(0.4, 0.6), view.atNorm(0.4, 0.6).offset(400.0, 0.0)]
     )
 
-    var spacetube = new tapspace.SpaceHTML('<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0"/>')
+    // In iOS Safari, scrollable iframes require special styling.
+    // Otherwise the iframe is expanded to fit the full content.
+    var wikidiv = view.getElementBySpaceItem(spacewiki)
+    wikidiv.style.overflowY = 'scroll'
+    wikidiv.style.WebkitOverflowScrolling = 'touch'
+
+    var spacetube = new tapspace.SpaceHTML('<iframe id="ytplayer" type="text/html" width="500" height="300" src="https://www.youtube.com/embed/CyW_iFYTbkU" frameborder="0" />')
     spacetube.setSize(500, 300)
     spacetube.setParent(space)
     spacetube.translateScaleRotate(
@@ -77,6 +83,10 @@
     spacehtml.scale(mid, 0.8)
     spacewiki.scale(mid, 0.8)
     spacetube.scale(mid, 0.8)
+
+    // Make the view transformable
+    var tv = new tapspace.Touchable(view, view)
+    tv.start({ translate: true, rotate: true, scale: true })
   </script>
 </body>
 </html>
