@@ -21,13 +21,17 @@
       background: #666;
       font-family: sans-serif;
     }
+
+    a {
+      color: blue;
+    }
   </style>
 </head>
 <body>
   <div id="space"></div>
 
   <script src="../assets/ghoulog.js"></script>
-  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.1.0/dist/tapspace.min.js"></script>
   <script>
 
     var space = new tapspace.Space()
@@ -50,7 +54,7 @@
 
     var g = new tapspace.SpaceGroup(space)
 
-    data.forEach(function (d, i) {
+    var items = data.map(function (d, i) {
       var px = new tapspace.SpacePixel(d[0], g)
       px.translate(px.atMid(), space.at(i % WIDTH, Math.floor(i / WIDTH)))
       var touch = new tapspace.Touchable(view, px)
@@ -59,8 +63,35 @@
         mode.pivot = px.atMid()
       }
       touch.start(mode)
+
+      touch.on('gesturestart', function (ev) {
+        ev.item.bringToFront()
+      })
+
+      return px
     })
 
+    // Descriptions
+
+    var info = new tapspace.SpaceHTML('<div style="padding: 1em">' +
+      'This <a href="http://taataa.github.io/tapspace/">Tapspace</a> ' +
+      'example demonstrates the available ' +
+      '<a href="http://taataa.github.io/tapspace/api/#tapspacetouchable">' +
+      'interaction modes</a> for items. ' +
+      'This black square does not move at all...' +
+      '</div>')
+    info.setParent(items[0])
+    info.fitScale(items[0])
+
+    var infoend = new tapspace.SpaceHTML(
+      '<div style="padding: 1em; color: black">' +
+      '...but this white one is totally free. <strong>Freedom!</strong> ' +
+      'The others are somewhere in between.' +
+      '</div>')
+    infoend.setParent(items[items.length - 1])
+    infoend.fitScale(items[items.length - 1])
+
+    // Make the view to fit everything
     view.fitScale(g)
 
   </script>
