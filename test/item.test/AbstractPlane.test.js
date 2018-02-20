@@ -8,7 +8,7 @@ module.exports = function (test) {
   test('#getLocalTransform: in parent\'s coord system', function (t) {
     var space = new Space()
     var p = new SpacePixel('black', space)
-    var x = new SpacePixel('black', p)  // a child of p
+    var x = new SpacePixel('black', p) // a child of p
 
     // The local transform of x should remain same regardless of p's move.
     // The global transform of x should change when p moves
