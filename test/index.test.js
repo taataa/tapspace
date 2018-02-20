@@ -23,6 +23,8 @@ var UNITS = {
   Space: require('./item.test/Space.test'),
   SpaceGroup: require('./item.test/SpaceGroup.test'),
   SpaceHTML: require('./item.test/SpaceHTML.test'),
+  SpaceImage: require('./item.test/SpaceImage.test'),
+  SpacePixel: require('./item.test/SpacePixel.test'),
   SpaceView: require('./item.test/SpaceView.test'),
 
   Touchable: require('./interaction.test/Touchable.test')

@@ -76,6 +76,12 @@ A collection of items. `SpaceGroup` itself has no representation, only its child
 
 **Constructor** `SpaceGroup(parent)` takes an optional parent item.
 
+**Method** `#atMid()` returns a `Vector` to the centroid of the convex hull of the descendants.
+
+**Method** `#copy()` returns a deep copy of `this`. The children are recursively copied. The resulting `SpaceGroup` does not have a parent.
+
+**Method** `#getHull()` returns the convex hull as an `IPath`.
+
 
 ### tapspace.SpaceHTML
 
@@ -92,6 +98,8 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
     '<h1>Hell-o</h1>'
 
 **Constructor** `SpaceHTML(html, parent)` takes in a string and an optional parent item.
+
+**Method** `#copy()` returns a copy of `this` with similar HTML content and size but without a parent.
 
 **Method** `#getHTML()` returns string.
 
@@ -112,6 +120,8 @@ An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.pr
 
 **Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
 
+**Method** `#copy()` returns a copy of `this` with the same image and size but without a parent.
+
 **Method** `#getImage()` returns HTMLImageElement.
 
 
@@ -128,6 +138,8 @@ A colored rectangular item. `SpaceView` represents this with a `<div>` styled wi
     > var px = new tapspace.SpacePixel('pink', parent)
 
 **Constructor** `SpacePixel(color, parent)` takes in an optional color string and an optional parent item. The string defaults to `#000000`.
+
+**Method** `#copy()` returns a copy of `this` with the same color and size but without a parent.
 
 **Method** `#getColor()` returns the background property string.
 
