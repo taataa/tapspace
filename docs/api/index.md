@@ -10,6 +10,7 @@ Contents:
   - [tapspace.SpaceHTML](#tapspacespacehtml)
   - [tapspace.SpaceImage](#tapspacespaceimage)
   - [tapspace.SpacePixel](#tapspacespacepixel)
+- [Renderers](#renderers)
   - [tapspace.SpaceView](#tapspacespaceview)
 - [Abstract Items](#abstract-items)
   - [tapspace.AbstractNode](#tapspaceabstractnode)
@@ -48,6 +49,8 @@ A semantic version string identical to the version in the module's `package.json
 
 
 ## Items
+
+Items are objects that can be rendered and made interactive.
 
 
 ### tapspace.Space
@@ -144,6 +147,10 @@ A colored rectangular item. `SpaceView` represents this with a `<div>` styled wi
 **Method** `#getColor()` returns the background property string.
 
 
+
+## Renderers
+
+
 ### tapspace.SpaceView
 
 A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rendered elements with [CSS3 transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
@@ -160,6 +167,8 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Method** `#fitScale(...)` overrides `AbstractRectangle#fitScale(...)` to throw an error if the view is not mounted.
 
+**Method** `#fitSize(...)` overrides `AbstractRectangle#fitSize(...)` to prevent resizing. See `#refreshSize()`.
+
 **Method** `#getElementBySpaceItem(item)` returns `HTMLElement` rendered for the item in this view. Returns `null` if the item has no HTMLElement in this view.
 
 **Method** `#getContainer()` returns the `HTMLElement` given with `#mount(htmlContainer)`. Returns `null` if the view is not mounted.
@@ -170,7 +179,13 @@ A viewport to the `Space`. Renders the items in HTML and CSS. Positions the rend
 
 **Method** `#mount(htmlContainer)` attaches the view into the given `HTMLElement`. This starts a rendering process where the items in `Space` are rendered in HTML and listened for changes.
 
+**Method** `#refreshSize()` resizes the view to match `clientWidth` and `clientHeight` of the container element.
+
 **Method** `#setParent(item)` overrides `AbstractNode#setParent(item)` to ensure only a `Space` is allowed for the parent.
+
+**Method** `#setSize(...)` overrides `AbstractRectangle#setSize(...)` to prevent resizing. See `#refreshSize()`.
+
+**Method** `#setISize(...)` overrides `AbstractRectangle#setISize(...)` to prevent resizing. See `#refreshSize()`.
 
 **Method** `#unmount()` undoes `#mount(htmlContainer)` and clears the container.
 
