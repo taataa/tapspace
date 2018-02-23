@@ -9,9 +9,10 @@ We believe **zoomable touch user interfaces** to be the best way for humans to e
 
 ## Install
 
-With [npm](https://www.npmjs.com/package/tapspace):
+With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com/en/package/tapspace):
 
     $ npm install tapspace
+    $ yarn add tapspace
 
 
 ## Features
@@ -34,7 +35,7 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 
 ## Examples
 
- To get the most out of them, use a touch device. See the source code for tutoring comments!
+ To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
 
 - Your first minimal Space [[App]](https://rawgit.com/taataa/tapspace/development/examples/minimal/index.html) [[Source]](examples/minimal/index.html)
 - Play Go! [[App]](https://rawgit.com/taataa/tapspace/development/examples/go/index.html) [[Source]](examples/go/index.html)
