@@ -40,6 +40,7 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - An arrangement of custom HTML content, including YouTube video [[App]](https://rawgit.com/taataa/tapspace/development/examples/html/index.html) [[Source]](examples/html/index.html)
 - Animated zoomable HTML5 Canvas [[App]](https://rawgit.com/taataa/tapspace/development/examples/canvas/index.html) [[Source]](examples/canvas/index.html)
 - Gears with rotation handles [[App]](https://rawgit.com/taataa/tapspace/development/examples/gears/index.html) [[Source]](examples/gears/index.html)
+- Snapping grid [[App]](https://rawgit.com/taataa/tapspace/development/examples/grid/index.html) [[Source]](examples/grid/index.html)
 - Lenna, a SpaceGroup of SpacePixels [[App]](https://rawgit.com/taataa/tapspace/development/examples/pixels/index.html) [[Source]](examples/pixels/index.html)
 - Multiple views to single Space [[App]](https://rawgit.com/taataa/tapspace/development/examples/multiview/index.html) [[Source]](examples/multiview/index.html)
 - Modes of direct manipulation [[App]](https://rawgit.com/taataa/tapspace/development/examples/modes/index.html) [[Source]](examples/modes/index.html)
