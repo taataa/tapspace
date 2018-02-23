@@ -32,6 +32,9 @@ Contents:
   - [tapspace.geom.IVector](#tapspacegeomivector)
 - [Other](#other)
   - [tapspace.preload](#tapspacepreload)
+- [Definitions](#definitions)
+  - [Hull order](#hull-order)
+
 
 
 ## Module
@@ -79,11 +82,11 @@ A collection of items. `SpaceGroup` itself has no representation, only its child
 
 **Constructor** `SpaceGroup(parent)` takes an optional parent item.
 
-**Method** `#atMid()` returns a `Vector` to the centroid of the convex hull of the descendants.
+**Method** `#atMid()` returns a `Vector` to the centroid of the [convex hull](#hull-order) of the descendants.
 
 **Method** `#copy()` returns a deep copy of `this`. The children are recursively copied. The resulting `SpaceGroup` does not have a parent.
 
-**Method** `#getHull()` returns the convex hull as an `IPath`.
+**Method** `#getHull()` returns the convex hull as an `IPath`. The path is in the [hull order](#hull-order).
 
 
 ### tapspace.SpaceHTML
@@ -341,7 +344,7 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#fitSize(ipath)` translates and resizes `this` so that the rectangle encloses the given `IPath` precisely. The local size and the width-height ratio is probably altered. Emits `transformed` and `resized`.
 
-**Method** `#getHull()` returns `IPath` that consists of the corners of the rectangle in counter-clockwise order (the hull order).
+**Method** `#getHull()` returns `IPath` that consists of the corners of the rectangle in counter-clockwise order i.e. the [hull order](#hull-order).
 
 **Method** `#getSize()` return `Size`, representing the dimensions in the local coordinates.
 
@@ -449,7 +452,7 @@ A `Grid` is a tool to round transformations to their closest alternatives allowe
 
 **Method** `#equal(grid)` returns `true` if values of the modes of the grids are strictly equal.
 
-**Method** `#getHullOf(i, j)` returns `Path` representing the hull of (i, j):th eye of the grid.
+**Method** `#getHullOf(i, j)` returns `Path` representing the hull of (i, j):th eye of the grid. The path is in the [hull order](#hull-order).
 
 **Method** `#getOrigin()` returns `Vector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
 
@@ -474,7 +477,7 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 
 **Method** `#equal(igrid)` returns `true` if values of the modes of the grids become strictly equal if transformed on the same plane.
 
-**Method** `#getHullOf(i, j)` returns `IPath` representing the hull of (i, j):th eye of the grid.
+**Method** `#getHullOf(i, j)` returns `IPath` representing the hull of (i, j):th eye of the grid. The path is in the [hull order](#hull-order).
 
 **Method** `#getOrigin()` returns `IVector` at the grid origin, specified by `xStep`, `xPhase`, `yStep`, and `yPhase`.
 
@@ -514,9 +517,9 @@ A `Path` is an ordered sequence of `Vector`s. See `IPath` for plane-invariant al
 
 **Method** `#get(i)` returns the `i`:th `Vector` of the path and `undefined` if the index is out of range.
 
-**Method** `#getBounds()` returns a bounding box as a `Path` in the hull order.
+**Method** `#getBounds()` returns a bounding box as a `Path` in the [hull order](#hull-order).
 
-**Method** `#getHull()` returns the convex hull of `this` as a `Path`.
+**Method** `#getHull()` returns the convex hull of `this` as a `Path`. The path is in the [hull order](#hull-order).
 
 **Method** `#last()` returns the last `Vector` of the path and `null` if empty.
 
@@ -561,7 +564,7 @@ A `IPath` is an ordered sequence of `IVector`s and a plane-invariant alternative
 
 **Method** `#get(i)` returns `IVector` for the `i`:th point on the path.
 
-**Method** `#getHull()` returns the convex hull of `this` as an `IPath`.
+**Method** `#getHull()` returns the convex hull of `this` as an `IPath`. The path is in the [hull order](#hull-order).
 
 **Method** `#last()` returns `IVector` for the last point on the path.
 
@@ -789,3 +792,13 @@ A function to preload an image file or an array of them and call back when finis
       // img is now loaded and has correct dimensions instead of 0x0.
       var si = new tapspace.SpaceImage(space, img)
     })
+
+
+
+## Definitions
+
+Here are detailed definitions for some terminology used above.
+
+### Hull order
+
+When a `Path` represents the convex hull of an item, the `Vector` points of the path have strict order. 1) The first point is the `Vector` with most negative x and y value. 2) The points after the first come in anticlockwise order. For example the convex hull of a unit square is (0,0), (0,1), (1,1), and (1,0).
