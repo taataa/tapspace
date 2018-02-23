@@ -34,8 +34,8 @@
     <p>A 13x13 board and 169 stones that snap to the grid</p>
   </div>
 
-  <!--script src="../assets/ghoulog.js"></script-->
-  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.1.1/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
     var container = document.getElementById('space')
@@ -54,6 +54,7 @@
       yStep: SIDE
     }, space)
 
+    // Define how the objects can be moved.
     var viewMode = { translate: true, scale: true, rotate: true }
     var stoneMode = { translate: true, rotate: true }
 
@@ -73,6 +74,7 @@
       var whiteStones = new tapspace.SpaceGroup(space)
       var blackStones = new tapspace.SpaceGroup(space)
 
+      // Name the images
       var squareImg = imgs[0]
       var whiteImg = imgs[1]
       var blackImg = imgs[2]
@@ -94,6 +96,7 @@
       var WHITES = 84
       var BLACKS = 85
 
+      // Arrange the stones of a color into a spiral.
       var archimedeanSpiral = function (x) {
         var angle = 3 * Math.sqrt(x)
         var x = 15 * (1 + angle) * Math.cos(angle)
@@ -104,6 +107,8 @@
         }
       }
 
+      // In addition to the spiral, add some random jitter for
+      // the pile to look natural.
       var jitter = function (xy) {
         return {
           x: xy.x + Math.random() * 250,
@@ -111,13 +116,14 @@
         }
       }
 
-      // For the loops
+      // Vars for the loops
       var i, stone, xy, stoneTouch
 
       var onGestureend = function (ev) {
         ev.item.snap(ev.item.atMid(), grid)
       }
 
+      // Create the white stone items
       var whitePileMid = space.at(-1000, 600)
       for (i = WHITES; i >= 0; i -= 1) {
         stone = new tapspace.SpaceImage(whiteImg, whiteStones)
@@ -128,6 +134,7 @@
         stone.translate(stone.atMid(), whitePileMid.offset(xy.x, xy.y))
       }
 
+      // Create the black stone items
       var blackPileMid = space.at(3600, 2200)
       for (i = BLACKS; i >= 0; i -= 1) {
         stone = new tapspace.SpaceImage(blackImg, blackStones)
