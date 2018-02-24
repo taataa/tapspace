@@ -18,6 +18,7 @@ Contents:
   - [tapspace.AbstractRectangle](#tapspaceabstractrectangle)
 - [Interaction](#interaction)
   - [tapspace.Touchable](#tapspacetouchable)
+  - [tapspace.Wheelable](#tapspacewheelable)
 - [Geometry](#geometry)
   - [tapspace.geom](#tapspacegeom)
   - [tapspace.geom.Grid](#tapspacegeomgrid)
@@ -358,9 +359,12 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 ## Interaction
 
+These input managers map events from input devices to manipulations of items in space.
+
+
 ### tapspace.Touchable
 
-To allow users to interact with the items, make the items touchable. `Touchable` is a manager that maps pointer events on HTML to a transformation and applies the transformation to a given item.
+To allow users to directly interact with the items, make the items touchable. `Touchable` is an input manager that maps touch and mouse events on HTML to a transformation and applies the transformation to a given item.
 
 **Usage:**
 
@@ -369,7 +373,7 @@ To allow users to interact with the items, make the items touchable. `Touchable`
 **Constructor** `Touchable(view, item)` takes in the parameters:
 
 - *view:* a mounted instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
-- *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only the gestures made on the HTML representation of the `item` are listened and recognized. The `item` reacts to the manipulations as specified by the mode. The view must have rendered an element for the `item` or otherwise an error is thrown.
+- *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only gestures made on the HTML representation of the `item` are listened and recognized. The `item` reacts to the manipulations as specified by the mode. The view must have rendered an element for the `item` or otherwise an error is thrown.
 - *targetItem:* optional target instance of `AbstractPlane`. If specified, the recognized transformations are applied to this `targetItem` instead of `item`. This way you can for example implement a drag or rotation handles for a larger item.
 
 **Properties:**
@@ -381,9 +385,9 @@ To allow users to interact with the items, make the items touchable. `Touchable`
 
 **Methods:**
 
-- *start(mode):* activates the manager in the given mode. If no mode is given, the default mode is used. Can be called on already active manager to update the mode.
-- *restart(mode):* alias of `start(mode)` but can make the code more readable when updating the mode of an already active manager.
-- *stop():* deactivates the manager. An inactive manager fires no events and listens no gestures.
+- *start(mode):* enables the interaction in the given mode. If no mode is given, the default mode is used. Can be called again to update the mode.
+- *restart(mode):* alias of `start(mode)` but can make the code more readable when actually updating the mode instead of `start`.
+- *stop():* disables the interaction. No events are fired or events listened anymore. Forgets the mode.
 - *resume():* starts the manager with the last known mode.
 
 **Mode:**
@@ -391,8 +395,8 @@ To allow users to interact with the items, make the items touchable. `Touchable`
 The mode object defines the allowed types of manipulation. Some types are not possible together so a type can override another. The full list of the mode properties and their conflicts is given below.
 
 - *translate:* set `true` to allow horizontal and vertical movement. Default is `false`. If `pivot` is specified the value of `translate` has no effect.
-- *rotate:* set `true` to allow rotation. If `translate: false` and `pivot` is not specified the rotation is allowed only around the center of the transformer. Default is `false`.
-- *scale:* set `true` to allow scaling. If `translate: false` and `pivot` is not specified the scaling is allowed only around the center of the transformer. Default is `false`.
+- *rotate:* set `true` to allow rotation. If `translate: false` and `pivot` is not specified the rotation is allowed only around the center of the item. Default is `false`.
+- *scale:* set `true` to allow scaling. If `translate: false` and `pivot` is not specified the scaling is allowed only around the center of the item. Default is `false`.
 - *pivot:* set to a `IVector` to specify a pivot for rotation and scaling. If `pivot` is specified the value of `translate` has no effect. Default is `null`.
 - *tap:* set to `true` to allow emitting of `tap` event. Default is `false`.
 - *tapMaxTravel:*  Default is 20.
@@ -414,6 +418,35 @@ The events are fired with an event object. The event object has the following pr
 - *duration:* a number. Milliseconds from the `gesturestart`
 - *element:* a `HTMLElement`. The source of the original pointer events.
 - *item:* an `AbstractPlane`. The item of the HTMLElement.
+
+
+### tapspace.Wheelable
+
+To manipulate items and views with mouse wheel make them *wheelable*.
+The `Wheelable` is an input manager that maps [`WheelEvent`](https://developer.mozilla.org/en-US/docs/Web/Events/wheel) to item manipulations, for example to zoom a view.
+
+**Usage:**
+
+    > var wheel = new tapspace.Wheelable(view, item)
+    > wheel.start({ scale: true })
+
+**Constructor** `Wheelable(view, item)` takes in a `SpaceView` where the interaction happens and an `item`, an instance of `AbstractPlane` to transform. The `view` must have rendered an element for the `item` or otherwise an error is thrown.
+
+**Methods** are identical to [tapspace.Touchable](#tapspacetouchable) with the exception of mode properties and emitted events defined below.
+
+**Mode** object defines the allowed types of manipulation. Some types collide in the way they interpret events and can thus override each other. The full list of the mode properties and their conflicts is given below.
+
+- `scale`: set `true` to allow scaling around the mouse pointer. Default is `false`.
+- `translate`: set `true` to allow horizontal and vertical scroll. Default is `false`. If also `scale: true` then only horizontal scroll is enabled as the vertical wheel spin goes to scaling (`deltaY` property of `WheelEvent`).
+- `rotate`: set `true` to allow rotation around the mouse pointer. Default is `false`. Enabled only for 3D mouses (devices that use `deltaZ` property of `WheelEvent`).
+
+The default mode is accessible at `Wheelable.DEFAULT_MODE`.
+
+**Event** `wheel` is emitted at each wheel move. The event object has the following properties:
+
+- `element`: an `HTMLElement`. The source of the original `wheel` event.
+- `item`: an `AbstractPlane`. The item that was transformed.
+- `originalEvent`: the original `wheel` event
 
 
 
