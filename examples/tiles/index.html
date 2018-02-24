@@ -33,7 +33,7 @@
   </div>
 
   <script src="../assets/ghoulog.js"></script>
-  <script src="https://unpkg.com/tapspace@1.1.1/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.2.0/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
@@ -105,7 +105,7 @@
       // Initial view position
       view.translate(view.atMid(), g.getHull().atMid())
 
-      // Make view transformable
+      // Make view touch-transformable
       var tView = new tapspace.Touchable(view, view)
       tView.start({
         translate: true,
@@ -113,11 +113,16 @@
         rotate: true
       })
 
-      // Snapping grid
+      // Allow zooming with mouse wheel
+      var wheeler = new tapspace.Wheelable(view, view)
+      wheeler.start({
+        scale: true
+      })
+
+      // Allow discrete rotation steps
       var viewGrid = new tapspace.geom.IGrid({
         rotateStep: Math.PI / 12
       }, space)
-
       tView.on('gestureend', function () {
         view.snap(view.atMid(), viewGrid)
       })
