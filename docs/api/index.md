@@ -400,6 +400,7 @@ The mode object defines the allowed types of manipulation. Some types are not po
 - *pivot:* set to a `IVector` to specify a pivot for rotation and scaling. If `pivot` is specified the value of `translate` has no effect. Default is `null`.
 - *tap:* set to `true` to allow emitting of `tap` event. Default is `false`.
 - *tapMaxTravel:*  Default is 20.
+- *preventDefault:* set `true` to cancel handled touch and mouse events. Set `false` to let `Touchable` managers higher in the DOM also handle the events. Default is `true`. **Warning:** The default value will change in v2 to `false`. Therefore to make your app forward compatible, always specify `preventDefault`.
 
 The default mode is accessible at `Touchable.DEFAULT_MODE`.
 
