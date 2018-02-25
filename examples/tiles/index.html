@@ -26,8 +26,14 @@
 <body>
   <div id="space"></div>
 
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding-left: 1em">
+    <h1 style="margin-bottom: 0.38em">Tiles – <a style="color: lightgray" href="http://taataa.github.io/tapspace/">Tapspace</a> example</h1>
+    <p>Efficiency demo: a pinch-zoomable group of 400 images. Tap to rotate.</p>
+  </div>
+
   <script src="../assets/ghoulog.js"></script>
-  <script src="https://unpkg.com/tapspace@1.0.2/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.2.0/dist/tapspace.min.js"></script>
   <script>
     var space = new tapspace.Space()
     var viewElement = document.getElementById('space')
@@ -74,6 +80,7 @@
         ev.item.rotate(ev.item.atMid(), Math.PI / 2)
       }
 
+      // Create and place tiles
       var i, j, px, img, touch
       for (i = 0; i < W; i += 1) {
         for (j = 0; j < W; j += 1) {
@@ -85,12 +92,12 @@
           ]))
 
           // Define interaction.
-          // Setting "propagate: true" we allow transformations on the view
-          // in addition to tap event recognition.
+          // Setting "preventDefault: false" we allow transformations on
+          // the view in addition to tap event recognition.
           touch = new tapspace.Touchable(view, px)
           touch.start({
             tap: true,
-            propagate: true
+            preventDefault: false
           })
           touch.on('tap', tapHandler)
         }
@@ -99,7 +106,7 @@
       // Initial view position
       view.translate(view.atMid(), g.getHull().atMid())
 
-      // Make view transformable
+      // Make view touch-transformable
       var tView = new tapspace.Touchable(view, view)
       tView.start({
         translate: true,
@@ -107,11 +114,16 @@
         rotate: true
       })
 
-      // Snapping grid
+      // Allow zooming with mouse wheel
+      var wheeler = new tapspace.Wheelable(view, view)
+      wheeler.start({
+        scale: true
+      })
+
+      // Allow discrete rotation steps
       var viewGrid = new tapspace.geom.IGrid({
         rotateStep: Math.PI / 12
       }, space)
-
       tView.on('gestureend', function () {
         view.snap(view.atMid(), viewGrid)
       })

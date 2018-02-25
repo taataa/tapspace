@@ -1,14 +1,10 @@
 # Developer's Cheat Sheet
 
+Here you find a quick introduction how to develop and contribute to Tapspace project.
+
 ## Architecture
 
-Dependency tree:
-
-- Touchable
-  - Manager
-    - tapspace
-    - nudged
-    - Recognizer
+The code is separated by three major aspects: model, layout, and interaction. The *model* consists of the items, like `SpaceImage`, and does not depend on the layout or the interaction. The *layout* is capsuled into `SpaceView` and defines how the model and its changes are rendered in the browser. Layout depends on the model but not on the interaction. The *interaction* is capsuled into `Touchable` and defines how user actions on the layout affect the model.
 
 
 ## Developing example apps

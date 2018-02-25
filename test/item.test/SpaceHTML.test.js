@@ -38,4 +38,16 @@ module.exports = function (test) {
     t.equal(a1, view.getElementBySpaceItem(a))
     t.end()
   })
+
+  test('#copy', function (t, ctx) {
+    var space = new Space()
+    var sh = new SpaceHTML('Hello', space)
+
+    var c = sh.copy()
+
+    t.equal(c.html, 'Hello', 'same html')
+    t.ok(c.isRoot(), 'is root')
+
+    t.end()
+  })
 }

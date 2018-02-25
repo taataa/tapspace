@@ -8,7 +8,7 @@ module.exports = {
   context: __dirname,
 
   node: {
-    fs: 'empty'  // otherwise require('tape') throws
+    fs: 'empty' // otherwise require('tape') throws
   },
 
   output: {

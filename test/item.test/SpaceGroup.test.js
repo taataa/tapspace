@@ -1,6 +1,7 @@
 var tapspace = require('../../index')
 var Space = tapspace.Space
 var SpaceGroup = tapspace.SpaceGroup
+var SpacePixel = tapspace.SpacePixel
 var Path = tapspace.geom.Path
 var Vector = tapspace.geom.Vector
 
@@ -20,6 +21,29 @@ module.exports = function (test) {
       new Vector(-10, -10),
       new Vector(10, 10)
     ])), 'hull correct')
+    t.end()
+  })
+
+  test('#copy', function (t, ctx) {
+    var space = new Space()
+    var g = new SpaceGroup(space)
+    var pxb = new SpacePixel('blue')
+    g.addChild(pxb)
+    var pxr = new SpacePixel('red', g)
+    pxr.translate(pxr.atNW(), space.at(1, 0))
+
+    var c = g.copy()
+
+    t.notEqual(c, g, 'not same object')
+    t.notEqual(c.getFirstChild(), g.getFirstChild(), 'not same children')
+    t.equal(c.getChildren().length, g.getChildren().length, 'same num chldrn')
+    t.equal(c.getFirstChild().color, g.getFirstChild().color, 'same color')
+    t.notOk(
+      c.getFirstChild().atMid().equal(c.getLastChild().atMid()),
+      'preserve arrangement'
+    )
+    t.ok(c.isRoot(), 'is root')
+
     t.end()
   })
 }

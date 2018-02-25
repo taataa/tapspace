@@ -277,4 +277,43 @@ module.exports = function (test) {
 
     t.end()
   })
+
+  test('override size mutators', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView(space)
+    view.mount(ctx.container)
+
+    t.throws(function () {
+      view.setSize(200, 100)
+    }, 'cannot set')
+    t.throws(function () {
+      view.setISize(view.getISize())
+    }, 'cannot set')
+    t.throws(function () {
+      view.fitSize(space)
+    }, 'cannot set')
+
+    t.end()
+  })
+
+  test('#refreshSize', function (t, ctx) {
+    var space = new Space()
+    var view = new SpaceView(space)
+    view.mount(ctx.container)
+
+    var sizeorig = view.getSize()
+    var heightorig = ctx.container.style.height
+
+    ctx.container.style.height = '50px'
+    t.ok(sizeorig.equal(view.getSize()), 'still original')
+
+    view.refreshSize()
+    t.notOk(sizeorig.equal(view.getSize()), 'changed')
+
+    ctx.container.style.height = heightorig
+    view.refreshSize()
+    t.ok(sizeorig.equal(view.getSize()), 'back to original')
+
+    t.end()
+  })
 }
