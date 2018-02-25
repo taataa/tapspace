@@ -80,6 +80,7 @@
         ev.item.rotate(ev.item.atMid(), Math.PI / 2)
       }
 
+      // Create and place tiles
       var i, j, px, img, touch
       for (i = 0; i < W; i += 1) {
         for (j = 0; j < W; j += 1) {
@@ -91,12 +92,12 @@
           ]))
 
           // Define interaction.
-          // Setting "propagate: true" we allow transformations on the view
-          // in addition to tap event recognition.
+          // Setting "preventDefault: false" we allow transformations on
+          // the view in addition to tap event recognition.
           touch = new tapspace.Touchable(view, px)
           touch.start({
             tap: true,
-            propagate: true
+            preventDefault: false
           })
           touch.on('tap', tapHandler)
         }
