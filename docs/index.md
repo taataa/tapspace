@@ -8,7 +8,7 @@
 
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Tapspace to a next level.
 
-[**GitHub**](https://github.com/taataa/tapspace) for the source code and bug reports.
+[**GitHub**](https://github.com/taataa/tapspace) for the source code and [bug reports](https://github.com/taataa/tapspace/issues).
 
 [**NPM**](https://www.npmjs.com/package/tapspace) for the stable release and popularity statistics.
 
