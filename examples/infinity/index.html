@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Infinity - Tapspace Example</title>
+
+  <!--
+    Infinite zoomer
+
+    In this example we implement infinite zooming into a picture.
+  -->
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+  <script src="https://unpkg.com/tapspace@1.2.0/dist/tapspace.min.js"></script>
+
+  <script>
+    var space = new tapspace.Space()
+    var view = new tapspace.SpaceView(space)
+    view.mount(document.getElementById('space'))
+
+    tapspace.preload([
+      '../assets/arrowheads.png'
+    ], function (err, imgs) {
+      if (err) { throw err }
+
+      var i, si, prev
+      var PHI = (1 + Math.sqrt(5)) / 2
+      var PHI2 = PHI * PHI
+      var PHI3 = PHI2 * PHI
+      var PHI4 = PHI2 * PHI2
+      var PHI5 = PHI4 * PHI
+      var PHI6 = PHI3 * PHI3
+      var A = 1 - 1 / PHI + 1 / PHI2 - 1 / PHI3 + 1 / PHI4 - 1 / PHI5
+      var B = A + 1 / PHI6
+      var N = 10
+      var spaceimages = []
+
+      // First
+      si = new tapspace.SpaceImage(imgs[0], space)
+      spaceimages.push(si)
+
+      // Place other relative to the first
+      for (i = 1; i < N; i += 1) {
+        si = new tapspace.SpaceImage(imgs[0], space)
+        prev = spaceimages[i - 1]
+        si.translateScale(
+          [si.atNW(), si.atSE()],
+          [prev.atNorm(A, A), prev.atNorm(B, B)]
+        )
+        spaceimages.push(si)
+      }
+
+      view.fitScale(spaceimages[0]).scale(view.atMid(), PHI)
+
+      var viewtouch = new tapspace.Touchable(view, view)
+      var viewwheel = new tapspace.Wheelable(view, view)
+      viewtouch.start({ translate: true, scale: true })
+      viewwheel.start({ scale: true })
+    })
+  </script>
+</body>
+</html>
