@@ -10,6 +10,9 @@
     In this example we implement infinite zooming into a picture.
   -->
 
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
   <style>
     html, body, #space {
       margin: 0;
@@ -79,7 +82,7 @@
       var chainOffset = 0
 
       // Chain window length. Display this
-      var N = 3
+      var N = 5
 
       // First
       si = new tapspace.SpaceImage(imgs[0], space)
@@ -118,6 +121,16 @@
         if (!heading.isRoot()) {
           heading.transformBy(itr)
         }
+      }
+
+      var onGestureEnd = function () {
+        // Keep a constant number of items visible but
+        // remove items when they get too big and compensate
+        // by creating a small item.
+        //
+        // Do this after the gesture instead of after each transform
+        // because removal of elements prevents their possible touches
+        // bubbling in DOM.
 
         var largest = chainWindow[0]
         var smallest = chainWindow[chainWindow.length - 1]
@@ -169,6 +182,9 @@
       var viewwheel = new tapspace.Wheelable(view, view, onTransform)
       viewtouch.start({ translate: true, scale: true, rotate: true })
       viewwheel.start({ scale: true })
+
+      viewtouch.on('gestureend', onGestureEnd)
+      viewwheel.on('wheel', onGestureEnd)
     })
   </script>
 </body>
