@@ -376,13 +376,6 @@ To allow users to directly interact with the items, make the items touchable. `T
 - *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only gestures made on the HTML representation of the `item` are listened and recognized. The `item` reacts to the manipulations as specified by the mode. The view must have rendered an element for the `item` or otherwise an error is thrown.
 - *targetItem:* optional target instance of `AbstractPlane`. If specified, the recognized transformations are applied to this `targetItem` instead of `item`. This way you can for example implement a drag or rotation handles for a larger item.
 
-**Properties:**
-
-- *view:* the given `SpaceView`
-- *item:* the given instance of `AbstractPlane`
-- *element:* the [HTMLElement](https://developer.mozilla.org/en/docs/Web/API/HTMLElement) that receives the original pointer events.
-- *mode:* the current mode object.
-
 **Methods:**
 
 - *start(mode):* enables the interaction in the given mode. If no mode is given, the default mode is used. Can be called again to update the mode.
