@@ -221,7 +221,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#bringAbove(item)` removes `this` from the parent and adds `this` as the next sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+**Method** `#bringToFront()` reinserts `this` as the last children (=topmost). Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -257,7 +257,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+**Method** `#sendToBack()` reinserts `this` as the first children (=bottommost).  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`. Emits `removed` if there was a parent and then emits `added`. The old parent emits `childRemoved` and the new parent emits `childAdded`.
 
