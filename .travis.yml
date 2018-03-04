@@ -1,17 +1,22 @@
 language: node_js
 node_js:
-  - "node"
-
-# See https://electronjs.org/docs/tutorial/testing-on-headless-ci
+- node
 addons:
   apt:
     packages:
-      - xvfb
-
-install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-
+    - xvfb
+before:
+- export DISPLAY=':99.0'
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 cache:
   directories:
-    - "node_modules"
+  - node_modules
+deploy:
+  provider: npm
+  email: akseli.palen@gmail.com
+  api_key:
+    secure: q8dXaGJz9N4ZhejVTBU1AFm2u0joRHsqlk3i9B3RHQbpXDWLzOcG+au/nC2d8S2a/xGm1bjjGM9eH1JQheqG30bXapr5K/sgUNRHahTig+bsHexW+hy3F152TSEcSH6v1igrtTDOW29SmYCCwz61UiLoOAVWhyENBAkix6UM+Urf85jLynWkD6m07WZzB2J+L6Nu/kZ7d59uIr4bdltG5WJCPkqz14YkCjU+5nV+zb1ZFXT+oHKNpdtiv+3pFbzWPOxKn4UNniS6olB6VPldIbt/xMBhp3pYfKYeRVzrQpuHwA1V8YPVx38cworXpq/kUNC7uP1qDTkTfus73caYvFCHgsUgvGgTNrMQYuL2TwUaG4307+Y7l4KxFOJhMzc+uUSU0SPXRyYpdxbouiXGOesPbn1/GLouJXut4OmpRBCTqvSLlqN/uXKJ5gJR7mJriFej+EI77ZSFbINg+GnF64QToOIkh+w07tqqvRnrJrGzAgCtNdHV0lteGbLKuno7GJulzAuCSXgRtENSobBNJMlOmnyf6Nlk2oiTRjD4elHLzisxgN6uuQ2YULmo4taWp7QWmQ1Nuz4+eNdopMBCNUTXoKh0tCqch5PVDilOtS38iLAv2Xfj1lv9VQOjRfWy+ae1qT81PvB9DsuGFt4r3UlxbGueZit+BSO+9J+x6L0=
+  on:
+    branch: master
+  skip_cleanup: true

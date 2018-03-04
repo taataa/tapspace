@@ -83,7 +83,9 @@ See also [a successful Git branching model](http://nvie.com/posts/a-successful-g
 
 ## Continuous integration
 
-Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in `master` and then runs `npm install` and `npm test`.
+Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in GitHub `master` branch. For each change it runs `npm install`, `npm test`, and finally attempts to publish to NPM.
+
+Details on publishing to NPM: `.travis.yml` [requires an encrypted NPM auth token](https://docs.travis-ci.com/user/deployment/npm/) created by `travis` CLI. [Installation of the CLI](https://github.com/travis-ci/travis.rb#installation) requires Ruby.
 
 
 ## Maintenance
