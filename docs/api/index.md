@@ -221,7 +221,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#bringAbove(item)` removes `this` from the parent and adds `this` as the next sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#bringToFront()` reinserts `this` as the first (bottommost) children. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+**Method** `#bringToFront()` reinserts `this` as the last children (=topmost). Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#emit(eventName, arg1, arg2, ...)` emits an event. See [component-emitter](https://www.npmjs.com/package/component-emitter).
 
@@ -257,7 +257,7 @@ Gives an inheriting object the tree node capabilities like fetching the children
 
 **Method** `#sendBelow(item)` removes `this` from the old parent and adds `this` as the previous sibling of `item`. Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
-**Method** `#sendToBack()` reinserts `this` as the last (topmost) children.  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
+**Method** `#sendToBack()` reinserts `this` as the first children (=bottommost).  Emits `removed` and then `added`. Parent emits `childRemoved` and `childAdded`.
 
 **Method** `#setParent(item)` removes `this` from the current parent and attaches it as a child of `item`. Emits `removed` if there was a parent and then emits `added`. The old parent emits `childRemoved` and the new parent emits `childAdded`.
 
@@ -374,14 +374,7 @@ To allow users to directly interact with the items, make the items touchable. `T
 
 - *view:* a mounted instance of `SpaceView`. Only the gestures made on this view will be listened and recognized.
 - *item:* an instance of `AbstractPlane` such as `SpaceHTML`, `SpacePixel`, `SpaceGroup`, or `SpaceView`. Only gestures made on the HTML representation of the `item` are listened and recognized. The `item` reacts to the manipulations as specified by the mode. The view must have rendered an element for the `item` or otherwise an error is thrown.
-- *targetItem:* optional target instance of `AbstractPlane`. If specified, the recognized transformations are applied to this `targetItem` instead of `item`. This way you can for example implement a drag or rotation handles for a larger item.
-
-**Properties:**
-
-- *view:* the given `SpaceView`
-- *item:* the given instance of `AbstractPlane`
-- *element:* the [HTMLElement](https://developer.mozilla.org/en/docs/Web/API/HTMLElement) that receives the original pointer events.
-- *mode:* the current mode object.
+- *targetItem:* optional `function` or a target instance of `AbstractPlane`. If specified, the recognized transformations are applied to this `targetItem` instead of `item`. This way you can for example implement a drag or rotation handles for a larger item. If a function was given instead of an item, it is called each time a transformation is recognized and ready to be applied. The function is given a `ITransform` as the first argument.
 
 **Methods:**
 
@@ -431,7 +424,7 @@ The `Wheelable` is an input manager that maps [`WheelEvent`](https://developer.m
     > var wheel = new tapspace.Wheelable(view, item)
     > wheel.start({ scale: true })
 
-**Constructor** `Wheelable(view, item)` takes in a `SpaceView` where the interaction happens and an `item`, an instance of `AbstractPlane` to transform. The `view` must have rendered an element for the `item` or otherwise an error is thrown.
+**Constructor** `Wheelable(view, item, targetItem)` takes in a `SpaceView` where the interaction happens and an `item`, an instance of `AbstractPlane` to transform. The `view` must have rendered an element for the `item` or otherwise an error is thrown. An optional `targetItem` can be a `function` or an instance of `AbstractPlane` and is used as an alternative target for recognized transformation. If a `targetItem` is a function, it receives a `ITransform` as the first argument and is called each time an item would have been transformed.
 
 **Methods** are identical to [tapspace.Touchable](#tapspacetouchable) with the exception of mode properties and emitted events defined below.
 

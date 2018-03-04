@@ -70,15 +70,21 @@ Then, go to GitHub:
 1. Merge the pull request to `master`
 1. Tag the `master` head with the new version as the tag name.
 
-Finally, back in your local environment:
+By default, Travis CI is configured to publish to NPM after each successful build of the `master` branch. Therefore you can celebrate your freshly published package! In case Travis CI becomes unavailable, you need to publish from your local environment:
 
 1. Pull `master` by `git pull --all`.
 1. Switch to `master` by `git checkout master`.
 1. Publish by `npm run release`. It will run the test to double-check everything, build the bundle, and then publish.
 1. Switch back to `development` by `git checkout development` to avoid accidentally committing to `master` next time you commit something.
-1. Celebrate your fresh published package version!
 
 See also [a successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/).
+
+
+## Continuous integration
+
+Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in GitHub `master` branch. For each change it runs `npm install`, `npm test`, and finally attempts to publish to NPM.
+
+Details on publishing to NPM: `.travis.yml` [requires an encrypted NPM auth token](https://docs.travis-ci.com/user/deployment/npm/) created by `travis` CLI. [Installation of the CLI](https://github.com/travis-ci/travis.rb#installation) requires Ruby.
 
 
 ## Maintenance
