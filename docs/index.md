@@ -14,7 +14,7 @@
 
 ## Thanks to
 
-Members of the Tapspace v2 code inspection group on 2013-Nov-18
+Members of the Tapspace v0 code inspection group on 2013-Nov-18
 - Johanna Issakainen
 - Mika Kunnas
 - Elina Lukkarinen
