@@ -36,12 +36,13 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 
 ## Examples
 
- To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
+To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
 
-- Your first minimal Space [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/minimal/index.html) [[See source]](examples/minimal/index.html)
-- Play Go! [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/go/index.html) [[See source]](examples/go/index.html)
 - Pinch-zoomable grid of 400 tile images [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/tiles/index.html) [[See source]](examples/tiles/index.html)
 - An arrangement of custom HTML content, including a YouTube video [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/html/index.html) [[See source]](examples/html/index.html)
+- Zoom into infinity [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/infinity/index.html) [[See source]](examples/infinity/index.html)
+- Play Go! [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/go/index.html) [[See source]](examples/go/index.html)
+- Your first minimal Tapspace app [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/minimal/index.html) [[See source]](examples/minimal/index.html)
 - Animated zoomable HTML5 Canvas [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/canvas/index.html) [[See source]](examples/canvas/index.html)
 - Gears with rotation handles [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/gears/index.html) [[See source]](examples/gears/index.html)
 - Snapping grid [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/grid/index.html) [[See source]](examples/grid/index.html)
