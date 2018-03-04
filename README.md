@@ -19,7 +19,7 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 - Infinite space for any HTML content
 - Pan, zoom, and rotate views and elements
-- Robust multi-touch and mouse support, backed by [a M.Sc. thesis](http://urn.fi/URN:NBN:fi:tty-201605264186)
+- Robust multi-touch and mouse support, backed by [our M.Sc. thesis](http://urn.fi/URN:NBN:fi:tty-201605264186)
 - Multiple users on the same screen? No problem.
 - Allows multiple viewports to the same content
 - Layout grid system to snap content
@@ -40,7 +40,7 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - Your first minimal Space [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/minimal/index.html) [[See source]](examples/minimal/index.html)
 - Play Go! [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/go/index.html) [[See source]](examples/go/index.html)
 - Pinch-zoomable grid of 400 tile images [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/tiles/index.html) [[See source]](examples/tiles/index.html)
-- An arrangement of custom HTML content, including YouTube video [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/html/index.html) [[See source]](examples/html/index.html)
+- An arrangement of custom HTML content, including a YouTube video [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/html/index.html) [[See source]](examples/html/index.html)
 - Animated zoomable HTML5 Canvas [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/canvas/index.html) [[See source]](examples/canvas/index.html)
 - Gears with rotation handles [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/gears/index.html) [[See source]](examples/gears/index.html)
 - Snapping grid [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/grid/index.html) [[See source]](examples/grid/index.html)
