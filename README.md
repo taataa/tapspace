@@ -1,6 +1,7 @@
 # ![tapspace](docs/banner.png?raw=true)
 
 [![NPM Version](https://img.shields.io/npm/v/tapspace.svg?colorB=7fcd0f)](https://www.npmjs.com/package/tapspace)
+[![Travis CI](https://img.shields.io/travis/taataa/tapspace/master.svg)](https://travis-ci.org/taataa/tapspace)
 [![MIT License](https://img.shields.io/npm/l/tapspace.svg)](LICENSE)
 
 
