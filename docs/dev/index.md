@@ -81,6 +81,11 @@ Finally, back in your local environment:
 See also [a successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/).
 
 
+## Continuous integration
+
+Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in `master` and then runs `npm install` and `npm test`.
+
+
 ## Maintenance
 
 Upgrade dependencies:
