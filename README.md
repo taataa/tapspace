@@ -49,3 +49,4 @@ To get the most out of the example apps, use a touch device. See the source code
 - Lenna, a SpaceGroup of SpacePixels [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/pixels/index.html) [[See source]](examples/pixels/index.html)
 - Multiple views to single Space [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/multiview/index.html) [[See source]](examples/multiview/index.html)
 - Modes of direct manipulation [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/modes/index.html) [[See source]](examples/modes/index.html)
+- HammerJS integration [[Try app]](https://rawgit.com/taataa/tapspace/development/examples/hammerjs/index.html) [[See source]](examples/hammerjs/index.html)
