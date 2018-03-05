@@ -113,7 +113,7 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 
 ### tapspace.SpaceImage
 
-An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
+An image item. `SpaceView` represents this with an `<img>` tag.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -121,11 +121,20 @@ An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.pr
 
 **Usage:**
 
-    > tapspace.preload(function (err, img) {
-    >   var im = new tapspace.SpaceImage(img, parent)
-    > })
+    tapspace.preload('assets/img.png', function (err, img) {
+      if (err) { throw err }
+      var im = new tapspace.SpaceImage(img, parent)
+    })
 
-**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
+If you know the image dimensions beforehand, you can use an image literal:
+
+    var im = new tapspace.SpaceImage({
+      src: 'assets/img.png',
+      width: 320,
+      height: 240
+    }, parent)
+
+**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item. Alternatively, `img` can be an image literal. If `HTMLImageElement` is given, use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing the `SpaceImage`.
 
 **Method** `#copy()` returns a copy of `this` with the same image and size but without a parent.
 
