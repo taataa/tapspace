@@ -166,4 +166,12 @@ module.exports = function (test) {
     t.ok(gt.equals(tr))
     t.end()
   })
+
+  test('transformation mutators of root should throw', function (t) {
+    var px = new SpacePixel('black')
+    t.throws(function () {
+      px.translate(px.atNW(), px.atSW())
+    }, 'translate root')
+    t.end()
+  })
 }
