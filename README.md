@@ -16,37 +16,13 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
     $ yarn add tapspace
 
 
-## Features
-
-- Infinite space for any HTML content
-- Pan, zoom, and rotate views and elements
-- Robust multi-touch and mouse support, backed by [our M.Sc. thesis](http://urn.fi/URN:NBN:fi:tty-201605264186)
-- Multiple users on the same screen? No problem.
-- Allows multiple viewports to the same content
-- Layout grid system to snap content
-- [Apache Cordova](https://cordova.apache.org/) compatible
-
-
 ## Documentation
 
 See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
+- [Features](http://taataa.github.io/tapspace#features)
+- [Example applications](http://taataa.github.io/tapspace#examples)
 - [API Reference](http://taataa.github.io/tapspace/api)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
 
-## Examples
 
-To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
-
-- Pinch-zoomable grid of 400 tile images [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/tiles/index.html) [[See source]](examples/tiles/index.html)
-- An arrangement of custom HTML content, including a YouTube video [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/html/index.html) [[See source]](examples/html/index.html)
-- Zoom into infinity [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/infinity/index.html) [[See source]](examples/infinity/index.html)
-- Play Go! [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/go/index.html) [[See source]](examples/go/index.html)
-- Your first minimal Tapspace app [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/minimal/index.html) [[See source]](examples/minimal/index.html)
-- Animated zoomable HTML5 Canvas [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/canvas/index.html) [[See source]](examples/canvas/index.html)
-- Gears with rotation handles [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/gears/index.html) [[See source]](examples/gears/index.html)
-- Snapping grid [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/grid/index.html) [[See source]](examples/grid/index.html)
-- Lenna, a SpaceGroup of SpacePixels [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/pixels/index.html) [[See source]](examples/pixels/index.html)
-- Multiple views to single Space [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/multiview/index.html) [[See source]](examples/multiview/index.html)
-- Modes of direct manipulation [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/modes/index.html) [[See source]](examples/modes/index.html)
-- HammerJS integration [[Try app]](https://rawgit.com/taataa/tapspace/master/examples/hammerjs/index.html) [[See source]](examples/hammerjs/index.html)
