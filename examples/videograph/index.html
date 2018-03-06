@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>videograph - Tapspace Example</title>
+
+  <!--
+    Vimeo Graph Browser
+
+    In this example we implement a graph browser for Vimeo videos.
+  -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.3.0/dist/tapspace.min.js"></script>
+
+  <script>
+
+    // Methods for connecting Vimeo API
+
+    var TOKEN = 'OWY4NTQxMDNkNWFjYTQwMDZkMzU3YzFhNDZjODg2NTZlN2M3MmFjZjpJVz' +
+      'RIRmt1a3VuSGY2dmw0d1VaL1JVcWEzNFJuc2p2RGJKWDlsemVQQ2xMNlhieEVjR3F0Um' +
+      'dZSjNIcmtNSGJNR3JnU1dVRDRrU3pOdWlmem1mdW54dkgrQ29MQ0RiZm1ZN1U5b0laeG' +
+      '9yVmpRUS9PZDhvTTUxVk92N1ZHekRURA=='
+
+    var getVimeoAccessToken = function (callback) {
+      var xhr = new XMLHttpRequest()
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          var resp = JSON.parse(xhr.responseText)
+          return callback(resp)
+        }
+        console.log(xhr)
+        throw new Error('Failed')
+      })
+
+      xhr.open('POST', 'https://api.vimeo.com/oauth/authorize/client')
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      xhr.setRequestHeader('Authorization', 'basic ' + TOKEN)
+      xhr.send(encodeURI('grant_type=client_credentials'))
+    }
+
+    var getVimeoVideo = function (id, accessToken, callback) {
+      var xhr = new XMLHttpRequest()
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          return callback(JSON.parse(xhr.responseText))
+        }
+        console.error(xhr)
+      })
+
+      var url = 'https://api.vimeo.com/videos/' + id + '?' +
+        'access_token=' + accessToken
+
+      xhr.open('GET', url)
+      xhr.send()
+    }
+
+    var getVimeoRelated = function (id, accessToken, callback) {
+      var xhr = new XMLHttpRequest()
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          return callback(JSON.parse(xhr.responseText))
+        }
+        console.error(xhr)
+      })
+
+      var url = 'https://api.vimeo.com/videos/' + id + '/videos?' +
+        'filter=related&page=1&per_page=5&access_token=' + accessToken
+
+      xhr.open('GET', url)
+      xhr.send()
+    }
+
+    // Tapspace
+
+    var space = new tapspace.Space()
+    var view = new tapspace.SpaceView(space)
+    view.mount(document.getElementById('space'))
+
+    var videos = new tapspace.SpaceGroup(space)
+
+    getVimeoAccessToken(function (res) {
+      console.log('access success', res)
+      var accessToken = res.access_token
+
+      var videoId = '257871741'
+      getVimeoVideo(videoId, accessToken, function (res2) {
+        console.log('video success', res2)
+
+        var html = '<iframe type="text/html" ' +
+          'width="500" height="300" frameborder="0" ' +
+          'src="https://player.vimeo.com/video/' + videoId + '" ' +
+          'webkitallowfullscreen mozallowfullscreen allowfullscreen ' +
+          '></iframe>'
+
+        var video = new tapspace.SpaceHTML(html)
+        video.setSize(500, 300)
+        video.setParent(videos)
+
+        getVimeoRelated(videoId, accessToken, function (res3) {
+          console.log('related success', res3)
+
+          view.fitScale(videos)
+        })
+      })
+    })
+  </script>
+</body>
+</html>
