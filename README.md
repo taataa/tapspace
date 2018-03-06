@@ -2,8 +2,6 @@
 
 [![NPM Version](https://img.shields.io/npm/v/tapspace.svg?colorB=7fcd0f)](https://www.npmjs.com/package/tapspace)
 [![Travis CI](https://img.shields.io/travis/taataa/tapspace/master.svg)](https://travis-ci.org/taataa/tapspace)
-[![MIT License](https://img.shields.io/npm/l/tapspace.svg)](LICENSE)
-
 
 We believe **zoomable touch user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Tapspace**, a **JavaScript** library dedicated for building such **dynamic front-ends**. It implements a **scene graph** that provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
@@ -25,4 +23,6 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
 
+## License
 
+[MIT](LICENSE)
