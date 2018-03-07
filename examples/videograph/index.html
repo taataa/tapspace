@@ -92,34 +92,112 @@
       xhr.send()
     }
 
+    var getVimeoImageLiteral = function (videodata) {
+      var s = videodata.pictures.sizes[2]
+      return {
+        src: s.link,
+        width: s.width,
+        height: s.height
+      }
+    }
+
+    var getVimeoIframeTag = function (videodata) {
+      var path = videodata.uri.replace(/videos/, 'video')
+      var img = getVimeoImageLiteral(videodata)
+      var w = img.width
+      var h = img.height
+      return '<iframe type="text/html" ' +
+        'width="' + w + '" height="' + h + '" frameborder="0" ' +
+        'src="https://player.vimeo.com' + path + '" ' +
+        'webkitallowfullscreen mozallowfullscreen allowfullscreen ' +
+        '></iframe>'
+    }
+
+    var SpaceVideo = function (videodata, parent, childIndex) {
+      var data = videodata
+
+      // Group for title, thumbnail and player
+      var item = new tapspace.SpaceGroup(parent)
+      var imglit = getVimeoImageLiteral(data)
+
+      // Show thumbnail initially
+      var simg = new tapspace.SpaceImage(imglit, item)
+
+      // Position
+      var pivot = parent.atMid()
+      var angle = childIndex * Math.PI / 8 - Math.PI / 4
+      simg.translateScaleRotate(
+        [simg.atMidW(), simg.atMidE()],
+        [
+          pivot.polarOffset(400, angle),
+          pivot.polarOffset(600, angle)
+        ]
+      )
+
+      this.destroy = function () {
+
+      }
+
+      this.getItem = function () {
+        return item
+      }
+
+      this.openPlayer = function () {
+
+      }
+
+      this.closePlayer = function () {
+
+      }
+
+      this.openLeaves = function (cb) {
+
+      }
+
+      this.closeLeaves = function () {
+
+      }
+    }
+
     // Tapspace
 
     var space = new tapspace.Space()
     var view = new tapspace.SpaceView(space)
     view.mount(document.getElementById('space'))
 
+    var viewtouch = new tapspace.Touchable(view, view)
+    var viewwheel = new tapspace.Wheelable(view, view)
+    viewwheel.start({ scale: true })
+    viewtouch.start({ translate: true, scale: true })
+
     var videos = new tapspace.SpaceGroup(space)
 
     getVimeoAccessToken(function (res) {
-      console.log('access success', res)
+      // console.log('access success', res)
       var accessToken = res.access_token
 
       var videoId = '257871741'
       getVimeoVideo(videoId, accessToken, function (res2) {
         console.log('video success', res2)
 
-        var html = '<iframe type="text/html" ' +
-          'width="500" height="300" frameborder="0" ' +
-          'src="https://player.vimeo.com/video/' + videoId + '" ' +
-          'webkitallowfullscreen mozallowfullscreen allowfullscreen ' +
-          '></iframe>'
-
-        var video = new tapspace.SpaceHTML(html)
-        video.setSize(500, 300)
-        video.setParent(videos)
+        var svid = new SpaceVideo(res2, videos, 0)
 
         getVimeoRelated(videoId, accessToken, function (res3) {
-          console.log('related success', res3)
+          // console.log('related success', res3)
+
+          res3.data.forEach(function (relvid, i) {
+            var img = getVimeoImageLiteral(relvid)
+            var si = new tapspace.SpaceImage(img)
+            videos.addChild(si)
+
+            var pivot = svid.getItem().atMid()
+            var angle = i * Math.PI / 4 - Math.PI
+            si.translateScaleRotate(
+              [si.atMidS(), si.atMidN()],
+              [pivot.polarOffset(400, angle),
+               pivot.polarOffset(550, angle)]
+            )
+          })
 
           view.fitScale(videos)
         })
