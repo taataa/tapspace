@@ -793,7 +793,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 **Method** `#almostEqual(ivec)` returns `true` if the `IVector`s match. Leaves a room for small floating point arithmetic error.
 
-**Method** `#distance(ivec)` returns Euclidean (L2) distance between `this` and the given `IVector`.
+**Method** `#distance(ivec)` returns `IScalar`, the plane invariant euclidean (L2) distance between `this` and the given `IVector`.
 
 **Method** `#equal(ivec)` returns `true` if `this` is globally equal to the given `IVector`.
 
