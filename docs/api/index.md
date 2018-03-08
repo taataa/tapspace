@@ -672,6 +672,8 @@ A plane-invariant measure.
 
 **Method** `#equal(isca)` returns `true` if `this` and the given `IScalar` are globally equal.
 
+**Method** `#multiply(x)` returns a new `IScalar` multiplied by `x`, where `x` is a `number` or `IScalar`.
+
 **Method** `#to(item)` returns `number` that is `this` represented in the given item's coordinate system.
 
 **Method** `#toSpace()` returns `number` in the coordinate system of the root item.
