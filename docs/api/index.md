@@ -807,7 +807,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 **Method** `#offset(dx, dy, plane)` returns `IVector` that results when `this` is moved by `dx` and `dy`. Optional `plane` defines the plane of the given `dx` and `dy`. The plane defaults to the root.
 
-**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that results when `this` is moved `radius` units to `radians` direction. Optional `plane` defines the coordinate system of the given `radius`. The plane defaults to the root item.
+**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that is the result of when `this` is moved `radius` units to `radians` direction, where `radius` is a `number` or `IScalar` and `radians` is a `number`. Optional `plane` defines the coordinate system of `radians`. The `plane` defaults to the root item. The `plane` also defines the coordinate system of `radius` but is ignored if `radius` is `IScalar`.
 
 **Method** `#to(item)` returns a `Vector` that equals to `this` represented in the coordinate system of the given item.
 
