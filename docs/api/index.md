@@ -442,10 +442,18 @@ The `Wheelable` is an input manager that maps [`WheelEvent`](https://developer.m
 - `scale`: set `true` to allow scaling around the mouse pointer. Default is `false`.
 - `translate`: set `true` to allow horizontal and vertical scroll. Default is `false`. If also `scale: true` then only horizontal scroll is enabled as the vertical wheel spin goes to scaling (`deltaY` property of `WheelEvent`).
 - `rotate`: set `true` to allow rotation around the mouse pointer. Default is `false`. Enabled only for 3D mouses (devices that use `deltaZ` property of `WheelEvent`).
+- `endInterval`: a `number` of milliseconds to wait for a `wheel` event before emitting `gestureend`. Default is `200`.
 
 The default mode is accessible at `Wheelable.DEFAULT_MODE`.
 
-**Event** `wheel` is emitted at each wheel move. The event object has the following properties:
+**Events** are emitted to allow the app to react in additional ways.
+
+- `gesturestart` is emitted at first wheel move.
+- `gesturemove` is emitted at each wheel move but after `gesturestart` and before `gestureend`.
+- `gestureend` is emitted `endInterval` milliseconds after the last wheel move.
+- `wheel` is emitted at each wheel move. Deprecated in v2, use `gesturemove` instead.
+
+The events are fired with an event object having the following properties:
 
 - `element`: an `HTMLElement`. The source of the original `wheel` event.
 - `item`: an `AbstractPlane`. The item that was transformed.
