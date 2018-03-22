@@ -113,7 +113,7 @@ A rectangular item with custom HTML content. `SpaceView` represents the content 
 
 ### tapspace.SpaceImage
 
-An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing a `SpaceImage`.
+An image item. `SpaceView` represents this with an `<img>` tag.
 
 **Inherits** from `AbstractRectangle`.
 
@@ -121,11 +121,20 @@ An image item. `SpaceView` represents this with an `<img>` tag. Use [tapspace.pr
 
 **Usage:**
 
-    > tapspace.preload(function (err, img) {
-    >   var im = new tapspace.SpaceImage(img, parent)
-    > })
+    tapspace.preload('assets/img.png', function (err, img) {
+      if (err) { throw err }
+      var im = new tapspace.SpaceImage(img, parent)
+    })
 
-**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item.
+If you know the image dimensions beforehand, you can use an image literal:
+
+    var im = new tapspace.SpaceImage({
+      src: 'assets/img.png',
+      width: 320,
+      height: 240
+    }, parent)
+
+**Constructor** `SpaceImage(img, parent)` takes in a [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement) and an optional parent item. Alternatively, `img` can be an image literal. If `HTMLImageElement` is given, use [tapspace.preload](#tapspace-preload) to ensure the image has correct dimensions before constructing the `SpaceImage`.
 
 **Method** `#copy()` returns a copy of `this` with the same image and size but without a parent.
 
@@ -433,10 +442,18 @@ The `Wheelable` is an input manager that maps [`WheelEvent`](https://developer.m
 - `scale`: set `true` to allow scaling around the mouse pointer. Default is `false`.
 - `translate`: set `true` to allow horizontal and vertical scroll. Default is `false`. If also `scale: true` then only horizontal scroll is enabled as the vertical wheel spin goes to scaling (`deltaY` property of `WheelEvent`).
 - `rotate`: set `true` to allow rotation around the mouse pointer. Default is `false`. Enabled only for 3D mouses (devices that use `deltaZ` property of `WheelEvent`).
+- `endInterval`: a `number` of milliseconds to wait for a `wheel` event before emitting `gestureend`. Default is `200`.
 
 The default mode is accessible at `Wheelable.DEFAULT_MODE`.
 
-**Event** `wheel` is emitted at each wheel move. The event object has the following properties:
+**Events** are emitted to allow the app to react in additional ways.
+
+- `gesturestart` is emitted at first wheel move.
+- `gesturemove` is emitted at each wheel move but after `gesturestart` and before `gestureend`.
+- `gestureend` is emitted `endInterval` milliseconds after the last wheel move.
+- `wheel` is emitted at each wheel move. Deprecated in v2, use `gesturemove` instead.
+
+The events are fired with an event object having the following properties:
 
 - `element`: an `HTMLElement`. The source of the original `wheel` event.
 - `item`: an `AbstractPlane`. The item that was transformed.
@@ -624,6 +641,8 @@ An object with width and height. The `Size` does not have location or rotation a
 
 **Method** `#getHeight()` returns the property `height`.
 
+**Method** `#toArray()` returns `[<width>, <height>]`.
+
 **Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.
 
 
@@ -662,6 +681,10 @@ A plane-invariant measure.
 **Method** `#add(isca)` returns a new `IScalar` that is the sum of `this` and the given `IScalar`.
 
 **Method** `#equal(isca)` returns `true` if `this` and the given `IScalar` are globally equal.
+
+**Method** `#multiply(x)` returns a new `IScalar` multiplied by `x`, where `x` is a `number` or `IScalar`.
+
+**Method** `#subtract(isca)` returns a new `IScalar` that equals to `this` subtracted by `IScalar`.
 
 **Method** `#to(item)` returns `number` that is `this` represented in the given item's coordinate system.
 
@@ -784,7 +807,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 **Method** `#almostEqual(ivec)` returns `true` if the `IVector`s match. Leaves a room for small floating point arithmetic error.
 
-**Method** `#distance(ivec)` returns Euclidean (L2) distance between `this` and the given `IVector`.
+**Method** `#distance(ivec)` returns `IScalar`, the plane invariant euclidean (L2) distance between `this` and the given `IVector`.
 
 **Method** `#equal(ivec)` returns `true` if `this` is globally equal to the given `IVector`.
 
@@ -794,7 +817,7 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
 
 **Method** `#offset(dx, dy, plane)` returns `IVector` that results when `this` is moved by `dx` and `dy`. Optional `plane` defines the plane of the given `dx` and `dy`. The plane defaults to the root.
 
-**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that results when `this` is moved `radius` units to `radians` direction. Optional `plane` defines the coordinate system of the given `radius`. The plane defaults to the root item.
+**Method** `#polarOffset(radius, radians, plane)` returns `IVector` that is the result of when `this` is moved `radius` units to `radians` direction, where `radius` is a `number` or `IScalar` and `radians` is a `number`. Optional `plane` defines the coordinate system of `radians`. The `plane` defaults to the root item. The `plane` also defines the coordinate system of `radius` but is ignored if `radius` is `IScalar`.
 
 **Method** `#to(item)` returns a `Vector` that equals to `this` represented in the coordinate system of the given item.
 

@@ -25,10 +25,11 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('#getWidth & #getHeight', function (t) {
+  test('#getWidth & #getHeight & #toArray', function (t) {
     var s = new Size(10, 8)
     t.equal(s.getWidth(), 10, 'width')
     t.equal(s.getHeight(), 8, 'height')
+    t.deepEqual(s.toArray(), [10, 8], 'array')
     t.end()
   })
 

@@ -1,4 +1,5 @@
 var tapspace = require('../../index')
+var IScalar = tapspace.geom.IScalar
 var Vector = tapspace.geom.Vector
 var IVector = tapspace.geom.IVector
 
@@ -94,6 +95,36 @@ module.exports = function (test) {
     var a = iv.polarOffset(100, 3 * Math.PI)
     var b = iv.polarOffset(100, Math.PI)
     t.ok(a.distance(b).toSpace() < 0.001, 'match')
+    t.end()
+  })
+
+  test('#polarOffset: allow IScalar', function (t) {
+    var g = new tapspace.SpaceGroup()
+    var gg = new tapspace.SpaceGroup(g)
+    gg.translate(g.at(0, 0), g.at(2, 2))
+    gg.scale(gg.at(0, 0), 2)
+
+    var v = new Vector(1, 1)
+    var iv = new IVector(v, gg) // (2+2,2+2) in space
+
+    t.ok(iv.toSpace().equal(new Vector(4, 4)), 'to space')
+
+    var s = new IScalar(3)
+    var ivp = iv.polarOffset(s, 0)
+    t.ok(ivp.toSpace().equal(new Vector(7, 4)), 'iscalar radius')
+
+    var s0 = new IScalar(3)
+    var ivp0 = iv.polarOffset(s0, 0, gg)
+    t.ok(ivp0.toSpace().equal(new Vector(7, 4)), 'polarOffset with plane')
+
+    var s2 = new IScalar(3, gg)
+    var ivp2 = iv.polarOffset(s2, 0)
+    t.ok(ivp2.toSpace().equal(new Vector(10, 4)), 'iscalar with plane')
+
+    var s3 = new IScalar(3, gg)
+    var ivp3 = iv.polarOffset(s3, 0, gg)
+    t.ok(ivp3.toSpace().equal(new Vector(10, 4)), 'iscalar and offs with plane')
+
     t.end()
   })
 }
