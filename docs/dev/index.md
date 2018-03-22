@@ -4,8 +4,7 @@ Here you find a quick introduction how to develop and contribute to Tapspace pro
 
 ## Architecture
 
-The code is separated by three major aspects: model, layout, and interaction. The *model* consists of the items, like `SpaceImage`, and does not depend on the layout or the interaction. The *layout* is capsuled into `SpaceView` and defines how the model and its changes are rendered in the browser. Layout depends on the model but not on the interaction. The *interaction* is capsuled into `Touchable` and defines how user actions on the layout affect the model.
-
+The code is separated by three major aspects: model, layout, and interaction. The *model* consists of the items, like `SpaceImage`, and does not depend on the layout or the interaction. The *layout* is capsuled into `SpaceView` and defines how the model and its changes are rendered in the browser. Layout depends on the model but not on the interaction. The *interaction* is capsuled into `Touchable` and defines how user actions on the layout affect the model. The architecture is loosely based on [Jazz](http://www.cs.umd.edu/hcil/piccolo/learn/jazz/doc-1.3/), [libgdx.scene2d](https://github.com/libgdx/libgdx/wiki/Scene2d), and [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model).
 
 ## Developing example apps
 
