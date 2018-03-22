@@ -29,7 +29,7 @@ var index = serveIndex(__dirname, {
   }
 })
 var serveExamples = serveStatic(__dirname)
-var serveBundle = serveStatic(path.resolve(__dirname, '../dist'))
+var serveBundle = serveStatic(path.resolve(__dirname, '../../dist'))
 
 var server = http.createServer(function (req, res) {
   var done = finalhandler(req, res)
