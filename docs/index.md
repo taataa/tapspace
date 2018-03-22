@@ -37,87 +37,87 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 Whether you dream about a *Google Maps* clone, a *Prezi* flavored home page, or a real-time strategy game, these example apps give you a major head start in implementing your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
 
 <div style="clear: both">
-<img src="../examples/tiles/preview.jpg" style="float: left;  margin: 0 1em 1em 0">
+<img src="examples/tiles/preview.jpg" style="float: left;  margin: 0 1em 1em 0">
 <h3>Tiles</h3>
 Pinch-zoomable grid of 400 tile images<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/tiles/index.html) [[See source]](examples/tiles/index.html)
+<a href="examples/tiles/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/tiles/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/html/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/html/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>HTML</h3>
 An arrangement of custom HTML content, including a YouTube video<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/html/index.html) [[See source]](examples/html/index.html)
+<a href="examples/html/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/html/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/infinity/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/infinity/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Infinity</h3>
 Zoom into infinity<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/infinity/index.html) [[See source]](examples/infinity/index.html)
+<a href="examples/infinity/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/infinity/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/go/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/go/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Go</h3>
 Play Go!<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/go/index.html) [[See source]](examples/go/index.html)
+<a href="examples/go/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/go/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Minimal</h3>
 Your first minimal Tapspace app<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/minimal/index.html) [[See source]](examples/minimal/index.html)
+<a href="examples/minimal/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/minimal/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/canvas/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/canvas/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Canvas</h3>
 Animated zoomable HTML5 Canvas<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/canvas/index.html) [[See source]](examples/canvas/index.html)
+<a href="examples/canvas/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/canvas/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/gears/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/gears/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Gears</h3>
 Gears with rotation handles<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/gears/index.html) [[See source]](examples/gears/index.html)
+<a href="examples/gears/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/gears/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/grid/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/grid/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Grid</h3>
 A snapping grid that snaps translations and rotations<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/grid/index.html) [[See source]](examples/grid/index.html)
+<a href="examples/grid/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/grid/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/pixels/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/pixels/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Pixels</h3>
 Lenna, a `SpaceGroup` of `SpacePixels`<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/pixels/index.html) [[See source]](examples/pixels/index.html)
+<a href="examples/pixels/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/pixels/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/multiview/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/multiview/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Multiview</h3>
 Multiple views to single `Space`<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/multiview/index.html) [[See source]](examples/multiview/index.html)
+<a href="examples/multiview/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/multiview/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/modes/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<img src="examples/modes/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Modes</h3>
 Modes of direct manipulation allowed by `Touchable`<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/modes/index.html) [[See source]](examples/modes/index.html)
+<a href="examples/modes/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/modes/">[See source]</a>
 </div>
 
 <div style="clear: both">
-<img src="../examples/hammerjs/preview.jpg" style="float: left; margin: 0 1em 0 0">
+<img src="examples/hammerjs/preview.jpg" style="float: left; margin: 0 1em 0 0">
 <h3>HammerJS</h3>
-What if touch interaction is implemented with [HammerJS](https://hammerjs.github.io/) instead of `Touchable`?<br>
-[[Try app]](https://rawgit.com/taataa/tapspace/master/examples/hammerjs/index.html) [[See source]](examples/hammerjs/index.html)
+What if touch interaction is implemented with <a href="https://hammerjs.github.io/">HammerJS</a> instead of `Touchable`?<br>
+<a href="examples/hammerjs/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/hammerjs/">[See source]</a>
 </div>
 <div style="clear: both"></div>
 

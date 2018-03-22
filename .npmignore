@@ -1,8 +1,7 @@
 .travis.yml
 
 /dist/.gitkeep
-/doc
-/examples
+/docs
 /test
 
 .DS_Store

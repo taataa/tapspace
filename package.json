@@ -1,6 +1,6 @@
 {
   "name": "tapspace",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -64,7 +64,7 @@
     "webpack-tape-run": "0.0.7"
   },
   "scripts": {
-    "start": "node examples/server.js",
+    "start": "node docs/examples/server.js",
     "build": "webpack",
     "build:watch": "webpack --watch",
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
