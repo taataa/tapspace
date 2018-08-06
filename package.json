@@ -1,6 +1,6 @@
 {
   "name": "tapspace",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -41,26 +41,26 @@
   },
   "devDependencies": {
     "async": "^2.6.0",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.5",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
     "finalhandler": "^1.1.0",
     "genversion": "^2.0.1",
     "ip": "^1.1.5",
     "jquery": "^3.2.1",
-    "npm": "^5.7.1",
     "npm-watch": "^0.3.0",
     "qrcode-terminal": "^0.11.0",
-    "semver": "^5.4.1",
+    "semver": "^5.5.0",
     "serve-index": "^1.9.1",
     "serve-static": "^1.13.1",
     "standard": "*",
-    "style-loader": "^0.19.0",
-    "tap-spec": "^4.1.1",
+    "style-loader": "^0.21.0",
+    "tap-spec": "^5.0.0",
     "tape": "^4.8.0",
-    "tape-run": "^3.0.1",
+    "tape-run": "^4.0.0",
     "url-loader": "^0.6.2",
-    "webpack": "^3.9.0",
-    "webpack-livereload-plugin": "^1.0.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-livereload-plugin": "^2.1.1",
     "webpack-tape-run": "0.0.7"
   },
   "scripts": {
@@ -75,7 +75,8 @@
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
     "release": "npm run lint && npm run gv && npm run test:headless && npm run build && npm publish",
     "gv": "genversion lib/version.js",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "replaceliburl": "sed -i '' -E -- 's/https...unpkg.com.tapspace.[0-9].[0-9]+.[0-9].dist.tapspace.min.js/..\\/tapspace.min.js/g' ./docs/examples/*/index.html"
   },
   "watch": {
     "lint": {
