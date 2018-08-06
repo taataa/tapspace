@@ -16,13 +16,15 @@ module.exports = {
     path: path.join(__dirname, 'dist')
   },
 
+  mode: 'development',
+
   module: {
-    loaders: [
-      // Due to problems in serving static files with tape-run,
-      // we import images as data URLs.
+    rules: [
       {
+        // Due to problems in serving static files with tape-run,
+        // we import images as data URLs.
         test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader'
+        use: 'url-loader'
       },
       {
         test: /\.css$/,
