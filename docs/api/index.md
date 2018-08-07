@@ -751,6 +751,8 @@ A point in 2D space.
 
 **Alternative constructor** `Vector.createFromPolar(magnitude, direction)` takes the vector length and direction in radians and returns a `Vector`.
 
+**Alternative constructor** `Vector.mean(vecList)` takes a non-empty list of Vectors and returns a `Vector` that is their mean.
+
 **Method** `#add(vec)` sums `this` to `vec` and returns a new `Vector`.
 
 **Method** `#almostEqual(vec)` returns `true` if the vectors match. Leaves a room for small floating point arithmetic error.
@@ -803,6 +805,8 @@ A plane-invariant vector that can be converted to `Vector` on given plane when n
     var iv = new tapspace.geom.IVector(v, px)
 
 **Constructor** `IVector(vec, plane)` takes a `Vector` and an item `plane`. The `plane` defines the coordinate system of `vec`.
+
+**Alternative constructor** `IVector.mean(ivecList)` takes a non-empty list of `IVector`s and returns an `IVector` that is their mean.
 
 **Method** `#add(ivec)` sums `this` to `IVector ivec` and returns a new `IVector`.
 
