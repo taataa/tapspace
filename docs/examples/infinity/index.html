@@ -46,7 +46,7 @@
   <div id="space"></div>
 
   <script src="../assets/ghoulog.js"></script>
-  <script src="https://unpkg.com/tapspace@1.4.0/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@1.5.0/dist/tapspace.min.js"></script>
 
   <script>
     var space = new tapspace.Space()
@@ -181,11 +181,18 @@
 
     var viewtouch = new tapspace.Touchable(view, view, onTransform)
     var viewwheel = new tapspace.Wheelable(view, view, onTransform)
-    viewtouch.start({ translate: true, scale: true, rotate: true })
+    viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
     viewwheel.start({ scale: true })
 
     viewtouch.on('gestureend', onGestureEnd)
     viewwheel.on('wheel', onGestureEnd)
+
+    // Tap to zoom in
+    viewtouch.on('tap', function (ev) {
+      var itr = tapspace.geom.ITransform.IDENTITY
+      itr = itr.scale(tapspace.geom.IVector.mean(ev.points), 1.6)
+      onTransform(itr)
+    })
   </script>
 </body>
 </html>
