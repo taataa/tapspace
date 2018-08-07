@@ -421,6 +421,7 @@ The events are fired with an event object. The event object has the following pr
 - *duration:* a number. Milliseconds from the `gesturestart`
 - *element:* a `HTMLElement`. The source of the original pointer events.
 - *item:* an `AbstractPlane`. The item of the HTMLElement.
+- *points:* available only for `tap` event. A list of `IVector`s that give the locations where the pointers touched the space. Consider using `IVector.mean` to combine them.
 
 
 ### tapspace.Wheelable
