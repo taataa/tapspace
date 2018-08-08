@@ -360,7 +360,7 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#getISize()` return `ISize`, representing the dimensions in plane-invariant manner.
 
-**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`.
+**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`. Alternatively, use `#setSize(width, height)`.
 
 **Method** `#setISize(isize)` updates the local size to match the given `ISize`. Emits `resized`.
 
