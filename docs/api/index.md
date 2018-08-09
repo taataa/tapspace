@@ -516,6 +516,8 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 
     > var igrid = new tapspace.geom.IGrid(modeOrGrid, item)
 
+**Constructor** `IGrid(modeOrGrid, item)` where `modeOrGrid` is a `Grid` mode or a `Grid` and `item` is an optional `AbstractPlane` that defines the plane of `modeOrGrid`. Default for `item` is the root.
+
 **Method** `#almostEqual(igrid)` returns `true` if the given `IGrid` is equal to `this`, allowing small errors from floating point arithmetics.
 
 **Method** `#at(i, j)` returns `IVector` at (i, j) in grid's coordinates. E.g. let `xStep:2` and `yStep:2`, then `this.at(1, -1)` returns `IVector` for `Vector(2, -2)`. Also, `this.at(0, 0)` equals `this.getOrigin()`.
