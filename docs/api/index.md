@@ -360,7 +360,7 @@ Gives an inheriting object a rectangular shape and size dimensions.
 
 **Method** `#getISize()` return `ISize`, representing the dimensions in plane-invariant manner.
 
-**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`.
+**Method** `#setSize(size)` updates the local size to match the given `Size`. Emits `resized`. Alternatively, use `#setSize(width, height)`.
 
 **Method** `#setISize(isize)` updates the local size to match the given `ISize`. Emits `resized`.
 
@@ -515,6 +515,8 @@ An `IGrid` is a plane-invariant grid that can be converted to plane-dependent `G
 **Usage:**
 
     > var igrid = new tapspace.geom.IGrid(modeOrGrid, item)
+
+**Constructor** `IGrid(modeOrGrid, item)` where `modeOrGrid` is a `Grid` mode or a `Grid` and `item` is an optional `AbstractPlane` that defines the plane of `modeOrGrid`. Default for `item` is the root.
 
 **Method** `#almostEqual(igrid)` returns `true` if the given `IGrid` is equal to `this`, allowing small errors from floating point arithmetics.
 
