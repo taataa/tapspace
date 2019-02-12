@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Book - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: white;
+      background: #111;
+      font-family: sans-serif;
+    }
+
+    a {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding: 0em 1em">
+    <h1 style="margin-bottom: 0.38em">Book – a <a style="color: red" href="https://www.npmjs.com/package/tapspace">Tapspace</a> example</h1>
+    <p>The three first paragraphs of <a style="color: gold" href="https://www.gutenberg.org/ebooks/58874">Tarzan and the Golden Lion</a> by Edgar Rice Burroughs demonstrate a special ability of a zoomable user interface. Because a user is able to zoom, the designer is free to place limitless amount of content within a finite area.</p>
+  </div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.5.1/dist/tapspace.min.js"></script>
+  <script>
+    // A chat demonstrates how infite amount of text can be fitted into
+    // a finite space.
+
+    var p = '&nbsp;&nbsp;&nbsp;&nbsp;'
+    var chatlog = [
+      '<span style="color: gold">THE GOLDEN LION</span>',
+      'SABOR, the lioness, suckled her young—a single fuzzy ball,',
+      'spotted like Sheeta, the leopard. She lay in the warm',
+      'sunshine before the rocky cavern that was her lair, stretched',
+      'out upon her side with half closed eyes, yet Sabor was alert.',
+      'There had been three of these little, fuzzy balls at first—two',
+      'daughters and a son—and Sabor and Numa, their sire, had',
+      'been proud of them; proud and happy. But kills had not been',
+      'plentiful, and Sabor, undernourished, had been unable to',
+      'produce sufficient milk to nourish properly three lusty cubs,',
+      'and then a cold rain had come, and the little ones had sickened.',
+      'Only the strongest survived—the two daughters had died.',
+      'Sabor had mourned, pacing to and fro beside the pitiful bits of',
+      'bedraggled fur, whining and moaning. Now and again she',
+      'would nose them with her muzzle as though she would awaken',
+      'them from the long sleep that knows no waking. At last,',
+      'however, she abandoned her efforts, and now her whole savage',
+      'heart was filled with concern for the little male cub that',
+      'remained to her. That was why Sabor was more alert than',
+      'usual.<br>',
+      p + 'Numa, the lion, was away. Two nights before he had made',
+      'a kill and dragged it to their lair and last night he had fared',
+      'forth again, but he had not returned. Sabor was thinking, as she',
+      'half dozed, of Wappi, the plump antelope, that her splendid',
+      'mate might this very minute be dragging through the tangled',
+      'jungle to her. Or perhaps it would be Pacco, the zebra, whose',
+      'flesh was the best beloved of her kind—juicy, succulent Pacco.',
+      'Sabor’s mouth watered.',
+      p + 'Ah, what was that? The shadow of a sound had come to',
+      'those keen ears. She raised her head, cocking it first upon one',
+      'side and then the other, as with up-pricked ears she sought to',
+      'catch the faintest repetition of that which had disturbed her.',
+      'Her nose sniffed the air. There was but the suggestion of a',
+      'breeze, but what there was moved toward her from the',
+      'direction of the sound she had heard, and which she still heard',
+      'in a slightly increasing volume that told her that whatever was',
+      'making it was approaching her. As it drew closer the beast\'s',
+      'nervousness increased and she rolled over on her belly,',
+      'shutting off the milk supply from the cub, which vented its',
+      'disapproval in miniature growls until a low, querulous whine',
+      'from the lioness silenced him, then he stood at her side,',
+      'looking first at her and then in the direction toward which she',
+      'looked, cocking his little head first on one side and then on the',
+      'other.',
+      p,
+      '<a href="https://www.gutenberg.org/ebooks/58874">[continue reading at gutenberg.org]</a>'
+    ]
+
+    var SpaceGroup = tapspace.SpaceGroup
+    var SpaceImage = tapspace.SpaceImage
+    var SpaceHTML = tapspace.SpaceHTML
+
+    var space = new tapspace.Space()
+    var view = new tapspace.SpaceView(space)
+    view.mount(document.getElementById('space'))
+
+    var lines = new SpaceGroup()
+    lines.setParent(space)
+
+    // Load images
+    tapspace.preload([
+      '../assets/gear18.png',
+      '../assets/gear11.png',
+      '../assets/gearhandle.png'
+    ], function (err, imgs) {
+      if (err) {
+        console.error(err)
+        throw err
+      }
+
+      var RATIO = 0.9
+      var prev = null
+
+      chatlog.forEach(function (line, index) {
+        var f = Math.round(30 * Math.pow(RATIO, index))
+        var l = new SpaceHTML('<div>' + line + '</div>')
+        l.setSize(440, 20)
+        l.setParent(lines)
+
+        // Sum of finite geometric series
+        // var y = Math.round(32 * (1 - Math.pow(RATIO, index)) / (1 - RATIO))
+
+        var target = (prev === null) ? space.at(0, 0) : prev.atSW()
+
+        l.scale(l.atNW(), Math.pow(RATIO, index))
+        l.translate(
+          [l.atNW()],
+          [target]
+        )
+
+        prev = l
+      })
+
+      // var html = chatlog.reduce(function (acc, line, index) {
+      //   var f = Math.round(30 * Math.pow(RATIO, index))
+      //   var margin = Math.round(f / 2)
+      //   var start = '<p style="font-size:' + f + 'px; margin-bottom: ' + margin + 'px">'
+      //   var end = '</p>'
+      //   return acc + '\n' + start + line + end
+      // }, '')
+      // var l = new SpaceHTML(html)
+      // l.setSize(1024, 512)
+      // l.setParent(lines)
+
+      // Initial view position
+      view.fitScale(lines)
+      view.scale(lines.atMid(), 1.23)
+
+      // Make the view transformable
+      var viewtouch = new tapspace.Touchable(view, view)
+      var viewwheel = new tapspace.Wheelable(view, view)
+      viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
+      viewwheel.start({ scale: true })
+
+      //
+      // var gear18Img = imgs[0]
+      // var gear11Img = imgs[1]
+      // var gearhandleImg = imgs[2]
+      //
+      // var touchmode = { rotate: true }
+      //
+      // // Create
+      // var gears = new SpaceGroup(space)
+      // var gear18a = new SpaceGroup(gears)
+      // var gear18ai = new SpaceImage(gear18Img, gear18a)
+      // var gear18ahandle = new SpaceImage(gearhandleImg)
+      // gear18a.addChild(gear18ahandle)
+      //
+      // var gear18b = new SpaceGroup(gears)
+      // var gear18bi = new SpaceImage(gear18Img, gear18b)
+      // var gear18bhandle = new SpaceImage(gearhandleImg, gear18b)
+      //
+      // var gear11 = new SpaceImage(gear11Img, gears)
+      //
+      // // Position
+      // gear18a.translate(gear18a.atMid(), space.at(0, 0))
+      // gear11.translate(gear11.atMid(), space.at(321, 245))
+      // gear18ahandle.translate(
+      //   gear18ahandle.atMid(),
+      //   gear18ai.atMidN().offset(0, 160)
+      // )
+      //
+      // gear18b.translate(gear18b.atMid(), space.at(641, 0))
+      // gear18b.rotate(gear18b.atMid(), 0.163)
+      // gear18bhandle.translate(
+      //   gear18bhandle.atMid(),
+      //   gear18b.atMid().offset(0, 120)
+      // )
+      //
+      // // Define interaction. Redirect manipulation of the handles
+      // // to gear18a. Note that we connect the b-handle to gear a.
+      // var ahandleTouch = new tapspace.Touchable(view, gear18ahandle, gear18a)
+      // var bhandleTouch = new tapspace.Touchable(view, gear18bhandle, gear18b)
+      // ahandleTouch.start({ rotate: true, pivot: gear18a.atMid() })
+      // bhandleTouch.start({ rotate: true, pivot: gear18b.atMid() })
+      //
+      // var connectGears = function (gearx, geary, teethx, teethy) {
+      //   // Connect two gears together.
+      //   // Note that an infinite recursion would be caused because
+      //   // transform at x causes transform at y and vice versa.
+      //   //
+      //   var recursionLock = false
+      //
+      //   gearx.on('transformed', function (ev) {
+      //     if (!recursionLock) {
+      //       recursionLock = true
+      //
+      //       var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+      //       var rads = dT.inverse().getRotation()
+      //       geary.rotate(geary.atMid(), rads * teethx / teethy)
+      //
+      //       recursionLock = false
+      //     }
+      //   })
+      //
+      //   geary.on('transformed', function (ev) {
+      //     if (!recursionLock) {
+      //       recursionLock = true
+      //
+      //       var dT = ev.newTransform.multiplyRight(ev.oldTransform.inverse())
+      //       var rads = dT.inverse().getRotation()
+      //       gearx.rotate(gearx.atMid(), rads * teethy / teethx)
+      //
+      //       recursionLock = false
+      //     }
+      //   })
+      // }
+      //
+      // connectGears(gear18a, gear11, 18, 11)
+      // connectGears(gear18b, gear11, 18, 11)
+      //
+      // // Initial view position
+      // view.fitScale(gears)
+      // view.scale(gears.atMid(), 1.23)
+    })
+  </script>
+</body>
+</html>

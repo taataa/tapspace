@@ -58,6 +58,13 @@ Zoom into infinity<br>
 </div>
 
 <div style="clear: both">
+<img src="examples/book/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>Book</h3>
+Infinite amount of content within a finite space.<br>
+<a href="examples/book/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/book/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/go/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Go</h3>
 Play Go!<br>
