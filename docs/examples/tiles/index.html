@@ -53,7 +53,7 @@
     }, space)
 
     var pickRandom = function (arr) {
-      var i = Math.floor(Math.random() * 4)
+      var i = Math.floor(Math.random() * arr.length)
       return arr[i]
     }
 
@@ -62,7 +62,11 @@
       '../assets/tile00.png',
       '../assets/tile01.png',
       '../assets/tile02.png',
-      '../assets/tile03.png'
+      '../assets/tile03.png',
+      '../assets/tile04.png',
+      '../assets/tile05.png',
+      '../assets/tile06.png',
+      '../assets/tile07.png'
     ], function (err, imgs) {
       if (err) {
         console.error(err)
