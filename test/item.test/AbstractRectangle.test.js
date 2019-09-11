@@ -20,7 +20,11 @@ module.exports = function (test) {
     var space = new Space()
     var a = new SpacePixel('black', space)
     a.remove()
-    t.equal(space._children.hasOwnProperty(a.id), false, 'removed ok')
+    t.equal(
+      Object.prototype.hasOwnProperty.call(space._children, a.id),
+      false,
+      'removed ok'
+    )
     t.end()
   })
 
