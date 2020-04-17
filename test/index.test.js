@@ -31,7 +31,7 @@ var UNITS = {
 }
 
 for (var unit in UNITS) {
-  if (UNITS.hasOwnProperty(unit)) {
+  if (Object.prototype.hasOwnProperty.call(UNITS, unit)) {
     UNITS[unit](harness(unit))
   }
 }

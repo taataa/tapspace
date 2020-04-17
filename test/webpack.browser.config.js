@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   entry: {
-    'index': './index.test.js'
+    index: './index.test.js'
   },
   context: __dirname,
 
