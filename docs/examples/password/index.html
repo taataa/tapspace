@@ -34,7 +34,9 @@
     #heading p {
       font-size: 1em;
       margin: 0.25em 0 0 0;
-      text-align: right;
+      text-align: left;
+      position: relative;
+      left: 4em;
     }
     #heading a {
       color: black;
@@ -62,7 +64,8 @@
       var heading = new tapspace.SpaceHTML(
         '<div id="heading">' +
         '<h1>Fractal Password</h1>' +
-        '<p>Powered by <a href="http://taataa.github.io/tapspace/">' +
+        '<p>Zoom to the correct dot<br>and you are in.<br><br>' +
+        'Powered by <a href="http://taataa.github.io/tapspace/">' +
         'Tapspace.js</a></p>' +
         '</div>'
       )
