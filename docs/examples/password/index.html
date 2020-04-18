@@ -55,6 +55,10 @@
       var view = new tapspace.SpaceView(space)
       view.mount(document.getElementById('space'))
 
+      // Shorthands
+      const IVector = tapspace.geom.IVector
+      const Vector = tapspace.geom.Vector
+
       var heading = new tapspace.SpaceHTML(
         '<div id="heading">' +
         '<h1>Fractal Password</h1>' +
@@ -65,98 +69,118 @@
       // Place heading on
       heading.setParent(space)
 
+      // Setup the view interaction
+      var viewtouch = new tapspace.Touchable(view, view)
+      var viewwheel = new tapspace.Wheelable(view, view)
+      viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
+      viewwheel.start({ scale: true })
+
+      // viewtouch.on('gestureend', onGestureEnd)
+      // viewwheel.on('wheel', onGestureEnd)
+      //
+      // // Tap to zoom in
+      // viewtouch.on('tap', function (ev) {
+      //   var itr = tapspace.geom.ITransform.IDENTITY
+      //   itr = itr.scale(tapspace.geom.IVector.mean(ev.points), 1.6)
+      //   onTransform(itr)
+      // })
+
+      const picWidth = 250
       var pic = {
         src: '../assets/go-stone-black.png',
-        width: 250,
-        height: 250
+        width: picWidth,
+        height: picWidth
       }
 
       // Create recursively and fractal-like manner.
       // Each branch is given a directional vector.
       // The branch scales the vector appropriately.
 
-      // Initial point
-      var x = 0
-      var y = 0
+      // // Create initial node
+      // const root = new tapspace.SpaceImage(pic, space)
+      // root.translate(
+      //   [root.atMid()],
+      //   [view.atMid()]
+      // )
 
-      // Next nodes
-      var nodes = []
-
-      // Create initial node
-      var root = new tapspace.SpaceImage(pic, space)
-      root.translate(
-        [root.atMid()],
-        [view.atMid()]
-      )
-
-      // Place all other nodes relative to the root.
-      var IVector = tapspace.geom.IVector
-      var createNode = (vec, scale) => {
+      // Place all nodes relative to the view mid.
+      const createNode = (vec, scale) => {
         var si = new tapspace.SpaceImage(pic, space)
         var delta = new IVector(vec, space)
         si.scale(si.atMid(), scale)
         si.translate(
           [si.atMid()],
-          [root.atMid().add(delta)]
+          [view.atMid().add(delta)]
         )
       }
 
-      // Create second depth level of nodes.
-      // Set child insertion points.
-      const w0 = 250
-      var Vector = tapspace.geom.Vector
+      // // Create second depth level of nodes.
+      // // Set child insertion points.
+      // const w0 = 250
+      // var Vector = tapspace.geom.Vector
+      //
+      // const rim1 = w0 / 2
+      // const w1 = w0 * 0.618
+      // const gap1 = w1 * 0.382
+      // const d1 = rim1 + gap1 + w1 / 2
+      // var spawns = [
+      //   Vector.createFromPolar(d1, 0 * Math.PI / 6),
+      //   Vector.createFromPolar(d1, 2 * Math.PI / 6),
+      //   Vector.createFromPolar(d1, 4 * Math.PI / 6),
+      //   Vector.createFromPolar(d1, 6 * Math.PI / 6),
+      //   Vector.createFromPolar(d1, 8 * Math.PI / 6),
+      //   Vector.createFromPolar(d1, 10 * Math.PI / 6)
+      // ]
 
-      const rim1 = w0 / 2
-      const w1 = w0 * 0.618
-      const gap1 = w1 * 0.382
-      const d1 = rim1 + gap1 + w1 / 2
-      var spawns = [
-        Vector.createFromPolar(d1, 0 * Math.PI / 6),
-        Vector.createFromPolar(d1, 2 * Math.PI / 6),
-        Vector.createFromPolar(d1, 4 * Math.PI / 6),
-        Vector.createFromPolar(d1, 6 * Math.PI / 6),
-        Vector.createFromPolar(d1, 8 * Math.PI / 6),
-        Vector.createFromPolar(d1, 10 * Math.PI / 6)
-      ]
-      spawns.forEach(sp => {
-        createNode(sp, 0.618)
-      })
+      const levels = [0, 1, 2, 3, 4, 5]
+      // Create next level
+      const initialConfig = {
+        scale: 1,
+        targets: [new Vector(0, 0)],
+        directions: [new Vector(0, -1)]
+      }
+      levels.reduce((config, level) => {
+        let newTargets = []
+        let newDirections = []
 
-      // Create third level
-      spawns.forEach(sp => {
-        const rim2 = w1 / 2
-        const w2 = w1 * 0.618 // image width
-        const gap2 = w2 * 0.382 // margin to previous
-        const d2 = rim2 + gap2 + w2 / 2
-        const r = sp.getRotation()
-        const childSpawns = [
-          Vector.createFromPolar(d2, r + -1.7 * Math.PI / 6),
-          Vector.createFromPolar(d2, r + 0 * Math.PI / 6),
-          Vector.createFromPolar(d2, r + 1.7 * Math.PI / 6)
-        ]
-        childSpawns.forEach(csp => {
-          const sumvec = sp.add(csp)
-          createNode(sumvec, 0.382)
+        const w = config.scale * picWidth
+        const ww = w * 0.618 // child image width
+
+        config.targets.map((target, i) => {
+          const direction = config.directions[i]
+
+          // Create node here
+          createNode(target, config.scale)
+
+          // Create new targets
+          const rim = w / 2
+          const gap = ww * 0.382 // margin to previous
+          const distance = rim + gap + ww / 2 // distance from mid to mid
+          const r = direction.getRotation()
+
+          // From parent to children:
+          const spawnDirections = [
+            Vector.createFromPolar(distance, r + 0 * Math.PI / 5),
+            Vector.createFromPolar(distance, r + 2 * Math.PI / 5),
+            Vector.createFromPolar(distance, r + 4 * Math.PI / 5),
+            Vector.createFromPolar(distance, r + 6 * Math.PI / 5),
+            Vector.createFromPolar(distance, r + 8 * Math.PI / 5)
+          ]
+          // From root to children:
+          const childSpawns = spawnDirections.map(sd => target.add(sd))
+
+          newTargets = newTargets.concat(childSpawns)
+          newDirections = newDirections.concat(spawnDirections)
         })
-      })
+
+        return {
+          scale: config.scale * 0.382,
+          targets: newTargets,
+          directions: newDirections
+        }
+      }, initialConfig)
 
     })() // execute
-
-    //
-    // var viewtouch = new tapspace.Touchable(view, view, onTransform)
-    // var viewwheel = new tapspace.Wheelable(view, view, onTransform)
-    // viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
-    // viewwheel.start({ scale: true })
-    //
-    // viewtouch.on('gestureend', onGestureEnd)
-    // viewwheel.on('wheel', onGestureEnd)
-    //
-    // // Tap to zoom in
-    // viewtouch.on('tap', function (ev) {
-    //   var itr = tapspace.geom.ITransform.IDENTITY
-    //   itr = itr.scale(tapspace.geom.IVector.mean(ev.points), 1.6)
-    //   onTransform(itr)
-    // })
   </script>
 </body>
 </html>
