@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fractal Password - Tapspace Example</title>
+
+  <!--
+    Fractal password
+
+    This example presents a novel password input method.
+  -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      color: black;
+      font-family: sans-serif;
+    }
+
+    #heading {
+      padding: 0 1em 0 1em;
+    }
+    #heading h1 {
+      font-size: 2.62em;
+      margin: 0.38em 0 0 0;
+    }
+    #heading p {
+      font-size: 1em;
+      margin: 0.25em 0 0 0;
+      text-align: right;
+    }
+    #heading a {
+      color: black;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.5.2/dist/tapspace.min.js"></script>
+
+  <script>
+    // Wrap in a function namespace. Easier to debug and no conflicts.
+    (function () {
+      var space = new tapspace.Space()
+      var view = new tapspace.SpaceView(space)
+      view.mount(document.getElementById('space'))
+
+      var heading = new tapspace.SpaceHTML(
+        '<div id="heading">' +
+        '<h1>Fractal Password</h1>' +
+        '<p>Powered by <a href="http://taataa.github.io/tapspace/">' +
+        'Tapspace.js</a></p>' +
+        '</div>'
+      )
+      // Place heading on
+      heading.setParent(space)
+
+      var pic = {
+        src: '../assets/go-stone-black.png',
+        width: 250,
+        height: 250
+      }
+
+      // Create recursively and fractal-like manner.
+      // Each branch is given a directional vector.
+      // The branch scales the vector appropriately.
+
+      // Initial point
+      var x = 0
+      var y = 0
+
+      // Next nodes
+      var nodes = []
+
+      // Create initial node
+      var root = new tapspace.SpaceImage(pic, space)
+      root.translate(
+        [root.atMid()],
+        [view.atMid()]
+      )
+
+      // Place all other nodes relative to the root.
+      var IVector = tapspace.geom.IVector
+      var createNode = (vec, scale) => {
+        var si = new tapspace.SpaceImage(pic, space)
+        var delta = new IVector(vec, space)
+        si.scale(si.atMid(), scale)
+        si.translate(
+          [si.atMid()],
+          [root.atMid().add(delta)]
+        )
+      }
+
+      // Create second depth level of nodes.
+      // Set child insertion points.
+      const w0 = 250
+      var Vector = tapspace.geom.Vector
+
+      const rim1 = w0 / 2
+      const w1 = w0 * 0.618
+      const gap1 = w1 * 0.382
+      const d1 = rim1 + gap1 + w1 / 2
+      var spawns = [
+        Vector.createFromPolar(d1, 0 * Math.PI / 6),
+        Vector.createFromPolar(d1, 2 * Math.PI / 6),
+        Vector.createFromPolar(d1, 4 * Math.PI / 6),
+        Vector.createFromPolar(d1, 6 * Math.PI / 6),
+        Vector.createFromPolar(d1, 8 * Math.PI / 6),
+        Vector.createFromPolar(d1, 10 * Math.PI / 6)
+      ]
+      spawns.forEach(sp => {
+        createNode(sp, 0.618)
+      })
+
+      // Create third level
+      spawns.forEach(sp => {
+        const rim2 = w1 / 2
+        const w2 = w1 * 0.618 // image width
+        const gap2 = w2 * 0.382 // margin to previous
+        const d2 = rim2 + gap2 + w2 / 2
+        const r = sp.getRotation()
+        const childSpawns = [
+          Vector.createFromPolar(d2, r + -1.7 * Math.PI / 6),
+          Vector.createFromPolar(d2, r + 0 * Math.PI / 6),
+          Vector.createFromPolar(d2, r + 1.7 * Math.PI / 6)
+        ]
+        childSpawns.forEach(csp => {
+          const sumvec = sp.add(csp)
+          createNode(sumvec, 0.382)
+        })
+      })
+
+    })() // execute
+
+    //
+    // var viewtouch = new tapspace.Touchable(view, view, onTransform)
+    // var viewwheel = new tapspace.Wheelable(view, view, onTransform)
+    // viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
+    // viewwheel.start({ scale: true })
+    //
+    // viewtouch.on('gestureend', onGestureEnd)
+    // viewwheel.on('wheel', onGestureEnd)
+    //
+    // // Tap to zoom in
+    // viewtouch.on('tap', function (ev) {
+    //   var itr = tapspace.geom.ITransform.IDENTITY
+    //   itr = itr.scale(tapspace.geom.IVector.mean(ev.points), 1.6)
+    //   onTransform(itr)
+    // })
+  </script>
+</body>
+</html>
