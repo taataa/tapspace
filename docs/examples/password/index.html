@@ -88,11 +88,11 @@
       //   onTransform(itr)
       // })
 
-      const picWidth = 250
+      const PIC_WIDTH = 250
       var pic = {
         src: '../assets/go-stone-black.png',
-        width: picWidth,
-        height: picWidth
+        width: PIC_WIDTH,
+        height: PIC_WIDTH
       }
 
       // Create recursively and fractal-like manner.
@@ -146,7 +146,7 @@
         let newTargets = []
         let newDirections = []
 
-        const w = config.scale * picWidth
+        const w = config.scale * PIC_WIDTH
         const ww = w * 0.618 // child image width
 
         config.targets.map((target, i) => {
