@@ -117,6 +117,36 @@
         )
       }
 
+      const openNode = (at, direction, scale) => {
+        // Create child target vectors.
+
+        const w = scale * PIC_WIDTH
+        const ww = w * 0.618 // child image width
+
+        const rim = w / 2
+        const gap = ww * 0.382 // margin to previous
+        const distance = rim + gap + ww / 2 // distance from mid to mid
+
+        const r = direction.getRotation()
+
+        // From parent to children, aka directions:
+        const spawnDirections = [
+          Vector.createFromPolar(distance, r + 0 * Math.PI / 5),
+          Vector.createFromPolar(distance, r + 2 * Math.PI / 5),
+          Vector.createFromPolar(distance, r + 4 * Math.PI / 5),
+          Vector.createFromPolar(distance, r + 6 * Math.PI / 5),
+          Vector.createFromPolar(distance, r + 8 * Math.PI / 5)
+        ]
+
+        // From root to children:
+        const childSpawns = spawnDirections.map(d => at.add(d))
+
+        return {
+          targets: childSpawns,
+          directions: spawnDirections
+        }
+      }
+
       // // Create second depth level of nodes.
       // // Set child insertion points.
       // const w0 = 250
@@ -155,25 +185,12 @@
           // Create node here
           createNode(target, config.scale)
 
-          // Create new targets
-          const rim = w / 2
-          const gap = ww * 0.382 // margin to previous
-          const distance = rim + gap + ww / 2 // distance from mid to mid
-          const r = direction.getRotation()
+          // Create positions for child nodes.
+          const targetsDirs = openNode(target, direction, config.scale)
 
-          // From parent to children:
-          const spawnDirections = [
-            Vector.createFromPolar(distance, r + 0 * Math.PI / 5),
-            Vector.createFromPolar(distance, r + 2 * Math.PI / 5),
-            Vector.createFromPolar(distance, r + 4 * Math.PI / 5),
-            Vector.createFromPolar(distance, r + 6 * Math.PI / 5),
-            Vector.createFromPolar(distance, r + 8 * Math.PI / 5)
-          ]
-          // From root to children:
-          const childSpawns = spawnDirections.map(sd => target.add(sd))
-
-          newTargets = newTargets.concat(childSpawns)
-          newDirections = newDirections.concat(spawnDirections)
+          // Add them onto the next level.
+          newTargets = newTargets.concat(targetsDirs.targets)
+          newDirections = newDirections.concat(targetsDirs.directions)
         })
 
         return {
