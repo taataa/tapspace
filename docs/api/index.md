@@ -644,6 +644,10 @@ An object with width and height. The `Size` does not have location or rotation a
 
 **Method** `#getHeight()` returns the property `height`.
 
+**Method** `#max()` returns the largest from `width` and `height`.
+
+**Method** `#min()` returns the smallest from `width` and `height`.
+
 **Method** `#toArray()` returns `[<width>, <height>]`.
 
 **Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.

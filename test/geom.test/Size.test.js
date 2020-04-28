@@ -33,6 +33,13 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('#max & #min', function (t) {
+    var s = new Size(10, 6)
+    t.equal(s.max(), 10, 'width is largest')
+    t.equal(s.min(), 6, 'height is smallest')
+    t.end()
+  })
+
   test('#transform', function (t) {
     var s = new Size(10, 8)
     var translation = new tapspace.geom.Transform(1, 0, 5, 5)
