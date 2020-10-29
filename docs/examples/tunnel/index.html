@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tunnel - Tapspace Example</title>
+
+  <!--
+    In infinite tunnel created by using plane.setLocal3d method.
+  -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- emoji sprite sheet styles -->
+  <link rel="stylesheet" type="text/css" href="../assets/food-drink.css">
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      color: black;
+      font-family: sans-serif;
+    }
+
+    #heading {
+      padding: 1em 0 0 1em;
+    }
+    #heading h1 {
+      font-size: 2.62em;
+      margin: 0.38em 0 0 0;
+    }
+    #heading p {
+      font-size: 1em;
+      margin: 0.25em 0 0 0.5em;
+    }
+    #heading p.credits {
+      margin-top: 0.7em;
+    }
+    #heading a {
+      color: black;
+      text-decoration: underline;
+    }
+    #heading a:hover {
+      color: gray;
+    }
+    #theend {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.6.0-beta.0/dist/tapspace.min.js"></script>
+
+  <script>
+    // Wrap in a function namespace. Easier to debug and no conflicts.
+    (function () {
+      var space = new tapspace.Space()
+      var view = new tapspace.SpaceView(space)
+      view.mount(document.getElementById('space'))
+
+      // Shorthands
+      const IVector = tapspace.geom.IVector
+      const Vector = tapspace.geom.Vector
+
+      // Vanishing point
+      const vanishingPoint = view.atNorm(0.618, 0.5)
+
+      // A heading text typical for the example apps.
+      const heading = new tapspace.SpaceHTML(
+        '<div id="heading">' +
+        '<h1>Tunnel of Foods</h1>' +
+        '<p>' +
+        'Dig in. Created with setLocal3d method.\n' +
+        '</p>' +
+        '<p class="credits">' +
+        'Powered by <a href="http://taataa.github.io/tapspace/">' +
+        'Tapspace.js</a><br>\n' +
+        'Emojis by <a href="https://openmoji.org/">OpenMoji</a><br>\n' +
+        '</p>' +
+        '</div>'
+      )
+      // Place heading on space.
+      heading.setParent(space)
+      heading.setSize(500, 300)
+      const r = view.getSize().min() / 2.3
+      const headingTarget = vanishingPoint.offset(-r, -r)
+      heading.translate(heading.atNW(), headingTarget)
+
+      // Setup the view interaction
+      var viewtouch = new tapspace.Touchable(view, view)
+      var viewwheel = new tapspace.Wheelable(view, view)
+      // Pinch zoom and mouse wheel
+      viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
+      viewwheel.start({ scale: true })
+      // Tap to zoom in
+      viewtouch.on('tap', function (ev) {
+        var itr = tapspace.geom.ITransform.IDENTITY
+        itr = itr.scale(tapspace.geom.IVector.mean(ev.points), 0.618)
+        view.transformBy(itr)
+      })
+
+      const PIC_WIDTH = 72
+
+      // Hex codes to use
+      const hexcodes = [
+        "1F347",
+        "1F348",
+        "1F349",
+        "1F34A",
+        "1F34B",
+        "1F34C",
+        "1F34D",
+        "1F96D",
+        "1F34E",
+        "1F34F",
+        "1F350",
+        "1F351",
+        "1F352",
+        "1F353",
+        "1FAD0",
+        "1F95D",
+        "1F345",
+        "1FAD2",
+        "1F965",
+        "1F951",
+        "1F346",
+        "1F954",
+        "1F955",
+        "1F33D",
+        "1F336",
+        "1F952",
+        "1F96C",
+        "1F966",
+        "1F9C4",
+        "1F9C5",
+        "1F344",
+        "1F95C",
+        "1F330",
+        "1F35E",
+        "1F950",
+        "1F956",
+        "1FAD3",
+        "1F968",
+        "1F96F",
+        "1F95E",
+        "1F9C7",
+        "1F9C0",
+        "1F356",
+        "1F357",
+        "1F969",
+        "1F953",
+        "1F354",
+        "1F35F",
+        "1F355",
+        "1F32D",
+        "1F96A",
+        "1F32E",
+        "1F32F",
+        "1FAD4",
+        "1F959",
+        "1F9C6",
+        "1F95A",
+        "1F373",
+        "1F958",
+        "1F372",
+        "1F963",
+        "1F957",
+        "1F37F",
+        "1F9C8",
+        "1F9C2",
+        "1F96B",
+        "1F371",
+        "1F358",
+        "1F359",
+        "1F35A",
+        "1F35B",
+        "1F35C",
+        "1F35D",
+        "1F360",
+        "1F362",
+        "1F363",
+        "1F364",
+        "1F365",
+        "1F96E",
+        "1F361",
+        "1F95F",
+        "1F960",
+        "1F961",
+        "1F980",
+        "1F99E",
+        "1F990",
+        "1F991",
+        "1F9AA",
+        "1F366",
+        "1F367",
+        "1F368",
+        "1F369",
+        "1F36A",
+        "1F382",
+        "1F370",
+        "1F9C1",
+        "1F967",
+        "1F36B",
+        "1F36C",
+        "1F36D",
+        "1F36E",
+        "1F36F",
+        "1F37C",
+        "1F95B",
+        "2615",
+        "1F375",
+        "1F376",
+        "1F37E",
+        "1F377",
+        "1F378",
+        "1F379",
+        "1F37A",
+        "1F37B",
+        "1F942",
+        "1F943",
+        "1F964",
+        "1F9C3",
+        "1F9C9",
+        "1F9CA",
+        "1F962",
+        "1F37D",
+        "1F374",
+        "1F944",
+        "1F52A",
+        "1F3FA"
+      ]
+
+      // Place all nodes relative to the view mid.
+      // HACK: loop throw the hexcode array.
+      let i = 0
+      const createNode = (vec3) => {
+        const hexcode = hexcodes[i]
+        i = (i + 1) % hexcodes.length
+        const html = '<div class="openmoji openmoji-' + hexcode + '"></div>'
+        const si = new tapspace.SpaceHTML(html, space)
+        si.setSize(PIC_WIDTH, PIC_WIDTH)
+        si.setLocal3d(vanishingPoint, vec3)
+
+        // Tap to eat.
+        // const tou = new tapspace.Touchable(view, si)
+        // tou.start({ tap: true })
+        // tou.on('tap', () => {
+        //   si.remove()
+        // })
+      }
+
+      const randomVec3d = () => {
+        const angle = Math.random() * 2 * Math.PI
+        const radius = 1 // 0.618 + 0.382 * Math.random()
+        const limit = view.getSize().min() / 2.618
+        const ivec = vanishingPoint.polarOffset(limit * radius, angle)
+        const vec = ivec.toSpace()
+        return {
+          x: vec.x,
+          y: vec.y,
+          z: 10 * Math.random()
+        }
+      }
+
+      const N = 666
+      const vec3s = []
+      for (let i = 0; i < N; i += 1) {
+        vec3s.push(randomVec3d())
+      }
+
+      // HACK Insertion order defines rendering order.
+      vec3s.sort((a, b) => b.z - a.z)
+
+      // Create the images.
+      vec3s.forEach(vec3 => {
+        createNode(vec3)
+      })
+
+      // Put something at the end of the tunnel
+      const theend = new tapspace.SpaceHTML(
+        '<div id="theend">' +
+        '<h1>Still hungry?</h1>' +
+        '</div>'
+      )
+      theend.setParent(space)
+      theend.setSize(300, 200)
+      // Place at the end of the tunnel.
+      theend.setLocal3d(vanishingPoint, {
+        x: vanishingPoint.toSpace().x,
+        y: vanishingPoint.toSpace().y,
+        z: 10
+      })
+      // Translate to center.
+      // TODO setLocal3d should take a domain point.
+      theend.translate(theend.atMidN(), vanishingPoint)
+
+    })() // execute
+  </script>
+</body>
+</html>

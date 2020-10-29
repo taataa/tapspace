@@ -320,6 +320,8 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 **Method** `translateScaleRotate(domain, range)` is similar to `#scale` but allows each translation, scaling, and rotation.
 
+**Experimental Method** `setLocal3d(pivot, vec3)` can be used to place objects with 3D coordinates. The method takes a `Vector` vanishing point and a literal 3D point `{ x, y, z }`. The `z` property acts as a distance i.e. a perspective scaling factor towards the vanishing point. The `x` and `y` properties describe translation at the distance `z`. The method replaces the local transformation with a translate-scale transformation.
+
 
 
 ### tapspace.AbstractRectangle
@@ -644,6 +646,10 @@ An object with width and height. The `Size` does not have location or rotation a
 
 **Method** `#getHeight()` returns the property `height`.
 
+**Method** `#max()` returns the largest from `width` and `height`.
+
+**Method** `#min()` returns the smallest from `width` and `height`.
+
 **Method** `#toArray()` returns `[<width>, <height>]`.
 
 **Method** `#transform(tr)` returns a new `Size` where the dimensions have been scaled by the given `Transform`. The given `Transform` can have translation and rotation too but only scaling will have an effect.
@@ -753,7 +759,7 @@ A point in 2D space.
 
 **Alternative constructor** `Vector.createFromPolar(magnitude, direction)` takes the vector length and direction in radians and returns a `Vector`.
 
-**Alternative constructor** `Vector.mean(vecList)` takes a non-empty list of Vectors and returns a `Vector` that is their mean.
+**Alternative constructor** `Vector.mean(vecList)` takes a non-empty list of Vectors and returns a `Vector` that is their arithmetic mean.
 
 **Method** `#add(vec)` sums `this` to `vec` and returns a new `Vector`.
 
@@ -787,7 +793,9 @@ A point in 2D space.
 
 **Method** `#polarOffset(radius, radians)` returns `Vector` that is equal to `this.add(Vector.createFromPolar(radius, radians))`.
 
-**Method** `#rotate(radians)` returns `Vector` where `this` has been rotated about pivot (0, 0).
+**Method** `#rotate(radians, pivot)` returns `Vector` that has been rotated about (0, 0) or about an optional `Vector` pivot.
+
+**Method** `#scale(factor, pivot)` returns `Vector` that has been scaled about (0, 0) or about an optional `Vector` pivot. With the default pivot (0, 0), `#scale` is essentially identical to `#multiply`.
 
 **Method** `#subtract(vec)` returns `Vector` that is equal to `this.add(vec.opposite())`.
 
