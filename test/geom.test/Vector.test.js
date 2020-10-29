@@ -108,4 +108,16 @@ module.exports = function (test) {
 
     t.end()
   })
+
+  test('#scale', (t) => {
+    var v = new Vector(2, 0)
+    // With default pivot
+    t.equal(v.scale(2).x, 4)
+    t.equal(v.scale(2).y, 0)
+    // With a pivot
+    t.equal(v.scale(2, { x: 0, y: -1 }).x, 4)
+    t.equal(v.scale(2, { x: 0, y: -1 }).y, 1)
+
+    t.end()
+  })
 }
