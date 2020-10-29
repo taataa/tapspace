@@ -89,4 +89,23 @@ module.exports = function (test) {
 
     t.end()
   })
+
+  test('#rotate', (t) => {
+    var v = new Vector(2, 0)
+    // Around default pivot, origin
+    var r = v.rotate(Math.PI)
+    t.ok(r.x > -2.1 && r.x < -1.9, 'half turn x: ' + r.x)
+    t.ok(r.y > -0.1 && r.y < 0.1, 'half turn y: ' + r.y)
+    // Quarter turn
+    var q = v.rotate(-Math.PI / 2)
+    t.ok(q.x > -0.1 && q.x < 0.1, 'quarter x: ' + q.x)
+    t.ok(q.y > -2.1 && q.y < -1.9, 'quarter y: ' + q.y)
+    // Quarter turn around given pivot
+    var p = new Vector(2, 2)
+    var pr = v.rotate(Math.PI / 2, p)
+    t.ok(pr.x > 3.9 && pr.x < 4.1, 'quarter around pivot x: ' + pr.x)
+    t.ok(pr.y > 1.9 && pr.y < 2.1, 'quarter around pivot y: ' + pr.y)
+
+    t.end()
+  })
 }
