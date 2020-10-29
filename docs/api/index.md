@@ -757,7 +757,7 @@ A point in 2D space.
 
 **Alternative constructor** `Vector.createFromPolar(magnitude, direction)` takes the vector length and direction in radians and returns a `Vector`.
 
-**Alternative constructor** `Vector.mean(vecList)` takes a non-empty list of Vectors and returns a `Vector` that is their mean.
+**Alternative constructor** `Vector.mean(vecList)` takes a non-empty list of Vectors and returns a `Vector` that is their arithmetic mean.
 
 **Method** `#add(vec)` sums `this` to `vec` and returns a new `Vector`.
 
