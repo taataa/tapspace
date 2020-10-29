@@ -791,7 +791,9 @@ A point in 2D space.
 
 **Method** `#polarOffset(radius, radians)` returns `Vector` that is equal to `this.add(Vector.createFromPolar(radius, radians))`.
 
-**Method** `#rotate(radians)` returns `Vector` where `this` has been rotated about pivot (0, 0).
+**Method** `#rotate(radians, pivot)` returns `Vector` that has been rotated about (0, 0) or about an optional `Vector` pivot.
+
+**Method** `#scale(factor, pivot)` returns `Vector` that has been scaled about (0, 0) or about an optional `Vector` pivot. With the default pivot (0, 0), `#scale` is essentially identical to `#multiply`.
 
 **Method** `#subtract(vec)` returns `Vector` that is equal to `this.add(vec.opposite())`.
 
