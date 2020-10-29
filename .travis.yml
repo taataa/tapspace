@@ -1,22 +1,14 @@
 language: node_js
 node_js:
-- node
+  - node
 addons:
   apt:
     packages:
-    - xvfb
+      - xvfb
 before_script:
-- export DISPLAY=':99.0'
-- sh -e /etc/init.d/xvfb start
-- sleep 3
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - sleep 3
 cache:
   directories:
-  - node_modules
-deploy:
-  provider: npm
-  email: akseli.palen@gmail.com
-  api_key:
-    secure: jWX3zs6Ph8edhdS8U+sczFlow/HGyB7AO0+GmkMZQOMUXk5u+YKmpinlQf/aZrgenXhv1TkAREYumYz6FLdACfKXtY1QPZQL5D0nKt55Fyjz2caGhtzOoWxFrfuniQpWeSOfCXlC+aJr/RfAS+kFBduB0gWx/ci4q03c/+lC2fdLRW2jsKMP1xy/ZjeMsPzjzTLgXs2MxVx37AmQxYFhl24cu/VGEm+R9WL9wIyZUZdm8Y73cPIG6ipJ2v7dw+hOSmblNsP5zO+5c3fyYEBUFR360C/ES+/KmQsonKGUrEdFNBjFUVd0Yg2cc/mIp93zJr0GpdGYHmesdldxXqne/ulwvGXZLwXJNIO0TxQdbFt0nd3+eUDw0jniy4oUPLq5T6WM22O67cn0jTXSn7I9fZgASAXW/Sx8Hw2QpGyh0Mjm8RFSWwiWhhCdPqCgIGUYQjZtnZ2R+BtxissVWd8PfqhzwAYyaekOp8D0XziXiFI7ywVz/j5lHiEqKJGXduaulGwG8av40oC0e+I/EvEApy9ZBZkHcP97RlXpcXEQA7d86uCHKORIA6xUw+KPyoy9IlqSq5TlpA7rBdv1PAp8Bf9uMkGJ89EEwZ2oolSDUJWFYYRlxp7zOVyjMN86BcTFVNqzMshvg3unZGRJfyAyrFE3hqF5S5fyQSjqxGc7mko=
-  on:
-    branch: master
-  skip_cleanup: true
+    - node_modules
