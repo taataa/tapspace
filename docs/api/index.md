@@ -320,6 +320,8 @@ Gives an inheriting object capabilities to act as a coordinate plane. Each Abstr
 
 **Method** `translateScaleRotate(domain, range)` is similar to `#scale` but allows each translation, scaling, and rotation.
 
+**Experimental Method** `setLocal3d(pivot, vec3)` can be used to place objects with 3D coordinates. The method takes a `Vector` vanishing point and a literal 3D point `{ x, y, z }`. The `z` property acts as a distance i.e. a perspective scaling factor towards the vanishing point. The `x` and `y` properties describe translation at the distance `z`. The method replaces the local transformation with a translate-scale transformation.
+
 
 
 ### tapspace.AbstractRectangle
