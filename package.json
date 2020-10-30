@@ -52,7 +52,7 @@
     "semver": "^5.6.0",
     "serve-index": "^1.9.1",
     "serve-static": "^1.13.1",
-    "standard": "*",
+    "standard": "^14.1.1",
     "style-loader": "^0.23.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.10.0",
