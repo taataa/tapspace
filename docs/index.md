@@ -37,6 +37,13 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 Whether you dream about a *Google Maps* clone, a *Prezi* flavored home page, or a real-time strategy game, these example apps give you a major head start in implementing your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
 
 <div style="clear: both">
+<img src="examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<h3>Minimal</h3>
+Your first minimal Tapspace app<br>
+<a href="examples/minimal/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/minimal/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/tiles/preview.jpg" style="float: left;  margin: 0 1em 1em 0">
 <h3>Tiles</h3>
 Pinch-zoomable grid of 400 tile images<br>
@@ -72,17 +79,17 @@ Play Go!<br>
 </div>
 
 <div style="clear: both">
-<img src="examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">
-<h3>Minimal</h3>
-Your first minimal Tapspace app<br>
-<a href="examples/minimal/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/minimal/">[See source]</a>
-</div>
-
-<div style="clear: both">
 <img src="examples/canvas/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Canvas</h3>
 Animated zoomable HTML5 Canvas<br>
 <a href="examples/canvas/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/canvas/">[See source]</a>
+</div>
+
+<div style="clear: both">
+<img src="examples/semanticzoom/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<h3>Semantic Zoom</h3>
+Content that reacts to zoom level<br>
+<a href="examples/semanticzoom/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/semanticzoom/">[See source]</a>
 </div>
 
 <div style="clear: both">
@@ -93,10 +100,24 @@ Gears with rotation handles<br>
 </div>
 
 <div style="clear: both">
+<img src="examples/password/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<h3>Fractal Password</h3>
+What if passwords were just fruits hid deep in a fractal?<br>
+<a href="examples/password/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/password/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/grid/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Grid</h3>
 A snapping grid that snaps translations and rotations<br>
 <a href="examples/grid/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/grid/">[See source]</a>
+</div>
+
+<div style="clear: both">
+<img src="examples/tunnel/preview.jpg" style="float: left; margin: 0 1em 1em 0">
+<h3>Tunnel of Foods</h3>
+Foods positioned with 3D coordinates.<br>
+<a href="examples/tunnel/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/tunnel/">[See source]</a>
 </div>
 
 <div style="clear: both">
