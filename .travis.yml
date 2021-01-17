@@ -6,7 +6,7 @@ node_js:
   - node
 services:
   - xvfb
-script: xvfb-run --server-args="-screen 0 1024x768x24" make test
+script: xvfb-run --auto-servernum --server-num=1 --server-args="-screen 1 1024x768x24" make test
 cache:
   directories:
     - node_modules
