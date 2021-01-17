@@ -56,7 +56,6 @@
     "style-loader": "^0.23.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.10.0",
-    "tape-run": "^5.0.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
