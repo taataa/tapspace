@@ -12,7 +12,7 @@ Most of the example apps are targeted for touch screens. Therefore, when develop
 
     $ npm start
 
-Finished example apps load the `tapspace` bundle from [unpkg CDN](https://unpkg.com/). This way we avoid storing compiled files to the repository, although we still need to publish them to NPM. Bundles served by unpkg have URLs similar to `unpkg.com/tapspace@5.0.0/dist/tapspace.min.js`. Although the version tag can be omitted, the most robust practice is to specify the version which for the example app has been designed.
+Finished example apps load the `tapspace` bundle from [unpkg CDN](https://unpkg.com/). This way we avoid storing compiled files to the repository, although we still need to publish them to NPM. Bundles served by unpkg have URLs similar to `unpkg.com/tapspace@1.2.3/dist/tapspace.min.js`. Although the version tag can be omitted, the most robust practice is to specify the version which for the example app has been designed.
 
 Example apps can also be used for **manual testing** while developing tapspace core. In this case, however, the unpkg URL needs to be *temporarily* replaced with a local URL `../tapspace.min.js`. The bundle at the local URL is served from `dist/` by the `examples/server.js`. But first, **build the bundle** into `dist/` by:
 
@@ -57,33 +57,36 @@ Features:
 
 First, in your local environment:
 
-1. Ensure you are in the `development` branch.
-1. Ensure the correct new version in `package.json`.
-1. Copy the version into source by `npm run gv`.
+1. Ensure you are in a `feature-myfeat` branch.
 1. Run `npm run lint` and `npm run test:headless`.
 1. Commit changes.
 
 Then, go to GitHub:
 
-1. Create a pull request from `development` to `master`.
+1. Create a pull request from `feature-myfeat` to `master`.
 1. Merge the pull request to `master`
+
+Then, back in your local environment:
+
+1. Switch to `master` by `git checkout master`
+1. Pull changes by `git pull --all`.
+1. Bump new version in `package.json`.
+1. Copy the version into source by `npm run gv`.
+1. Commit the version bump.
+1. Publish to npm with `npm run release`. It will run the test to double-check everything, build the bundle, and then publish.
+
+Finally, go to GitHub:
+
 1. Tag the `master` head with the new version as the tag name.
 
-By default, Travis CI is configured to publish to NPM after each successful build of the `master` branch. Therefore you can celebrate your freshly published package! In case Travis CI becomes unavailable, you need to publish from your local environment:
-
-1. Pull `master` by `git pull --all`.
-1. Switch to `master` by `git checkout master`.
-1. Publish by `npm run release`. It will run the test to double-check everything, build the bundle, and then publish.
-1. Switch back to `development` by `git checkout development` to avoid accidentally committing to `master` next time you commit something.
+Now you can celebrate your freshly published package!
 
 See also [a successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/).
 
 
 ## Continuous integration
 
-Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in GitHub `master` branch. For each change it runs `npm install`, `npm test`, and finally attempts to publish to NPM.
-
-Details on publishing to NPM: `.travis.yml` [requires an encrypted NPM auth token](https://docs.travis-ci.com/user/deployment/npm/) created by `travis` CLI. [Installation of the CLI](https://github.com/travis-ci/travis.rb#installation) requires Ruby.
+Travis CI configuration is located at `.travis.yml`. Travis CI detects changes in GitHub `master` branch. For each change it runs `npm install` and `npm test`. Travis does not publish to npm as we decide to release manually.
 
 
 ## Maintenance
