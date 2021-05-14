@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minimal - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 80%;
+      height: 20rem;
+      background: black;
+    }
+    .tile {
+      width: 10rem;
+      height: 10rem;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div id="viewport" class="viewport">
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Tapspace setup
+    const t = tapspace
+    const viewEl = document.querySelector('#viewport')
+    const view = t.createView(viewEl) // or createViewport or viewport
+
+    // Plain old JS
+    const tileEl = document.createElement('div')
+    tileEl.className = 'tile'
+    viewEl.appendChild(tileEl)
+
+    // Next we move and scale the view so that the tile ends up magnified
+    // and at the middle of the view.
+
+    // Make tile a SpaceElement
+    const tile = t(tileEl)
+
+    // We translate the view so that the view middle moves to the tile middle.
+    const m = t.createMove(view.atMid(), tile.atMid())
+    // OR t.delta() OR t.translation() OR t.move() ?
+    view.move(m)
+
+    // The next line zooms the view closer to the SpacePixel.
+    const s = t.scaling(view.atMid(), 0.9) // or createScaling
+    view.move(s)
+    // OR view.scale(view.atMid(), 0.9)
+
+    // We make the tile movable.
+    const touch = tile.touchable()
+    touch.start({ translate: true })
+  </script>
+</body>
+</html>
