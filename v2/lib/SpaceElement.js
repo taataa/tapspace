@@ -18,6 +18,11 @@ const SpaceElement = function (el) {
   this.y = 0
 }
 
+SpaceElement.createView = (el) => {
+  // TODO Is separate viewport creation needed?
+  // TODO name viewport or createViewport?
+}
+
 const proto = SpaceElement.prototype
 
 proto.at = (x, y) => {
