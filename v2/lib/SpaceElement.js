@@ -1,5 +1,14 @@
 
 const SpaceElement = function (el) {
+  if (typeof el === 'string') {
+    // Treat as selector string. The querySelector returns the first match.
+    // If not found, results null
+    el = document.querySelector(el)
+  }
+  if (!el) {
+    throw new Error('Element does not exist')
+  }
+
   this.el = el
   // TODO capture transformation from css
   // TODO decide if we need to duplicate the coordinates
