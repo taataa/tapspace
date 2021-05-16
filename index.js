@@ -1,4 +1,4 @@
-// API v4
+// API Tapspace v2
 
 const SpaceElement = require('./lib/SpaceElement')
 
