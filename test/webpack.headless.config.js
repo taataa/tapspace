@@ -22,9 +22,9 @@ module.exports = {
     rules: [
       {
         // Due to problems in serving static files with tape-run,
-        // we import images as data URLs.
+        // we import images as data URLs. Thus asset/inline.
         test: /\.(png|jpg|gif)$/,
-        use: 'url-loader'
+        type: 'asset/inline'
       },
       {
         test: /\.css$/,

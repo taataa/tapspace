@@ -17,7 +17,7 @@ var asyn = require('async')
 var $ = require('jquery')
 
 // Problems with tape-run static file serving
-// => import images as data urls by webpack url-loader
+// => import images as data urls by webpack asset/inline
 // Note: static file serving fixed in tape-run 3.0.1
 var black256png = require('./black256.png')
 
