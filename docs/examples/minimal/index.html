@@ -4,77 +4,63 @@
   <meta charset="utf-8">
   <title>Minimal - Tapspace Example</title>
 
-  <!--
-    Minimal Tapspace Application
-
-    In this example we go through the basics of a tapspace app.
-    The three essential components are:
-    - items: a set of media elements
-    - space: a system of two-dimensional planes where the items live.
-    - view: a viewport to the space; a link between the space and HTML DOM.
-  -->
-
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <style>
-    /*
-      Styles
-
-      Here we define the position of the app on the page.
-      Typically we give it the 100% of the browser's view.
-    */
-    html, body, #minimalspace {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 80%;
+      height: 20rem;
+      background: black;
+    }
+    .tile {
+      width: 10rem;
+      height: 10rem;
+      background: white;
     }
   </style>
 </head>
 <body>
-  <!-- Container element for viewing Space -->
-  <div id="minimalspace"></div>
+  <!-- Container element for viewing space -->
+  <div id="viewport" class="viewport">
+  </div>
 
-  <!-- Import tapspace. We use unpkg CDN in the examples. -->
-  <script src="https://unpkg.com/tapspace@1.0.0/dist/tapspace.min.js"></script>
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
-    // Create a Space. It will contain stuff.
-    var space = new tapspace.Space()
+    // Tapspace setup
+    const t = tapspace
+    const viewEl = document.querySelector('#viewport')
+    const view = t.createView(viewEl) // or createViewport or viewport
 
-    // Create a View to the Space. The view connects Space to HTML DOM.
-    var view = new tapspace.SpaceView(space)
-    var container = document.getElementById('minimalspace')
-    view.mount(container)
+    // Plain old JS
+    const tileEl = document.createElement('div')
+    tileEl.className = 'tile'
+    viewEl.appendChild(tileEl)
 
-    // Create a black SpacePixel, one of the simplest items in Space.
-    // The SpacePixel is initially represented as 1x1 <div> with black
-    // background color.
-    var px = new tapspace.SpacePixel('#000000', space)
-
-    // Next we move and scale the view so that the SpacePixel ends up magnified
+    // Next we move and scale the view so that the tile ends up magnified
     // and at the middle of the view.
 
-    // The next line translates the view in the Space so that the middle point
-    // of the view will be at the middle point of the SpacePixel
-    // after the transformation. You kind of tell that "these should go there".
-    view.translate(view.atMid(), px.atMid())
+    // Make tile a SpaceElement
+    const tile = t(tileEl)
+
+    // We translate the view so that the view middle moves to the tile middle.
+    const m = t.createMove(view.atMid(), tile.atMid())
+    // OR t.delta() OR t.translation() OR t.move() ?
+    view.move(m)
 
     // The next line zooms the view closer to the SpacePixel.
-    // The first argument specifies a pivot point around we are scaling.
-    // The second argument is the scaling factor. A factor of 2 would
-    // double the dimensions of the viewport on Space. The factor of 0.01
-    // shrinks the viewport so that our 1x1 SpacePixel looks very large.
-    view.scale(view.atMid(), 0.01)
+    const s = t.scaling(view.atMid(), 0.9) // or createScaling
+    view.move(s)
+    // OR view.scale(view.atMid(), 0.9)
 
-    // We make the black pixel movable. The first line of the two creates
-    // a touch manager that is first inactive, meaning that the SpacePixel
-    // does not react to touch at all. The second line starts the manager
-    // in the given interaction mode. In our example we allow touch to
-    // to translate the pixel.
-    var touch = new tapspace.Touchable(view, px)
+    // We make the tile movable.
+    const touch = tile.touchable()
     touch.start({ translate: true })
   </script>
 </body>
