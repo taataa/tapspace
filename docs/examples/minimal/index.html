@@ -38,7 +38,7 @@
     const viewEl = document.querySelector('#viewport')
     const view = t.createView(viewEl) // or createViewport or viewport
 
-    // Plain old JS
+    // Plain vanilla JS
     const tileEl = document.createElement('div')
     tileEl.className = 'tile'
     viewEl.appendChild(tileEl)
@@ -46,22 +46,51 @@
     // Next we move and scale the view so that the tile ends up magnified
     // and at the middle of the view.
 
-    // Make tile a SpaceElement
+    // Make tile a SpaceElement.
+    // It's style becomes controlled by tapspace.
     const tile = t(tileEl)
 
     // We translate the view so that the view middle moves to the tile middle.
-    const m = t.createMove(view.atMid(), tile.atMid())
-    // OR t.delta() OR t.translation() OR t.move() ?
+    const m = t.geom.move.translate(view.atMid(), tile.atMid())
+    // const m = t.move.between(view.atMid(), tile.atMid())
+    // const m = t.createMove(view.atMid(), tile.atMid())
     view.move(m)
 
-    // The next line zooms the view closer to the SpacePixel.
-    const s = t.scaling(view.atMid(), 0.9) // or createScaling
-    view.move(s)
+    // Zoom the view closer to the SpacePixel.
+    // For this, create a Scaling. A Scaling is a Move.
+    // const s = t.createScaling(view.atMid(), 0.9) // or scaling()
     // OR view.scale(view.atMid(), 0.9)
+    const s = t.geom.move.scale(view.atMid(), 0.9)
+    view.move(s)
 
-    // We make the tile movable.
-    const touch = tile.touchable()
-    touch.start({ translate: true })
+    // We make the tile movable by dragging.
+    const drag = tile.draggable()
+    // Drag behavior needs to be switched on.
+    // A drag can have multiple degrees of freedom,
+    // such as translation, scale and rotation.
+    // drag.start({ translate: true })
+    // drag.start({ freedom: 'T' })
+    // drag.start.translation()
+    // drag.enable.mode('T')
+    // drag.enable('T')
+    // drag.enable('T', opts)
+    drag.enable.translation()
+
+    // drag.disable.translation()
+    // drag.disable() .off()
+
+    // Limit element move within the view box
+    // drag.limit(view)
+    drag.limitBy(view)
+
+    // Allow scaling and rotating the view around the tile
+    const viewdrag = view.draggable()
+    // viewdrag.enable.rotation(tile.atMid())
+    // viewdrag.enable.scaling(tile.atMid()) // replaces the pivot
+    viewdrag.enable.scaleRotate(tile.atMid())
+    viewdrag.mode.scaleRotate(tile.atMid())
+    viewdrag.disable() // = viewdrag.enable.identity() ? or unbind?
+
   </script>
 </body>
 </html>
