@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Affinedom scaffold</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 80%;
+      height: 20rem;
+      background: black;
+    }
+    .tile {
+      width: 10rem;
+      height: 10rem;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div id="viewport" class="viewport">
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Tapspace setup
+    const t = tapspace
+    const viewEl = document.querySelector('#viewport')
+    const view = t.createView(viewEl) // or createViewport or viewport
+
+    // Plain vanilla JS
+    const tileEl = document.createElement('div')
+    tileEl.className = 'tile'
+    viewEl.appendChild(tileEl)
+
+    // Make tile a SpaceElement.
+    const tile = t(tileEl)
+
+
+  </script>
+</body>
+</html>
