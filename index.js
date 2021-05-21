@@ -3,7 +3,9 @@
 const SpaceElement = require('./lib/SpaceElement')
 const SpaceView = require('./lib/SpaceView')
 
-module.exports = SpaceElement.create
+module.exports = (el) => {
+  return new SpaceElement(el)
+}
 
 exports.createView = (el) => {
   console.log('view created')
