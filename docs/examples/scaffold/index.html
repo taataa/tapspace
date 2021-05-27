@@ -28,24 +28,74 @@
   <div id="viewport" class="viewport">
   </div>
 
-  <!-- Import tapspace. -->
-  <script src="../dist/tapspace.min.js"></script>
+  <!-- Import affinedom. -->
+  <script src="../dist/affinedom.min.js"></script>
 
   <!-- Your code -->
   <script>
-    // Tapspace setup
-    const t = tapspace
-    const viewEl = document.querySelector('#viewport')
-    const view = t.createView(viewEl) // or createViewport or viewport
+    // View setup
+    const affine = affinedom
+    const aview = affine.view('#viewport')
+    // or createView, createViewport or viewport
 
-    // Plain vanilla JS
-    const tileEl = document.createElement('div')
-    tileEl.className = 'tile'
-    viewEl.appendChild(tileEl)
+    // Create your element any way you want,
+    // e.g. by templates, jquery or plain vanilla JS...
+    const tile = document.createElement('div')
+    tile.className = 'tile'
+    view.appendChild(tile)
 
-    // Make tile a SpaceElement.
-    const tile = t(tileEl)
+    // Make tile an Affinedom Element.
+    const atile = affine(tileEl)
 
+    // Create element fractal
+    const fractal = affine.fractal({
+      constructor: () => {
+
+      },
+      destructor: () => {
+
+      },
+      reverse: () => {
+
+      },
+      depth: 3,
+    })
+
+
+    const aview = affine.view('#viewport')
+
+    const tile = document.createElement('div')
+    tile.className = 'tile'
+    tile.innerHTML = 'Hello'
+    aview.appendChild(tile)
+
+    const atile = affine(tile)
+    const m = affine.move(atile.atMid(), view.atMid())
+    atile.move(m)
+    atile.rotate(atile.atMid(), Math.PI / 2)
+
+    const drag = aview.draggable()
+    drag.enable.pan()
+    drag.enable.scale()
+
+    const wheel = aview.wheelable()
+    wheel.enable.scale()
+
+    const tile2 = document.createElement('div')
+    tile2.className = 'tile'
+    tile2.innerHTML = 'World'
+    aview.appendChild(tile2)
+
+    const atile2 = affine(tile2)
+
+    const m2 = affine.move([
+      atile2.atTopLeft(),
+      atile2.atBottomLeft()
+    ], [
+      atile.atMidRight(),
+      atile2.atBottomRight()
+    ])
+    atile2.move(m2)
 
   </script>
 </body>
