@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>API readability test</title>
+
+  <style>
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 80%;
+      height: 20rem;
+      background: black;
+    }
+    .tile {
+      width: 10rem;
+      height: 10rem;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport" class="viewport"></div>
+
+  <script src="affinedom.min.js"></script>
+  <script>
+    const affine = affinedom
+    const aview = affine.view('#viewport')
+
+    const tile = document.createElement('div')
+    tile.className = 'tile'
+    tile.innerHTML = 'Hello'
+    aview.appendChild(tile)
+
+    const atile = affine(tile)
+    const m = affine.move(atile.atMid(), aview.atMid())
+    atile.move({ dx: 20, dy: 20 })
+    atile.translate(...)
+    atile.transform()
+    atile.rotate(atile.atMid(), Math.PI / 2)
+
+    const drag = aview.draggable()
+    drag.enable.pan()
+    drag.enable.scale()
+
+    const wheel = aview.wheelable()
+    wheel.enable.scale()
+
+    const tile2 = document.createElement('div')
+    tile2.className = 'tile'
+    tile2.innerHTML = 'World'
+    aview.appendChild(tile2)
+
+    const atile2 = affine(tile2)
+
+    const m2 = affine.move([
+      atile2.atTopLeft(),
+      atile2.atBottomLeft()
+    ], [
+      atile.atMidRight(),
+      atile.atBottomRight()
+    ])
+    atile2.move(m2)
+
+  </script>
+</body>
+</html>
