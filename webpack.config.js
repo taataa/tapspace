@@ -4,14 +4,12 @@ var path = require('path')
 module.exports = {
   entry: './index',
   output: {
-    filename: 'tapspace.min.js',
+    filename: 'affinedom.min.js',
     path: path.join(__dirname, '/dist'),
     sourceMapFilename: '[file].map',
-    library: 'tapspace',  // module name in global scope
+    library: 'affinedom',  // module name in global scope
     libraryTarget: 'umd'
   },
 
-  devtool: 'source-map',
-
-  mode: 'production'
+  mode: 'development'
 }
