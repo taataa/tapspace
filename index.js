@@ -1,25 +1,29 @@
 // API Tapspace v2
 
-const SpaceElement = require('./lib/Element')
-const SpaceView = require('./lib/View')
+const Element = require('./lib/Element')
+const Viewport = require('./lib/Viewport')
+const Plane = require('./lib/Plane')
 
-module.exports = (el) => {
-  return new SpaceElement(el)
+const main = (el) => {
+  return new Element(el)
 }
 
-exports.element = (el) => {
-  return new SpaceElement(el)
+main.element = (el) => {
+  return new Element(el)
 }
 
-exports.viewport = (el) => {
+main.viewport = (el) => {
   console.log('view created')
-  return new SpaceView(el)
+  return new Viewport(el)
 }
 
-exports.space = (el) => {
-
+main.plane = (el) => {
+  return new Plane(el)
 }
+// or .space or .plane or .layer
 
-exports.geom = require('./lib/geom')
-exports.preload = require('loadimages')
-exports.version = require('./lib/version')
+// main.geom = require('./lib/geom')
+main.preload = require('loadimages')
+main.version = require('./lib/version')
+
+module.exports = main
