@@ -25,7 +25,12 @@
 </head>
 <body>
   <!-- Container element for viewing space -->
-  <div id="viewport" class="viewport">
+  <div id="viewport" class="affine-viewport">
+    <div class="affine-space">
+      <div class="affine-element">
+        <h1>Hello World</h1>
+      </div>
+    </div>
   </div>
 
   <!-- Import affinedom. -->
@@ -35,14 +40,16 @@
   <script>
     // View setup
     const affine = affinedom
-    const aview = affine.view('#viewport')
-    // or createView, createViewport or viewport
+    const aview = affine.viewport('#viewport')
+    // or createView, createViewport or view
+    const aspace = affine.space(document.querySelector('.affine-space'))
+    // or createSpace
 
     // Create your element any way you want,
     // e.g. by templates, jquery or plain vanilla JS...
     const tile = document.createElement('div')
     tile.className = 'tile'
-    view.appendChild(tile)
+    aspace.appendChild(tile)
 
     // Make tile an Affinedom Element.
     const atile = affine(tileEl)
@@ -88,14 +95,17 @@
 
     const atile2 = affine(tile2)
 
-    const m2 = affine.move([
-      atile2.atTopLeft(),
-      atile2.atBottomLeft()
-    ], [
-      atile.atMidRight(),
-      atile2.atBottomRight()
-    ])
-    atile2.move(m2)
+    const tr = affine.estimateTransform({
+      source: [
+        atile2.atTopLeft(),
+        atile2.atBottomLeft()
+      ],
+      target: [
+        atile.atMidRight(),
+        atile2.atBottomRight()
+      ]
+    )
+    atile2.transform(tr)
 
   </script>
 </body>

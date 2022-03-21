@@ -21,28 +21,61 @@
   </style>
 </head>
 <body>
-  <div id="viewport" class="viewport"></div>
+  <div id="book-view" class="affinedom-view">
+    <div id="book-plane" class="affinedom-plane"></div>
+  </div>
 
   <script src="affinedom.min.js"></script>
   <script>
-    const affine = affinedom
-    const aview = affine.view('#viewport')
+    const viewEl = document.getElementById('#book-view')
+    const view = affinedom.createView(viewEl)
 
-    const tile = document.createElement('div')
-    tile.className = 'tile'
-    tile.innerHTML = 'Hello'
-    aview.appendChild(tile)
+    const planeEl = document.getElementById('#book-plane')
+    const plane = affinedom.createPlane(planeEl)
 
-    const atile = affine(tile)
-    const m = affine.move(atile.atMid(), aview.atMid())
-    atile.move({ dx: 20, dy: 20 })
-    atile.translate(...)
-    atile.transform()
-    atile.rotate(atile.atMid(), Math.PI / 2)
+    const tileEl = document.createElement('div')
+    tileEl.className = 'tile'
+    tileEl.innerHTML = 'Hello'
+    viewEl.appendChild(tileEl)
 
-    const drag = aview.draggable()
-    drag.enable.pan()
-    drag.enable.scale()
+    // affinedom.create
+    // affinedom.setElement
+    // affinedom.spaceElement
+    // affinedom.createSpaceElement
+    // affinedom.upgradeElement
+    // affinedom.createPlane
+    // affinedom.createElement
+    const tile = affinedom.create(tileEl)
+
+    tile.moveBy({ dx: 20, dy: 20 })
+    tile.moveTo({ x: 20, y: 20 })
+    const sourcePoint = tile.atMid()
+    const targetPoint = view.atMid()
+    const vec = affinedom.vector.between(sourcePoint, targetPoint)
+    // tile.move({
+    //   dx: m.dx,
+    //   dy: m.dy
+    // })
+    // tile.move
+    // = tile.moveTo
+    // = tile.moveBy
+    tile.moveBy(vec)
+    const tran = affinedom.transform.between(srcPoints, tgtPoints)
+    tile.translate(...)
+    tile.transform(tran)
+    tile.rotate(atile.atMid(), Math.PI / 2)
+
+    const touch = view.touchable({
+      // pan:
+      panX: true,
+      panY: false,
+      scale: true,
+    })
+    touch.start()
+    touch.on('transform-gesture', (tr) => {
+
+    })
+
 
     const wheel = aview.wheelable()
     wheel.enable.scale()
@@ -62,6 +95,49 @@
       atile.atBottomRight()
     ])
     atile2.move(m2)
+
+
+    affinedom.rotate(tileEl, { dr: 30 })
+    // What if lib functions create the space element under the hood?
+    // Very easy to implement by checking el.affinedom
+    affinedom.rotatable(tileEl, {
+      origin: affinedom.atNorm(tileEl, 0.62, 0.5),
+      autostart: false
+    })
+    // Idempotent operation:
+    affinedom.rotatable(tileEl, {
+      origin: affinedom.atNorm(tileEl, 0.62, 0.5),
+      autostart: true
+    })
+
+    affinedom.scaleable(tileEl, {
+
+    })
+
+    affinedom.on(elem, 'lg+', () => {
+
+    })
+
+    affinedom.off(elem, 'lg+')
+    elem.affinedom.off()
+
+    elem.addEventListener('lg+')
+    affinedom.enableScaleEvents(elem)
+    affinedom.disableScaleEvents(elem)
+
+
+    for (let i = 0; i < 10; i += 1) {
+      for (let j = 0; j < 10; j += 1) {
+        const tileEl = document.createElement('div')
+        tileEl.className = 'tile'
+        tileEl.style.background = randomColor()
+        tileEl.style.width = '100px'
+        tileEl.style.height = '100px'
+        planeEl.appendChild(tileEl)
+
+        affinedom.translate(tileEl, { dx: i * 10, dy: j * 10 })
+      }
+    }
 
   </script>
 </body>
