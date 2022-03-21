@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Affinedom scaffold</title>
+
+  <link type="text/css" src="../affinedom.css">
+  <style>
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 80%;
+      height: 20rem;
+      background: black;
+    }
+    .tile {
+      width: 10rem;
+      height: 10rem;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div id="viewport" class="affine-viewport">
+    <div class="affine-plane">
+      <div class="affine-element">
+        <h1>Hello World</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import affinedom. -->
+  <script src="../dist/affinedom.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // View setup
+    const affine = affinedom
+    const aview = affine.viewport('#viewport')
+    // or createView, createViewport or view
+    const aspace = affine.plane(document.querySelector('.affine-plane'))
+    // or space or createSpace or plane or layer
+
+    // Make tile an Affinedom Element.
+    const tileEl = document.querySelector('.affine-element')
+    const atile = affine(tileEl)
+
+    atile.translate({
+      dx: 20,
+      dy: 20
+    }).end()
+
+  </script>
+</body>
+</html>

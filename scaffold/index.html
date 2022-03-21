@@ -43,33 +43,20 @@
     const aview = affine.viewport('#viewport')
     // or createView, createViewport or view
     const aspace = affine.space(document.querySelector('.affine-space'))
-    // or createSpace
+    // or createSpace or plane or layer
 
     // Create your element any way you want,
     // e.g. by templates, jquery or plain vanilla JS...
     const tile = document.createElement('div')
     tile.className = 'tile'
-    aspace.appendChild(tile)
+    aspace.element.appendChild(tile)
+    // or .dom.appendChild
+    // or .elem.appendChild
+    // or .el.appendChild
+    // or .html.appendChild
 
     // Make tile an Affinedom Element.
     const atile = affine(tileEl)
-
-    // Create element fractal
-    const fractal = affine.fractal({
-      constructor: () => {
-
-      },
-      destructor: () => {
-
-      },
-      reverse: () => {
-
-      },
-      depth: 3,
-    })
-
-
-    const aview = affine.view('#viewport')
 
     const tile = document.createElement('div')
     tile.className = 'tile'
