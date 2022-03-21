@@ -1,0 +1,26 @@
+.affine-element {
+  /* Space elements are positioned by using transform matrices.
+    To make this work, the elements must be positioned at the top-left corner
+    of the parent. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  right: auto;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+}
+.affine-viewport {
+  /* Space elements are absolutely positioned and therefore
+    the view must be either absolutely or relatively positioned. */
+  position: relative;
+  /* Viewport is a camera that looks to the space, thus crop */
+  overflow: hidden;
+}
+.affine-plane {
+  /* Planes themselves have zero size to allow pointer events reach
+    elements on the layers below. To make elements on the plane visible,
+    they must be visible over the plane borders. */
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
