@@ -16,6 +16,8 @@
   /* Viewport is a camera that looks to the space, thus crop */
   overflow: hidden;
 }
+.affine-layer,
+.affine-group,
 .affine-plane {
   /* Planes themselves have zero size to allow pointer events reach
     elements on the layers below. To make elements on the plane visible,
