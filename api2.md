@@ -11,13 +11,44 @@ API design problems
 Separation of concerns
   transformation construction vs moving the element
 
-
 # Construction
 
 aelem = affine(elem)
 aview = affine.viewport(elem)
 alayer = affine.layer(elem)
 
+Allow affine elements without layer or viewport as an ancestor.
+This enables affinedom to be used for animations and transform controlling.
+
+# AffineElement
+
+To avoid duplicating the DOM structure, we must somehow
+be able to find affine properties for DOM elements.
+We do this by assigning DOM elements with affine property.
+
+HTMLElement.affine
+  AffineElement
+    el
+      HTMLElement (cyclic reference)
+    tr
+      { a, b, x, y }
+    type
+      element, viewport, layer
+
+Alternatively we could use dataset and an id.
+  Store all objects in a global map from affineid --> AffineElement
+  el.dataset.affineid = Math.random().toFixed(16).substring(2)
+
+Why we use tr to store transformation when CSS transform has same info?
+  Assumption: Too much overhead from parsing the css values
+    possibly thousands of times per second.
+
+Instead of tr we could have { s, r, x, y } where
+  s is scale, multiplier
+  r is radians
+Also we could have all the matrix components: { a, b, c, d, x, y }
+We note that { s, r } or { a, b, c, d } define the vector space
+of the affine plane.
 
 # Get positions
 
@@ -127,17 +158,24 @@ movable, slidable
 
 # Layers and z
 
+Naming: Plane vs Layer vs Space. Space is too 3D. Layer is stacky. Plane can be aeroplane. Plane is 2D. Plane has (0,0) origin. There can be many planes. Is every coordinate system a plane? Every element has a plane? Root layer? Plane implies that everything in the plane are on same 2D surface.
+
+Layer positions are relative to the viewport. Transforming the viewport
+actually means modification of the layer positions.
+
+## Layer API
 affine.viewport(elem, {
   perspective: true,
 })
-
 affine.layer(elem, {
   z: 3
 })
 
-How to project points between layers. Perspective vs orthogonal projection.
-We might do well with only orthogonal projection when between layers.
-Projection to viewport will produce perspective projection.
+How to project points between planes. Perspective vs orthogonal projection.
+We might do well with only orthogonal projection when between planes.
+Projection to viewport might produce perspective projection.
+Maybe planes could be connected so we can compute orthogonal projections
+regardless of perspective?
 
 
 # Tunnel
