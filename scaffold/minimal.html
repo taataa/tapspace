@@ -25,7 +25,7 @@
 <body>
   <!-- Container element for viewing space -->
   <div id="viewport" class="affine-viewport">
-    <div class="affine-plane">
+    <div class="affine-layer">
       <div id="hello" class="affine-element">
         <h1>Hello World</h1>
       </div>
@@ -41,17 +41,18 @@
     const affine = affinedom
     const aview = affine.viewport('#viewport')
     // or createView, createViewport or view
-    const aspace = affine.plane(document.querySelector('.affine-plane'))
+    const alayer = affine.layer(document.querySelector('.affine-layer'))
     // or space or createSpace or plane or layer
 
     // Make tile an Affinedom Element.
     const tileEl = document.querySelector('.affine-element')
     const atile = affine(tileEl)
 
-    atile.translate({
-      dx: 20,
-      dy: 20
-    }).end()
+    atile.translateBy({
+      // basis: tile (self)
+      x: 20,
+      y: 20
+    })
 
   </script>
 </body>
