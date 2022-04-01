@@ -20,7 +20,7 @@ alayer = affine.layer(elem)
 Allow affine elements without layer or viewport as an ancestor.
 This enables affinedom to be used for animations and transform controlling.
 
-# AffineElement
+# Affine Element
 
 To avoid duplicating the DOM structure, we must somehow
 be able to find affine properties for DOM elements.
@@ -49,6 +49,24 @@ Instead of tr we could have { s, r, x, y } where
 Also we could have all the matrix components: { a, b, c, d, x, y }
 We note that { s, r } or { a, b, c, d } define the vector space
 of the affine plane.
+
+# Layout managers
+
+Layout managers are DOM elements that control the positions of their immediate children. In contrast, normal affine DOM elements do not manipulate their children.
+
+Examples of layout managers:
+- viewport: transformations on the view are reflected on the children.
+- perspective viewport: children can be assigned z coordinate.
+- fractal: similar to viewport, with recursive modules
+
+
+# Affine Layers
+
+Layer position is controlled by its parent.
+Layer parent is usually a viewport.
+Host app must give layer positions relative terms because
+the positions depend on the viewport position.
+
 
 # Get positions
 
