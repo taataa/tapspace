@@ -44,7 +44,6 @@
     "genversion": "^2.3.1",
     "ip": "^1.1.5",
     "jquery": "^3.6.0",
-    "npm-watch": "^0.9.0",
     "qrcode-terminal": "^0.12.0",
     "semver": "^7.3.5",
     "serve-index": "^1.9.1",
@@ -71,26 +70,6 @@
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
     "release": "npm run lint && npm run gv && npm run test:headless && npm run build && npm publish",
     "gv": "genversion lib/version.js",
-    "watch": "npm-watch",
     "replaceliburl": "sed -i '' -E -- 's/https...unpkg.com.tapspace.[0-9].[0-9]+.[0-9].dist.tapspace.min.js/..\\/tapspace.min.js/g' ./docs/examples/*/index.html"
-  },
-  "watch": {
-    "lint": {
-      "patterns": [
-        "lib/**/*.js",
-        "test/**/*.js"
-      ]
-    },
-    "build:min": {
-      "patterns": [
-        "index.js",
-        "lib/**/*.js"
-      ]
-    },
-    "gv": {
-      "patterns": [
-        "package.json"
-      ]
-    }
   }
 }
