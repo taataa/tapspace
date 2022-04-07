@@ -3,17 +3,22 @@
 const Element = require('./lib/Element')
 const Viewport = require('./lib/Viewport')
 
-const main = (el) => {
-  return new Element(el)
+const main = (el, opts) => {
+  const ael = new Element(el, opts)
+  console.log('AffineElement created:', ael) // TODO remove debug
+  return ael
 }
 
-main.element = (el) => {
-  return new Element(el)
+main.element = (el, opts) => {
+  const ael = new Element(el, opts)
+  console.log('AffineElement created:', ael)
+  return ael
 }
 
-main.viewport = (el) => {
-  console.log('view created')
-  return new Viewport(el)
+main.viewport = (el, opts) => {
+  const av = new Viewport(el, opts)
+  console.log('AffineViewport created:', av)
+  return av
 }
 
 // main.geom = require('./lib/geom')
