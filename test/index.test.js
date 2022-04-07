@@ -3,6 +3,7 @@ const test = require('tape')
 const units = {
   // General
   version: require('./version.test'),
+  tools: require('./tools.test'),
   // Elements
   Element: require('./Element.test')
 }
