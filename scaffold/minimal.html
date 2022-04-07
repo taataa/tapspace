@@ -27,7 +27,7 @@
   <div id="viewport" class="affine-viewport">
     <div class="affine-layer">
       <div id="hello" class="affine-element">
-        <h1>Hello World</h1>
+        <h1>Hello Scaffold</h1>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
 
     // Make tile an Affinedom Element.
     const tileEl = document.querySelector('.affine-element')
-    const atile = affine(tileEl)
+    const atile = affine(tileEl, { width: 300, height: 200 })
 
     atile.translateBy({
       // basis: tile (self)
