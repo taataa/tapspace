@@ -2,6 +2,7 @@
 
 const Element = require('./lib/Element')
 const Viewport = require('./lib/Viewport')
+const Transform = require('./lib/Transform')
 
 const main = (el, opts) => {
   const ael = new Element(el, opts)
@@ -20,6 +21,9 @@ main.viewport = (el, opts) => {
   console.log('AffineViewport created:', av)
   return av
 }
+
+main.createTransform = Transform.createFromParams
+main.estimateTransform = Transform.estimate
 
 // main.geom = require('./lib/geom')
 main.preload = require('loadimages')
