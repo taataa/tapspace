@@ -1,4 +1,4 @@
-const findCommon = require('../../lib/Element/lib/findCommon')
+const findCommon = require('../../lib/dom/findCommon')
 const template = require('./template.ejs')
 
 module.exports = (test) => {
