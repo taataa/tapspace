@@ -4,6 +4,8 @@ const units = {
   // General
   version: require('./version.test'),
   tools: require('./tools.test'),
+  // Geometry
+  Point: require('./Point.test'),
   // Elements
   Element: require('./Element.test')
 }
