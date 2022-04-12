@@ -2,6 +2,7 @@ const affinedom = require('../../index')
 const template = require('./template.ejs')
 
 module.exports = function (test) {
+  const container = document.getElementById('container')
 
   test('Point:distanceTo', (t) => {
     // Setup

@@ -1,14 +1,14 @@
-var tapspace = require('../../index')
-var pjson = require('../../package.json')
-var semver = require('semver')
+const tapspace = require('../../index')
+const pjson = require('../../package.json')
+const semver = require('semver')
 
-module.exports = function (test) {
-  test('correctly formatted', function (t) {
+module.exports = (test) => {
+  test('correctly formatted', (t) => {
     t.ok(semver.valid(tapspace.version), 'valid semantic version')
     t.end()
   })
 
-  test('match package.json', function (t) {
+  test('match package.json', (t) => {
     t.equal(tapspace.version, pjson.version, 'version match')
     t.end()
   })
