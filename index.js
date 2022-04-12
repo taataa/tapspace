@@ -26,7 +26,7 @@ main.createTransform = Transform.createFromParams
 main.estimateTransform = Transform.estimate
 
 // Interaction
-main.input = require('./input')
+main.input = require('./lib/input')
 
 // main.geom = require('./lib/geom')
 main.preload = require('loadimages')
