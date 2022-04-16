@@ -28,7 +28,7 @@ main.estimateTransform = Transform.estimate
 // Interaction
 main.input = require('./lib/input')
 
-// main.geom = require('./lib/geom')
+// main.geom = require('./lib/geom') // geom classes or affineplane?
 main.preload = require('loadimages')
 main.version = require('./lib/version')
 
