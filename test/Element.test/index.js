@@ -42,8 +42,10 @@ module.exports = function (test) {
     const aview = affinedom.viewport('.affine-viewport')
     const aelem = affinedom('.affine-element')
     const tr = affinedom.createTransform(aview, {
-      rotate: Math.PI / 6 // rotate 30 degrees clockwise
+      rotate: Math.PI / 6, // rotate 30 degrees clockwise
+      scale: 0.5
     })
+
     // Test and allow browser a moment to render
     setTimeout(() => {
       t.equal(document.elementFromPoint(300, 20),
