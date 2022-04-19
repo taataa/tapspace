@@ -112,7 +112,8 @@
         // Fortunately we can use Tapspace's coordinates to command Viz.
         var tapy = new tapspace.Touchable(view, networkItem)
         tapy.start({
-          tap: true
+          tap: true,
+          preventDefault: false
         })
         tapy.on('tap', function (ev) {
           // Convert viewport coordinates on the canvas.
