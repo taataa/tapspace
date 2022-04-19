@@ -107,6 +107,24 @@
         }
         var network = new vis.Network(networkElement, data, options);
 
+        // Vis.js uses Hammer.js for gestures and their coordinates
+        // are not compatible with Tapspace's way to position elements.
+        // Fortunately we can use Tapspace's coordinates to command Viz.
+        var tapy = new tapspace.Touchable(view, networkItem)
+        tapy.start({
+          tap: true
+        })
+        tapy.on('tap', function (ev) {
+          // Convert viewport coordinates on the canvas.
+          var pointOnCanvas = ev.points[0].to(networkItem)
+          console.log('tap', pointOnCanvas.x, pointOnCanvas.y)
+          // Select node at tap position. Node ID is null if not found.
+          var clickedNodeId = network.getNodeAt(pointOnCanvas)
+          if (clickedNodeId) {
+            network.selectNodes([clickedNodeId])
+          }
+        })
+
         // Uncomment to inspect click events:
         // network.on('click', function (ev) {
         //   console.log('click', ev)
