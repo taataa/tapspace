@@ -7,8 +7,8 @@
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+  <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://unpkg.com/vis-network@9.1.2/styles/vis-network.min.css">
 
   <style>
     html, body, #space {
@@ -31,8 +31,8 @@
 
   <!-- Heading -->
   <div style="position: absolute; top: 0px; padding-left: 1em">
-    <h2 style="margin-bottom: 0.38em">Vis.js integration – <a style="color: cyan" href="http://taataa.github.io/tapspace">Tapspace</a> example</h2>
-    <p>Here, we integrated a <a style="color: cyan" href="https://almende.github.io/vis/network_examples.html">Vis.js network</a> with Tapspace to make it zoomable and recursive. Use your fingers to zoom!</p>
+    <h2 style="margin-bottom: 0.38em">Vis.js integration – a <a style="color: cyan" href="http://taataa.github.io/tapspace">Tapspace</a> example</h2>
+    <p>Here, we integrated a <a style="color: cyan" href="https://almende.github.io/vis/network_examples.html">Vis.js network</a> with Tapspace to make it zoomable and recursive. Scroll or pinch to zoom!</p>
   </div>
 
   <script src="../assets/ghoulog.js"></script>
@@ -51,32 +51,38 @@
         translate: true,
         scale: true
       })
+      var scrolly = new tapspace.Wheelable(view, view)
+      scrolly.start({
+        scale: true
+      })
 
       // A container for a vis.js network
       var networkItem = new tapspace.SpaceHTML('<div id="vis-network"></div>', space)
       var networkElement = view.getElementBySpaceItem(networkItem)
+      networkElement.style.border = '1px solid gray'
 
       // Position the container
-      networkItem.setSize(300, 300)
+      networkItem.setSize(600, 600)
       networkItem.translate(networkItem.atMid(), view.atMid())
+      networkItem.scale(networkItem.atMid(), 0.5)
 
       var initVisNetwork = function () {
         // Create nodes
         var nodes = new vis.DataSet([
-        { id: 1, label: 'Node 1' },
-        { id: 2, label: 'Node 2' },
-        { id: 3, label: 'Node 3' },
-        { id: 4, label: 'Node 4' },
-        { id: 5, label: 'Node 5' }
+          { id: 1, label: 'Node 1' },
+          { id: 2, label: 'Node 2' },
+          { id: 3, label: 'Node 3' },
+          { id: 4, label: 'Node 4' },
+          { id: 5, label: 'Node 5' }
         ])
 
         // Create edges
         var edges = new vis.DataSet([
-        { from: 1, to: 3 },
-        { from: 1, to: 2 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 },
-        { from: 3, to: 3 }
+          { from: 1, to: 3 },
+          { from: 1, to: 2 },
+          { from: 2, to: 4 },
+          { from: 2, to: 5 },
+          { from: 3, to: 3 }
         ])
 
         // Create the network
@@ -84,8 +90,32 @@
           nodes: nodes,
           edges: edges
         }
-        var options = {}
+        var options = {
+          // Disable vis.js internal navigation
+          interaction: {
+            dragNodes: false,
+            dragView: false,
+            keyboard: false,
+            zoomView: false,
+            selectable: false,
+            selectConnectedEdges: false
+          },
+          // Predictable layout
+          layout: {
+            randomSeed: '0.9739068353217633:1650377797613'
+          }
+        }
         var network = new vis.Network(networkElement, data, options);
+
+        // Uncomment to inspect click events:
+        // network.on('click', function (ev) {
+        //   console.log('click', ev)
+        // })
+
+        // Uncomment to find alternative layout seeds:
+        // setTimeout(function () {
+        //   console.log('layoutSeed', network.getSeed())
+        // }, 500)
       }
       initVisNetwork() // run the vis network
     })() // run the app
