@@ -142,6 +142,13 @@ Modes of direct manipulation allowed by `Touchable`<br>
 </div>
 
 <div style="clear: both">
+<img src="examples/visjs/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>Vis.js Network</h3>
+Interactive and recursive <a href="https://visjs.github.io/vis-network/docs/network/">Vis.js networks</a> on Tapspace<br>
+<a href="examples/visjs/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/visjs/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/hammerjs/preview.jpg" style="float: left; margin: 0 1em 0 0">
 <h3>HammerJS</h3>
 What if touch interaction is implemented with <a href="https://hammerjs.github.io/">HammerJS</a> instead of `Touchable`?<br>
