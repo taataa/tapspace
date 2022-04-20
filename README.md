@@ -16,11 +16,11 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 ## Documentation
 
-See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
-- [Features](http://taataa.github.io/tapspace#features)
-- [Example applications](http://taataa.github.io/tapspace#examples)
-- [API Reference](http://taataa.github.io/tapspace/api)
-- [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
+See [taataa.github.io/tapspace](https://taataa.github.io/tapspace) for:
+- [Features](https://taataa.github.io/tapspace#features)
+- [Example applications](https://taataa.github.io/tapspace#examples)
+- [API Reference](https://taataa.github.io/tapspace/api)
+- [Developer's Cheat Sheet](https://taataa.github.io/tapspace/dev)
 
 
 ## License
