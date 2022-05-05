@@ -36,6 +36,27 @@ module.exports = function (test) {
     t.end()
   })
 
+  test('Element:rotateBy', (t)) => {
+    // Setting
+    container.innerHTML = template()
+    const aview = affinedom.viewport('.affine-viewport')
+    const aelem = affinedom('.affine-element')
+
+    aelem.rotateBy(aelem.atMid(), Math.PI / 2)
+
+    const rot = aelem.getRotation()
+
+    setTimeout(() => {
+      t.equal(document.elementFromPoint(300, 20),
+        aelem.el, 'element at 300,20')
+      aelem.transformBy(tr)
+      t.notEqual(document.elementFromPoint(300, 20),
+        aelem.el, 'element not at 300,20')
+
+      t.end()
+    }, 0)
+  })
+
   test('Element:transformBy', (t) => {
     // Setting
     container.innerHTML = template()
