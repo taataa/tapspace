@@ -28,6 +28,12 @@ and how they must be arranged in the DOM. Also, if the library updates its
 DOM structure, for example to overcome some browser constraints, the user
 does not need to migrate the host app DOM.
 
+aview = new tapspace.View(querystring or element)
+alayer = new tapspace.Layer()
+agroup = new tapspace.Group()
+
+
+
 # Affine Element
 
 To avoid duplicating the DOM structure, we must somehow
