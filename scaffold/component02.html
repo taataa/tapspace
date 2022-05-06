@@ -1,0 +1,47 @@
+<script>
+  const container = document.querySelector('#tapspace')
+
+  const view = new tapspace.Viewport(container, opts)
+  const space = new tapspace.Space()
+
+  view.add(space, {
+    position: { x: 0, y: 0 },
+    rotation: Math.PI / 5,
+    scale: 2,
+    depth: 0
+  })
+
+  const myHtml = template({ msg: 'Hello' })
+  const component = new tapspace.Component(myHtml, {
+    anchor: { x: 150, y: 100 },
+    size: { width: 300, height: 200 }
+  })
+
+  // Insert component to space on the default layer z=0.
+  space.add(component, {
+    position: space.at(100, 100),
+    rotation: Math.PI / 5,
+    scale: 2
+  }) // .add .append
+
+  const space2 = new tapspace.Space()
+
+  view.add(space2, {
+    position: space.at(100, 50),
+    rotation: Math.PI / 5,
+    scale: 2,
+    depth: 2
+  })
+
+  // Implicit render via transformed events
+  component.translateBy({
+    // basis: tile (self)
+    x: 20,
+    y: 10
+  })
+
+  // Explicit render
+  component.position.x += 20
+  component.position.y += 10
+  view.render()
+</script>

@@ -21,6 +21,13 @@ alayer = affine.layer(elem)
 Allow affine elements without layer or viewport as an ancestor.
 This enables affinedom to be used for animations and transform controlling.
 
+Alternatively follow the approach of Vis.js and Google Maps JS API:
+Require user to give the container element and let the library handle
+the rest. Benefit: user does not need to understand how the space elements work
+and how they must be arranged in the DOM. Also, if the library updates its
+DOM structure, for example to overcome some browser constraints, the user
+does not need to migrate the host app DOM.
+
 # Affine Element
 
 To avoid duplicating the DOM structure, we must somehow
@@ -58,6 +65,9 @@ Alternatively, explicit and verbose placement parameters:
   rotation, r
   depth, z
 With view, these are converted into a CSS transform matrix.
+
+Consider affine frames instead of affine elements.
+AffineFrame, AffineContainer, AffineSection, AffineSpace, or AffineBlock
 
 # Layout managers
 
