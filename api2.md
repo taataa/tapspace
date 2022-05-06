@@ -10,6 +10,7 @@ API design problems
 
 Separation of concerns
   transformation construction vs moving the element
+  positioning vs interaction
 
 # Construction
 
@@ -30,7 +31,7 @@ HTMLElement.affine
   AffineElement
     el
       HTMLElement (cyclic reference)
-    tr
+    proj (alias tr)
       { a, b, x, y }
     type
       element, viewport, layer
@@ -49,6 +50,14 @@ Instead of tr we could have { s, r, x, y } where
 Also we could have all the matrix components: { a, b, c, d, x, y }
 We note that { s, r } or { a, b, c, d } define the vector space
 of the affine plane.
+
+Alternatively, explicit and verbose placement parameters:
+  gravity, anchor, point on the element
+  position, origin, point on the parent
+  scale, s
+  rotation, r
+  depth, z
+With view, these are converted into a CSS transform matrix.
 
 # Layout managers
 
