@@ -188,10 +188,24 @@ initial creation vs depth updates
 
 # Interaction
 
-capabilities, limits, modes
+Aspects: freedoms, capabilities, movement limits, modes, restriction
 
-movable, slidable
+movable, slidable, translatable, pannable
 
+view.setOptions({
+  interaction: {
+    panning: true,
+    scaling: true,
+    rotation: true
+  }
+})
+
+view.makeDraggable()
+view.interaction.enable() .enableInteraction()
+
+view.navigation .io .interaction .input
+
+const drag = new tapspace.interaction.Drag(params)
 
 # Layers and z
 

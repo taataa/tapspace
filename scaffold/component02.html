@@ -42,4 +42,25 @@
   component.position.x += 20
   component.position.y += 10
   view.render()
+
+  // Interactive component
+  const drag = new tapspace.interaction.Drag({
+    source: component,
+    target: component,
+    boundary: polygon,
+    start: false // optional, start immediately, default true
+  })
+  drag.start()
+  drag.on('dragend', () => {
+    console.log('dragend')
+    drag.stop()
+  })
+
+  const tap = new tapspace.interaction.Tap({
+    source: component,
+    minDuration: 100,
+    maxTravel: 10
+  })
+  tap.on('tap', () => {})
+
 </script>
