@@ -1,4 +1,4 @@
-const affinedom = require('../../index')
+const tapspace = require('../../index')
 const template = require('./template.ejs')
 
 module.exports = function (test) {
@@ -7,8 +7,8 @@ module.exports = function (test) {
   test('Point:distanceTo', (t) => {
     // Setup
     container.innerHTML = template()
-    const aview = affinedom.viewport('.affine-viewport')
-    const aelem = affinedom('.affine-element')
+    const aview = tapspace.viewport('.affine-viewport')
+    const aelem = tapspace('.affine-element')
     aelem.translateBy({ x: 10, y: 6 })
     // Two points dx:40, dy:30
     const pointAOnElem = aelem.at(0, 0)

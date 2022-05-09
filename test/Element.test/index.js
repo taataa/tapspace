@@ -1,7 +1,7 @@
-const affinedom = require('../../index')
+const tapspace = require('../../index')
 const template = require('./template.ejs')
 require('./zeroedge.css')
-require('../../affinedom.css')
+require('../../tapspace.css')
 
 module.exports = function (test) {
   const container = document.getElementById('container')
@@ -19,8 +19,8 @@ module.exports = function (test) {
   test('Element:at', (t) => {
     // Setup
     container.innerHTML = template()
-    const aview = affinedom.viewport('.affine-viewport')
-    const aelem = affinedom('.affine-element')
+    const aview = tapspace.viewport('.affine-viewport')
+    const aelem = tapspace('.affine-element')
     aelem.translateBy({ x: 10, y: 6 })
 
     const xyOnElem = aelem.at(0, 0)
@@ -39,8 +39,8 @@ module.exports = function (test) {
   test('Element:rotateBy', (t)) => {
     // Setting
     container.innerHTML = template()
-    const aview = affinedom.viewport('.affine-viewport')
-    const aelem = affinedom('.affine-element')
+    const aview = tapspace.viewport('.affine-viewport')
+    const aelem = tapspace('.affine-element')
 
     aelem.rotateBy(aelem.atMid(), Math.PI / 2)
 
@@ -60,9 +60,9 @@ module.exports = function (test) {
   test('Element:transformBy', (t) => {
     // Setting
     container.innerHTML = template()
-    const aview = affinedom.viewport('.affine-viewport')
-    const aelem = affinedom('.affine-element')
-    const tr = affinedom.createTransform(aview, {
+    const aview = tapspace.viewport('.affine-viewport')
+    const aelem = tapspace('.affine-element')
+    const tr = tapspace.createTransform(aview, {
       rotate: Math.PI / 6, // rotate 30 degrees clockwise
       scale: 0.5
     })
