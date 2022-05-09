@@ -36,7 +36,7 @@ module.exports = function (test) {
     t.end()
   })
 
-  test('Element:rotateBy', (t)) => {
+  test('Element:rotateBy', (t) => {
     // Setting
     container.innerHTML = template()
     const aview = tapspace.viewport('.affine-viewport')
