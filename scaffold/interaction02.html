@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tapspace scaffold</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    body {
+      background: gray;
+      color: black;
+    }
+    .container {
+      background: lightgray;
+    }
+    .myspaceapp {
+      background: white;
+    }
+    .mycomponent {
+      background: lightblue;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+  const container = document.querySelector('#tapspace')
+
+  const view = new tapspace.Viewport(container, {
+    size: { width: 500, height: 300 }
+  })
+  const layer = new tapspace.Layer()
+
+  view.add(layer, {
+    position: view.atMid()
+  })
+
+  const html = '<p>Lorem ipsum dolor sit amon</p>'
+  const component = new tapspace.Component(html, {
+    anchor: { x: 150, y: 150 },
+    size: { width: 300, height: 300 },
+    className: 'mycomponent'
+  })
+
+  // Insert component to space on the default layer.
+  layer.add(component, {
+    position: layer.at(10, 10)
+  }) // .add .append
+
+  </script>
+</body>
+</html>
