@@ -84,6 +84,33 @@ Examples of layout managers:
 - perspective viewport: children can be assigned z coordinate.
 - fractal: similar to viewport, with recursive modules
 
+# Applying transforms in DOM
+
+Tapspace uses CSS Transform to move elements. The CSS transforms allow smooth scale and rotation.
+
+What happens when we update CSS Transform via JS?
+First the code interacts with CSS Object Model (CSSOM).
+A change in a CSS property might trigger browser to reflow or repaint content.
+The exact stages the browser needs to execute depends on the browser engine and the CSS property.
+A reference for which stages CSS properties trigger can be found at https://csstriggers.com/
+According to the CSStriggers, changing transform does not trigger geometry changes or painting and is therefore very efficiently carried by the compositor thread. However, Webkit and Edge browsers might reflow and repaint. Blink and Gecko browsers run only the compositor. The Google Chrome is a Blink browser (2022). Safari is still a Webkit browser (2022). Firefox uses the Gecko engine.
+
+When to update CSS Transform?
+  Approach 1: in the methods that modify projection.
+    Pro: very simple, code within same function
+    Pro: usage without viewport might be possible
+    Con: every proj change will update CSS.
+    Con: the CSS transform might need to depend on viewport settings, e.g. for 3D.
+  Approach 2: by the viewport.
+    Pro: viewport is in control how to project the elements.
+    Pro: viewport can use requestAnimationFrame to time the render.
+    Con: The modified elements must somehow inform the viewport that they need CSS update.
+
+Approach 1 is tempting in simplicity. Approach 2 is more complex but more flexible.
+If we want to support full 3D in future, Approach 2 is a must.
+
+A reference on CSS 3D transformations on nested elements:
+https://davidwalsh.name/3d-transforms
 
 # Affine Layers
 
@@ -139,6 +166,7 @@ affine.transform.estimate({ sourcePoints, targetPoints })
 All points must be in same system
 sourcePoints.map(affine.point.changeBasis())
 
+component.snap({ anchors, targets })
 
 # Limiting and linking moves
 
