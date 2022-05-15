@@ -125,6 +125,7 @@ Absolute positioning takes the element out of the layout flow [1, p.57]
 Custom DOM events versus using Emitter. The former is slower [2].
 Each affine element could cache the the viewport for quick access.
 
+Approach 1 is probably enough. CSS can handle nested 3D with perspective. Therefore we can apply things directly in the AbstractPlane. Browsers already group css changes until the flush is needed [1].
 
 [1] Zakas. High Performance JavaScript. Book.
 [2] Difference between ways of event handling https://stackoverflow.com/q/6570523/638546
