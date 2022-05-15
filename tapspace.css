@@ -5,6 +5,8 @@
     Only absolutely positioned elements can be transformed.
   */
   display: block;
+  margin: 0;
+  padding: 0;
   position: absolute;
   top: 0;
   left: 0;
