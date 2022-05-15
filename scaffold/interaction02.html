@@ -50,15 +50,21 @@
 
   const html = '<p>Lorem ipsum dolor sit amon</p>'
   const component = new tapspace.Component(html, {
-    anchor: { x: 150, y: 150 },
+    anchor: { x: 150, y: 100 },
     size: { width: 300, height: 300 },
     className: 'mycomponent'
   })
 
   // Insert component to space on the default layer.
   layer.add(component, {
-    position: layer.at(10, 10)
+    position: layer.at(30, 20)
   }) // .add .append
+
+  component.rotateBy(0.7)
+  component.scaleBy(0.7)
+  // setInterval(function () {
+  //   component.scaleBy(0.97)
+  // }, 100)
 
   </script>
 </body>
