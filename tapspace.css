@@ -1,7 +1,10 @@
 .affine-element {
   /* Space elements are positioned by using transform matrices.
-    To make this work, the elements must be positioned at the top-left corner
-    of the parent. */
+    To make this work, the elements must be positioned absolutely
+    at the top-left corner of the parent.
+    Only absolutely positioned elements can be transformed.
+  */
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
