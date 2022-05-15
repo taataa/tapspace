@@ -86,7 +86,7 @@ Examples of layout managers:
 
 # Applying transforms in DOM
 
-Tapspace uses CSS Transform to move elements. The CSS transforms allow smooth scale and rotation.
+Tapspace uses CSS Transform to move elements. The CSS transforms allow smooth scale and rotation. In early versions the lib used element.offsetLeft and .offsetTop. Rotations and scalings were difficult.
 
 What happens when we update CSS Transform via JS?
 First the code interacts with CSS Object Model (CSSOM).
@@ -107,10 +107,27 @@ When to update CSS Transform?
     Con: The modified elements must somehow inform the viewport that they need CSS update.
 
 Approach 1 is tempting in simplicity. Approach 2 is more complex but more flexible.
-If we want to support full 3D in future, Approach 2 is a must.
+If we want to support full 3D in future, the Approach 2 is probably better.
 
 A reference on CSS 3D transformations on nested elements:
 https://davidwalsh.name/3d-transforms
+
+We might be able to use CSS 3D in Tapspace. The transform-style:preserve-3d property enables nested 3D elements. A possible risk is that the projection algorithm needs to be rewritten in 3D. Correct projection of input coordinates might be difficult.
+
+Viewport could update mode of planes between 2d and 3d. There also could be a mixture of 3D and 2D elements in the space.
+
+Should we use requestAnimationFrame (RAF)? The MDN example on RAF displays it being applied to CSS transform property. If the viewport drives CSS transforms, RAF usage is possible. Its use would group the CSS transform updates before browser render stage. The fear is that if done like Approach 1, each transform will cause CSS update and trigger browser render, thus slowing down the execution. However, according to [1, p.51], browsers optimize the process by queueing the changes an flushing them from time to time. Access to certain layout properties might unintentionally cause the flush. These properties include clientTop and offsetTop and scrollTop and similar, which we might need to call during interaction.
+
+Modify DOM off the document. Either temporarily display:none or use of document fragment.
+
+Absolute positioning takes the element out of the layout flow [1, p.57]
+
+Custom DOM events versus using Emitter. The former is slower [2].
+Each affine element could cache the the viewport for quick access.
+
+
+[1] Zakas. High Performance JavaScript. Book.
+[2] Difference between ways of event handling https://stackoverflow.com/q/6570523/638546
 
 # Affine Layers
 
@@ -268,3 +285,9 @@ regardless of perspective?
 
 
 # Fractal
+
+
+# Spiral
+
+Archimedian spiral might be good for even, equally distributed spiral layout.
+See for example https://codegolf.stackexchange.com/q/247259/107547
