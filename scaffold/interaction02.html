@@ -66,7 +66,19 @@
   //   component.scaleBy(0.97)
   // }, 100)
 
-  view.translateBy({x:150, y:100})
+  view.translateBy({x:100, y:100})
+
+  const capturer = new tapspace.interaction.TransformCapturer(view.element)
+  capturer.on('gesturestart', (ev) => {
+    console.log('gesturestart', ev)
+  })
+  capturer.on('gesturemove', (ev) => {
+    // console.log('gesturemove', ev)
+    view.transformLayersBy(ev.delta)
+  })
+  capturer.on('gestureend', (ev) => {
+    console.log('gestureend', ev)
+  })
 
   </script>
 </body>
