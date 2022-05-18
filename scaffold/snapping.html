@@ -23,6 +23,10 @@
     }
     .mycomponent {
       background: lightblue;
+      padding: 0 1rem;
+    }
+    .crosshair {
+      background: red;
     }
   </style>
 </head>
@@ -40,7 +44,7 @@
   const container = document.querySelector('#tapspace')
 
   const view = new tapspace.Viewport(container, {
-    size: { width: 500, height: 300 }
+    size: { width: 800, height: 600 }
   })
   const layer = new tapspace.Layer()
 
@@ -48,18 +52,28 @@
     position: view.atMid()
   })
 
-  const html = '<p>Lorem ipsum dolor sit amon</p>'
+  const par = (t) => '<p>' + t + '</p>'
   const opts = {
     anchor: { x: 150, y: 150 },
     size: { width: 300, height: 300 },
     className: 'mycomponent'
   }
-  const compa = new tapspace.Component(html, opts)
-  const compb = new tapspace.Component(html, opts)
-  const compc = new tapspace.Component(html, opts)
+  const compa = new tapspace.Component(par('Component A'), opts)
+  const compb = new tapspace.Component(par('Component B'), opts)
+  const compc = new tapspace.Component(par('Component C'), opts)
+
+  const crosshair = new tapspace.Component('', {
+    anchor: { x: 3, y: 3 },
+    size: { width: 6, height: 6 },
+    className: 'crosshair'
+  })
 
   // Insert components to space.
   layer.add(compa).add(compb).add(compc)
+
+  layer.add(crosshair, {
+    position: { x: 0, y: 0 }
+  })
 
   // component.rotateBy(0.7)
   // component.scaleBy(0.7)
@@ -68,6 +82,26 @@
   // }, 100)
 
   // view.translateBy({x:100, y:100})
+
+  compc.rotateBy(Math.PI / 4)
+  compb.rotateBy(-Math.PI / 4)
+
+  compc.match({
+    sources: compc.atTopRight(),
+    targets: layer.atAnchor()
+  })
+
+  compb.match({
+    sources: compb.atTopLeft(),
+    targets: compc.atTopRight()
+  })
+
+  compa.match({
+    sources: [compa.atTopLeft(), compa.atTopRight()],
+    targets: [compb.atTopRight(), compc.atTopLeft()]
+  })
+
+  crosshair.moveTo(compa.atTopLeft())
 
   </script>
 </body>
