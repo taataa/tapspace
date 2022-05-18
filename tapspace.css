@@ -1,12 +1,14 @@
 .affine-element {
+  display: block;
+  /* Ensure zero margin and zero padding */
+  margin: 0;
+  padding: 0;
+  /* Ensure that user-defined padding does not affect size. */
+  box-sizing: border-box;
   /* Space elements are positioned by using transform matrices.
     To make this work, the elements must be positioned absolutely
     at the top-left corner of the parent.
-    Only absolutely positioned elements can be transformed.
-  */
-  display: block;
-  margin: 0;
-  padding: 0;
+    Only absolutely positioned elements can be transformed. */
   position: absolute;
   top: 0;
   left: 0;
