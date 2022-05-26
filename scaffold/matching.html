@@ -58,51 +58,50 @@
     size: { width: 300, height: 300 },
     className: 'mycomponent'
   }
-  const compa = new tapspace.Component(par('Component A'), opts)
-  const compb = new tapspace.Component(par('Component B'), opts)
-  const compc = new tapspace.Component(par('Component C'), opts)
+  const originComp = new tapspace.Component(par('Beginning'), opts)
 
+  const iteration = (prev, i) => {
+    const label = par('Component ' + i)
+    const comp = new tapspace.Component(label, opts)
+    layer.add(comp, { preserve: true })
+
+    comp.rotateBy(-0.6 * i)
+    comp.scaleBy(Math.pow(0.62, i))
+    comp.match({
+      source: comp.atTopLeft(),
+      target: prev.atTopRight()
+    })
+
+    return comp
+  }
+
+  const iterate = (prev, n, i) => {
+    if (!i) i = 1
+    if (i > n) return
+    const next = iteration(prev, i)
+    iterate(next, n, i + 1)
+  }
+
+  // Insert components to space.
+  layer.add(originComp)
+
+  // Helpful Crosshair
   const crosshair = new tapspace.Component('', {
     anchor: { x: 3, y: 3 },
     size: { width: 6, height: 6 },
     className: 'crosshair'
   })
-
-  // Insert components to space.
-  layer.add(compa).add(compb).add(compc)
-
   layer.add(crosshair, {
     position: { x: 0, y: 0 }
   })
 
-  // component.rotateBy(0.7)
-  // component.scaleBy(0.7)
-  // setInterval(function () {
-  //   component.scaleBy(0.97)
-  // }, 100)
+  iterate(originComp, 4)
 
-  // view.translateBy({x:100, y:100})
-
-  compc.rotateBy(Math.PI / 4)
-  compb.rotateBy(-Math.PI / 4)
-
-  compc.match({
-    sources: compc.atTopRight(),
-    targets: layer.atAnchor()
-  })
-
-  compb.match({
-    sources: compb.atTopLeft(),
-    targets: compc.atTopRight()
-  })
-
-  compa.match({
-    sources: [compa.atTopLeft(), compa.atTopRight()],
-    targets: [compb.atTopRight(), compc.atTopLeft()]
-  })
-
-  crosshair.moveTo(compa.atTopLeft())
-
+  setInterval(() => {
+    view.scaleBy(0.995, { anchor: view.atNorm(0.5, 0.1) })
+    // view.translateBy({ x: 0, y: -150 })
+    crosshair.moveTo(view.atCenter())
+  }, 100)
   </script>
 </body>
 </html>
