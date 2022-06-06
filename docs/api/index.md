@@ -92,7 +92,7 @@ A semantic version string identical to the version in the module's `package.json
 
 **Experimental Method** `setLocal3d(pivot, vec3)` can be used to place objects with 3D coordinates. The method takes a `Vector` vanishing point and a literal 3D point `{ x, y, z }`. The `z` property acts as a distance i.e. a perspective scaling factor towards the vanishing point. The `x` and `y` properties describe translation at the distance `z`. The method replaces the local transformation with a translate-scale transformation.
 
-**Emits** `resized` with a payload `{ source: <AbstractRectangle>, newSize: <Size>, oldSize: <Size> }`.
+**Emits** `resized` with a payload `{ source: <AbstractFrame>, newSize: <Size>, oldSize: <Size> }`.
 
 **Method** `#atNorm(x, y)` returns `IVector` from a point relative to the rectangle dimensions. For example `#atNorm(0, 1)` gives the bottom-left corner and `#atNorm(0.5, 0.5)` gives the middle point.
 
