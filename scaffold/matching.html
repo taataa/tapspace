@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tapspace scaffold</title>
+  <title>Matching - Tapspace Features</title>
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -23,7 +23,11 @@
     }
     .mycomponent {
       background: lightblue;
-      padding: 0 1rem;
+      padding: 1rem 1rem;
+      font-size: 2rem;
+    }
+    .mycomponent p {
+      margin-top: 0;
     }
     .crosshair {
       background: red;
@@ -65,7 +69,7 @@
     const comp = new tapspace.Component(label, opts)
     layer.add(comp, { preserve: true })
 
-    comp.rotateBy(-0.6 * i)
+    comp.rotateBy(-1.9 - 0.5 * i)
     comp.scaleBy(Math.pow(0.62, i))
     comp.match({
       source: comp.atTopLeft(),
@@ -95,13 +99,11 @@
     position: { x: 0, y: 0 }
   })
 
-  iterate(originComp, 4)
+  iterate(originComp, 9)
 
-  setInterval(() => {
-    view.scaleBy(0.995, { anchor: view.atNorm(0.5, 0.1) })
-    // view.translateBy({ x: 0, y: -150 })
-    crosshair.moveTo(view.atCenter())
-  }, 100)
+  view.scaleBy(0.8, { anchor: view.atNorm(0.5, 0.9) })
+  crosshair.moveTo(view.atCenter())
+
   </script>
 </body>
 </html>
