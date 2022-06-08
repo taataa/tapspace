@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tap - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: white;
+    }
+    .mycomponent {
+      background: lightblue;
+      padding: 1rem 1rem;
+      font-size: 2rem;
+    }
+    .mycomponent p {
+      margin-top: 0;
+    }
+    .crosshair {
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const viewport = tapspace.viewport('#tapspace')
+    const layer = viewport.layer(1)
+
+    const template = (t) => '<p>' + t + '</p>'
+    const component = layer.component(template)
+
+    component.tappable()
+    component.on('tap', (ev) => {
+      console.log('tap', ev)
+    })
+  </script>
+</body>
+</html>
