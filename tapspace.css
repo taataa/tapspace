@@ -26,11 +26,22 @@
 }
 .affine-layer,
 .affine-group,
-.affine-plane,
-.affine-controls {
+.affine-plane {
   /* Planes themselves have zero size to allow pointer events reach
     elements on the layers below. To make elements on the plane visible,
     they must be visible over the plane borders. */
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+.affine-controls {
+  /* Controls must be visible on top of layers but their container
+     must not have size so that the container area does not steal
+     input events from space. */
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
   overflow: visible;
