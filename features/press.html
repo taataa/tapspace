@@ -49,7 +49,7 @@
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const component = tapspace.component(template('Tap me!'))
+    const component = tapspace.component(template('Tap me for a tiny effect'))
     component.element.classList.add('mycomponent')
     layer.add(component)
 
@@ -58,22 +58,8 @@
 
     // React to tap events
     component.on('tapstart', (ev) => {
-      component.element.classList.add('active')
-      console.log('tapstart', ev)
-    })
-    component.on('tapend', (ev) => {
-      component.element.classList.remove('active')
-      console.log('tapend', ev)
-    })
-    component.on('tapcancel', (ev) => {
-      component.element.classList.remove('active')
-      console.log('tapcancel', ev)
-    })
-    component.on('tap', (ev) => {
-      component.element.classList.remove('active')
       const label = component.element.querySelector('p')
-      label.innerHTML = 'I was tapped :)'
-      console.log('tap', ev)
+      label.innerHTML = 'Did you see, I moved!'
       tapspace.effects.press(component)
     })
   </script>
