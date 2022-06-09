@@ -46,7 +46,7 @@
     const layer = viewport.layer()
 
     const template = (t) => '<p>' + t + '</p>'
-    const component = tapspace.component(template)
+    const component = tapspace.component(template('Tap me'))
     layer.add(component)
 
     component.tappable()
