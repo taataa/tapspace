@@ -18,18 +18,19 @@
       color: grey;
     }
     .myspaceapp {
-      background: white;
+      background: gray;
     }
     .mycomponent {
-      background: lightblue;
-      padding: 1rem 1rem;
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
       font-size: 2rem;
     }
-    .mycomponent p {
-      margin-top: 0;
-    }
-    .crosshair {
-      background: red;
+    .mycomponent.active {
+      background: #EEE;
     }
   </style>
 </head>
@@ -42,24 +43,36 @@
 
   <!-- Your code -->
   <script>
+    // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.viewport('#tapspace')
     const layer = viewport.layer()
 
-    const template = (t) => '<p>' + t + '</p>'
-    const component = tapspace.component(template('Tap me'))
+    // Create a component
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const component = tapspace.component(template('Tap me!'))
+    component.element.classList.add('mycomponent')
     layer.add(component)
 
+    // Make the component emit tap events
     component.tappable()
+
+    // React to tap events
     component.on('tapstart', (ev) => {
+      component.element.classList.add('active')
       console.log('tapstart', ev)
     })
     component.on('tapend', (ev) => {
+      component.element.classList.remove('active')
       console.log('tapend', ev)
     })
     component.on('tapcancel', (ev) => {
+      component.element.classList.remove('active')
       console.log('tapcancel', ev)
     })
     component.on('tap', (ev) => {
+      component.element.classList.remove('active')
+      const label = component.element.querySelector('p')
+      label.innerHTML = 'I was tapped :)'
       console.log('tap', ev)
     })
   </script>
