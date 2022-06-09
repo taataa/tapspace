@@ -50,6 +50,12 @@
     layer.add(component)
 
     component.tappable()
+    component.on('tapstart', (ev) => {
+      console.log('tapstart', ev)
+    })
+    component.on('tapend', (ev) => {
+      console.log('tapend', ev)
+    })
     component.on('tap', (ev) => {
       console.log('tap', ev)
     })
