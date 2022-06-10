@@ -56,6 +56,9 @@
     // Make the component emit drag events
     component.draggable()
 
+    // Modify the label with gestures
+    const label = component.element.querySelector('p')
+
     // React to tap events
     component.on('dragstart', (ev) => {
       component.element.classList.add('active')
@@ -66,16 +69,17 @@
     })
     component.on('dragend', (ev) => {
       component.element.classList.remove('active')
+      label.innerHTML = 'Drag me!'
       console.log('dragend', ev)
     })
     component.on('dragcancel', (ev) => {
       component.element.classList.remove('active')
+      label.innerHTML = 'Drag me!'
       console.log('dragcancel', ev)
     })
     component.on('drag', (ev) => {
-      const label = component.element.querySelector('p')
-      label.innerHTML = 'I was dragged :)'
-      console.log('drag', ev)
+      label.innerHTML = 'I am dragged :)'
+      // console.log('drag', ev)
     })
   </script>
 </body>
