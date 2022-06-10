@@ -58,9 +58,9 @@
     })
 
     // Make the viewport pannable
-    // TODO solve inversion problem
     // TODO set limits
-    viewport.draggable()
+    viewport.pannable()
+    viewport.on('pan', ev => console.log('pan', ev))
   </script>
 </body>
 </html>
