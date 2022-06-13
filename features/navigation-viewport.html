@@ -50,17 +50,24 @@
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const compOptions = { className: 'mycomponent' }
-    layer.add(tapspace.component(template('Block A'), compOptions), {
+    const blockA = tapspace.component(template('Block A'), compOptions)
+    const blockB = tapspace.component(template('Block B'), compOptions)
+    layer.add(blockA, {
       position: viewport.atNorm(0.1, 0.1)
     })
-    layer.add(tapspace.component(template('Block B'), compOptions), {
-      position: viewport.atMid()
+    layer.add(blockB, {
+      position: blockA.atBottomRight()
     })
 
     // Make the viewport pannable
     // TODO set limits
     viewport.pannable()
-    viewport.on('pan', ev => console.log('pan', ev))
+
+    // Center to blocks
+    viewport.match({
+      source: viewport.atMid(),
+      target: blockA.atBottomRight()
+    })
   </script>
 </body>
 </html>
