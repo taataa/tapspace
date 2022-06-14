@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rotatable Viewport - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rotatable Viewport – Tapspace Features</h1>
+  <p>You can interact with the viewport by mouse wheel or multitouch pinch.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.viewport('#tapspace')
+    const layer = viewport.layer()
+
+    // Create a few components
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const compOptions = { className: 'mycomponent' }
+    const blockA = tapspace.component(template('Rotate'), compOptions)
+    const blockB = tapspace.component(template('Able'), compOptions)
+    layer.add(blockA, {
+      position: viewport.atNorm(0.1, 0.1)
+    })
+    layer.add(blockB, {
+      position: blockA.atBottomRight()
+    })
+
+    // Make the viewport pannable and rotateable.
+    // However, free panning is prevented by the fixed rotation center.
+    viewport.pannable().rotatable({
+      center: blockA.atBottomRight()
+    })
+
+    // Center viewport to blocks
+    viewport.centerTo(blockA.atBottomRight())
+  </script>
+</body>
+</html>
