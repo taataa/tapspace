@@ -186,6 +186,28 @@ sourcePoints.map(affine.point.changeBasis())
 
 component.snap({ anchors, targets })
 
+# Movement coordinate system
+
+Pointer events provide the pointer position in various coordinate systems.
+
+We can use pageX/Y, but the coords are relative to the page and
+not relative to our viewport.
+
+We can use clientX/Y, but the coords are relative to the browser viewport and
+will change if the user scrolls the page.
+Also, they are not relative to our viewport.
+
+We can use screenX/Y, but the coords are relative to the monitor and will
+change if the user moves windows.
+Also, they are not relative to our viewport.
+
+We cannot use offsetX/Y because they are relative to the target element and
+the target can be outside of the space, for example a button inside a form
+that floats in the space.
+
+There are ways to compute pageX/Y for elements by using getBoundingClientRect()
+See https://stackoverflow.com/q/442404/638546 for details.
+
 # Limiting and linking moves
 
 aelem.on('transformed', fn)
