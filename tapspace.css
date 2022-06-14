@@ -23,6 +23,8 @@
   position: relative;
   /* Viewport is a camera that looks to the space, thus crop */
   overflow: hidden;
+  /* Mobile browsers have touch actions that cancel our gestures */
+  touch-action: none;
 }
 .affine-layer,
 .affine-group,
