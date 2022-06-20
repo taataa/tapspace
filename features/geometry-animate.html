@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Animate Geometry - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      cursor: grab;
+    }
+    .myspaceapp.active-pinch {
+      cursor: grabbing;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Animate Geometry – Tapspace Features</h1>
+  <p>Tap the component to rotate it.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.viewport('#tapspace').pannable()
+    const layer = viewport.layer()
+
+    // Create a rotateable component at the middle of the viewport.
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const compOptions = { className: 'mycomponent' }
+    const block = tapspace.component(template('Tap me'), compOptions)
+    layer.add(block, {
+      anchor: block.atMid(),
+      position: viewport.atMid().offset(0, -10)
+    })
+
+    block.tappable().on('tap', (ev) => {
+      block.rotateBy(Math.PI / 4, {
+        anchor: block.atMid()
+      })
+      // Ensure exact
+      block.snapPixels({
+        anchor: block.atMid()
+      })
+    })
+  </script>
+</body>
+</html>
