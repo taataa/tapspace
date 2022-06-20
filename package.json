@@ -36,7 +36,8 @@
     "component-emitter": "^1.3.0",
     "loadimages": "^1.0.0",
     "monotone-convex-hull-2d": "^1.0.1",
-    "nudged": "^2.0.0"
+    "nudged": "^2.0.0",
+    "to-px": "^1.1.0"
   },
   "devDependencies": {
     "async": "^3.2.3",
