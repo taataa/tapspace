@@ -28,8 +28,17 @@
       width: 400px;
       height: 400px;
       background: lightblue;
-      transform-origin: 0px 0px;
-      transform: matrix(1, 0, 0, 1, 0, 0);
+      /* transform: matrix(1, 0, 0, 1, 0, 0); /* identity */
+
+      /* The following transforms are identical */
+
+      /* Rotate at center with zero origin */
+      /*transform-origin: 0px 0px;
+      transform: matrix(0.707, 0.707, -0.707, 0.707, 200, -83);*/
+
+      /* Rotate with origin at center */
+      transform-origin: 200px 200px;
+      transform: matrix(0.707, 0.707, -0.707, 0.707, 0, 0);
     }
   </style>
 </head>
