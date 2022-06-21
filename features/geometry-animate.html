@@ -60,14 +60,49 @@
       position: viewport.atMid().offset(0, -10)
     })
 
+    // A static reference block
+    const refblock = tapspace.component(template('Reference'), compOptions)
+    layer.add(refblock, {
+      anchor: refblock.atTopLeft(),
+      position: viewport.atTopLeft()
+    })
+
+    // Anchor at block middle
+    block.setAnchor(block.atMid())
+
+    // Create markers
+    const m0 = tapspace.circle(5, '#ff0000')
+    const m1 = tapspace.circle(5, '#00ff00')
+    const m2 = tapspace.circle(5, '#3333ff')
+    // Mark block anchor
+    layer.add(m0, {
+      position: block.atAnchor()
+    })
+    // Mark block corner
+    layer.add(m1, {
+      position: block.atTopLeft()
+    })
+    // Mark layer anchor
+    layer.add(m2, {
+      position: layer.atAnchor()
+    })
+
+    // Setup transition animation
+    block.animate({
+      duration: '1000ms',
+      easing: 'ease'
+    })
+
     block.tappable().on('tap', (ev) => {
       block.rotateBy(Math.PI / 4, {
         anchor: block.atMid()
       })
-      // Ensure exact
+      // Ensure exact rotation.
       block.snapPixels({
         anchor: block.atMid()
       })
+      // Update corner marker
+      m1.moveTo(block.atTopLeft())
     })
   </script>
 </body>
