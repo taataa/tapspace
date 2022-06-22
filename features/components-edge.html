@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edge Component - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+    }
+    .container {
+      background: #BBB;
+    }
+    .myspaceapp {
+      background: #DDD;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const view = tapspace.viewport('#tapspace')
+    const layer = view.layer()
+
+    const edge = new tapspace.Edge('0.6em dotted black')
+    layer.add(edge)
+    edge.setPoints(view.atNorm(0.4, 0.4), view.atNorm(0.6, 0.4))
+
+    // Create markers
+    const m0 = tapspace.circle(5, 'red')
+    const m1 = tapspace.circle(5, 'blue')
+
+    layer.add(m0, { position: view.atNorm(0.4, 0.4) })
+    layer.add(m1, { position: view.atNorm(0.6, 0.4) })
+  </script>
+</body>
+</html>
