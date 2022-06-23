@@ -36,19 +36,38 @@
 
   <!-- Your code -->
   <script>
-    const view = tapspace.viewport('#tapspace')
-    const layer = view.layer()
+    const view = tapspace.viewport('#tapspace').zoomable()
 
-    const edge = new tapspace.Edge('0.6em dotted black')
-    layer.add(edge)
-    edge.setPoints(view.atNorm(0.4, 0.4), view.atNorm(0.6, 0.4))
+    // Layer creation order determines drawing order.
+    // Last created, top drawn.
+    const edgelayer = view.layer()
+    const nodelayer = view.layer()
 
-    // Create markers
-    const m0 = tapspace.circle(5, 'red')
-    const m1 = tapspace.circle(5, 'blue')
+    // Create nodes
+    const m0 = tapspace.circle(20, 'red')
+    const m1 = tapspace.circle(20, 'blue')
+    const m2 = tapspace.circle(20, 'green')
 
-    layer.add(m0, { position: view.atNorm(0.4, 0.4) })
-    layer.add(m1, { position: view.atNorm(0.6, 0.4) })
+    nodelayer.add(m0, { position: view.atNorm(0.38, 0.3) })
+    nodelayer.add(m1, { position: view.atNorm(0.62, 0.3) })
+
+    // Equilateral triangle
+    const dist = m0.atAnchor().distanceTo(m1.atAnchor())
+    const p2 = m0.atAnchor().polarOffset(dist, Math.PI / 3)
+    nodelayer.add(m2, { position: p2 })
+
+    // Create edges
+    const edge01 = new tapspace.Edge('0.6em dotted black')
+    const edge02 = new tapspace.Edge('0.6em solid gray')
+    const edge12 = new tapspace.Edge('0.6em dashed black')
+
+    edgelayer.add(edge01)
+    edgelayer.add(edge02)
+    edgelayer.add(edge12)
+
+    edge01.setPoints(m0.atAnchor(), m1.atAnchor())
+    edge02.setPoints(m0.atAnchor(), m2.atAnchor())
+    edge12.setPoints(m1.atAnchor(), m2.atAnchor())
   </script>
 </body>
 </html>
