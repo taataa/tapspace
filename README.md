@@ -23,6 +23,19 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
 
+## Contribute
+
+Pull requests and [bug reports](https://github.com/taataa/tapspace/issues) are highly appreciated. Please test your contribution with the following scripts:
+
+Run test suite:
+
+    $ npm run test
+
+Run only linter:
+
+    $ npm run lint
+
+
 ## License
 
 [MIT](LICENSE)
