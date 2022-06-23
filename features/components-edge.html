@@ -68,6 +68,15 @@
     edge01.setPoints(m0.atAnchor(), m1.atAnchor())
     edge02.setPoints(m0.atAnchor(), m2.atAnchor())
     edge12.setPoints(m1.atAnchor(), m2.atAnchor())
+
+    // Find mean
+    const mMean = tapspace.circle(10, 'black')
+    const pMean = tapspace.Point.mean(nodelayer, [
+      m0.atAnchor(),
+      m1.atAnchor(),
+      m2.atAnchor()
+    ])
+    nodelayer.add(mMean, { position: pMean })
   </script>
 </body>
 </html>
