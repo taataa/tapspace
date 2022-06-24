@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Responsive Viewport - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <!-- Some content to test resize when viewport has some offset -->
+  <h1>Responsive Viewport – Tapspace Features</h1>
+  <p>The viewport is kept centered to same point when you change the page width.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    // Make the viewport responsive
+    const viewport = tapspace.viewport('#tapspace').responsive()
+    const layer = viewport.layer()
+
+    // Create a component for reference.
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const compOptions = { className: 'mycomponent' }
+    const block = tapspace.component(template('Resize the view'), compOptions)
+    layer.add(block, {
+      anchor: block.atMid(),
+      position: viewport.atMid()
+    })
+  </script>
+</body>
+</html>
