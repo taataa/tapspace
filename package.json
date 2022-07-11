@@ -60,13 +60,15 @@
     "tape": "^5.5.2",
     "webpack": "^5.71.0",
     "webpack-cli": "^4.9.2",
-    "webpack-livereload-plugin": "^3.0.2"
+    "webpack-livereload-plugin": "^3.0.2",
+    "yadog": "^0.0.1"
   },
   "scripts": {
     "audit": "npm audit --production",
     "start": "node docs/examples/server.js",
     "build": "webpack",
     "build:watch": "webpack --watch",
+    "build:docs": "node docs/api/generate.js",
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "lint:lib": "standard 'lib/**/*.js'",
