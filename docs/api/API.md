@@ -13,7 +13,9 @@ resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.Circle](#tapspaceCircle)
+- [tapspace.components](#tapspacecomponents)
 - [tapspace.Edge](#tapspaceEdge)
+- [tapspace.Pixel](#tapspacePixel)
 - [tapspace.Point](#tapspacePoint)
 
 
@@ -64,6 +66,42 @@ Parameters:
     - optional { x, y } on the element. Default {x:0,y:0}
 
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/index.js)
+
+<a name="tapspacecomponents"></a>
+## tapspace.components
+
+Various components to render into the affine space.
+
+- [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
+- [tapspace.components.Layer](#tapspacecomponentsLayer)
+
+
+Source: [components/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/index.js)
+
+<a name="tapspacecomponentsAffineGroup"></a>
+## tapspace.components.AffineGroup
+
+Inherits [tapspace.components](#tapspacecomponents).AbstractPlane
+
+A set of affine components.
+The group element has zero width and height.
+Still, it can be interacted on its content.
+
+Source: [Group/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Group/index.js)
+
+<a name="tapspacecomponentsLayer"></a>
+## tapspace.components.Layer(z)
+
+Inherits [tapspace.components](#tapspacecomponents).AbstractPlane
+
+Layers does not have size.
+A Layer must be a children of a Space.
+
+Parameters
+- *z*
+  - optional number. The depth coordinate for perspective viewports.
+
+Source: [Layer/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Layer/index.js)
 
 <a name="tapspaceEdge"></a>
 ## tapspace.Edge(border, opts)
@@ -139,6 +177,24 @@ Return
 - this, for chaining
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
+
+<a name="tapspacePixel"></a>
+## tapspace.Pixel(color, opts)
+
+Instance class for a 1x1 pixel on affine plane.
+
+Parameters:
+- *color*
+  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+- opts, optional object
+  - *id*
+    - optional string. The id attribute of the element.
+  - *className*
+    - optional string. The class attribute of the element.
+  - *anchor*
+    - optional { x, y } on the element. Default {x:0,y:0}
+
+Source: [Pixel/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Pixel/index.js)
 
 <a name="tapspacePoint"></a>
 ## tapspace.Point(basis, x, y)
