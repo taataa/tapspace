@@ -73,6 +73,7 @@ Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 Various components to render into the affine space.
 
 - [tapspace.components.AbstractActive](#tapspacecomponentsAbstractActive)
+- [tapspace.components.AbstractFrame](#tapspacecomponentsAbstractFrame)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
@@ -131,6 +132,220 @@ Returns
 - a converter
 
 Source: [converter.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/converter.js)
+
+<a name="tapspacecomponentsAbstractFrame"></a>
+## tapspace.components.AbstractFrame(element, opts)
+
+Abstract class for rectangular affine components
+
+Parameters:
+- *element*
+  - a HTMLElement. The element does not need to be in DOM.
+- *opts*
+  - *anchor*
+    - { x, y } on the element. Optional. Default {x:0, y:0}
+  - *size*
+    - { width, height } or { w, h }.
+
+- [tapspace.components.AbstractFrame:atBottomLeft](#tapspacecomponentsAbstractFrameatBottomLeft)
+- [tapspace.components.AbstractFrame:atBottomMid](#tapspacecomponentsAbstractFrameatBottomMid)
+- [tapspace.components.AbstractFrame:atBottomRight](#tapspacecomponentsAbstractFrameatBottomRight)
+- [tapspace.components.AbstractFrame:atCenter](#tapspacecomponentsAbstractFrameatCenter)
+- [tapspace.components.AbstractFrame:atMid](#tapspacecomponentsAbstractFrameatMid)
+- [tapspace.components.AbstractFrame:atMidLeft](#tapspacecomponentsAbstractFrameatMidLeft)
+- [tapspace.components.AbstractFrame:atMidMid](#tapspacecomponentsAbstractFrameatMidMid)
+- [tapspace.components.AbstractFrame:atMidRight](#tapspacecomponentsAbstractFrameatMidRight)
+- [tapspace.components.AbstractFrame:atNorm](#tapspacecomponentsAbstractFrameatNorm)
+- [tapspace.components.AbstractFrame:atToNorm](#tapspacecomponentsAbstractFrameatToNorm)
+- [tapspace.components.AbstractFrame:atTopLeft](#tapspacecomponentsAbstractFrameatTopLeft)
+- [tapspace.components.AbstractFrame:atTopMid](#tapspacecomponentsAbstractFrameatTopMid)
+- [tapspace.components.AbstractFrame:atTopRight](#tapspacecomponentsAbstractFrameatTopRight)
+- [tapspace.components.AbstractFrame:centerTo](#tapspacecomponentsAbstractFramecenterTo)
+- [tapspace.components.AbstractFrame:getSize](#tapspacecomponentsAbstractFramegetSize)
+- [tapspace.components.AbstractFrame:setSize](#tapspacecomponentsAbstractFramesetSize)
+
+
+Source: [AbstractFrame/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/index.js)
+
+<a name="tapspacecomponentsAbstractFrameatBottomLeft"></a>
+## tapspace.components.AbstractFrame:atBottomLeft()
+
+Get point at the bottom left corner of the element.
+
+Return
+- point2 on the element
+
+Source: [atBottomLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomLeft.js)
+
+<a name="tapspacecomponentsAbstractFrameatBottomMid"></a>
+## tapspace.components.AbstractFrame:atBottomMid()
+
+Get point at the middle of the bottom edge of the element.
+
+Return
+- point2 on the element
+
+Source: [atBottomMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomMid.js)
+
+<a name="tapspacecomponentsAbstractFrameatBottomRight"></a>
+## tapspace.components.AbstractFrame:atBottomRight()
+
+Get point at the bottom right corner of the element.
+
+Return
+- point2 on the element
+
+Source: [atBottomRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomRight.js)
+
+<a name="tapspacecomponentsAbstractFrameatCenter"></a>
+## tapspace.components.AbstractFrame:atCenter()
+
+Alias of [tapspace.components.AbstractFrame:atMid](#tapspacecomponentsAbstractFrameatMid), [tapspace.components.AbstractFrame:atMidMid](#tapspacecomponentsAbstractFrameatMidMid)
+
+Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidMid.js)
+
+<a name="tapspacecomponentsAbstractFrameatMid"></a>
+## tapspace.components.AbstractFrame:atMid()
+
+Get point at the middle the element.
+
+Return
+- point2 on the element
+
+Aliases: [tapspace.components.AbstractFrame:atMidMid](#tapspacecomponentsAbstractFrameatMidMid), [tapspace.components.AbstractFrame:atCenter](#tapspacecomponentsAbstractFrameatCenter)
+
+Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidMid.js)
+
+<a name="tapspacecomponentsAbstractFrameatMidLeft"></a>
+## tapspace.components.AbstractFrame:atMidLeft()
+
+Get point at the middle of the left edge of the element.
+
+Return
+- point2 on the element
+
+Source: [atMidLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidLeft.js)
+
+<a name="tapspacecomponentsAbstractFrameatMidMid"></a>
+## tapspace.components.AbstractFrame:atMidMid()
+
+Alias of [tapspace.components.AbstractFrame:atMid](#tapspacecomponentsAbstractFrameatMid), [tapspace.components.AbstractFrame:atCenter](#tapspacecomponentsAbstractFrameatCenter)
+
+Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidMid.js)
+
+<a name="tapspacecomponentsAbstractFrameatMidRight"></a>
+## tapspace.components.AbstractFrame:atMidRight()
+
+Get point at the middle of the right edge of the element.
+
+Return
+- point2 on the element
+
+Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidRight.js)
+
+<a name="tapspacecomponentsAbstractFrameatNorm"></a>
+## tapspace.components.AbstractFrame:atNorm(rx, ry)
+
+Get point by relative coordinates.
+
+Parameters:
+- *rx*
+  - number. 0 at left edge, 1 at right edge.
+- *ry*
+  - number. 0 at top edge, 1 at bottom edge.
+
+Return
+- Point on the element
+
+Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atNorm.js)
+
+<a name="tapspacecomponentsAbstractFrameatToNorm"></a>
+## tapspace.components.AbstractFrame:atToNorm(x, y)
+
+Get relative coordinates for the given point.
+For example, relative coords of point (2, 1) in size (4, 4) is (0.5, 0.25)
+
+Parameters:
+- *x*
+  - a number or a Point
+- *y*
+  - a number
+
+Return
+- a { rx, ry }. If size is zero, will return { rx: 0, ry: 0 }
+
+Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atToNorm.js)
+
+<a name="tapspacecomponentsAbstractFrameatTopLeft"></a>
+## tapspace.components.AbstractFrame:atTopLeft()
+
+Get point at the top left corner of the element.
+
+Return
+- point2 on the element
+
+Source: [atTopLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopLeft.js)
+
+<a name="tapspacecomponentsAbstractFrameatTopMid"></a>
+## tapspace.components.AbstractFrame:atTopMid()
+
+Get point at the middle of the top edge of the element.
+
+Return
+- point2 on the element
+
+Source: [atTopMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopMid.js)
+
+<a name="tapspacecomponentsAbstractFrameatTopRight"></a>
+## tapspace.components.AbstractFrame:atTopRight()
+
+Get point at the top right corner of the element.
+
+Return
+- point2 on the element
+
+Source: [atTopRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopRight.js)
+
+<a name="tapspacecomponentsAbstractFramecenterTo"></a>
+## tapspace.components.AbstractFrame:centerTo(position)
+
+Move component so that its middle point matches the given point.
+Let the position f component on the parent.
+This moves the component anchor to the given position
+and rotates and scales the component as specified.
+
+Parameters:
+- *position*
+  - a point { x, y } on the parent or a Point. Required. The component will be moved on the parent so that the center of the component matches the position.
+
+Return
+- this, for chaining
+
+Source: [centerTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/centerTo.js)
+
+<a name="tapspacecomponentsAbstractFramegetSize"></a>
+## tapspace.components.AbstractFrame:getSize()
+
+Get component size dimensions in pixels.
+
+Return
+- a Size
+
+Source: [getSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/getSize.js)
+
+<a name="tapspacecomponentsAbstractFramesetSize"></a>
+## tapspace.components.AbstractFrame:setSize(size)
+
+Set component size.
+
+Parameters:
+- *size*
+  - a {w,h}, a {width,height}, or a Size. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
+
+Return
+- this, for chaining
+
+Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/setSize.js)
 
 <a name="tapspacecomponentsAffineGroup"></a>
 ## tapspace.components.AffineGroup
