@@ -74,6 +74,7 @@ Various components to render into the affine space.
 
 - [tapspace.components.AbstractActive](#tapspacecomponentsAbstractActive)
 - [tapspace.components.AbstractFrame](#tapspacecomponentsAbstractFrame)
+- [tapspace.components.AbstractItem](#tapspacecomponentsAbstractItem)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
@@ -346,6 +347,96 @@ Return
 - this, for chaining
 
 Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/setSize.js)
+
+<a name="tapspacecomponentsAbstractItem"></a>
+## tapspace.components.AbstractItem(element, opts)
+
+Instance class for interactive material items on affine plane.
+The items can have abilities like slidable, tappable, or draggable.
+
+Parameters:
+- *element*
+  - a HTMLElement. The element does not need to be in DOM.
+- *opts*
+  - *anchor*
+    - { x, y } on the element. Default {x:0,y:0}
+  - *size*
+    - { width, height }
+
+- [tapspace.components.AbstractItem:draggable](#tapspacecomponentsAbstractItemdraggable)
+- [tapspace.components.AbstractItem:pannable](#tapspacecomponentsAbstractItempannable)
+- [tapspace.components.AbstractItem:slidable](#tapspacecomponentsAbstractItemslidable)
+- [tapspace.components.AbstractItem:slideable](#tapspacecomponentsAbstractItemslideable)
+- [tapspace.components.AbstractItem:tappable](#tapspacecomponentsAbstractItemtappable)
+
+
+Source: [AbstractItem/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/index.js)
+
+<a name="tapspacecomponentsAbstractItemdraggable"></a>
+## tapspace.components.AbstractItem:draggable(opts)
+
+Make item draggable.
+The item can be moved freely by a set of pointers.
+The item maintains the size and the angle.
+
+Return
+- this, for chaining
+
+Aliases: [tapspace.components.AbstractItem:pannable](#tapspacecomponentsAbstractItempannable)
+
+Source: [draggable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/draggable.js)
+
+<a name="tapspacecomponentsAbstractItempannable"></a>
+## tapspace.components.AbstractItem:pannable(opts)
+
+Alias of [tapspace.components.AbstractItem:draggable](#tapspacecomponentsAbstractItemdraggable)
+
+Source: [draggable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/draggable.js)
+
+<a name="tapspacecomponentsAbstractItemslidable"></a>
+## tapspace.components.AbstractItem:slidable(opts)
+
+The component can be moved along a line, with limits.
+
+Parameters:
+- *opts*
+  - *angle*
+    - a number, angle in radians
+  - *min*
+    - a number, a distance to the right half of the unit circle.
+  - *max*
+    - a number, a distance to the left half of the unit circle.
+
+Aliases: [tapspace.components.AbstractItem:slideable](#tapspacecomponentsAbstractItemslideable)
+
+Source: [slidable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/slidable.js)
+
+<a name="tapspacecomponentsAbstractItemslideable"></a>
+## tapspace.components.AbstractItem:slideable(opts)
+
+Alias of [tapspace.components.AbstractItem:slidable](#tapspacecomponentsAbstractItemslidable)
+
+Source: [slidable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/slidable.js)
+
+<a name="tapspacecomponentsAbstractItemtappable"></a>
+## tapspace.components.AbstractItem:tappable(options)
+
+Make item tappable i.e. make it emit tap events.
+
+Parameters:
+- *options*
+  - optional object with properties
+    - *TODO*
+
+Makes the component emit events:
+- *tap*
+- *tapstart*
+- *tapend*
+
+Return
+- this, for chaining
+
+Source: [tappable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/tappable.js)
 
 <a name="tapspacecomponentsAffineGroup"></a>
 ## tapspace.components.AffineGroup
