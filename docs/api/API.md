@@ -72,11 +72,65 @@ Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 
 Various components to render into the affine space.
 
+- [tapspace.components.AbstractActive](#tapspacecomponentsAbstractActive)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
 
 Source: [components/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/index.js)
+
+<a name="tapspacecomponentsAbstractActive"></a>
+## tapspace.components.AbstractActive(opts)
+
+Interaction methods for affine components.
+Designed to be inherited by an instance class that
+inherit also from AbstractPlane or down.
+
+Parameters:
+- *opts*
+  - TODO maybe which capturers are possible?
+  - TODO options to autostart capturers, maybe
+
+- [tapspace.components.AbstractActive:capturer](#tapspacecomponentsAbstractActivecapturer)
+- [tapspace.components.AbstractActive:capturer](#tapspacecomponentsAbstractActivecapturer)
+
+
+Source: [AbstractActive/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/index.js)
+
+<a name="tapspacecomponentsAbstractActivecapturer"></a>
+## tapspace.components.AbstractActive:capturer(capturerName, opts)
+
+Get or create an input capturer.
+For Tapspace internal use.
+
+Parameters:
+- *capturerName*
+  - a string. One of 'gesture', 'keyboard', 'wheel'
+- *opts*
+  - options for the capturer.
+
+Returns
+- a capturer
+
+Source: [capturer.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/capturer.js)
+
+<a name="tapspacecomponentsAbstractActivecapturer"></a>
+## tapspace.components.AbstractActive:capturer(capturerName, opts)
+
+Get or create an input converter.
+The converters modify or redirect input events.
+For Tapspace internal use.
+
+Parameters:
+- *converterName*
+  - a string. One of 'mouse'
+- *opts*
+  - options for the converter.
+
+Returns
+- a converter
+
+Source: [converter.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/converter.js)
 
 <a name="tapspacecomponentsAffineGroup"></a>
 ## tapspace.components.AffineGroup
