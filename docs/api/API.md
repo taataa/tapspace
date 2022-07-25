@@ -13,8 +13,8 @@ resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
-- [tapspace.Pixel](#tapspacePixel)
 - [tapspace.Point](#tapspacePoint)
+- [tapspace.viewport](#tapspaceviewport)
 
 
 Source: [lib/index.js](https://github.com/taataa/tapspace/blob/main/lib/index.js)
@@ -54,10 +54,12 @@ Various components to render into the affine space.
 - [tapspace.components.AbstractNode](#tapspacecomponentsAbstractNode)
 - [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
 - [tapspace.components.AbstractView](#tapspacecomponentsAbstractView)
-- [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Circle](#tapspacecomponentsCircle)
 - [tapspace.components.Edge](#tapspacecomponentsEdge)
+- [tapspace.components.Group](#tapspacecomponentsGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
+- [tapspace.components.Pixel](#tapspacecomponentsPixel)
+- [tapspace.components.Viewport](#tapspacecomponentsViewport)
 
 
 Source: [components/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/index.js)
@@ -1237,17 +1239,6 @@ Return
 
 Source: [translateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/translateBy.js)
 
-<a name="tapspacecomponentsAffineGroup"></a>
-## tapspace.components.AffineGroup
-
-Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
-
-A set of affine components.
-The group element has zero width and height.
-Still, it can be interacted on its content.
-
-Source: [Group/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Group/index.js)
-
 <a name="tapspacecomponentsCircle"></a>
 ## tapspace.components.Circle(radius, color, opts)
 
@@ -1307,6 +1298,18 @@ Return
 
 Source: [getLength.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/getLength.js)
 
+<a name="tapspacecomponentsGroup"></a>
+## tapspace.components.Group()
+
+Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
+Inherits [tapspace.components.AbstractActive](#tapspacecomponentsAbstractActive)
+
+A set of affine components.
+The group element has zero width and height.
+Still, it can be interacted on its content.
+
+Source: [Group/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Group/index.js)
+
 <a name="tapspacecomponentsLayer"></a>
 ## tapspace.components.Layer(z)
 
@@ -1320,6 +1323,116 @@ Parameters
   - optional number. The depth coordinate for perspective viewports.
 
 Source: [Layer/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Layer/index.js)
+
+<a name="tapspacecomponentsPixel"></a>
+## tapspace.components.Pixel(color, opts)
+
+Instance class for a 1x1 pixel on affine plane.
+
+Parameters:
+- *color*
+  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+- opts, optional object
+  - *id*
+    - optional string. The id attribute of the element.
+  - *className*
+    - optional string. The class attribute of the element.
+  - *anchor*
+    - optional { x, y } on the element. Default {x:0,y:0}
+
+Source: [Pixel/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Pixel/index.js)
+
+<a name="tapspacecomponentsViewport"></a>
+## tapspace.components.Viewport
+
+Inherits AbstractView
+
+When the viewport is transformed, it does not move on the page.
+Instead, the space and its layers within the viewport are moved
+in opposite direction. This, combined with overflow CSS styles,
+creates an illusion of a viewport into a 2D space.
+
+Parameters
+- *element*
+  - HTMLElement or query string
+- *opts*
+  - optional object with properties:
+    - *size*
+      - optional object with properties:
+      - *width*
+        - a number in pixels or a CSS width string.
+      - *height*
+        - a number in pixels or a CSS height string.
+
+- [tapspace.components.Viewport:pannable](#tapspacecomponentsViewportpannable)
+- [tapspace.components.Viewport:responsive](#tapspacecomponentsViewportresponsive)
+- [tapspace.components.Viewport:rotatable](#tapspacecomponentsViewportrotatable)
+- [tapspace.components.Viewport:zoomable](#tapspacecomponentsViewportzoomable)
+
+
+Source: [Viewport/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/index.js)
+
+<a name="tapspacecomponentsViewportpannable"></a>
+## tapspace.components.Viewport:pannable(opts)
+
+Make the viewport pannable (= draggable).
+The view can be moved freely by a set of pointers.
+The view maintains the size and the angle.
+
+Return
+- this, for chaining
+
+Source: [pannable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/pannable/index.js)
+
+<a name="tapspacecomponentsViewportresponsive"></a>
+## tapspace.components.Viewport:responsive(opts)
+
+Make the viewport responsive to container size changes.
+Keeps the viewport center at the same position relative to its size.
+
+Parameters
+- *opts*
+  - optional boolean false to disable
+  - optional object with props:
+    - *relativeCenter*
+      - optional { rx, ry }, the relative point to keep fixed while resizing. Default { rx: 0.5, ry: 0.5 }
+
+Return
+- this, for chaining
+
+Source: [responsive/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/responsive/index.js)
+
+<a name="tapspacecomponentsViewportrotatable"></a>
+## tapspace.components.Viewport:rotatable(opts)
+
+Make the viewport zoomable.
+The viewport can be scaled by pinch gesture and mouse wheel.
+
+Parameters
+- opts, optional boolean or object with props:
+  - *center*
+    - a Point, the vanishing point for zoom.
+
+Return
+- this, for chaining
+
+Source: [rotatable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/rotatable/index.js)
+
+<a name="tapspacecomponentsViewportzoomable"></a>
+## tapspace.components.Viewport:zoomable(opts)
+
+Make the viewport zoomable.
+The viewport can be scaled by pinch gesture and mouse wheel.
+
+Parameters
+- opts, optional boolean or object with props:
+  - *center*
+    - a Point, the vanishing point for zoom. Default to gesture mean.
+
+Return
+- this, for chaining
+
+Source: [zoomable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/zoomable/index.js)
 
 <a name="tapspaceEdgeatEnd"></a>
 ## tapspace.Edge:atEnd()
@@ -1355,24 +1468,6 @@ Return
 - this, for chaining
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
-
-<a name="tapspacePixel"></a>
-## tapspace.Pixel(color, opts)
-
-Instance class for a 1x1 pixel on affine plane.
-
-Parameters:
-- *color*
-  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
-- opts, optional object
-  - *id*
-    - optional string. The id attribute of the element.
-  - *className*
-    - optional string. The class attribute of the element.
-  - *anchor*
-    - optional { x, y } on the element. Default {x:0,y:0}
-
-Source: [Pixel/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Pixel/index.js)
 
 <a name="tapspacePoint"></a>
 ## tapspace.Point(basis, x, y)
@@ -1500,6 +1595,35 @@ const mean = tapspace.Point.fromAverage(basis, points)
 ```
 
 Source: [average.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/average.js)
+
+<a name="tapspaceviewport"></a>
+## tapspace.viewport(element, options)
+
+Make element a viewport.
+
+Parameters
+- *element*
+  - HTMLElement or query string
+- *options*
+  - an optional object with properties:
+    - *size*
+      - a { width, height }
+    - *interaction*
+      - *pannable*
+        - boolean, default true
+      - *scalable*
+        - boolean, default true
+      - *rotatable*
+        - boolean, default false
+      - *wheelable*
+        - boolean, default true
+    - *projection*
+      - optional string. Projection method. One of '2d', 'orthographic', '3d', 'perspective'.
+
+Return
+- a [tapspace.components.Viewport](#tapspacecomponentsViewport)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/create.js)
 
 <p style="text-align: right">
 <a href="#top">&uarr; Back To Top</a>
