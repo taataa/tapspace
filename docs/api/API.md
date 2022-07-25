@@ -76,6 +76,8 @@ Various components to render into the affine space.
 - [tapspace.components.AbstractFrame](#tapspacecomponentsAbstractFrame)
 - [tapspace.components.AbstractItem](#tapspacecomponentsAbstractItem)
 - [tapspace.components.AbstractNode](#tapspacecomponentsAbstractNode)
+- [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
+- [tapspace.components.AbstractView](#tapspacecomponentsAbstractView)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
@@ -534,10 +536,733 @@ Return
 
 Source: [isRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/isRoot.js)
 
+<a name="tapspacecomponentsAbstractPlane"></a>
+## tapspace.components.AbstractPlane()
+
+Abstract class for affine components that span a coordinate plane.
+
+Parameters:
+- *element*
+  - a HTMLElement
+- *opts*
+  - *anchor*
+    - { x, y } on the element. Default { x:0, y:0 }
+
+- [tapspace.components.AbstractPlane:add](#tapspacecomponentsAbstractPlaneadd)
+- [tapspace.components.AbstractPlane:animate](#tapspacecomponentsAbstractPlaneanimate)
+- [tapspace.components.AbstractPlane:at](#tapspacecomponentsAbstractPlaneat)
+- [tapspace.components.AbstractPlane:atAnchor](#tapspacecomponentsAbstractPlaneatAnchor)
+- [tapspace.components.AbstractPlane:getDirection](#tapspacecomponentsAbstractPlanegetDirection)
+- [tapspace.components.AbstractPlane:getPosition](#tapspacecomponentsAbstractPlanegetPosition)
+- [tapspace.components.AbstractPlane:getProjectionTo](#tapspacecomponentsAbstractPlanegetProjectionTo)
+- [tapspace.components.AbstractPlane:getProjectionToParent](#tapspacecomponentsAbstractPlanegetProjectionToParent)
+- [tapspace.components.AbstractPlane:getProjectionToParentOf](#tapspacecomponentsAbstractPlanegetProjectionToParentOf)
+- [tapspace.components.AbstractPlane:getScale](#tapspacecomponentsAbstractPlanegetScale)
+- [tapspace.components.AbstractPlane:match](#tapspacecomponentsAbstractPlanematch)
+- [tapspace.components.AbstractPlane:moveTo](#tapspacecomponentsAbstractPlanemoveTo)
+- [tapspace.components.AbstractPlane:renderTransform](#tapspacecomponentsAbstractPlanerenderTransform)
+- [tapspace.components.AbstractPlane:rotateBy](#tapspacecomponentsAbstractPlanerotateBy)
+- [tapspace.components.AbstractPlane:scaleBy](#tapspacecomponentsAbstractPlanescaleBy)
+- [tapspace.components.AbstractPlane:setAnchor](#tapspacecomponentsAbstractPlanesetAnchor)
+- [tapspace.components.AbstractPlane:snapPixels](#tapspacecomponentsAbstractPlanesnapPixels)
+- [tapspace.components.AbstractPlane:transformBy](#tapspacecomponentsAbstractPlanetransformBy)
+- [tapspace.components.AbstractPlane:translateBy](#tapspacecomponentsAbstractPlanetranslateBy)
+
+
+Source: [AbstractPlane/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/index.js)
+
+<a name="tapspacecomponentsAbstractPlaneadd"></a>
+## tapspace.components.AbstractPlane:add(component, placement)
+
+Place a component onto this plane.
+
+Parameters:
+- *component*
+  - an AbstractPlane
+- *placement*
+  - an optional object with the following properties:
+    - *anchor*
+      - {x,y} on the component or a Point in the component's space. A custom anchor point on the component to move to the position. Default at the component anchor.
+    - *position*
+      - {x,y} on this plane or a Point. Place the component so that its anchor goes to this position. Default at the plane anchor.
+    - *rotation*
+      - a number, radians. Optional. Default 0.
+    - *scale*
+      - a number, multiplier. Optional. Default 1.
+    - *preserve*
+      - a boolean. Optional. Default false. Set true to place the component according to its current and possibly intentionally prepared projection instead of the default placement behavior. When preserve is set true, the default or given values of position, rotation, and scale will be ignored.
+
+Return
+- this, for chaining
+
+Source: [add.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/add.js)
+
+<a name="tapspacecomponentsAbstractPlaneanimate"></a>
+## tapspace.components.AbstractPlane:animate(options)
+
+Update transition animation properties of the component.
+
+Parameters:
+- *options*
+  - boolean or optional object with properties:
+    - *duration*
+      - optional string. The transition-duration value, e.g. '500ms' or '2s'. Default is '200ms'.
+    - *easing*
+      - optional string. The transition-timing-function, e.g. 'linear' or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
+    - *delay*
+      - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
+  - If boolean false, animation becomes disabled.
+
+Return
+- this, for chaining
+
+Source: [animate.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/animate.js)
+
+<a name="tapspacecomponentsAbstractPlaneat"></a>
+## tapspace.components.AbstractPlane:at(x, y)
+
+Get a point on the plane by using local plane coordinates.
+
+Parameters
+- *x*
+  - a number, the x coordinate on the plane.
+  - a point2, the {x,y} on the plane.
+  - a Point, the point in space. Will be projected onto this plane.
+- *y*
+  - a number, the y coordinate on the plane. Optional if x is a point.
+
+Return
+- a Point on the plane
+
+Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/at.js)
+
+<a name="tapspacecomponentsAbstractPlaneatAnchor"></a>
+## tapspace.components.AbstractPlane:atAnchor(alt)
+
+Get the plane anchor point or the optional given point on the plane.
+
+Parameters:
+- *alt*
+  - optional point2 or Point. If given, returns this point instead,
+  - projected onto the plane. Useful way to default a point to the
+  - plane anchor if the point is nullish.
+
+Return
+- a Point
+
+Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/atAnchor.js)
+
+<a name="tapspacecomponentsAbstractPlanegetDirection"></a>
+## tapspace.components.AbstractPlane:getDirection()
+
+The direction of the plane. This equals to the angle of the positive
+x-axis of the plane. The Direction makes it easy to represent the angle
+on different planes.
+
+Return
+- a Direction
+
+Source: [getDirection.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getDirection.js)
+
+<a name="tapspacecomponentsAbstractPlanegetPosition"></a>
+## tapspace.components.AbstractPlane:getPosition()
+
+Get the position of the plane anchor on the parent.
+Null if there is no parent.
+
+Return
+- {x,y}. Null if no parent.
+
+Source: [getPosition.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getPosition.js)
+
+<a name="tapspacecomponentsAbstractPlanegetProjectionTo"></a>
+## tapspace.components.AbstractPlane:getProjectionTo(target)
+
+Compute a projection that maps the coordinate system of this plane
+to the coordinate system of the target plane. The resulting projection
+is an affine transformation that can be applied to geometry on this plane
+to compute the same geometry represented on the the target plane.
+
+Parameters
+- *target*
+  - an AbstactPlane
+
+Return
+- *proj*
+  - a proj2. The projection from this plane to target plane.
+
+Throws
+- If the planes are not connected. Probably app programming error.
+
+Source: [getProjectionTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getProjectionTo.js)
+
+<a name="tapspacecomponentsAbstractPlanegetProjectionToParent"></a>
+## tapspace.components.AbstractPlane:getProjectionToParent()
+
+Return a projection from the coordinate system of the element
+to its parent.
+
+TODO what if parent is non-affine
+
+Source: [getProjectionToParent.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getProjectionToParent.js)
+
+<a name="tapspacecomponentsAbstractPlanegetProjectionToParentOf"></a>
+## tapspace.components.AbstractPlane:getProjectionToParentOf(target)
+
+Get projection to the parent component of the target component.
+If the target is a root, then projection is to its virtual parent.
+
+Parameters
+- *target*
+  - an AbstractPlane
+
+Return
+- a proj2, a projection to the real or virtual parent of the target.
+
+Source: [getProjectionToParentOf.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getProjectionToParentOf.js)
+
+<a name="tapspacecomponentsAbstractPlanegetScale"></a>
+## tapspace.components.AbstractPlane:getScale()
+
+The scale of the plane.
+
+Return
+- a Scale
+
+Source: [getScale.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getScale.js)
+
+<a name="tapspacecomponentsAbstractPlanematch"></a>
+## tapspace.components.AbstractPlane:match(params)
+
+Matching is a powerful way to position elements without the need to know
+the exact rotation, scaling, or translation. Give one or more source
+points and their targets. The match operation attempts to move the plane
+so that the source points match their target points exactly or as
+closely as possible.
+
+Parameters:
+- params, object with properties
+  - source, alias sources
+    - a Point or an array of Points. The length must match the targets. Alias: source.
+  - target, alias targets
+    - a Point or an array of Points. The length must match the sources. Alias: target.
+  - *estimator*
+    - string. The estimator type restricts the ways the plane is allowed to move during the operation. For details on the estimator types, see [nudged.estimate](https://github.com/axelpale/nudged/).
+      - 'TSR': allow translation, scaling, and rotation. The default.
+      - 'SR': allow scaling and rotation around the center point.
+      - 'TR': allow translation and rotation but no scaling.
+      - 'TS': allow translation and scaling but no rotation.
+      - 'R': allow only rotation around the center point.
+      - 'S': allow only scaling about the center point.
+      - 'T': allow only translation aka panning.
+      - 'X': allow only translation along the x-axis of the plane.
+      - 'Y': allow only translation along the y-axis of the plane.
+      - 'L': allow only translation along the given angle.
+  - *center*
+    - a Point or {x,y}. Optional. The center for the estimators 'SR', 'R', and 'S'.
+  - *angle*
+    - a number in radians or Direction. Optional. The angle for the estimator 'L'.
+
+Return
+- this, for chaining
+
+Source: [match.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/match.js)
+
+<a name="tapspacecomponentsAbstractPlanemoveTo"></a>
+## tapspace.components.AbstractPlane:moveTo(position, rotation, scale, anchor)
+
+Set the placement of the component on the parent.
+This moves the component anchor to the given position
+and rotates and scales the component as specified.
+
+Parameters:
+- *position*
+  - a point { x, y } on the parent or a Point. Required. The component will be moved on the parent so that the anchor of the component matches the position.
+- *rotation*
+  - a number or a Direction. Optional. Default 0. If a number, it is radians relative to the parent orientation.
+- *scale*
+  - a number or a Scale. Optional. Default 1. If a number, it is a multiplier relative to the parent scale.
+- *anchor*
+  - optional point2 on this or a Point. If set, the point will be used as an anchor instead of the default.
+
+Return
+- this, for chaining
+
+Source: [moveTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/moveTo.js)
+
+<a name="tapspacecomponentsAbstractPlanerenderTransform"></a>
+## tapspace.components.AbstractPlane:renderTransform(opts)
+
+Update the element.style.transform according to the plane placement.
+
+You need to call this function only when you have manually edited
+or replaced the component.proj object.
+
+Parameters:
+- *opts*
+  - *projection*
+    - optional proj2 object to be used instead of this.proj. Useful when the position needs visual adjustment without modifying the projection. See snapPixels.
+
+Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/renderTransform.js)
+
+<a name="tapspacecomponentsAbstractPlanerotateBy"></a>
+## tapspace.components.AbstractPlane:rotateBy(radians, opts)
+
+Rotate the element.
+
+Parameters:
+- *radians*
+  - a number, delta angle to rotate.
+- *opts*
+  - *anchor*
+    - an optional Point. Rotation is performed around this point.
+    - . Defaults to the plane anchor.
+
+Return
+- this, for chaining
+
+Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/rotateBy.js)
+
+<a name="tapspacecomponentsAbstractPlanescaleBy"></a>
+## tapspace.components.AbstractPlane:scaleBy(multiplier, opts)
+
+Scale the element.
+
+Parameters:
+- *multiplier*
+  - a number, the scale multiplier.
+- *opts*
+  - *anchor*
+    - an optional Point. Scaling is performed about this point. Defaults to the plane anchor.
+
+Return
+- this, for chaining
+
+Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/scaleBy.js)
+
+<a name="tapspacecomponentsAbstractPlanesetAnchor"></a>
+## tapspace.components.AbstractPlane:setAnchor(point)
+
+Set the anchor point of the plane. This does not move the plane.
+
+Parameters:
+- *point*
+  - a point2 on the plane or a Point in its space. The new anchor point.
+
+Return
+- this, for chaining
+
+Source: [setAnchor.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/setAnchor.js)
+
+<a name="tapspacecomponentsAbstractPlanesnapPixels"></a>
+## tapspace.components.AbstractPlane:snapPixels(options)
+
+Rotation and non-integer translation blurs the pixels.
+This can be annoying if the angle is close to the 90 deg modulo.
+This method rounds the projection rotation slightly if it is close,
+and rounds translation also to integer pixels if so.
+
+Note that the rounding affects the input coordinates and thus
+snapPixels should NOT be used during a gesture except at the end.
+
+The method does not modify the plane projection, only the latent CSS.
+
+Parameters:
+- *options*
+  - optional object with props:
+    - *anchor*
+      - optional point2 on the plane or Point. The point about to perform the rotation snapping. Rotation snapping around a point that is far from the user's gaze point – like viewport (0,0) – can cause visible translation near the gaze. The translation can be annoying during or after a rotation gesture. Therefore the rotation snapping should be performed around a point near the gesture and the gaze. Defaults to the plane anchor.
+
+TODO option to disable either rotation or translation snap
+
+Returns
+- this, for chaining
+
+Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/snapPixels.js)
+
+<a name="tapspacecomponentsAbstractPlanetransformBy"></a>
+## tapspace.components.AbstractPlane:transformBy(tran, opts)
+
+Transform (move) the element on its parent.
+
+Parameters
+- *tran*
+  - a Transform
+- *opts*
+  - TODO something?
+
+Return
+- this, for chaining
+
+Source: [transformBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/transformBy.js)
+
+<a name="tapspacecomponentsAbstractPlanetranslateBy"></a>
+## tapspace.components.AbstractPlane:translateBy(translation, opts)
+
+Translate the element along x and y axis.
+
+Parameters
+- *translation*
+  - {x,y} on the parent, a Vector, or a Transform
+- *opts*
+  - TODO something?
+
+Return
+- this, for chaining
+
+Source: [translateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/translateBy.js)
+
+<a name="tapspacecomponentsAbstractView"></a>
+## tapspace.components.AbstractView(element, opts)
+
+Inherits [tapspace.components.AbstractFrame](#tapspacecomponentsAbstractFrame)
+
+Base class for views.
+
+Parameters
+- *element*
+  - *HTMLElement*
+- *opts*
+  - *anchor*
+    - { x, y } on the viewport. Optional. Default at {x:0,y:0}.
+  - *size*
+    - a { width, height }
+
+The viewport transformation to the element are inverted to its children
+instead of the element itself. This, combined to overflow styles
+set by affine-viewport CSS class, creates an illusion of a viewport
+to a 2D space.
+
+- [tapspace.components.AbstractView:addControl](#tapspacecomponentsAbstractViewaddControl)
+- [tapspace.components.AbstractView:addLayer](#tapspacecomponentsAbstractViewaddLayer)
+- [tapspace.components.AbstractView:atNorm](#tapspacecomponentsAbstractViewatNorm)
+- [tapspace.components.AbstractView:atPage](#tapspacecomponentsAbstractViewatPage)
+- [tapspace.components.AbstractView:atPageFn](#tapspacecomponentsAbstractViewatPageFn)
+- [tapspace.components.AbstractView:findLayer](#tapspacecomponentsAbstractViewfindLayer)
+- [tapspace.components.AbstractView:getControls](#tapspacecomponentsAbstractViewgetControls)
+- [tapspace.components.AbstractView:getLayers](#tapspacecomponentsAbstractViewgetLayers)
+- [tapspace.components.AbstractView:getSize](#tapspacecomponentsAbstractViewgetSize)
+- [tapspace.components.AbstractView:layer](#tapspacecomponentsAbstractViewlayer)
+- [tapspace.components.AbstractView:renderTransform](#tapspacecomponentsAbstractViewrenderTransform)
+- [tapspace.components.AbstractView:rotateBy](#tapspacecomponentsAbstractViewrotateBy)
+- [tapspace.components.AbstractView:scaleBy](#tapspacecomponentsAbstractViewscaleBy)
+- [tapspace.components.AbstractView:setSize](#tapspacecomponentsAbstractViewsetSize)
+- [tapspace.components.AbstractView:snapPixels](#tapspacecomponentsAbstractViewsnapPixels)
+- [tapspace.components.AbstractView:toPage](#tapspacecomponentsAbstractViewtoPage)
+- [tapspace.components.AbstractView:transformBy](#tapspacecomponentsAbstractViewtransformBy)
+- [tapspace.components.AbstractView:transformLayersBy](#tapspacecomponentsAbstractViewtransformLayersBy)
+- [tapspace.components.AbstractView:translateBy](#tapspacecomponentsAbstractViewtranslateBy)
+
+
+Source: [AbstractView/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/index.js)
+
+<a name="tapspacecomponentsAbstractViewaddControl"></a>
+## tapspace.components.AbstractView:addControl(control, placement)
+
+Add new control to the viewport.
+Controls do not move with the space.
+
+Parameters
+- *control*
+  - an AbstractControl
+- *placement*
+  - an optional object with properties
+    - *position*
+      - {x,y} on the viewport or a Point in space.
+
+Return
+- this, for chaining
+
+Source: [addControl.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/addControl.js)
+
+<a name="tapspacecomponentsAbstractViewaddLayer"></a>
+## tapspace.components.AbstractView:addLayer(z, placement)
+
+Create and add a new layer.
+
+Source: [addLayer.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/addLayer.js)
+
+<a name="tapspacecomponentsAbstractViewatNorm"></a>
+## tapspace.components.AbstractView:atNorm(rx, ry)
+
+Get a Point by relative coordinates, rounded to nearest integers.
+
+Parameters:
+- *rx*
+  - number. 0 at left edge, 1 at right edge.
+- *ry*
+  - number. 0 at top edge, 1 at bottom edge.
+
+Return
+- Point on the element
+
+Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atNorm.js)
+
+<a name="tapspacecomponentsAbstractViewatPage"></a>
+## tapspace.components.AbstractView:atPage(pageX, pageY)
+
+Compute a point on the viewport from page coordinates.
+Pointer events are a common source for page coordinates.
+
+Parameters
+- *pageX*
+  - a number
+- *pageY*
+  - a number
+
+Return
+- a Point on viewport
+
+Source: [atPage.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atPage.js)
+
+<a name="tapspacecomponentsAbstractViewatPageFn"></a>
+## tapspace.components.AbstractView:atPageFn()
+
+Get a function that computes a point on the viewport from page coords.
+Pointer events are a common source for page coordinates.
+
+Efficency: we assume that reading values from DOM is relatively slow
+and that with lots of points, it is better to query DOM once
+and apply that to each point, than query DOM for each point separately.
+TODO proof the efficency
+
+Parameters
+
+
+Returns
+- a function
+  - *Parameters*
+    - *pageX*
+      - a number
+    - *pageY*
+      - a number
+  - *Returns*
+    - a Point on viewport
+
+Source: [atPageFn.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atPageFn.js)
+
+<a name="tapspacecomponentsAbstractViewfindLayer"></a>
+## tapspace.components.AbstractView:findLayer(z, tolerance)
+
+Find a layer. Return null if no layer at this depth.
+
+Parameters
+- *z*
+  - required number. The layer depth.
+- *tolerance*
+  - optional number. Default 0. Pick the first layer within this depth tolerance
+
+Return
+- Layer component at or near z.
+- Null if no layers found.
+
+Source: [findLayer.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/findLayer.js)
+
+<a name="tapspacecomponentsAbstractViewgetControls"></a>
+## tapspace.components.AbstractView:getControls()
+
+Return all control group components of the viewport.
+
+Return
+- array of Controls
+
+Source: [getControls.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getControls.js)
+
+<a name="tapspacecomponentsAbstractViewgetLayers"></a>
+## tapspace.components.AbstractView:getLayers()
+
+Return all layer components of the viewport.
+
+Return
+- array of Layers
+
+Source: [getLayers.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getLayers.js)
+
+<a name="tapspacecomponentsAbstractViewgetSize"></a>
+## tapspace.components.AbstractView:getSize()
+
+Get viewport size. The size is read from the viewport
+element.offsetWidth and element.offsetHeight.
+
+Return
+- a Size
+
+Source: [getSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getSize.js)
+
+<a name="tapspacecomponentsAbstractViewlayer"></a>
+## tapspace.components.AbstractView:layer(z, placement)
+
+Get or create a layer at z distance.
+
+Parameters:
+- *z*
+  - optional number. Default 0.
+- *placement*
+  - optional object with properties:
+    - *position*
+      - { x, y } on the viewport or a Point. Default at the view origin.
+    - *rotation*
+      - a number, radians. Optional. Default 0.
+    - *scale*
+      - a number, multiplier. Optional. Default 1.
+
+TODO maybe z is part of placement?
+
+Source: [layer.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/layer.js)
+
+<a name="tapspacecomponentsAbstractViewrenderTransform"></a>
+## tapspace.components.AbstractView:renderTransform(opts)
+
+Updates the element.style.transform according to the plane projection.
+
+You need to call this function only when you have manually edited
+or replaced a layer.proj object.
+
+Parameters:
+- *opts*
+  - optional object. See AbstractPlane:renderTransform for details.
+
+Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/renderTransform.js)
+
+<a name="tapspacecomponentsAbstractViewrotateBy"></a>
+## tapspace.components.AbstractView:rotateBy(angle, opts)
+
+Rotate the viewport in space around anchor.
+
+Parameters
+- *angle*
+  - a number, the delta angle to rotate the viewport.
+- *opts*
+  - *anchor*
+    - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+
+Return
+- this, for chaining
+
+Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/rotateBy.js)
+
+<a name="tapspacecomponentsAbstractViewscaleBy"></a>
+## tapspace.components.AbstractView:scaleBy(factor, opts)
+
+Translate the viewport in space along x and y axis.
+
+Parameters
+- *factor*
+  - a number
+- *opts*
+  - optional object with props
+    - *anchor*
+      - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+
+Return
+- this, for chaining
+
+Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/scaleBy.js)
+
+<a name="tapspacecomponentsAbstractViewsetSize"></a>
+## tapspace.components.AbstractView:setSize(size)
+
+Set viewport size.
+
+Parameters:
+- *size*
+  - a {w,h} or a {width,height} object. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings.
+
+Return
+- this, for chaining
+
+Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/setSize.js)
+
+<a name="tapspacecomponentsAbstractViewsnapPixels"></a>
+## tapspace.components.AbstractView:snapPixels(options)
+
+Snap viewport position and angle to pixels when the angle is near
+a multitude of 90 degrees.
+
+Parameters:
+- *options*
+  - optional object with props:
+    - *anchor*
+      - a point2 or Point
+
+Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/snapPixels.js)
+
+<a name="tapspacecomponentsAbstractViewtoPage"></a>
+## tapspace.components.AbstractView:toPage(viewX, viewY)
+
+Compute a point on the page from a point on the viewport.
+Practical if points need to be normalised on the page.
+
+Parameters
+- *viewX*
+  - a number
+- *viewY*
+  - a number
+
+Return
+- a point2 on the page
+
+Source: [toPage.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/toPage.js)
+
+<a name="tapspacecomponentsAbstractViewtransformBy"></a>
+## tapspace.components.AbstractView:transformBy(tran, opts)
+
+Overwrites AbstractPlane:transformBy
+
+Transform the viewport in relation to the layers. In effect, this
+transforms all layers with the inversion of the tran.
+
+Parameters:
+- *tran*
+  - a Transform
+- *opts*
+  - optional object with props
+    - silent event options TODO
+
+Return
+- this, for chaining
+
+Source: [transformBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/transformBy.js)
+
+<a name="tapspacecomponentsAbstractViewtransformLayersBy"></a>
+## tapspace.components.AbstractView:transformLayersBy(tran, opts)
+
+Transform the layers in relation to the viewport. In effect, this
+transforms all layers with the tran. Use this to navigate the space.
+
+Parameters:
+- *tran*
+  - a Transform
+- *opts*
+  - optional object with props:
+    - silent event options TODO
+
+Return
+- this, for chaining
+
+Source: [transformLayersBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/transformLayersBy.js)
+
+<a name="tapspacecomponentsAbstractViewtranslateBy"></a>
+## tapspace.components.AbstractView:translateBy(translation, opts)
+
+Translate the viewport in space along x and y axis.
+
+Parameters
+- *translation*
+  - a Vector
+- *opts*
+  - optional object with props
+    - *TODO*
+
+Return
+- this, for chaining
+
+Source: [translateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/translateBy.js)
+
 <a name="tapspacecomponentsAffineGroup"></a>
 ## tapspace.components.AffineGroup
 
-Inherits [tapspace.components](#tapspacecomponents).AbstractPlane
+Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
 
 A set of affine components.
 The group element has zero width and height.
@@ -548,7 +1273,7 @@ Source: [Group/index.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 <a name="tapspacecomponentsLayer"></a>
 ## tapspace.components.Layer(z)
 
-Inherits [tapspace.components](#tapspacecomponents).AbstractPlane
+Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
 
 Layers does not have size.
 A Layer must be a children of a Space.
