@@ -13,7 +13,6 @@ resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
-- [tapspace.Edge](#tapspaceEdge)
 - [tapspace.Pixel](#tapspacePixel)
 - [tapspace.Point](#tapspacePoint)
 
@@ -57,6 +56,7 @@ Various components to render into the affine space.
 - [tapspace.components.AbstractView](#tapspacecomponentsAbstractView)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Circle](#tapspacecomponentsCircle)
+- [tapspace.components.Edge](#tapspacecomponentsEdge)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
 
@@ -1270,22 +1270,8 @@ Parameters:
 
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/index.js)
 
-<a name="tapspacecomponentsLayer"></a>
-## tapspace.components.Layer(z)
-
-Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
-
-Layers does not have size.
-A Layer must be a children of a Space.
-
-Parameters
-- *z*
-  - optional number. The depth coordinate for perspective viewports.
-
-Source: [Layer/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Layer/index.js)
-
-<a name="tapspaceEdge"></a>
-## tapspace.Edge(border, opts)
+<a name="tapspacecomponentsEdge"></a>
+## tapspace.components.Edge(border, opts)
 
 Edge is an instance class for a div with one visible border.
 It can be used as a line that connects components.
@@ -1306,13 +1292,34 @@ Parameters:
   - *anchor*
     - optional { x, y } on the element. Default {x:0,y:0}
 
-- [tapspace.Edge:atEnd](#tapspaceEdgeatEnd)
-- [tapspace.Edge:atStart](#tapspaceEdgeatStart)
-- [tapspace.Edge:getLength](#tapspaceEdgegetLength)
-- [tapspace.Edge:setPoints](#tapspaceEdgesetPoints)
+- [tapspace.components.Edge:getLength](#tapspacecomponentsEdgegetLength)
 
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
+
+<a name="tapspacecomponentsEdgegetLength"></a>
+## tapspace.components.Edge:getLength()
+
+Get length of the edge in local pixels.
+
+Return
+- a number, pixels on the edge plane.
+
+Source: [getLength.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/getLength.js)
+
+<a name="tapspacecomponentsLayer"></a>
+## tapspace.components.Layer(z)
+
+Inherits [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
+
+Layers does not have size.
+A Layer must be a children of a Space.
+
+Parameters
+- *z*
+  - optional number. The depth coordinate for perspective viewports.
+
+Source: [Layer/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Layer/index.js)
 
 <a name="tapspaceEdgeatEnd"></a>
 ## tapspace.Edge:atEnd()
@@ -1331,16 +1338,6 @@ Get the Point at the edge beginning, at the middle of the border.
 Return: a Point
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
-
-<a name="tapspaceEdgegetLength"></a>
-## tapspace.Edge:getLength()
-
-Get length of the edge in local pixels.
-
-Return
-- a number, pixels on the edge plane.
-
-Source: [getLength.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/getLength.js)
 
 <a name="tapspaceEdgesetPoints"></a>
 ## tapspace.Edge:setPoints(startPoint, endPoint)
