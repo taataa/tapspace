@@ -12,7 +12,6 @@ geometry classes, and namespaces for interaction, effects, and
 resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
-- [tapspace.Circle](#tapspaceCircle)
 - [tapspace.components](#tapspacecomponents)
 - [tapspace.Edge](#tapspaceEdge)
 - [tapspace.Pixel](#tapspacePixel)
@@ -45,28 +44,6 @@ Return
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/create.js)
 
-<a name="tapspaceCircle"></a>
-## tapspace.Circle(radius, color, opts)
-
-A colorful circle.
-Instance class for a circle-like object on an affine plane.
-Useful for debugging coordinate positions.
-
-Parameters:
-- *radius*
-  - a number.
-- *color*
-  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
-- opts, optional object
-  - *id*
-    - optional string. The id attribute of the element.
-  - *className*
-    - optional string. The class attribute of the element.
-  - *anchor*
-    - optional { x, y } on the element. Default {x:0,y:0}
-
-Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/index.js)
-
 <a name="tapspacecomponents"></a>
 ## tapspace.components
 
@@ -79,6 +56,7 @@ Various components to render into the affine space.
 - [tapspace.components.AbstractPlane](#tapspacecomponentsAbstractPlane)
 - [tapspace.components.AbstractView](#tapspacecomponentsAbstractView)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
+- [tapspace.components.Circle](#tapspacecomponentsCircle)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
 
@@ -1269,6 +1247,28 @@ The group element has zero width and height.
 Still, it can be interacted on its content.
 
 Source: [Group/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Group/index.js)
+
+<a name="tapspacecomponentsCircle"></a>
+## tapspace.components.Circle(radius, color, opts)
+
+A colorful circle.
+Instance class for a circle-like object on an affine plane.
+Useful for debugging coordinate positions.
+
+Parameters:
+- *radius*
+  - a number.
+- *color*
+  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+- opts, optional object
+  - *id*
+    - optional string. The id attribute of the element.
+  - *className*
+    - optional string. The class attribute of the element.
+  - *anchor*
+    - optional { x, y } on the element. Default {x:0,y:0}
+
+Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/index.js)
 
 <a name="tapspacecomponentsLayer"></a>
 ## tapspace.components.Layer(z)
