@@ -14,6 +14,8 @@ resource loaders.
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
 - [tapspace.geometry](#tapspacegeometry)
+- [tapspace.interaction](#tapspaceinteraction)
+- [tapspace.version](#tapspaceversion)
 - [tapspace.viewport](#tapspaceviewport)
 
 
@@ -1898,6 +1900,23 @@ Return
 - a Vector
 
 Source: [projectTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/projectTo.js)
+
+<a name="tapspaceinteraction"></a>
+## tapspace.interaction
+
+Interactions define how gestures affect components.
+
+Interactions do not share a common interface.
+But, how about WheelInteraction base class for Wheel interactions?
+
+Source: [interaction/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/index.js)
+
+<a name="tapspaceversion"></a>
+## tapspace.version
+
+The semantic version string, for example '1.2.3'.
+
+Source: [lib/index.js](https://github.com/taataa/tapspace/blob/main/lib/index.js)
 
 <a name="tapspaceviewport"></a>
 ## tapspace.viewport(element, options)
