@@ -14,7 +14,6 @@ resource loaders.
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
 - [tapspace.geometry](#tapspacegeometry)
-- [tapspace.Point](#tapspacePoint)
 - [tapspace.viewport](#tapspaceviewport)
 
 
@@ -1478,6 +1477,8 @@ Each geometry provides methods to project it between affine planes.
 
 - [tapspace.geometry.Direction](#tapspacegeometryDirection)
 - [tapspace.geometry.Distance](#tapspacegeometryDistance)
+- [tapspace.geometry.Point](#tapspacegeometryPoint)
+- [tapspace.geometry.Scale](#tapspacegeometryScale)
 
 
 Source: [geometry/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/index.js)
@@ -1554,8 +1555,8 @@ Return
 
 Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Distance/index.js)
 
-<a name="tapspacePoint"></a>
-## tapspace.Point(basis, x, y)
+<a name="tapspacegeometryPoint"></a>
+## tapspace.geometry.Point(basis, x, y)
 
 A 2D point on a plane.
 
@@ -1572,19 +1573,20 @@ Example
 let p = new tapspace.Point(basis, x, y)
 ```
 
-- [tapspace.Point:distanceTo](#tapspacePointdistanceTo)
-- [tapspace.Point:offset](#tapspacePointoffset)
-- [tapspace.Point:plain](#tapspacePointplain)
-- [tapspace.Point:polarOffset](#tapspacePointpolarOffset)
-- [tapspace.Point:round](#tapspacePointround)
-- [tapspace.Point:vectorTo](#tapspacePointvectorTo)
-- [tapspace.Point.fromAverage](#tapspacePointfromAverage)
+- [tapspace.geometry.Point:distanceTo](#tapspacegeometryPointdistanceTo)
+- [tapspace.geometry.Point:offset](#tapspacegeometryPointoffset)
+- [tapspace.geometry.Point:plain](#tapspacegeometryPointplain)
+- [tapspace.geometry.Point:polarOffset](#tapspacegeometryPointpolarOffset)
+- [tapspace.geometry.Point:projectTo](#tapspacegeometryPointprojectTo)
+- [tapspace.geometry.Point:round](#tapspacegeometryPointround)
+- [tapspace.geometry.Point:vectorTo](#tapspacegeometryPointvectorTo)
+- [tapspace.geometry.Point.fromAverage](#tapspacegeometryPointfromAverage)
 
 
 Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
 
-<a name="tapspacePointdistanceTo"></a>
-## tapspace.Point:distanceTo(p)
+<a name="tapspacegeometryPointdistanceTo"></a>
+## tapspace.geometry.Point:distanceTo(p)
 
 Distance between points.
 
@@ -1597,8 +1599,8 @@ Return
 
 Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
 
-<a name="tapspacePointoffset"></a>
-## tapspace.Point:offset(dx, dy)
+<a name="tapspacegeometryPointoffset"></a>
+## tapspace.geometry.Point:offset(dx, dy)
 
 Get a point when the current point is offset by dx and dy.
 
@@ -1613,15 +1615,15 @@ Return
 
 Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
 
-<a name="tapspacePointplain"></a>
-## tapspace.Point:plain()
+<a name="tapspacegeometryPointplain"></a>
+## tapspace.geometry.Point:plain()
 
 Return plain point2 object {x,y} without basis data.
 
 Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
 
-<a name="tapspacePointpolarOffset"></a>
-## tapspace.Point:polarOffset(distance, angle)
+<a name="tapspacegeometryPointpolarOffset"></a>
+## tapspace.geometry.Point:polarOffset(distance, angle)
 
 Get the point at the given distance at the angle.
 
@@ -1636,8 +1638,13 @@ Return
 
 Source: [polarOffset.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/polarOffset.js)
 
-<a name="tapspacePointround"></a>
-## tapspace.Point:round()
+<a name="tapspacegeometryPointprojectTo"></a>
+## tapspace.geometry.Point:projectTo(newBasis)
+
+Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
+
+<a name="tapspacegeometryPointround"></a>
+## tapspace.geometry.Point:round()
 
 Round the point to nearest integers.
 
@@ -1646,8 +1653,8 @@ Return
 
 Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/index.js)
 
-<a name="tapspacePointvectorTo"></a>
-## tapspace.Point:vectorTo(p)
+<a name="tapspacegeometryPointvectorTo"></a>
+## tapspace.geometry.Point:vectorTo(p)
 
 Get a vector from this to the point p.
 
@@ -1660,8 +1667,8 @@ Return:
 
 Source: [vectorTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/vectorTo.js)
 
-<a name="tapspacePointfromAverage"></a>
-## tapspace.Point.fromAverage(basis, points)
+<a name="tapspacegeometryPointfromAverage"></a>
+## tapspace.geometry.Point.fromAverage(basis, points)
 
 Mean of an array of points.
 
@@ -1680,6 +1687,34 @@ const mean = tapspace.Point.fromAverage(basis, points)
 ```
 
 Source: [average.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/average.js)
+
+<a name="tapspacegeometryScale"></a>
+## tapspace.geometry.Scale(basis, multiplier)
+
+The scale multiplier in space.
+The multiplier depends on the scale of the coordinate space and
+therefore the multiplier needs conversion between planes.
+In contrast, a scaling is a change in the scale and does not depend on
+the plane.
+
+Parameters
+- *basis*
+  - a Component
+- *multiplier*
+  - a number, the scale multiplier relative to the basis scale.
+
+- [tapspace.geometry.Scale:projectTo](#tapspacegeometryScaleprojectTo)
+
+
+Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Scale/index.js)
+
+<a name="tapspacegeometryScaleprojectTo"></a>
+## tapspace.geometry.Scale:projectTo(newBasis)
+
+Return
+- a Scale
+
+Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Scale/index.js)
 
 <a name="tapspaceviewport"></a>
 ## tapspace.viewport(element, options)
