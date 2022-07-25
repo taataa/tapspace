@@ -75,6 +75,7 @@ Various components to render into the affine space.
 - [tapspace.components.AbstractActive](#tapspacecomponentsAbstractActive)
 - [tapspace.components.AbstractFrame](#tapspacecomponentsAbstractFrame)
 - [tapspace.components.AbstractItem](#tapspacecomponentsAbstractItem)
+- [tapspace.components.AbstractNode](#tapspacecomponentsAbstractNode)
 - [tapspace.components.AffineGroup](#tapspacecomponentsAffineGroup)
 - [tapspace.components.Layer](#tapspacecomponentsLayer)
 
@@ -437,6 +438,101 @@ Return
 - this, for chaining
 
 Source: [tappable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/tappable.js)
+
+<a name="tapspacecomponentsAbstractNode"></a>
+## tapspace.components.AbstractNode(element)
+
+Abstract class for all affine components that have a HTML element.
+AbstractNodes form an affine subtree in DOM.
+
+Parameters:
+- *element*
+  - a HTMLElement
+
+- [tapspace.components.AbstractNode:findCommonAncestor](#tapspacecomponentsAbstractNodefindCommonAncestor)
+- [tapspace.components.AbstractNode:getAncestors](#tapspacecomponentsAbstractNodegetAncestors)
+- [tapspace.components.AbstractNode:getChildren](#tapspacecomponentsAbstractNodegetChildren)
+- [tapspace.components.AbstractNode:getParent](#tapspacecomponentsAbstractNodegetParent)
+- [tapspace.components.AbstractNode:getRoot](#tapspacecomponentsAbstractNodegetRoot)
+- [tapspace.components.AbstractNode:isRoot](#tapspacecomponentsAbstractNodeisRoot)
+
+
+Source: [AbstractNode/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/index.js)
+
+<a name="tapspacecomponentsAbstractNodefindCommonAncestor"></a>
+## tapspace.components.AbstractNode:findCommonAncestor(node)
+
+Find lowest common affine ancestor of self and the given node.
+
+Parameters:
+- *node*
+  - an AbstractNode
+
+Return
+- an AbstractNode. Null if no common ancestor is found.
+
+Note that the result might not be a true ancestor:
+- If the given node is a predecessor of self, then self is returned and vice versa.
+- If the given node equals self, then self is returned.
+
+For algorithmic comparison, see note 2022-04-01-19
+
+See also https://en.wikipedia.org/wiki/Lowest_common_ancestor
+
+Source: [findCommonAncestor.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/findCommonAncestor.js)
+
+<a name="tapspacecomponentsAbstractNodegetAncestors"></a>
+## tapspace.components.AbstractNode:getAncestors()
+
+Affine ancestors, ordered from the immediate parent to
+the farthest ancestor, the immediate parent first.
+
+Return
+- array of AbstractNode
+
+Source: [getAncestors.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getAncestors.js)
+
+<a name="tapspacecomponentsAbstractNodegetChildren"></a>
+## tapspace.components.AbstractNode:getChildren()
+
+Get all affine children from DOM.
+
+Return
+- array of AbstractNode
+
+Source: [getChildren.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getChildren.js)
+
+<a name="tapspacecomponentsAbstractNodegetParent"></a>
+## tapspace.components.AbstractNode:getParent()
+
+Get the affine parent of the plane. Null if no affine parent.
+
+Return
+- an AbstractPlane, the parent.
+- null if no affine parent.
+
+Source: [getParent.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getParent.js)
+
+<a name="tapspacecomponentsAbstractNodegetRoot"></a>
+## tapspace.components.AbstractNode:getRoot()
+
+Get the affine root. Will return self if has no affine parent.
+
+Return
+- an AbstractNode
+
+Source: [getRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getRoot.js)
+
+<a name="tapspacecomponentsAbstractNodeisRoot"></a>
+## tapspace.components.AbstractNode:isRoot()
+
+Is the element an affine root i.e.
+the element does not have an affine parent.
+
+Return
+- *boolean*
+
+Source: [isRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/isRoot.js)
 
 <a name="tapspacecomponentsAffineGroup"></a>
 ## tapspace.components.AffineGroup
