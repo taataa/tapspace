@@ -1481,6 +1481,7 @@ Each geometry provides methods to project it between affine planes.
 - [tapspace.geometry.Scale](#tapspacegeometryScale)
 - [tapspace.geometry.Size](#tapspacegeometrySize)
 - [tapspace.geometry.Transform](#tapspacegeometryTransform)
+- [tapspace.geometry.Vector](#tapspacegeometryVector)
 
 
 Source: [geometry/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/index.js)
@@ -1868,6 +1869,35 @@ Return
 - a Transform
 
 Source: [projectTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/projectTo.js)
+
+<a name="tapspacegeometryVector"></a>
+## tapspace.geometry.Vector(basis, x, y)
+
+Parameters
+- *basis*
+- *x*
+  - a number or a point2
+- *y*
+  - a number
+
+- [tapspace.geometry.Vector:projectTo](#tapspacegeometryVectorprojectTo)
+
+
+Source: [Vector/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/index.js)
+
+<a name="tapspacegeometryVectorprojectTo"></a>
+## tapspace.geometry.Vector:projectTo(newBasis)
+
+Project the vector onto another plane.
+
+Parameters:
+- *newBasis*
+  - an AbstractPlane
+
+Return
+- a Vector
+
+Source: [projectTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/projectTo.js)
 
 <a name="tapspaceviewport"></a>
 ## tapspace.viewport(element, options)
