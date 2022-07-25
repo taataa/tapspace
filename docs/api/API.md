@@ -13,6 +13,7 @@ resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
+- [tapspace.geometry](#tapspacegeometry)
 - [tapspace.Point](#tapspacePoint)
 - [tapspace.viewport](#tapspaceviewport)
 
@@ -1468,6 +1469,90 @@ Return
 - this, for chaining
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
+
+<a name="tapspacegeometry"></a>
+## tapspace.geometry
+
+Various geometries in affine space.
+Each geometry provides methods to project it between affine planes.
+
+- [tapspace.geometry.Direction](#tapspacegeometryDirection)
+- [tapspace.geometry.Distance](#tapspacegeometryDistance)
+
+
+Source: [geometry/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/index.js)
+
+<a name="tapspacegeometryDirection"></a>
+## tapspace.geometry.Direction(basis, angle)
+
+Direction in space represented as an absolute angle.
+The representation depends on the orientation of the coordinate space and
+therefore the angle needs conversion between planes.
+In contrast, a rotation is a change in the angle and does not depend on
+the orientation.
+
+Parameters
+- *basis*
+  - a Component
+- *angle*
+  - a number, the rotation in radians from the angle zero.
+
+- [tapspace.geometry.Direction:projectTo](#tapspacegeometryDirectionprojectTo)
+
+
+Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Direction/index.js)
+
+<a name="tapspacegeometryDirectionprojectTo"></a>
+## tapspace.geometry.Direction:projectTo(newBasis)
+
+Parameters:
+- *newBasis*
+
+Return
+- a Direction
+
+Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Direction/index.js)
+
+<a name="tapspacegeometryDistance"></a>
+## tapspace.geometry.Distance(basis, d)
+
+Parameters
+- *basis*
+  - a Component
+- *d*
+  - number, a measure. Cannot be negative.
+
+Properties:
+- *basis*
+- *d*
+
+- [tapspace.geometry.Distance:projectTo](#tapspacegeometryDistanceprojectTo)
+- [tapspace.geometry.Distance:scaleBy](#tapspacegeometryDistancescaleBy)
+
+
+Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Distance/index.js)
+
+<a name="tapspacegeometryDistanceprojectTo"></a>
+## tapspace.geometry.Distance:projectTo(newBasis)
+
+Return
+- a Distance
+
+Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Distance/index.js)
+
+<a name="tapspacegeometryDistancescaleBy"></a>
+## tapspace.geometry.Distance:scaleBy(multiplier)
+
+Multiply the distance. Returns new Distance.
+
+Parameters
+- *multiplier*
+  - a number
+
+Return
+- a Distance
+
+Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Distance/index.js)
 
 <a name="tapspacePoint"></a>
 ## tapspace.Point(basis, x, y)
