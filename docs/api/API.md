@@ -1910,6 +1910,11 @@ Interactions do not share a common interface.
 But, how about WheelInteraction base class for Wheel interactions?
 
 - [tapspace.interaction.Drag](#tapspaceinteractionDrag)
+- [tapspace.interaction.PinchLayers](#tapspaceinteractionPinchLayers)
+- [tapspace.interaction.ResizeAlign](#tapspaceinteractionResizeAlign)
+- [tapspace.interaction.Tap](#tapspaceinteractionTap)
+- [tapspace.interaction.WheelRotate](#tapspaceinteractionWheelRotate)
+- [tapspace.interaction.WheelZoom](#tapspaceinteractionWheelZoom)
 
 
 Source: [interaction/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/index.js)
@@ -1969,6 +1974,206 @@ Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interac
 ## tapspace.interaction.Drag:unbind()
 
 Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
+
+<a name="tapspaceinteractionPinchLayers"></a>
+## tapspace.interaction.PinchLayers(viewport, options)
+
+Pinch interaction for viewports.
+Pan, zoom, and rotate viewport layers by using pointers.
+
+Parameters:
+- *viewport*
+  - a Viewport. Get input form this component.
+- options, optional object with properties:
+  - *freedom*
+    - optional object with props:
+      - *type*
+        - a string, 'TS'
+      - *center*
+        - a Point. The center point for the freedoms 'S', 'R', 'SR'.
+      - *angle*
+        - a Direction. The line angle for the freedom 'L'.
+
+- [tapspace.interaction.PinchLayers:bind](#tapspaceinteractionPinchLayersbind)
+- [tapspace.interaction.PinchLayers:getFreedom](#tapspaceinteractionPinchLayersgetFreedom)
+- [tapspace.interaction.PinchLayers:unbind](#tapspaceinteractionPinchLayersunbind)
+
+
+Source: [PinchLayers/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/PinchLayers/index.js)
+
+<a name="tapspaceinteractionPinchLayersbind"></a>
+## tapspace.interaction.PinchLayers:bind()
+
+Bind event listeners
+
+Source: [PinchLayers/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/PinchLayers/index.js)
+
+<a name="tapspaceinteractionPinchLayersgetFreedom"></a>
+## tapspace.interaction.PinchLayers:getFreedom()
+
+Return
+- object, the freedom object
+
+Source: [PinchLayers/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/PinchLayers/index.js)
+
+<a name="tapspaceinteractionPinchLayersunbind"></a>
+## tapspace.interaction.PinchLayers:unbind()
+
+Unbind listeners
+
+Source: [PinchLayers/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/PinchLayers/index.js)
+
+<a name="tapspaceinteractionResizeAlign"></a>
+## tapspace.interaction.ResizeAlign(viewport, options)
+
+Re-align viewport on resize.
+Keeps the viewport center relatively at the same position.
+Pan the viewport during the resize so that the center stays fixed to
+the same space point.
+
+Parameters:
+- *viewport*
+  - a Viewport. Observe resize events form this component.
+- options, object with properties:
+  - *relativeCenter*
+    - optional { rx, ry }. The relative point on the viewport to keep fixed during the resize.
+
+Emits via viewport:
+- *resize*
+  - with resize event object
+
+- [tapspace.interaction.ResizeAlign:bind](#tapspaceinteractionResizeAlignbind)
+- [tapspace.interaction.ResizeAlign:unbind](#tapspaceinteractionResizeAlignunbind)
+
+
+Source: [ResizeAlign/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/ResizeAlign/index.js)
+
+<a name="tapspaceinteractionResizeAlignbind"></a>
+## tapspace.interaction.ResizeAlign:bind()
+
+Bind event listeners
+
+Source: [ResizeAlign/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/ResizeAlign/index.js)
+
+<a name="tapspaceinteractionResizeAlignunbind"></a>
+## tapspace.interaction.ResizeAlign:unbind()
+
+Unbind listeners
+
+Source: [ResizeAlign/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/ResizeAlign/index.js)
+
+<a name="tapspaceinteractionTap"></a>
+## tapspace.interaction.Tap(source, target, options)
+
+Tap interaction.
+
+Parameters:
+- *source*
+  - a Component. The tap input source.
+- *target*
+  - a Component. The target for the tap effect.
+  - The target will emit 'tap' events.
+- *options*
+  - *effect*
+    - string, one of 'shrink', 'shake', 'down'
+  - *maxTravel*
+    - optional number in viewport pixels. default 20.
+
+Makes the target emit:
+- *tapstart*
+- *tapend*
+  - when the tap gesture ends succesfully, before the tap event.
+- *tapcancel*
+  - when the tap gesture was cancelled or unsuccessful.
+  - The gesture is unsuccessful if the gesture requirements were not met.
+- *tap*
+  - when the tap was successful.
+
+- [tapspace.interaction.Tap:bind](#tapspaceinteractionTapbind)
+- [tapspace.interaction.Tap:unbind](#tapspaceinteractionTapunbind)
+
+
+Source: [Tap/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Tap/index.js)
+
+<a name="tapspaceinteractionTapbind"></a>
+## tapspace.interaction.Tap:bind()
+
+Bind gesture event listeners.
+
+Source: [Tap/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Tap/index.js)
+
+<a name="tapspaceinteractionTapunbind"></a>
+## tapspace.interaction.Tap:unbind()
+
+Unbind capturer.
+
+Source: [Tap/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Tap/index.js)
+
+<a name="tapspaceinteractionWheelRotate"></a>
+## tapspace.interaction.WheelRotate(viewport, options)
+
+Wheel rotate interaction for viewports.
+Rotate the viewport layers by mouse wheel left-right axis.
+
+Parameters:
+- *viewport*
+  - a Viewport. Get input form this component.
+- options, object with properties:
+  - *center*
+    - a Point. The center point for the rotation. TODO Defaults to the cursor position.
+
+- [tapspace.interaction.WheelRotate:bind](#tapspaceinteractionWheelRotatebind)
+- [tapspace.interaction.WheelRotate:unbind](#tapspaceinteractionWheelRotateunbind)
+
+
+Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelRotate/index.js)
+
+<a name="tapspaceinteractionWheelRotatebind"></a>
+## tapspace.interaction.WheelRotate:bind()
+
+Bind event listeners
+
+Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelRotate/index.js)
+
+<a name="tapspaceinteractionWheelRotateunbind"></a>
+## tapspace.interaction.WheelRotate:unbind()
+
+Unbind listeners
+
+Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelRotate/index.js)
+
+<a name="tapspaceinteractionWheelZoom"></a>
+## tapspace.interaction.WheelZoom(viewport, options)
+
+Wheel zoom interaction for viewports.
+Scale the viewport layers by mouse wheel.
+
+Parameters:
+- *viewport*
+  - a Viewport. Get input form this component.
+- options, object with properties:
+  - *center*
+    - a Point. The center point for the scaling. TODO Defaults to the cursor position.
+
+- [tapspace.interaction.WheelZoom:bind](#tapspaceinteractionWheelZoombind)
+- [tapspace.interaction.WheelZoom:unbind](#tapspaceinteractionWheelZoomunbind)
+
+
+Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelZoom/index.js)
+
+<a name="tapspaceinteractionWheelZoombind"></a>
+## tapspace.interaction.WheelZoom:bind()
+
+Bind event listeners
+
+Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelZoom/index.js)
+
+<a name="tapspaceinteractionWheelZoomunbind"></a>
+## tapspace.interaction.WheelZoom:unbind()
+
+Unbind listeners
+
+Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelZoom/index.js)
 
 <a name="tapspaceversion"></a>
 ## tapspace.version
