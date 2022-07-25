@@ -1479,6 +1479,8 @@ Each geometry provides methods to project it between affine planes.
 - [tapspace.geometry.Distance](#tapspacegeometryDistance)
 - [tapspace.geometry.Point](#tapspacegeometryPoint)
 - [tapspace.geometry.Scale](#tapspacegeometryScale)
+- [tapspace.geometry.Size](#tapspacegeometrySize)
+- [tapspace.geometry.Transform](#tapspacegeometryTransform)
 
 
 Source: [geometry/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/index.js)
@@ -1715,6 +1717,157 @@ Return
 - a Scale
 
 Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Scale/index.js)
+
+<a name="tapspacegeometrySize"></a>
+## tapspace.geometry.Size(basis, width, height)
+
+A rectangular size in space. Basically it is two-dimensional distance.
+
+Parameters
+- *basis*
+  - a Component
+- *width*
+  - a number, the width on the basis
+- *height*
+  - a number, the height on the basis
+
+- [tapspace.geometry.Size:at](#tapspacegeometrySizeat)
+- [tapspace.geometry.Size:atNorm](#tapspacegeometrySizeatNorm)
+- [tapspace.geometry.Size:atToNorm](#tapspacegeometrySizeatToNorm)
+- [tapspace.geometry.Size:projectTo](#tapspacegeometrySizeprojectTo)
+
+
+Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/index.js)
+
+<a name="tapspacegeometrySizeat"></a>
+## tapspace.geometry.Size:at(x, y)
+
+Get point at (x,y).
+
+Parameters:
+- *x*
+  - a number
+- *y*
+  - a number
+
+Return
+- a Point
+
+Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/at.js)
+
+<a name="tapspacegeometrySizeatNorm"></a>
+## tapspace.geometry.Size:atNorm(rx, ry)
+
+Get point at (rx, ry) where rx is relative to the width and
+the ry is relative to the height.
+
+Parameters:
+- *rx*
+  - a number. Value of 1 will return a point with x = width.
+- *ry*
+  - a number. Value of 1 will return a point with y = height.
+
+Return
+- a Point
+
+Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/atNorm.js)
+
+<a name="tapspacegeometrySizeatToNorm"></a>
+## tapspace.geometry.Size:atToNorm(x, y)
+
+Get point at (x,y) and return its relative coordinates.
+For example, relative coords of point (2, 1) in size (4, 4) is (0.5, 0.25)
+
+Parameters:
+- *x*
+  - a number or a Point
+- *y*
+  - a number
+
+Return
+- a { rx, ry }. If size is zero, will return { rx: 0, ry: 0 }
+
+Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/atToNorm.js)
+
+<a name="tapspacegeometrySizeprojectTo"></a>
+## tapspace.geometry.Size:projectTo(newBasis)
+
+Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/index.js)
+
+<a name="tapspacegeometryTransform"></a>
+## tapspace.geometry.Transform(basis, a, b, x, y)
+
+Parameters
+- *basis*
+  - a Component
+- *a*
+  - a number or a tran2
+- *b*
+  - *number*
+- *x*
+  - *number*
+- *y*
+  - *number*
+
+- [tapspace.geometry.Transform:createFromParams](#tapspacegeometryTransformcreateFromParams)
+- [tapspace.geometry.Transform:getTranslation](#tapspacegeometryTransformgetTranslation)
+- [tapspace.geometry.Transform:inverse](#tapspacegeometryTransforminverse)
+- [tapspace.geometry.Transform:projectTo](#tapspacegeometryTransformprojectTo)
+
+
+Source: [Transform/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/index.js)
+
+<a name="tapspacegeometryTransformcreateFromParams"></a>
+## tapspace.geometry.Transform:createFromParams(params)
+
+Create transform in intuitive way with human-readable parameters.
+
+Parameters:
+- *params*
+  - *basis*
+    - HTMLElement, required.
+  - *rotate*
+    - number, radians. Optional, default 0.
+  - *scale*
+    - number, multiplier. Optional, default 1.
+  - *translate*
+    - vec2, { x, y }. Optional, default { x: 0, y: 0 }.
+
+Return
+- a Transform
+
+Source: [createFromParams.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/createFromParams.js)
+
+<a name="tapspacegeometryTransformgetTranslation"></a>
+## tapspace.geometry.Transform:getTranslation()
+
+Get the translation component of the transform without rotation
+and scaling.
+
+Return
+- a Transform
+
+Source: [getTranslation.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/getTranslation.js)
+
+<a name="tapspacegeometryTransforminverse"></a>
+## tapspace.geometry.Transform:inverse()
+
+Invert the transform.
+
+Return
+- a Transform
+
+Source: [inverse.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/inverse.js)
+
+<a name="tapspacegeometryTransformprojectTo"></a>
+## tapspace.geometry.Transform:projectTo(newBasis)
+
+Project the transform to another plane.
+
+Return
+- a Transform
+
+Source: [projectTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/projectTo.js)
 
 <a name="tapspaceviewport"></a>
 ## tapspace.viewport(element, options)
