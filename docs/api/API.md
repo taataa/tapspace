@@ -1909,7 +1909,66 @@ Interactions define how gestures affect components.
 Interactions do not share a common interface.
 But, how about WheelInteraction base class for Wheel interactions?
 
+- [tapspace.interaction.Drag](#tapspaceinteractionDrag)
+
+
 Source: [interaction/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/index.js)
+
+<a name="tapspaceinteractionDrag"></a>
+## tapspace.interaction.Drag(source, target, options)
+
+Drag interaction. Move the target element around.
+
+Parameters:
+- *source*
+  - a Component. Get drag input form this component.
+- *target*
+  - a Component. Apply effect to this component.
+  - To make the component draggable, use source as the target.
+  - To build a handle, target a parent of the source.
+- options, object with properties:
+  - *minTravel*
+    - optional distance. The minimum required distance for the drag to begin.
+  - *maxTravel*
+    - optional distance. The maximum allowed distance for the element to move during the gesture.
+
+TODO maxDistance
+TODO minDistance
+TODO minDuration
+TODO maxDuration
+
+- [tapspace.interaction.Drag:bind](#tapspaceinteractionDragbind)
+- [tapspace.interaction.Drag:setSource](#tapspaceinteractionDragsetSource)
+- [tapspace.interaction.Drag:setTarget](#tapspaceinteractionDragsetTarget)
+- [tapspace.interaction.Drag:unbind](#tapspaceinteractionDragunbind)
+
+
+Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
+
+<a name="tapspaceinteractionDragbind"></a>
+## tapspace.interaction.Drag:bind()
+
+Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
+
+<a name="tapspaceinteractionDragsetSource"></a>
+## tapspace.interaction.Drag:setSource(comp)
+
+Set input source component.
+Rebinds if the drag was bound.
+
+Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
+
+<a name="tapspaceinteractionDragsetTarget"></a>
+## tapspace.interaction.Drag:setTarget(comp)
+
+Set output target component
+
+Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
+
+<a name="tapspaceinteractionDragunbind"></a>
+## tapspace.interaction.Drag:unbind()
+
+Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/Drag/index.js)
 
 <a name="tapspaceversion"></a>
 ## tapspace.version
