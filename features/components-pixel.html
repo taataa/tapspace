@@ -37,9 +37,9 @@
     const layer = viewport.layer()
 
     // Create a pixel component
-    const redpixel = new tapspace.Pixel('#ff0000', { className: 'mypixel' })
-    const greenpixel = new tapspace.Pixel('#00ff00', { className: 'mypixel' })
-    const bluepixel = new tapspace.Pixel('#2222ff', { className: 'mypixel' })
+    const redpixel = tapspace.pixel('#ff0000', { className: 'mypixel' })
+    const greenpixel = tapspace.pixel('#00ff00', { className: 'mypixel' })
+    const bluepixel = tapspace.pixel('#2222ff', { className: 'mypixel' })
     layer.add(redpixel, { position: viewport.atNorm(0.48, 0.45) })
     layer.add(greenpixel, { position: viewport.atNorm(0.5, 0.45) })
     layer.add(bluepixel, { position: viewport.atNorm(0.52, 0.45) })
