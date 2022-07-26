@@ -49,14 +49,10 @@
   <script>
   const container = document.querySelector('#tapspace')
 
-  const view = new tapspace.Viewport(container, {
+  const view = tapspace.viewport(container, {
     size: { width: 800, height: 600 }
   })
-  const layer = new tapspace.Layer()
-
-  view.add(layer, {
-    position: view.atMid()
-  })
+  const layer = view.layer()
 
   const par = (t) => '<p>' + t + '</p>'
   const opts = {
@@ -64,11 +60,11 @@
     size: { width: 300, height: 300 },
     className: 'mycomponent'
   }
-  const originComp = new tapspace.Component(par('Beginning'), opts)
+  const originComp = tapspace.component(par('Beginning'), opts)
 
   const iteration = (prev, i) => {
     const label = par('Component ' + i)
-    const comp = new tapspace.Component(label, opts)
+    const comp = tapspace.component(label, opts)
     layer.add(comp, { preserve: true })
 
     comp.rotateBy(-1.9 - 0.5 * i)
@@ -89,7 +85,9 @@
   }
 
   // Insert components to space.
-  layer.add(originComp)
+  layer.add(originComp, {
+    position: view.atMid()
+  })
 
   // Recursively insert the same component n times
   iterate(originComp, 9)
@@ -98,7 +96,7 @@
 
   // DEBUG
   // Helpful dot crosshair for debugging
-  // const crosshair = new tapspace.Component('', {
+  // const crosshair = tapspace.component('', {
   //   anchor: { x: 3, y: 3 },
   //   size: { width: 6, height: 6 },
   //   className: 'crosshair'
