@@ -218,7 +218,6 @@ module.exports = function (test) {
   })
 
   test('#getHullOf complex grid', function (t) {
-    // See docs/notes/2018-01-15-21
     var grid = new Grid({
       xStep: 8,
       yStep: 4,
