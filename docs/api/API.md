@@ -13,6 +13,7 @@ resource loaders.
 
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
+- [tapspace.effects](#tapspaceeffects)
 - [tapspace.geometry](#tapspacegeometry)
 - [tapspace.interaction](#tapspaceinteraction)
 - [tapspace.version](#tapspaceversion)
@@ -1470,6 +1471,35 @@ Return
 - this, for chaining
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/index.js)
+
+<a name="tapspaceeffects"></a>
+## tapspace.effects
+
+Effects are animations that can be triggered
+programmatically for example as part of interaction.
+
+- [tapspace.effects.press](#tapspaceeffectspress)
+
+
+Source: [effects/index.js](https://github.com/taataa/tapspace/blob/main/lib/effects/index.js)
+
+<a name="tapspaceeffectspress"></a>
+## tapspace.effects.press
+
+Pressing effect: the element moves down a bit and then back up.
+
+Parameters:
+- *options*
+  - *distance*
+    - optional number. Displacement during press in pixels. Default 2.
+  - *attack*
+    - time to press down. ms
+  - *hold*
+    - time between presses. ms
+  - *release*
+    - time to press up. ms
+
+Source: [press/index.js](https://github.com/taataa/tapspace/blob/main/lib/effects/press/index.js)
 
 <a name="tapspacegeometry"></a>
 ## tapspace.geometry
