@@ -52,12 +52,12 @@
     // Create components for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
-    const blocka = space.component(template('Far away'), {
+    const blocka = space.element(template('Far away'), {
       className: 'mycomponent',
       origin: 'center',
       position: space.atNorm(0.4, 0.5, 2)
     })
-    const blockb = space.component(template('Up close'), {
+    const blockb = space.element(template('Up close'), {
       className: 'mycomponent',
       origin: 'center',
       position: space.atNorm(0.6, 0.5, 0)
