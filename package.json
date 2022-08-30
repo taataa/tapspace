@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "affineplane": "^1.2.0",
+    "affineplane": "^2.1.0",
     "component-emitter": "^1.3.0",
     "loadimages": "^1.0.0",
     "monotone-convex-hull-2d": "^1.0.1",
