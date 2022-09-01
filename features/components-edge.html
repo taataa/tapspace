@@ -41,21 +41,21 @@
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.
-    const edgelayer = view.layer()
-    const nodelayer = view.layer()
+    const edgelayer = space.plane()
+    const nodelayer = space.plane()
 
     // Create nodes
     const m0 = tapspace.circle(20, 'red')
     const m1 = tapspace.circle(20, 'blue')
     const m2 = tapspace.circle(20, 'green')
 
-    nodelayer.add(m0, { position: view.atNorm(0.38, 0.3) })
-    nodelayer.add(m1, { position: view.atNorm(0.62, 0.3) })
+    nodelayer.add(m0, view.atNorm(0.38, 0.3))
+    nodelayer.add(m1, view.atNorm(0.62, 0.3))
 
     // Equilateral triangle
     const dist = m0.atAnchor().distanceTo(m1.atAnchor())
     const p2 = m0.atAnchor().polarOffset(dist, Math.PI / 3)
-    nodelayer.add(m2, { position: p2 })
+    nodelayer.add(m2, p2)
 
     // Create edges
     const edge01 = tapspace.edge('0.6em dotted black')
@@ -77,7 +77,7 @@
       m1.atAnchor(),
       m2.atAnchor()
     ])
-    nodelayer.add(mMean, { position: pMean })
+    nodelayer.add(mMean, pMean)
   </script>
 </body>
 </html>
