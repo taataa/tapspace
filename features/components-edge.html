@@ -71,7 +71,7 @@
 
     // Find mean
     const mMean = tapspace.circle(10, 'black')
-    const pMean = tapspace.Point.mean(nodelayer, [
+    const pMean = tapspace.geometry.Point.fromMean(nodelayer, [
       m0.atAnchor(),
       m1.atAnchor(),
       m2.atAnchor()
