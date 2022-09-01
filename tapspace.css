@@ -15,7 +15,9 @@
   bottom: auto;
   right: auto;
   transform-origin: 0 0;
-  transform: matrix(1, 0, 0, 1, 0, 0);
+  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
 }
 .affine-viewport {
   /* Space elements are absolutely positioned and therefore
@@ -25,6 +27,8 @@
   overflow: hidden;
   /* Mobile browsers have touch actions that cancel our gestures */
   touch-action: none;
+  /* Default 3D perspective */
+  perspective: 300px;
 }
 .affine-layer,
 .affine-group,
@@ -35,6 +39,8 @@
   width: 0;
   height: 0;
   overflow: visible;
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
 }
 
 .affine-controls {
@@ -54,4 +60,6 @@
      It must fill the viewport behind controls. */
   width: 100%;
   height: 100%;
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
 }
