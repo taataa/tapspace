@@ -7,19 +7,30 @@ API design problems
   explicity vs simplicity
   relative vs absolute
   computation efficiency vs expressiveness
+  one vs multiple ways to do things
 
 Separation of concerns
   transformation construction vs moving the element
   positioning vs interaction
 
+KISS - Keep it simple stupid
+DOT - Do one thing
+  Avoid complicated methods and options.
+  If the method feels tedious to document, then it probably
+  does or allows too much.
+  Bad example: addChild(comp, position) where position can be many things.
+
 # Construction
 
-aelem = affine(elem)
-aview = affine.viewport(elem)
-alayer = affine.layer(elem)
+The init code style is important. It is the first thing the user learns.
 
-Allow affine elements without layer or viewport as an ancestor.
+One way is to allow affine elements to exist without a layer, viewport,
+or other container as their ancestor.
 This enables affinedom to be used for animations and transform controlling.
+
+    aelem = affine(elem)
+    aview = affine.viewport(elem)
+    alayer = affine.layer(elem)
 
 Alternatively follow the approach of Vis.js and Google Maps JS API:
 Require user to give the container element and let the library handle
@@ -28,11 +39,20 @@ and how they must be arranged in the DOM. Also, if the library updates its
 DOM structure, for example to overcome some browser constraints, the user
 does not need to migrate the host app DOM.
 
-aview = new tapspace.View(querystring or element)
-alayer = new tapspace.Layer()
-agroup = new tapspace.Group()
+    aview = new tapspace.View(querystring or element)
+    alayer = new tapspace.Layer()
+    agroup = new tapspace.Group()
 
+Conceptual difficulty: developer needs to add content like layers/planes
+to viewport. Viewport does not sound to be a container into which you
+can add things, except some static controls like buttons. Also, in Tapspace v1
+devs did not and could not add space content via a viewport. Therefore,
+regardless that the viewport is the true container for everything in DOM,
+we need explicit conceptual separation between the viewport and space.
 
+    space = tapspace.space(querystring or element)
+    view = space.viewport()
+    plane = space.plane()
 
 # Affine Element
 
