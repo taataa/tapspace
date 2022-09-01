@@ -36,7 +36,8 @@
 
   <!-- Your code -->
   <script>
-    const view = tapspace.viewport('#tapspace').zoomable()
+    const space = tapspace.space('#tapspace')
+    const view = space.viewport().zoomable()
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.
