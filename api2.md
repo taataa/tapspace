@@ -339,6 +339,16 @@ Additional design decisions:
 [2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
 
 
+# Perspective and orthogonal viewport
+
+Do we need to switch between perspective and orthogonal viewport projection modes? Should we project always orthogonally but simulate the depth via extra scaling derived from dz? Or should we implement everything in 3D and use that as the primary way to zoom, even when all the content resides on the same plane?
+
+We cannot implement everything twice for the two projection modes. Therefore APIs and positions must always be in 3D. What we can do, however, is to modify the rendered projection according to the viewport settings. That has the drawback of the need to pass the viewport mode to every transform render, forcing each affine element to either find or carry reference to the viewport. We would like to avoid the coupling if possible.
+
+The perspective projection is enabled by setting CSS perspective property.
+Maybe we can revent back to orthogonal projection just by removing the property from the viewport element.
+
+
 # Tunnel
 
 
