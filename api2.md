@@ -157,6 +157,27 @@ Layer parent is usually a viewport.
 Host app must give layer positions relative terms because
 the positions depend on the viewport position.
 
+Naming: Plane vs Layer vs Space. Space is too 3D. Layer is stacky. Plane can be aeroplane. Plane is 2D. Plane has (0,0) origin. There can be many planes. Is every coordinate system a plane? Every element has a plane? Root layer? Plane implies that everything in the plane are on same 2D surface.
+
+Layer positions are relative to the viewport. Transforming the viewport
+actually means modification of the layer positions.
+
+affine.viewport(elem, {
+  perspective: true,
+})
+affine.layer(elem, {
+  z: 3
+})
+
+space = tapspace.space()
+view = space.viewport().zoomable().perspective()
+plane = space.plane({ x: 2, y: 3, z: 3})
+
+How to project points between planes. Perspective vs orthogonal projection.
+We might do well with only orthogonal projection when between planes.
+Projection to viewport might produce perspective projection.
+Maybe planes could be connected so we can compute orthogonal projections
+regardless of perspective?
 
 # Get positions
 
@@ -316,27 +337,6 @@ Additional design decisions:
 
 [1] [Microsoft touch design guidelines](https://msdn.microsoft.com/en-us/windows/uwp/input-and-devices/guidelines-for-user-interaction)<br />
 [2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
-
-# Layers and z
-
-Naming: Plane vs Layer vs Space. Space is too 3D. Layer is stacky. Plane can be aeroplane. Plane is 2D. Plane has (0,0) origin. There can be many planes. Is every coordinate system a plane? Every element has a plane? Root layer? Plane implies that everything in the plane are on same 2D surface.
-
-Layer positions are relative to the viewport. Transforming the viewport
-actually means modification of the layer positions.
-
-## Layer API
-affine.viewport(elem, {
-  perspective: true,
-})
-affine.layer(elem, {
-  z: 3
-})
-
-How to project points between planes. Perspective vs orthogonal projection.
-We might do well with only orthogonal projection when between planes.
-Projection to viewport might produce perspective projection.
-Maybe planes could be connected so we can compute orthogonal projections
-regardless of perspective?
 
 
 # Tunnel
