@@ -68,8 +68,12 @@
       return el
     }
 
-    // Placeholder text
-    const lorem = `Fundin creatures cooked question? Clothing great Dunharrow. Deputy so morning Valar tree rising born. Forging Sauron the White surrender! What's the Elvish word for 'friend'? Bain unprotected wiser. Rightfully risen Dî. Gibbets can't didn't fun.`
+    // Placeholder text. From lotremipsum.com
+    const lorem = [
+      `Fundin creatures cooked question? Clothing great Dunharrow. Deputy so morning Valar tree rising born. Forging Sauron the White surrender! What's the Elvish word for 'friend'? Bain unprotected wiser. Rightfully risen Dî. Gibbets can't didn't fun.`,
+      `Giants damp startled tie. Hear my voice. Come back to the light. Named beside Isen 21 more hall merry. Laboring Osgiliath soldier filth anything forgive cracking information shade wearing risky. Dancing promise Freda summoned charm scattered remuneration possible view? Feel Witchking afraid stinky. Private twittering conjurer Bilbo Baggins summit surrounded tread spends broke under! Coast finds domain brandy rack Gamgee!`,
+      `Returns steal Durin river stare some woodlands safe. Tricks quiet safekeeping she's Agreed facing 10 edge dock gathered. Mordor's river-folk suffice. Pieces wipe steps Earendil last abyss. They case starve sigh isn't explain Rohan's! Before fruity journeys bound Goblin-town upset tipsy told restored. Shan't lessened attack caution troop marshland pass Angmar's. You are full of surprises, Master Baggins. Sky heavier hardship World laid pushes adventures weighing dealt. Dying least ancestor owed reins families Sméagol bother?`
+    ]
 
     // Tapspace element settings
     const cardConfig = {
@@ -77,11 +81,11 @@
       anchor: { x: 220, y: 110 }
     }
 
-    // Create cards elements
+    // Create cards elements, each having and image and text.
     const cardElements = [
-      createCardElement('assets/placeholder400.png', lorem),
-      createCardElement('assets/placeholder400.png', lorem),
-      createCardElement('assets/placeholder400.png', lorem)
+      createCardElement('assets/placeholder400.png', lorem[0]),
+      createCardElement('assets/placeholder400.png', lorem[1]),
+      createCardElement('assets/placeholder400.png', lorem[2])
     ]
 
     // Create affine cards
@@ -93,6 +97,11 @@
     layer.add(cards[0], view.atNorm(0.38, 0.5, 0))
     layer.add(cards[1], cards[0].atTopRight().offset(0, -100, 100))
     layer.add(cards[2], cards[1].atBottomRight().offset(0, 100, 100))
+
+    // Adjust font size to fit square.
+    cards[0].element.style.fontSize = '1.1em'
+    cards[1].element.style.fontSize = '0.8em'
+    cards[2].element.style.fontSize = '0.75em'
 
   </script>
 </body>
