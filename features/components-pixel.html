@@ -33,16 +33,25 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace').pannable()
-    const layer = viewport.layer()
+    const space = tapspace.create('#tapspace')
+    const view = space.getView().pannable()
+    const plane = space.plane()
 
-    // Create a pixel component
-    const redpixel = tapspace.pixel('#ff0000', { className: 'mypixel' })
-    const greenpixel = tapspace.pixel('#00ff00', { className: 'mypixel' })
-    const bluepixel = tapspace.pixel('#2222ff', { className: 'mypixel' })
-    layer.add(redpixel, { position: viewport.atNorm(0.48, 0.45) })
-    layer.add(greenpixel, { position: viewport.atNorm(0.5, 0.45) })
-    layer.add(bluepixel, { position: viewport.atNorm(0.52, 0.45) })
+    const createPixelElement = (color) => {
+      const div = document.createElement('div')
+      div.style.width = '1px'
+      div.style.height = '1px'
+      div.style.background = color
+      div.className = 'mypixel'
+      return div
+    }
+    const redPixelElement = createPixelElement('#ff0000')
+    const greenPixelElement = createPixelElement('#00ff00')
+    const bluePixelElement = createPixelElement('#2222ff')
+
+    const redPixel = plane.add(redPixelElement, { x: 10, y: 10 })
+    const greenPixel = plane.add(greenPixelElement, { x: 20, y: 10 })
+    const bluePixel = plane.add(bluePixelElement, { x: 30, y: 10 })
 
   </script>
 </body>

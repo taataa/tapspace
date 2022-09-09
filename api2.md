@@ -7,19 +7,30 @@ API design problems
   explicity vs simplicity
   relative vs absolute
   computation efficiency vs expressiveness
+  one vs multiple ways to do things
 
 Separation of concerns
   transformation construction vs moving the element
   positioning vs interaction
 
+KISS - Keep it simple stupid
+DOT - Do one thing
+  Avoid complicated methods and options.
+  If the method feels tedious to document, then it probably
+  does or allows too much.
+  Bad example: addChild(comp, position) where position can be many things.
+
 # Construction
 
-aelem = affine(elem)
-aview = affine.viewport(elem)
-alayer = affine.layer(elem)
+The init code style is important. It is the first thing the user learns.
 
-Allow affine elements without layer or viewport as an ancestor.
+One way is to allow affine elements to exist without a layer, viewport,
+or other container as their ancestor.
 This enables affinedom to be used for animations and transform controlling.
+
+    aelem = affine(elem)
+    aview = affine.viewport(elem)
+    alayer = affine.layer(elem)
 
 Alternatively follow the approach of Vis.js and Google Maps JS API:
 Require user to give the container element and let the library handle
@@ -28,11 +39,20 @@ and how they must be arranged in the DOM. Also, if the library updates its
 DOM structure, for example to overcome some browser constraints, the user
 does not need to migrate the host app DOM.
 
-aview = new tapspace.View(querystring or element)
-alayer = new tapspace.Layer()
-agroup = new tapspace.Group()
+    aview = new tapspace.View(querystring or element)
+    alayer = new tapspace.Layer()
+    agroup = new tapspace.Group()
 
+Conceptual difficulty: developer needs to add content like layers/planes
+to viewport. Viewport does not sound to be a container into which you
+can add things, except some static controls like buttons. Also, in Tapspace v1
+devs did not and could not add space content via a viewport. Therefore,
+regardless that the viewport is the true container for everything in DOM,
+we need explicit conceptual separation between the viewport and space.
 
+    space = tapspace.space(querystring or element)
+    view = space.viewport()
+    plane = space.plane()
 
 # Affine Element
 
@@ -137,6 +157,27 @@ Layer parent is usually a viewport.
 Host app must give layer positions relative terms because
 the positions depend on the viewport position.
 
+Naming: Plane vs Layer vs Space. Space is too 3D. Layer is stacky. Plane can be aeroplane. Plane is 2D. Plane has (0,0) origin. There can be many planes. Is every coordinate system a plane? Every element has a plane? Root layer? Plane implies that everything in the plane are on same 2D surface.
+
+Layer positions are relative to the viewport. Transforming the viewport
+actually means modification of the layer positions.
+
+affine.viewport(elem, {
+  perspective: true,
+})
+affine.layer(elem, {
+  z: 3
+})
+
+space = tapspace.space()
+view = space.viewport().zoomable().perspective()
+plane = space.plane({ x: 2, y: 3, z: 3})
+
+How to project points between planes. Perspective vs orthogonal projection.
+We might do well with only orthogonal projection when between planes.
+Projection to viewport might produce perspective projection.
+Maybe planes could be connected so we can compute orthogonal projections
+regardless of perspective?
 
 # Get positions
 
@@ -297,26 +338,15 @@ Additional design decisions:
 [1] [Microsoft touch design guidelines](https://msdn.microsoft.com/en-us/windows/uwp/input-and-devices/guidelines-for-user-interaction)<br />
 [2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
 
-# Layers and z
 
-Naming: Plane vs Layer vs Space. Space is too 3D. Layer is stacky. Plane can be aeroplane. Plane is 2D. Plane has (0,0) origin. There can be many planes. Is every coordinate system a plane? Every element has a plane? Root layer? Plane implies that everything in the plane are on same 2D surface.
+# Perspective and orthogonal viewport
 
-Layer positions are relative to the viewport. Transforming the viewport
-actually means modification of the layer positions.
+Do we need to switch between perspective and orthogonal viewport projection modes? Should we project always orthogonally but simulate the depth via extra scaling derived from dz? Or should we implement everything in 3D and use that as the primary way to zoom, even when all the content resides on the same plane?
 
-## Layer API
-affine.viewport(elem, {
-  perspective: true,
-})
-affine.layer(elem, {
-  z: 3
-})
+We cannot implement everything twice for the two projection modes. Therefore APIs and positions must always be in 3D. What we can do, however, is to modify the rendered projection according to the viewport settings. That has the drawback of the need to pass the viewport mode to every transform render, forcing each affine element to either find or carry reference to the viewport. We would like to avoid the coupling if possible.
 
-How to project points between planes. Perspective vs orthogonal projection.
-We might do well with only orthogonal projection when between planes.
-Projection to viewport might produce perspective projection.
-Maybe planes could be connected so we can compute orthogonal projections
-regardless of perspective?
+The perspective projection is enabled by setting CSS perspective property.
+Maybe we can revent back to orthogonal projection just by removing the property from the viewport element.
 
 
 # Tunnel

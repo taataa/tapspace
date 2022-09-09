@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Perspective 3D - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+    }
+    .container {
+      background: #BBB;
+    }
+    .myspaceapp {
+      background: #DDD;
+    }
+    .card {
+      border: 2px solid #333;
+      background: white;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+    }
+    .card img {
+      float: left;
+      margin-right: 10px;
+      width: 200px;
+      height: 200px;
+    }
+    .card p {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Init tapspace
+    const space = tapspace.space('#tapspace', {
+      size: { width: '100%', height: '600px' }
+    })
+    const view = space.viewport().zoomable().perspective()
+    const layer = space.plane()
+
+    // Create html card element with image and text
+    const createCardElement = function (url, txt) {
+      const el = document.createElement('div')
+      el.className = 'card'
+      el.innerHTML = '<img src="' + url + '"> <p>' + txt + '</p>'
+      return el
+    }
+
+    // Placeholder text. From lotremipsum.com
+    const lorem = [
+      `Fundin creatures cooked question? Clothing great Dunharrow. Deputy so morning Valar tree rising born. Forging Sauron the White surrender! What's the Elvish word for 'friend'? Bain unprotected wiser. Rightfully risen Dî. Gibbets can't didn't fun.`,
+      `Giants damp startled tie. Hear my voice. Come back to the light. Named beside Isen 21 more hall merry. Laboring Osgiliath soldier filth anything forgive cracking information shade wearing risky. Dancing promise Freda summoned charm scattered remuneration possible view? Feel Witchking afraid stinky. Private twittering conjurer Bilbo Baggins summit surrounded tread spends broke under! Coast finds domain brandy rack Gamgee!`,
+      `Returns steal Durin river stare some woodlands safe. Tricks quiet safekeeping she's Agreed facing 10 edge dock gathered. Mordor's river-folk suffice. Pieces wipe steps Earendil last abyss. They case starve sigh isn't explain Rohan's! Before fruity journeys bound Goblin-town upset tipsy told restored. Shan't lessened attack caution troop marshland pass Angmar's. You are full of surprises, Master Baggins. Sky heavier hardship World laid pushes adventures weighing dealt. Dying least ancestor owed reins families Sméagol bother?`,
+      `Engages Osgiliath down honor. Weight knife try Freda stretching guard forgiven wall catch miss. Barley Sauron the White succumbed mushrooms tongs happening warriors doom massing dark sunup fellowship? Garrison mistake celebrate finest Mordor's. Fili smoke cloth things pantry others feast clever hesitate appreciation drums union. Elected Woodland plan's deem. All right, then. Keep your secrets. Pumpkin tried hazel Háma sea spoons.`,
+      `I gave you the chance of aiding me willingly, but you have elected the way of pain! Blowing cheese mightiest Kili thin herbs council piece jiffy. Cheekbones legion strayed Cirith. Raised exactly Elfs learn. Trusted hall Théodred's meant vest ride rope brave vagabond? Naysayer trimming shield Argonath criminal guarding pocket? Cracking invite whose friends shouldn't Westfarthing cur? Ponies only dwelt Gandalf language halflings might thousand too sing sight serious!`
+    ]
+
+    // Tapspace element settings
+    const cardConfig = {
+      size: { width: 440, height: 220 },
+      anchor: { x: 220, y: 110 }
+    }
+
+    // Create cards elements, each having and image and text.
+    const cardElements = [
+      createCardElement('assets/placeholder400.png', lorem[0]),
+      createCardElement('assets/placeholder400.png', lorem[1]),
+      createCardElement('assets/placeholder400.png', lorem[2]),
+      createCardElement('assets/placeholder400.png', lorem[3]),
+      createCardElement('assets/placeholder400.png', lorem[4])
+    ]
+
+    // Create affine cards
+    const cards = cardElements.map((elem) => {
+      return tapspace.element(elem, cardConfig)
+    })
+
+    // Position the cards into space, relative to each other.
+    layer.add(cards[0], view.atNorm(0.38, 0.5, 0))
+    layer.add(cards[1], cards[0].atTopRight().offset(0, -100, 100))
+    layer.add(cards[2], cards[1].atBottomRight().offset(0, 100, 100))
+    layer.add(cards[3], cards[1].atBottomMid().offset(150, 500, 50))
+    layer.add(cards[4], cards[1].atBottomMid().offset(-150, 550, -50))
+
+    // Adjust font size to fit square.
+    cards[0].element.style.fontSize = '1.1em'
+    cards[1].element.style.fontSize = '0.8em'
+    cards[2].element.style.fontSize = '0.75em'
+    cards[3].element.style.fontSize = '0.85em'
+    cards[4].element.style.fontSize = '0.82em'
+
+    // Rotate a little bit.
+    cards[0].rotateBy(-0.1, { anchor: cards[0].atBottomMid() })
+    cards[1].rotateBy(0, { anchor: cards[1].atBottomMid() })
+    cards[2].rotateBy(0.1, { anchor: cards[2].atBottomMid() })
+
+    // Nodes
+    const nodes = space.group()
+    const edges = space.group()
+
+    nodes.add(tapspace.circle(20, 'orange'), cards[0].atNorm(0.5, 1.04))
+    nodes.add(tapspace.circle(20, 'orange'), cards[1].atNorm(0.5, 1.04))
+    nodes.add(tapspace.circle(20, 'orange'), cards[2].atNorm(0.5, 1.04))
+    nodes.add(tapspace.circle(20, 'orange'), cards[3].atNorm(0.5, -0.04))
+    nodes.add(tapspace.circle(20, 'orange'), cards[4].atNorm(0.5, -0.04))
+
+    const edge = tapspace.edge('3px solid black')
+    edgePlane.add(edge, view.atMid())
+    edge.setPoints()
+
+  </script>
+</body>
+</html>

@@ -19,8 +19,9 @@ module.exports = function (test) {
   test('Element:at', (t) => {
     // Setup
     container.innerHTML = template()
-    const aview = tapspace.viewport('.affine-viewport')
-    const aelem = tapspace('.affine-element')
+    const aspace = tapspace.create('.affine-viewport')
+    const aview = aspace.viewport()
+    const aelem = aspace.add('.affine-element')
     aelem.translateBy({ x: 10, y: 6 })
 
     const xyOnElem = aelem.at(0, 0)
@@ -39,17 +40,17 @@ module.exports = function (test) {
   test('Element:rotateBy', (t) => {
     // Setting
     container.innerHTML = template()
-    const aview = tapspace.viewport('.affine-viewport')
-    const aelem = tapspace('.affine-element')
+    const aspace = tapspace.create('.affine-viewport')
+    const aelem = aspace.add('.affine-element')
 
     aelem.rotateBy(aelem.atMid(), Math.PI / 2)
 
-    const rot = aelem.getRotation()
+    // const rot = aelem.getRotation()
 
     setTimeout(() => {
       t.equal(document.elementFromPoint(300, 20),
         aelem.el, 'element at 300,20')
-      aelem.transformBy(tr)
+      // aelem.transformBy(tr)
       t.notEqual(document.elementFromPoint(300, 20),
         aelem.el, 'element not at 300,20')
 
