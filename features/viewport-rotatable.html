@@ -48,20 +48,17 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace')
-    const layer = viewport.layer()
+    const space = tapspace.create('#tapspace')
+    const viewport = space.viewport()
+    const layer = space.plane()
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const compOptions = { className: 'mycomponent' }
-    const blockA = tapspace.component(template('Rotate'), compOptions)
-    const blockB = tapspace.component(template('Able'), compOptions)
-    layer.add(blockA, {
-      position: viewport.atNorm(0.1, 0.1)
-    })
-    layer.add(blockB, {
-      position: blockA.atBottomRight()
-    })
+    const blockA = tapspace.element(template('Rotate'), compOptions)
+    const blockB = tapspace.element(template('Able'), compOptions)
+    layer.add(blockA, viewport.atNorm(0.1, 0.1))
+    layer.add(blockB, blockA.atBottomRight())
 
     // Make the viewport pannable and rotateable.
     // However, free panning is prevented by the fixed rotation center.
