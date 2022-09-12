@@ -49,17 +49,17 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
-    const viewport = tapspace.viewport('#tapspace').responsive()
-    const layer = viewport.layer()
+    const space = tapspace.create('#tapspace')
+    const viewport = space.viewport().responsive()
+    const layer = space.plane()
 
     // Create a component for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const compOptions = { className: 'mycomponent' }
-    const block = tapspace.component(template('Resize the view'), compOptions)
-    layer.add(block, {
-      anchor: block.atMid(),
-      position: viewport.atMid()
-    })
+    const block = tapspace.element(template('Resize the view'), compOptions)
+    block.setAnchor(block.atMid())
+
+    layer.add(block, viewport.atMid())
   </script>
 </body>
 </html>
