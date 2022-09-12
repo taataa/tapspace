@@ -44,14 +44,16 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace')
-    const layer = viewport.layer()
+    const space = tapspace.create('#tapspace')
+    const viewport = space.viewport()
+    const layer = space.createPlane()
 
-    // Create a component
+    // Create an affine element
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const component = tapspace.component(template('Tap me!'))
-    component.element.classList.add('mycomponent')
-    layer.add(component)
+    const component = tapspace.element(template('Tap me!'))
+    component.setAnchor(component.atMid())
+    component.getElement().classList.add('mycomponent')
+    layer.add(component, viewport.atMid())
 
     // Make the component emit tap events
     component.tappable()
