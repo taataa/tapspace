@@ -24,13 +24,13 @@
       background: white;
       color: black;
     }
+    .mycomponent.active {
+      background: #EEE;
+    }
     .mylabel {
       margin-top: 5rem;
       text-align: center;
       font-size: 2rem;
-    }
-    .mycomponent.active {
-      background: #EEE;
     }
   </style>
 </head>
@@ -44,23 +44,27 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace')
-    const layer = viewport.layer()
+    const space = tapspace.space('#tapspace')
+    const viewport = space.getViewport()
+    const layer = space.createPlane()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const component = tapspace.component(template('Tap me for a tiny effect'))
-    component.element.classList.add('mycomponent')
-    layer.add(component)
+    const tapel = tapspace.element(
+      template('Tap me for a tiny effect'),
+      { size: { w: 256, h: 256 }, anchor: { x: 128, y: 128 } }
+    )
+    tapel.element.classList.add('mycomponent')
+    layer.add(tapel, viewport.atCenter())
 
     // Make the component emit tap events
-    component.tappable()
+    tapel.tappable()
 
     // React to tap events
-    component.on('tapstart', (ev) => {
-      const label = component.element.querySelector('p')
+    tapel.on('tapstart', (ev) => {
+      const label = tapel.element.querySelector('p')
       label.innerHTML = 'Did you see, I moved!'
-      tapspace.effects.press(component)
+      tapspace.effects.press(tapel)
     })
   </script>
 </body>
