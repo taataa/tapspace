@@ -48,24 +48,19 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace').pannable()
-    const layer = viewport.layer()
+    const space = tapspace.create('#tapspace')
+    const viewport = space.viewport().pannable()
+    const layer = space.plane()
 
     // Create a rotateable component at the middle of the viewport.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const compOptions = { className: 'mycomponent' }
-    const block = tapspace.component(template('Tap me'), compOptions)
-    layer.add(block, {
-      anchor: block.atMid(),
-      position: viewport.atMid().offset(0, -10)
-    })
+    const blockOptions = { className: 'mycomponent' }
+    const block = tapspace.element(template('Tap me'), blockOptions)
+    layer.add(block, viewport.atMid().offset(0, -10))
 
     // A static reference block
-    const refblock = tapspace.component(template('Reference'), compOptions)
-    layer.add(refblock, {
-      anchor: refblock.atTopLeft(),
-      position: viewport.atTopLeft()
-    })
+    const refblock = tapspace.element(template('Reference'), blockOptions)
+    layer.add(refblock, viewport.atTopLeft())
 
     // Anchor at block middle
     block.setAnchor(block.atMid())
@@ -75,17 +70,11 @@
     const m1 = tapspace.circle(5, '#00ff00')
     const m2 = tapspace.circle(5, '#3333ff')
     // Mark block anchor
-    layer.add(m0, {
-      position: block.atAnchor()
-    })
+    layer.add(m0, block.atAnchor())
     // Mark block corner
-    layer.add(m1, {
-      position: block.atTopLeft()
-    })
+    layer.add(m1, block.atTopLeft())
     // Mark layer anchor
-    layer.add(m2, {
-      position: layer.atAnchor()
-    })
+    layer.add(m2, layer.atAnchor())
 
     // Setup transition animation
     block.animate({
