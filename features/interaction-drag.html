@@ -44,40 +44,41 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const viewport = tapspace.viewport('#tapspace')
-    const layer = viewport.layer()
+    const space = tapspace.space('#tapspace')
+    const viewport = space.viewport()
+    const layer = space.plane()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const component = tapspace.component(template('Drag me!'))
-    component.element.classList.add('mycomponent')
-    layer.add(component)
+    const block = tapspace.element(template('Drag me!'))
+    block.getElement().classList.add('mycomponent')
+    layer.add(block)
 
     // Make the component emit drag events
-    component.draggable()
+    block.draggable()
 
     // Modify the label with gestures
-    const label = component.element.querySelector('p')
+    const label = block.getElement().querySelector('p')
 
     // React to tap events
-    component.on('dragstart', (ev) => {
-      component.element.classList.add('active')
+    block.on('dragstart', (ev) => {
+      block.element.classList.add('active')
       console.log('dragstart', ev)
     })
-    component.on('dragmove', (ev) => {
+    block.on('dragmove', (ev) => {
       console.log('dragmove', ev)
     })
-    component.on('dragend', (ev) => {
-      component.element.classList.remove('active')
+    block.on('dragend', (ev) => {
+      block.element.classList.remove('active')
       label.innerHTML = 'Drag me!'
       console.log('dragend', ev)
     })
-    component.on('dragcancel', (ev) => {
-      component.element.classList.remove('active')
+    block.on('dragcancel', (ev) => {
+      block.element.classList.remove('active')
       label.innerHTML = 'Drag me!'
       console.log('dragcancel', ev)
     })
-    component.on('drag', (ev) => {
+    block.on('drag', (ev) => {
       label.innerHTML = 'I am dragged :)'
       // console.log('drag', ev)
     })
