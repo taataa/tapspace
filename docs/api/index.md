@@ -29,54 +29,7 @@ Contents:
 
 
 
-## Module
-
-### tapspace
-
-Usage:
-
-    const tapspace = require('tapspace')
-
-### tapspace(htmlElement)
-
-Returns a SpaceElement.
-
-Usage:
-
-    const el = document.createElement('div')
-    const sel = tapspace(el)
-
-### tapspace.createView(htmlElement)
-
-### tapspace.version
-
-A semantic version string identical to the version in the module's `package.json`.
-
 ## SpaceElement
-
-**Listens** events: `added`, `removed`, `transformed`, `resized`, `childAdded`, `childRemoved`
-
-**Inherits** from `Emitter`. See API details at [component-emitter](https://www.npmjs.com/package/component-emitter).
-
-**Emits** `added` when attached to a new parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
-
-**Emits** `removed` when detached from a parent. Has payload `{ source: <AbstractNode>, newParent: <AbstractNode>, oldParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
-
-**Emits** `childAdded` when a child node is added. Has payload `{ source: <AbstractNode>, newChild: <AbstractNode>, oldParent: <AbstractNode> }`. If there was no old parent then `oldParent: null`.
-
-**Emits** `childRemoved` when a child node is removed. Has payload `{ source: <AbstractNode>, oldChild: <AbstractNode>, newParent: <AbstractNode> }`. If there is no new parent then `newParent: null`.
-
-**Listens** event `removed` to ensure a root element has no transformation.
-
-**Emits** `transformed` with a payload `{ source: <AbstractPlane>, newTransform: <Transform>, oldTransform: <Transform> }` that tells what was transformed and how much.
-
-**Method** `#at(x, y)` or `#at(vector)` returns an `IVector` at the position (x, y) on `this`.
-
-**Method** `#move(delta)`
-
-**Method** `#transformBy(tr)` takes a `Transform` or `ITransform` and multiplies the local transformation matrix from the left. For example, if a plane is already rotated by 45 degrees then `#transformBy(rotate90)` rotates the plane 90 degrees, thus setting the total rotation to 135 degrees. Emits `transformed`.
-
-**Method** `#translate(domain, range)` moves `this` horizontally and vertically so that the given domain (an array of `IVector`s) travels as close to the range (a matching length array of `IVector`s) as possible. If only single `IVector`s are given, the array can be omitted. Emits `transformed`.
 
 **Method** `#scale(pivot, multiplier)` or `#scale(pivot, domain, range)` scales `this` around the `IVector pivot`. A `multiplier` of `2` would double the dimensions of `this` on the parent plane. If `domain` and `range` are given, `this` becomes scaled so that domain becomes as close to range as possible, like described at `#translate`. Emits `transformed`.
 
