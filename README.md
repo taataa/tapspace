@@ -13,6 +13,7 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
     $ npm install tapspace
     $ yarn add tapspace
 
+For the earlier Tapspace 1.x, see [1.6-stable](https://github.com/taataa/tapspace/tree/1.6-stable) branch.
 
 ## Documentation
 
