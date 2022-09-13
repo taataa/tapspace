@@ -18,6 +18,7 @@ For the earlier Tapspace 1.x, see [1.6-stable](https://github.com/taataa/tapspac
 ## Documentation
 
 See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
+- [Tutorial](http://taataa.github.io/tapspace/tutorial)
 - [Features](http://taataa.github.io/tapspace#features)
 - [Example applications](http://taataa.github.io/tapspace#examples)
 - [API Reference](http://taataa.github.io/tapspace/api)
