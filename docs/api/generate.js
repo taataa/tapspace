@@ -20,6 +20,28 @@ yamdog.generate({
     deco.aliases(),
     deco.italicSingles(),
     deco.linkNames(),
+    deco.replace([
+      {
+        // Normalize parameters title
+        pattern: /^param(?:eter)?s?:?/i,
+        replacement: '**Parameters:**'
+      },
+      {
+        // Normalize return title
+        pattern: /^returns?:?/i,
+        replacement: '**Returns:**'
+      },
+      {
+        // Normalize throws title
+        pattern: /^throws?:?/i,
+        replacement: '**Throws:**'
+      },
+      {
+        // Normalize usage title
+        pattern: /^usage:?/i,
+        replacement: '**Usage:**'
+      },
+    ]),
     deco.toc(),
     deco.sourceLinks({
       basePath: path.resolve(__dirname, '..', '..'),

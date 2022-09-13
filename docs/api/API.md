@@ -11,6 +11,11 @@ The [tapspace](#tapspace) namespace provides component creation methods,
 geometry classes, and namespaces for interaction, effects, and
 resource loaders.
 
+**Usage:**
+```
+const tapspace = require('tapspace')
+```
+
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
 - [tapspace.create](#tapspacecreate)
@@ -28,7 +33,7 @@ Source: [lib/index.js](https://github.com/taataa/tapspace/blob/main/lib/index.js
 
 Make a circle-shaped element.
 
-Parameters:
+**Parameters:**
 - *radius*
   - a number
 - *color*
@@ -42,7 +47,7 @@ Parameters:
     - *anchor*
       - { x, y } on the element. Default {x:0,y:0}
 
-Return
+**Returns:**
 - a Component
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/Circle/create.js)
@@ -76,7 +81,7 @@ Interaction methods for affine components.
 Designed to be inherited by an instance class that
 inherit also from AbstractPlane or down.
 
-Parameters:
+**Parameters:**
 - *opts*
   - TODO maybe which capturers are possible?
   - TODO options to autostart capturers, maybe
@@ -93,13 +98,13 @@ Source: [AbstractActive/index.js](https://github.com/taataa/tapspace/blob/main/l
 Get or create an input capturer.
 For Tapspace internal use.
 
-Parameters:
+**Parameters:**
 - *capturerName*
   - a string. One of 'gesture', 'keyboard', 'wheel'
 - *opts*
   - options for the capturer.
 
-Returns
+**Returns:**
 - a capturer
 
 Source: [capturer.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/capturer.js)
@@ -111,13 +116,13 @@ Get or create an input converter.
 The converters modify or redirect input events.
 For Tapspace internal use.
 
-Parameters:
+**Parameters:**
 - *converterName*
   - a string. One of 'mouse'
 - *opts*
   - options for the converter.
 
-Returns
+**Returns:**
 - a converter
 
 Source: [converter.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractActive/converter.js)
@@ -127,7 +132,7 @@ Source: [converter.js](https://github.com/taataa/tapspace/blob/main/lib/componen
 
 Abstract class for rectangular affine components
 
-Parameters:
+**Parameters:**
 - *element*
   - a HTMLElement. The element does not need to be in DOM.
 - *opts*
@@ -150,7 +155,9 @@ Parameters:
 - [tapspace.components.AbstractFrame:atTopMid](#tapspacecomponentsabstractframeattopmid)
 - [tapspace.components.AbstractFrame:atTopRight](#tapspacecomponentsabstractframeattopright)
 - [tapspace.components.AbstractFrame:centerTo](#tapspacecomponentsabstractframecenterto)
+- [tapspace.components.AbstractFrame:getHeight](#tapspacecomponentsabstractframegetheight)
 - [tapspace.components.AbstractFrame:getSize](#tapspacecomponentsabstractframegetsize)
+- [tapspace.components.AbstractFrame:getWidth](#tapspacecomponentsabstractframegetwidth)
 - [tapspace.components.AbstractFrame:setSize](#tapspacecomponentsabstractframesetsize)
 
 
@@ -161,7 +168,7 @@ Source: [AbstractFrame/index.js](https://github.com/taataa/tapspace/blob/main/li
 
 Get point at the bottom left corner of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atBottomLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomLeft.js)
@@ -171,7 +178,7 @@ Source: [atBottomLeft.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 
 Get point at the middle of the bottom edge of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atBottomMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomMid.js)
@@ -181,7 +188,7 @@ Source: [atBottomMid.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 
 Get point at the bottom right corner of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atBottomRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atBottomRight.js)
@@ -198,7 +205,7 @@ Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get point at the middle the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Aliases: [tapspace.components.AbstractFrame:atMidMid](#tapspacecomponentsabstractframeatmidmid), [tapspace.components.AbstractFrame:atCenter](#tapspacecomponentsabstractframeatcenter)
@@ -210,7 +217,7 @@ Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get point at the middle of the left edge of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atMidLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidLeft.js)
@@ -227,7 +234,7 @@ Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get point at the middle of the right edge of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atMidRight.js)
@@ -237,7 +244,7 @@ Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/main/lib/compone
 
 Get a Point from unit coordinates that map the element width and height.
 
-Parameters:
+**Parameters:**
 - *rx*
   - number. 0 at left edge, 1 at right edge.
 - *ry*
@@ -245,7 +252,7 @@ Parameters:
 - *rz*
   - optional number. 0 at frame plane, 1 at height depth.
 
-Return
+**Returns:**
 - a Point on the element
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atNorm.js)
@@ -256,13 +263,13 @@ Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 Get relative coordinates for the given point.
 For example, relative coords of point (2, 1) in size (4, 4) is (0.5, 0.25)
 
-Parameters:
+**Parameters:**
 - *x*
   - a number or a Point
 - *y*
   - a number
 
-Return
+**Returns:**
 - a { rx, ry }. If size is zero, will return { rx: 0, ry: 0 }
 
 Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atToNorm.js)
@@ -272,7 +279,7 @@ Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get point at the top left corner of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atTopLeft.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopLeft.js)
@@ -282,7 +289,7 @@ Source: [atTopLeft.js](https://github.com/taataa/tapspace/blob/main/lib/componen
 
 Get point at the middle of the top edge of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atTopMid.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopMid.js)
@@ -292,7 +299,7 @@ Source: [atTopMid.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get point at the top right corner of the element.
 
-Return
+**Returns:**
 - point2 on the element
 
 Source: [atTopRight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/atTopRight.js)
@@ -305,35 +312,55 @@ Let the position f component on the parent.
 This moves the component anchor to the given position
 and rotates and scales the component as specified.
 
-Parameters:
+**Parameters:**
 - *position*
   - a point { x, y } on the parent or a Point. Required. The component will be moved on the parent so that the center of the component matches the position.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [centerTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/centerTo.js)
+
+<a name="tapspacecomponentsabstractframegetheight"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractFrame](#tapspacecomponentsabstractframe):[getHeight](#tapspacecomponentsabstractframegetheight)()
+
+Get component height as a Distance.
+
+**Returns:**
+- a Distance
+
+Source: [getHeight.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/getHeight.js)
 
 <a name="tapspacecomponentsabstractframegetsize"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractFrame](#tapspacecomponentsabstractframe):[getSize](#tapspacecomponentsabstractframegetsize)()
 
 Get component size dimensions in pixels.
 
-Return
+**Returns:**
 - a Size
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/getSize.js)
+
+<a name="tapspacecomponentsabstractframegetwidth"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractFrame](#tapspacecomponentsabstractframe):[getWidth](#tapspacecomponentsabstractframegetwidth)()
+
+Get component width as a Distance.
+
+**Returns:**
+- a Distance
+
+Source: [getWidth.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/getWidth.js)
 
 <a name="tapspacecomponentsabstractframesetsize"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractFrame](#tapspacecomponentsabstractframe):[setSize](#tapspacecomponentsabstractframesetsize)(size)
 
 Set component size.
 
-Parameters:
+**Parameters:**
 - *size*
   - a {w,h}, a {width,height}, or a Size. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractFrame/setSize.js)
@@ -344,7 +371,7 @@ Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components
 Instance class for interactive material items on affine plane.
 The items can have abilities like slidable, tappable, or draggable.
 
-Parameters:
+**Parameters:**
 - *element*
   - a HTMLElement. The element does not need to be in DOM.
 - *opts*
@@ -369,7 +396,7 @@ Make item draggable.
 The item can be moved freely by a set of pointers.
 The item maintains the size and the angle.
 
-Return
+**Returns:**
 - this, for chaining
 
 Aliases: [tapspace.components.AbstractItem:pannable](#tapspacecomponentsabstractitempannable)
@@ -388,7 +415,7 @@ Source: [draggable.js](https://github.com/taataa/tapspace/blob/main/lib/componen
 
 The component can be moved along a line, with limits.
 
-Parameters:
+**Parameters:**
 - *opts*
   - *angle*
     - a number, angle in radians
@@ -413,7 +440,7 @@ Source: [slidable.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Make item tappable i.e. make it emit tap events.
 
-Parameters:
+**Parameters:**
 - *options*
   - optional object with properties
     - *TODO*
@@ -423,7 +450,7 @@ Makes the component emit events:
 - *tapstart*
 - *tapend*
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [tappable.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractItem/tappable.js)
@@ -434,7 +461,7 @@ Source: [tappable.js](https://github.com/taataa/tapspace/blob/main/lib/component
 Abstract class for all affine components that have a HTML element.
 AbstractNodes form an affine subtree in DOM.
 
-Parameters:
+**Parameters:**
 - *element*
   - a HTMLElement
 
@@ -454,11 +481,11 @@ Source: [AbstractNode/index.js](https://github.com/taataa/tapspace/blob/main/lib
 
 Find lowest common affine ancestor of self and the given node.
 
-Parameters:
+**Parameters:**
 - *node*
   - an AbstractNode
 
-Return
+**Returns:**
 - an AbstractNode. Null if no common ancestor is found.
 
 Note that the result might not be a true ancestor:
@@ -477,7 +504,7 @@ Source: [findCommonAncestor.js](https://github.com/taataa/tapspace/blob/main/lib
 Affine ancestors, ordered from the immediate parent to
 the farthest ancestor, the immediate parent first.
 
-Return
+**Returns:**
 - array of AbstractNode
 
 Source: [getAncestors.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getAncestors.js)
@@ -487,7 +514,7 @@ Source: [getAncestors.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 
 Get all affine children from DOM.
 
-Return
+**Returns:**
 - array of AbstractNode
 
 Source: [getChildren.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getChildren.js)
@@ -501,7 +528,7 @@ a HTML string or HTML element using [tapspace](#tapspace).element,
 the element returned by this function is not the element
 you gave but the element that wraps it.
 
-Return
+**Returns:**
 - a HTMLElement
 
 Source: [getElement.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getElement.js)
@@ -511,7 +538,7 @@ Source: [getElement.js](https://github.com/taataa/tapspace/blob/main/lib/compone
 
 Get the affine parent of the plane. Null if no affine parent.
 
-Return
+**Returns:**
 - an AbstractPlane, the parent.
 - null if no affine parent.
 
@@ -522,7 +549,7 @@ Source: [getParent.js](https://github.com/taataa/tapspace/blob/main/lib/componen
 
 Get the affine root. Will return self if has no affine parent.
 
-Return
+**Returns:**
 - an AbstractNode
 
 Source: [getRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/getRoot.js)
@@ -533,7 +560,7 @@ Source: [getRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components
 Is the element an affine root i.e.
 the element does not have an affine parent.
 
-Return
+**Returns:**
 - *boolean*
 
 Source: [isRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractNode/isRoot.js)
@@ -543,7 +570,7 @@ Source: [isRoot.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 
 Abstract class for affine components that span a coordinate plane.
 
-Parameters:
+**Parameters:**
 - *element*
   - a HTMLElement
 - *opts*
@@ -579,7 +606,7 @@ Source: [AbstractPlane/index.js](https://github.com/taataa/tapspace/blob/main/li
 
 Place a component onto this plane.
 
-Parameters:
+**Parameters:**
 - *component*
   - an AbstractPlane
 - *position*
@@ -588,7 +615,7 @@ Parameters:
   - You can leave the position parameter undefined and move the component to its position afterwards.
   - Also, if you have already prepared the local coordinates of the component and want to preserve them as is, then leave the position parameter undefined.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [addChild.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/addChild.js)
@@ -598,7 +625,7 @@ Source: [addChild.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Update CSS transition animation properties of the component.
 
-Parameters:
+**Parameters:**
 - *options*
   - boolean or optional object with properties:
     - *duration*
@@ -609,7 +636,7 @@ Parameters:
       - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
   - If boolean false, animation becomes disabled.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [animate.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/animate.js)
@@ -619,7 +646,7 @@ Source: [animate.js](https://github.com/taataa/tapspace/blob/main/lib/components
 
 Get a point on the plane by using local plane coordinates.
 
-Parameters
+**Parameters:**
 - *x*
   - a number, the x coordinate on the plane.
   - a point2, the {x,y} on the plane.
@@ -629,7 +656,7 @@ Parameters
 - *z*
   - optional number, the z coordinate relative to the plane.
 
-Return
+**Returns:**
 - a Point on the plane
 
 Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/at.js)
@@ -639,13 +666,13 @@ Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/components/Abst
 
 Get the plane anchor point or the optional given point on the plane.
 
-Parameters:
+**Parameters:**
 - *alt*
   - optional point2 or Point. If given, returns this point instead,
   - after transited onto the plane. Useful way to default a point to the
   - plane anchor if the point is nullish.
 
-Return
+**Returns:**
 - a Point
 
 Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/atAnchor.js)
@@ -657,7 +684,7 @@ The direction of the plane. This equals to the angle of the positive
 x-axis of the plane. The Direction makes it easy to represent the angle
 on different planes.
 
-Return
+**Returns:**
 - a Direction
 
 Source: [getDirection.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getDirection.js)
@@ -668,7 +695,7 @@ Source: [getDirection.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 Get the position of the plane anchor, represented on the parent.
 Null if there is no parent.
 
-Return
+**Returns:**
 - {x,y,z}. Null if no parent.
 
 Source: [getPosition.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getPosition.js)
@@ -678,7 +705,7 @@ Source: [getPosition.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 
 The scale of the plane.
 
-Return
+**Returns:**
 - a Scale
 
 Source: [getScale.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getScale.js)
@@ -686,11 +713,11 @@ Source: [getScale.js](https://github.com/taataa/tapspace/blob/main/lib/component
 <a name="tapspacecomponentsabstractplanegettransitionfrom"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[getTransitionFrom](#tapspacecomponentsabstractplanegettransitionfrom)(source)
 
-Parameters:
+**Parameters:**
 - *source*
   - an AbstractPlane
 
-Return
+**Returns:**
 - a plane3, a plane transition matrix.
 
 Source: [getTransitionFrom.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getTransitionFrom.js)
@@ -703,14 +730,14 @@ to the coordinate system of the target plane. The resulting transition
 is an affine transformation that can be applied to geometry on this plane
 to compute the same geometry represented on the the target plane.
 
-Parameters
+**Parameters:**
 - *target*
   - an AbstactPlane
 
-Return
+**Returns:**
 - a plane3. A transition from this plane to the target plane.
 
-Throws
+**Throws:**
 - If the planes are not connected. Probably app programming error.
 
 Source: [getTransitionTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getTransitionTo.js)
@@ -718,7 +745,7 @@ Source: [getTransitionTo.js](https://github.com/taataa/tapspace/blob/main/lib/co
 <a name="tapspacecomponentsabstractplanegettransitiontoparent"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[getTransitionToParent](#tapspacecomponentsabstractplanegettransitiontoparent)()
 
-Return a transition from the coordinate system of the element
+**Returns:** a transition from the coordinate system of the element
 to its parent.
 
 TODO what if parent is non-affine
@@ -731,11 +758,11 @@ Source: [getTransitionToParent.js](https://github.com/taataa/tapspace/blob/main/
 Get transition to the parent component of the target component.
 If the target is a root, then transition is to its virtual parent.
 
-Parameters
+**Parameters:**
 - *target*
   - an AbstractPlane
 
-Return
+**Returns:**
 - a plane3, a transition to the real or virtual parent of the target.
 
 Source: [getTransitionToParentOf.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/getTransitionToParentOf.js)
@@ -749,8 +776,8 @@ points and their targets. The match operation attempts to move the plane
 so that the source points match their target points exactly or as
 closely as possible.
 
-Parameters:
-- params, object with properties
+**Parameters:**
+- **Parameters:**, object with properties
   - source, alias sources
     - a Point or an array of Points. The length must match the targets. Alias: source.
   - target, alias targets
@@ -772,7 +799,7 @@ Parameters:
   - *angle*
     - a number in radians or Direction. Optional. The angle for the estimator 'L'.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [match.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/match.js)
@@ -784,7 +811,7 @@ Set the placement of the component on the parent.
 This moves the component anchor to the given position
 and rotates and scales the component as specified.
 
-Parameters:
+**Parameters:**
 - *position*
   - a point { x, y } on the parent or a Point. Required. The component will be moved on the parent so that the anchor of the component matches the position.
 - *rotation*
@@ -794,7 +821,7 @@ Parameters:
 - *anchor*
   - optional point2 on this or a Point. If set, the point will be used as an anchor instead of the default.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [moveTo.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/moveTo.js)
@@ -807,7 +834,7 @@ Update the element.style.transform according to the plane placement.
 You need to call this function only when you have manually edited
 or replaced the component.tran object.
 
-Parameters:
+**Parameters:**
 - *opts*
   - *projection*
     - optional plane3 transition to be used instead of this.tran. Useful when the position needs visual adjustment without modifying the transition. See snapPixels.
@@ -815,36 +842,33 @@ Parameters:
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/renderTransform.js)
 
 <a name="tapspacecomponentsabstractplanerotateby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[rotateBy](#tapspacecomponentsabstractplanerotateby)(radians, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[rotateBy](#tapspacecomponentsabstractplanerotateby)(radians, center)
 
 Rotate the element.
 
-Parameters:
+**Parameters:**
 - *radians*
   - a number, delta angle to rotate.
-- *opts*
-  - *anchor*
-    - an optional Point. Rotation is performed around this point.
-    - . Defaults to the plane anchor.
+- *center*
+  - optional Point. Rotation is performed around this point. Defaults to the plane anchor.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/rotateBy.js)
 
 <a name="tapspacecomponentsabstractplanescaleby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[scaleBy](#tapspacecomponentsabstractplanescaleby)(multiplier, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[scaleBy](#tapspacecomponentsabstractplanescaleby)(multiplier, center)
 
 Scale the element.
 
-Parameters:
+**Parameters:**
 - *multiplier*
   - a number, the scale multiplier.
-- *opts*
-  - *anchor*
-    - an optional Point. Scaling is performed about this point. Defaults to the plane anchor.
+- *center*
+  - optional Point. Scaling is performed about this point. Defaults to the plane anchor.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/scaleBy.js)
@@ -854,11 +878,11 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components
 
 Set the anchor point of the plane. This does not move the plane.
 
-Parameters:
+**Parameters:**
 - *point*
   - a point2 on the plane or a Point in its space. The new anchor point.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [setAnchor.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/setAnchor.js)
@@ -876,7 +900,7 @@ snapPixels should NOT be used during a gesture except at the end.
 
 The method does not modify the plane transition, only the latent CSS.
 
-Parameters:
+**Parameters:**
 - *options*
   - optional object with props:
     - *anchor*
@@ -884,39 +908,41 @@ Parameters:
 
 TODO option to disable either rotation or translation snap
 
-Returns
+**Returns:**
 - this, for chaining
 
 Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/snapPixels.js)
 
 <a name="tapspacecomponentsabstractplanetransformby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[transformBy](#tapspacecomponentsabstractplanetransformby)(tran, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[transformBy](#tapspacecomponentsabstractplanetransformby)(tran)
 
-Transform (move) the element in space.
+Transform (move) the plane in space.
+For example, let `rotate90` be a Transform that rotates the element
+90 degrees clockwise. The rotation is performed around the plane anchor.
+If the plane was already at the angle of 45 degrees, then after
+the transformation, the plane is at the angle of 135 degrees.
 
-Parameters
+**Parameters:**
 - *transform*
   - a Transform
-- *opts*
-  - TODO something?
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [transformBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/transformBy.js)
 
 <a name="tapspacecomponentsabstractplanetranslateby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[translateBy](#tapspacecomponentsabstractplanetranslateby)(translation, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractPlane](#tapspacecomponentsabstractplane):[translateBy](#tapspacecomponentsabstractplanetranslateby)(translation)
 
-Translate the element along x and y axis.
+Translate the element along x-, y-, and z-axis.
+Translation does not rotate or scale the element.
+Translation along z-axis can change the perceived size of the element.
 
-Parameters
+**Parameters:**
 - *translation*
   - {x,y,z} on the parent, a Vector, or a Transform
-- *opts*
-  - TODO something?
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [translateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractPlane/translateBy.js)
@@ -928,7 +954,7 @@ Inherits [tapspace.components.AbstractFrame](#tapspacecomponentsabstractframe)
 
 Base class for views.
 
-Parameters
+**Parameters:**
 - *element*
   - *HTMLElement*
 - *opts*
@@ -972,7 +998,7 @@ Source: [AbstractView/index.js](https://github.com/taataa/tapspace/blob/main/lib
 Add new control to the viewport.
 Controls do not move with the space.
 
-Parameters
+**Parameters:**
 - *control*
   - an AbstractControl
 - *placement*
@@ -980,7 +1006,7 @@ Parameters
     - *position*
       - {x,y} on the viewport or a Point in space.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [addControl.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/addControl.js)
@@ -992,7 +1018,7 @@ Get camera position relative to the viewport.
 If the viewport is not perspective, returns the anchor position
 on the viewport.
 
-Return
+**Returns:**
 - a Point, the camera position in the viewport space.
 
 Source: [atCamera.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atCamera.js)
@@ -1002,7 +1028,7 @@ Source: [atCamera.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Get a Point by relative coordinates, rounded to nearest integers.
 
-Parameters:
+**Parameters:**
 - *rx*
   - number. 0 at left edge, 1 at right edge.
 - *ry*
@@ -1010,7 +1036,7 @@ Parameters:
 - *rz*
   - optional number. 0 at projection image plane, 1 at height depth.
 
-Return
+**Returns:**
 - Point on the element
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atNorm.js)
@@ -1021,13 +1047,13 @@ Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 Compute a point on the viewport from page coordinates.
 Pointer events are a common source for page coordinates.
 
-Parameters
+**Parameters:**
 - *pageX*
   - a number
 - *pageY*
   - a number
 
-Return
+**Returns:**
 - a Point on viewport
 
 Source: [atPage.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/atPage.js)
@@ -1043,10 +1069,10 @@ and that with lots of points, it is better to query DOM once
 and apply that to each point, than query DOM for each point separately.
 TODO proof the efficency
 
-Parameters
+**Parameters:**
 
 
-Returns
+**Returns:**
 - a function
   - *Parameters*
     - *pageX*
@@ -1061,9 +1087,9 @@ Source: [atPageFn.js](https://github.com/taataa/tapspace/blob/main/lib/component
 <a name="tapspacecomponentsabstractviewgetcontrols"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[getControls](#tapspacecomponentsabstractviewgetcontrols)()
 
-Return all control group components of the viewport.
+**Returns:** all control group components of the viewport.
 
-Return
+**Returns:**
 - array of Controls
 
 Source: [getControls.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getControls.js)
@@ -1074,7 +1100,7 @@ Source: [getControls.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 Get viewport size. The size is read from the viewport
 element.offsetWidth and element.offsetHeight.
 
-Return
+**Returns:**
 - a Size
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getSize.js)
@@ -1082,7 +1108,7 @@ Source: [getSize.js](https://github.com/taataa/tapspace/blob/main/lib/components
 <a name="tapspacecomponentsabstractviewgetspace"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[getSpace](#tapspacecomponentsabstractviewgetspace)()
 
-Return
+**Returns:**
 - a Space
 
 Source: [getSpace.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/getSpace.js)
@@ -1092,7 +1118,7 @@ Source: [getSpace.js](https://github.com/taataa/tapspace/blob/main/lib/component
 
 Check if the viewport projection mode is perspective.
 
-Return
+**Returns:**
 - *boolean*
 
 Source: [isPerspective.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/isPerspective.js)
@@ -1107,7 +1133,7 @@ Zooming the viewport is implemented via scaling.
 
 See also [tapspace.components.AbstractView:perspective](#tapspacecomponentsabstractviewperspective)
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [orthogonal.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/orthogonal.js)
@@ -1120,13 +1146,13 @@ Elements far away in z-dimension are rendered smaller
 and exhibit motion parallax when viewport is panned.
 Zooming the viewport is implemented via moving the viewport deeper.
 
-Parameters:
+**Parameters:**
 - *distance*
   - optional positive number. Default 300.
   - The distance of the user from the projection image plane measured in the units of the image plane.
   - Larger values cause smaller perspective effect.
 
-Return
+**Returns:**
 - this, for chaining
 
 See also [tapspace.components.AbstractView:perspective](#tapspacecomponentsabstractviewperspective)
@@ -1141,43 +1167,40 @@ Updates the element.style.transform according to the plane transition.
 You need to call this function only when you have manually edited
 or replaced a plane.tran object.
 
-Parameters:
+**Parameters:**
 - *opts*
   - optional object. See AbstractPlane:renderTransform for details.
 
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/renderTransform.js)
 
 <a name="tapspacecomponentsabstractviewrotateby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[rotateBy](#tapspacecomponentsabstractviewrotateby)(angle, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[rotateBy](#tapspacecomponentsabstractviewrotateby)(angle, center)
 
 Rotate the viewport in space around anchor.
 
-Parameters
+**Parameters:**
 - *angle*
   - a number, the delta angle to rotate the viewport.
-- *opts*
-  - *anchor*
-    - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+- *center*
+  - optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/rotateBy.js)
 
 <a name="tapspacecomponentsabstractviewscaleby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[scaleBy](#tapspacecomponentsabstractviewscaleby)(factor, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[scaleBy](#tapspacecomponentsabstractviewscaleby)(factor, center)
 
 Translate the viewport in space along x and y axis.
 
-Parameters
+**Parameters:**
 - *factor*
   - a number
-- *opts*
-  - optional object with props
-    - *anchor*
-      - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+- *center*
+  - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/scaleBy.js)
@@ -1187,11 +1210,11 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/components
 
 Set viewport size.
 
-Parameters:
+**Parameters:**
 - *size*
   - a {w,h} or a {width,height} object. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/setSize.js)
@@ -1202,7 +1225,7 @@ Source: [setSize.js](https://github.com/taataa/tapspace/blob/main/lib/components
 Snap viewport position and angle to pixels when the angle is near
 a multitude of 90 degrees.
 
-Parameters:
+**Parameters:**
 - *options*
   - optional object with props:
     - *anchor*
@@ -1216,33 +1239,30 @@ Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/main/lib/compone
 Compute a point on the page from a point on the viewport.
 Practical if points need to be normalised on the page.
 
-Parameters
+**Parameters:**
 - *viewX*
   - a number
 - *viewY*
   - a number
 
-Return
+**Returns:**
 - a point2 on the page
 
 Source: [toPage.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/toPage.js)
 
 <a name="tapspacecomponentsabstractviewtransformby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[transformBy](#tapspacecomponentsabstractviewtransformby)(tran, opts)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractView](#tapspacecomponentsabstractview):[transformBy](#tapspacecomponentsabstractviewtransformby)(tran)
 
 Overwrites AbstractPlane:transformBy
 
 Transform the viewport in relation to the root planes. In effect, this
 transforms all root planes with the inversion of the tran.
 
-Parameters:
+**Parameters:**
 - *tr*
   - a Transform
-- *opts*
-  - optional object with props
-    - silent event options TODO
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [transformBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/transformBy.js)
@@ -1253,14 +1273,11 @@ Source: [transformBy.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 Transform the root planes in relation to the viewport. In effect, this
 transforms all planes with the tran. Use this to navigate the space.
 
-Parameters:
+**Parameters:**
 - *tran*
   - a Transform
-- *opts*
-  - optional object with props:
-    - silent event options TODO
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [transformPlanesBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/transformPlanesBy.js)
@@ -1270,14 +1287,11 @@ Source: [transformPlanesBy.js](https://github.com/taataa/tapspace/blob/main/lib/
 
 Translate the viewport in space along x and y axis.
 
-Parameters
+**Parameters:**
 - *translation*
-  - a Vector
-- *opts*
-  - optional object with props
-    - *TODO*
+  - a Vector or vec2 or vec3
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [translateBy.js](https://github.com/taataa/tapspace/blob/main/lib/components/AbstractView/translateBy.js)
@@ -1289,7 +1303,7 @@ A colorful circle.
 Instance class for a circle-like object on an affine plane.
 Useful for debugging coordinate positions.
 
-Parameters:
+**Parameters:**
 - *radius*
   - a number.
 - *color*
@@ -1310,7 +1324,7 @@ Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/main/lib/compo
 Edge is an instance class for a div with one visible border.
 It can be used as a line that connects components.
 
-Parameters:
+**Parameters:**
 - *border*
   - *string*
     - A CSS border style e.g. '1px solid #ff2200'
@@ -1336,7 +1350,7 @@ Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/main/lib/compone
 
 Get length of the edge in local pixels.
 
-Return
+**Returns:**
 - a number, pixels on the edge plane.
 
 Source: [getLength.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/getLength.js)
@@ -1360,7 +1374,7 @@ Instance class for a 1x1 pixel on affine plane.
 
 Inherits [tapspace.components.AbstractFrame](#tapspacecomponentsabstractframe)
 
-Parameters:
+**Parameters:**
 - *color*
   - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
 - opts, optional object
@@ -1393,7 +1407,7 @@ Source: [Plane/index.js](https://github.com/taataa/tapspace/blob/main/lib/compon
 
 Add HTML element on the plane.
 
-Parameters:
+**Parameters:**
 - *content*
   - a HTMLElement, HTML string, or AffineElement
 - *placement*
@@ -1402,7 +1416,7 @@ Parameters:
   - optional object with optional properties:
     - *size*
 
-Return
+**Returns:**
 - an AffineElement
 
 Source: [add.js](https://github.com/taataa/tapspace/blob/main/lib/components/Plane/add.js)
@@ -1414,7 +1428,7 @@ Space is a part of viewport and act as a container for planes.
 Space is needed to keep Controls and Planes separate and
 still enable transitions between controls and the space content.
 
-Parameters:
+**Parameters:**
 - *viewport*
   - a Viewport, reference to the viewport
 
@@ -1441,12 +1455,12 @@ Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 
 Create a plane for further content.
 
-Parameters:
+**Parameters:**
 - *position*
   - a Point, the origin of the plane.
   - a Transit, the origin of the plane with scale and orientation.
 
-Return
+**Returns:**
 - a Plane
 
 Aliases: [tapspace.components.Space:plane](#tapspacecomponentsspaceplane)
@@ -1474,7 +1488,7 @@ Get the viewport that is associated with the space.
 This is the main way for users to access the viewport
 after initializing the space.
 
-Return
+**Returns:**
 - a Viewport
 
 Aliases: [tapspace.components.Space:getView](#tapspacecomponentsspacegetview)
@@ -1491,7 +1505,7 @@ Instead, the space and its root planes are moved
 in opposite direction. This, combined with overflow CSS styles,
 creates an illusion of a viewport into a space.
 
-Parameters
+**Parameters:**
 - *element*
   - HTMLElement or query string
 - *opts*
@@ -1518,7 +1532,7 @@ Make the viewport pannable (= draggable).
 The view can be moved freely by a set of pointers.
 The view maintains the size and the angle.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [pannable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/pannable/index.js)
@@ -1529,14 +1543,14 @@ Source: [pannable/index.js](https://github.com/taataa/tapspace/blob/main/lib/com
 Make the viewport responsive to container size changes.
 Keeps the viewport center at the same position relative to its size.
 
-Parameters
+**Parameters:**
 - *opts*
   - optional boolean false to disable
   - optional object with props:
     - *relativeCenter*
       - optional { rx, ry }, the relative point to keep fixed while resizing. Default { rx: 0.5, ry: 0.5 }
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [responsive/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/responsive/index.js)
@@ -1547,12 +1561,12 @@ Source: [responsive/index.js](https://github.com/taataa/tapspace/blob/main/lib/c
 Make the viewport zoomable.
 The viewport can be scaled by pinch gesture and mouse wheel.
 
-Parameters
+**Parameters:**
 - opts, optional boolean or object with props:
   - *center*
     - a Point, the vanishing point for zoom.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [rotatable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/rotatable/index.js)
@@ -1563,12 +1577,12 @@ Source: [rotatable/index.js](https://github.com/taataa/tapspace/blob/main/lib/co
 Make the viewport zoomable.
 The viewport can be scaled by pinch gesture and mouse wheel.
 
-Parameters
+**Parameters:**
 - opts, optional boolean or object with props:
   - *center*
     - a Point, the vanishing point for zoom. Default to gesture mean.
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [zoomable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/zoomable/index.js)
@@ -1578,7 +1592,7 @@ Source: [zoomable/index.js](https://github.com/taataa/tapspace/blob/main/lib/com
 
 Convert element into a zoomable space.
 
-Parameters
+**Parameters:**
 - *element*
   - HTMLElement or query string
 - *options*
@@ -1586,8 +1600,13 @@ Parameters
     - *size*
       - a { width, height }
 
-Return
+**Returns:**
 - a [tapspace.components.Space](#tapspacecomponentsspace)
+
+**Usage:**
+```
+const space = tapspace.create('#space')
+```
 
 Aliases: [tapspace.components.Space:create](#tapspacecomponentsspacecreate)
 
@@ -1599,9 +1618,9 @@ Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 Create an Edge component. The edge is a straight line between
 two points.
 
-Parameters: see [tapspace.components.Edge](#tapspacecomponentsedge)
+**Parameters:** see [tapspace.components.Edge](#tapspacecomponentsedge)
 
-Return
+**Returns:**
 - a [tapspace.components.Edge](#tapspacecomponentsedge)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/create.js)
@@ -1611,7 +1630,7 @@ Source: [create.js](https://github.com/taataa/tapspace/blob/main/lib/components/
 
 Get the Point at the edge ending, at the middle of the border.
 
-Return: a Point
+**Returns:** a Point
 
 Source: [atEnd.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/atEnd.js)
 
@@ -1620,7 +1639,7 @@ Source: [atEnd.js](https://github.com/taataa/tapspace/blob/main/lib/components/E
 
 Get the Point at the edge beginning, at the middle of the border.
 
-Return: a Point
+**Returns:** a Point
 
 Source: [atStart.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/atStart.js)
 
@@ -1630,13 +1649,13 @@ Source: [atStart.js](https://github.com/taataa/tapspace/blob/main/lib/components
 Set edge start and end points.
 Note that this does not scale the edge.
 
-Parameters:
+**Parameters:**
 - *startPoint*
   - a Point
 - *endPoint*
   - a Point
 
-Return
+**Returns:**
 - this, for chaining
 
 Source: [setPoints.js](https://github.com/taataa/tapspace/blob/main/lib/components/Edge/setPoints.js)
@@ -1657,7 +1676,7 @@ Source: [effects/index.js](https://github.com/taataa/tapspace/blob/main/lib/effe
 
 Pressing effect: the element moves down a bit and then back up.
 
-Parameters:
+**Parameters:**
 - *options*
   - *distance*
     - optional number. Displacement during press in pixels. Default 2.
@@ -1705,7 +1724,7 @@ therefore the angle needs conversion between planes.
 In contrast, a rotation is a change in the angle and does not depend on
 the orientation.
 
-Parameters
+**Parameters:**
 - *basis*
   - a Component
 - *angle*
@@ -1719,11 +1738,11 @@ Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/main/lib/ge
 <a name="tapspacegeometrydirectionchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[changeBasis](#tapspacegeometrydirectionchangebasis)(newBasis)
 
-Parameters:
+**Parameters:**
 - *newBasis*
   - a component
 
-Return
+**Returns:**
 - a Direction
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Direction/changeBasis.js)
@@ -1731,7 +1750,11 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 <a name="tapspacegeometrydistance"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance)(basis, d)
 
-Parameters
+Distance represents a scalar measure in affine space.
+In coordinate system transitions, rotations and translations do
+not affect the distance. Only the scale does.
+
+**Parameters:**
 - *basis*
   - a Component
 - *d*
@@ -1751,11 +1774,11 @@ Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/main/lib/geo
 <a name="tapspacegeometrydistancechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[changeBasis](#tapspacegeometrydistancechangebasis)(newBasis)
 
-Parameters:
+**Parameters:**
 - *newBasis*
   - an affine component
 
-Return
+**Returns:**
 - a Distance
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Distance/changeBasis.js)
@@ -1772,11 +1795,11 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/D
 
 Multiply the distance. Returns new Distance.
 
-Parameters
+**Parameters:**
 - *multiplier*
   - a number
 
-Return
+**Returns:**
 - a Distance
 
 Aliases: [tapspace.geometry.Distance:multiply](#tapspacegeometrydistancemultiply)
@@ -1788,7 +1811,7 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/D
 
 A 3D point in a space.
 
-Parameters
+**Parameters:**
 - *basis*
   - a Component
 - *x*
@@ -1819,11 +1842,11 @@ Source: [Point/index.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 <a name="tapspacegeometrypointchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[changeBasis](#tapspacegeometrypointchangebasis)(newBasis)
 
-Parameters:
+**Parameters:**
 - *newBasis*
   - an affine component
 
-Return:
+**Returns:**
 - a Point
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/changeBasis.js)
@@ -1833,11 +1856,11 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 
 Distance between points.
 
-Parameters:
+**Parameters:**
 - *p*
   - a Point or {x,y,z}. The latter is assumed to be on the same basis.
 
-Return
+**Returns:**
 - a Distance
 
 Source: [distanceTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/distanceTo.js)
@@ -1847,7 +1870,7 @@ Source: [distanceTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometr
 
 Get a point when the current point is offset by dx, dy, and dz.
 
-Parameters:
+**Parameters:**
 - *dx*
   - a number of pixels to move horizontally.
 - *dy*
@@ -1855,7 +1878,7 @@ Parameters:
 - *dz*
   - a number of pixels to move deeper.
 
-Return
+**Returns:**
 - a Point
 
 Source: [offset.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/offset.js)
@@ -1863,7 +1886,7 @@ Source: [offset.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Po
 <a name="tapspacegeometrypointplain"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[plain](#tapspacegeometrypointplain)()
 
-Return plain point3 object {x,y,z} without basis data.
+**Returns:** plain point3 object {x,y,z} without basis data.
 
 Source: [plain.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/plain.js)
 
@@ -1872,13 +1895,13 @@ Source: [plain.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Poi
 
 Get the point at the given distance at the angle on the same plane.
 
-Parameters:
+**Parameters:**
 - *distance*
   - a number on the basis or a Distance.
 - *angle*
   - a number in radians on the basis or a Direction.
 
-Return
+**Returns:**
 - a Point
 
 Source: [polarOffset.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/polarOffset.js)
@@ -1888,7 +1911,7 @@ Source: [polarOffset.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 
 Round the point to nearest integers.
 
-Return
+**Returns:**
 - a Point
 
 Source: [round.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/round.js)
@@ -1898,11 +1921,11 @@ Source: [round.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Poi
 
 Get a vector from this to the point p.
 
-Parameters:
+**Parameters:**
 - *p*
   - a Point
 
-Return:
+**Returns:**
 - a Vector on this basis.
 
 Source: [vectorTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Point/vectorTo.js)
@@ -1912,13 +1935,13 @@ Source: [vectorTo.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/
 
 Mean of an array of points.
 
-Parameters:
+**Parameters:**
 - *basis*
   - a Plane
 - *points*
   - an array of Point instances
 
-Return
+**Returns:**
 - a Point on the given basis
 
 Example
@@ -1948,7 +1971,7 @@ In contrast, a scaling aka dilation is not the same as the scale.
 Dilation is a change in the scale, for example doubling,
 and therefore does not depend on the plane.
 
-Parameters
+**Parameters:**
 - *basis*
   - a Component
 - *multiplier*
@@ -1962,11 +1985,11 @@ Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 <a name="tapspacegeometryscalechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale):[changeBasis](#tapspacegeometryscalechangebasis)(newBasis)
 
-Parameters:
+**Parameters:**
 - *newBasis*
   - a component
 
-Return
+**Returns:**
 - a Scale
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Scale/changeBasis.js)
@@ -1976,7 +1999,7 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 
 A rectangular size in space. Basically it is two-dimensional distance.
 
-Parameters
+**Parameters:**
 - *basis*
   - a Component
 - *width*
@@ -1997,13 +2020,13 @@ Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometr
 
 Get point at (x,y).
 
-Parameters:
+**Parameters:**
 - *x*
   - a number
 - *y*
   - a number
 
-Return
+**Returns:**
 - a Point
 
 Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/at.js)
@@ -2014,13 +2037,13 @@ Source: [at.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/a
 Get point at (rx, ry) where rx is relative to the width and
 the ry is relative to the height.
 
-Parameters:
+**Parameters:**
 - *rx*
   - a number. Value of 1 will return a point with x = width.
 - *ry*
   - a number. Value of 1 will return a point with y = height.
 
-Return
+**Returns:**
 - a Point
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/atNorm.js)
@@ -2031,13 +2054,13 @@ Source: [atNorm.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Si
 Get point at (x,y) and return its relative coordinates.
 For example, relative coords of point (2, 1) in size (4, 4) is (0.5, 0.25)
 
-Parameters:
+**Parameters:**
 - *x*
   - a number or a Point
 - *y*
   - a number
 
-Return
+**Returns:**
 - a { rx, ry }. If size is zero, will return { rx: 0, ry: 0 }
 
 Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Size/atToNorm.js)
@@ -2050,7 +2073,7 @@ Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometr
 <a name="tapspacegeometrytransform"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform)(basis, a, b, x, y, z)
 
-Parameters
+**Parameters:**
 - *basis*
   - a Component
 - *a*
@@ -2077,7 +2100,7 @@ Source: [Transform/index.js](https://github.com/taataa/tapspace/blob/main/lib/ge
 
 Represent the transform on another plane.
 
-Return
+**Returns:**
 - a Transform
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/changeBasis.js)
@@ -2087,7 +2110,7 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 
 Create transform in intuitive way with human-readable parameters.
 
-Parameters:
+**Parameters:**
 - *params*
   - *basis*
     - HTMLElement, required.
@@ -2098,7 +2121,7 @@ Parameters:
   - *translate*
     - a vec3, { x, y, z }. Optional, default { x: 0, y: 0, z: 0 }.
 
-Return
+**Returns:**
 - a Transform
 
 Source: [fromFeatures.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/fromFeatures.js)
@@ -2109,7 +2132,7 @@ Source: [fromFeatures.js](https://github.com/taataa/tapspace/blob/main/lib/geome
 Get the translation component of the transform without rotation
 and scaling.
 
-Return
+**Returns:**
 - a Transform
 
 Source: [getTranslation.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/getTranslation.js)
@@ -2119,7 +2142,7 @@ Source: [getTranslation.js](https://github.com/taataa/tapspace/blob/main/lib/geo
 
 Invert the transform.
 
-Return
+**Returns:**
 - a Transform
 
 Source: [inverse.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Transform/inverse.js)
@@ -2130,7 +2153,7 @@ Source: [inverse.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/T
 A vector that can be transited between planes.
 The vector has length and direction but no position.
 
-Parameters
+**Parameters:**
 - *basis*
 - *x*
   - a number or a vec3
@@ -2139,26 +2162,60 @@ Parameters
 - *z*
   - Optional number. Default 0.
 
+- [tapspace.geometry.Vector:add](#tapspacegeometryvectoradd)
+- [tapspace.geometry.Vector:almostEqual](#tapspacegeometryvectoralmostequal)
 - [tapspace.geometry.Vector:changeBasis](#tapspacegeometryvectorchangebasis)
 - [tapspace.geometry.Vector:cross](#tapspacegeometryvectorcross)
+- [tapspace.geometry.Vector:difference](#tapspacegeometryvectordifference)
 - [tapspace.geometry.Vector:dot](#tapspacegeometryvectordot)
 - [tapspace.geometry.Vector:normalize](#tapspacegeometryvectornormalize)
 - [tapspace.geometry.Vector:scaleBy](#tapspacegeometryvectorscaleby)
 - [tapspace.geometry.Vector:scaleTo](#tapspacegeometryvectorscaleto)
+- [tapspace.geometry.Vector:subtract](#tapspacegeometryvectorsubtract)
 
 
 Source: [Vector/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/index.js)
+
+<a name="tapspacegeometryvectoradd"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[add](#tapspacegeometryvectoradd)(vec)
+
+Vector addition, this plus the given vector.
+
+**Parameters:**
+- *vec*
+  - a Vector, or {x,y,z} in the same space.
+
+**Returns:**
+- a Vector
+
+Source: [add.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/add.js)
+
+<a name="tapspacegeometryvectoralmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[almostEqual](#tapspacegeometryvectoralmostequal)(vec[, tolerance])
+
+Test if vectors are almost equal.
+
+**Parameters:**
+- *vec*
+  - a Vector, or {x,y,z} in the same space.
+- *tolerance*
+  - optional number. Default to affineplane.epsilon
+
+**Returns:**
+- a boolean
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/almostEqual.js)
 
 <a name="tapspacegeometryvectorchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[changeBasis](#tapspacegeometryvectorchangebasis)(newBasis)
 
 Represent the vector on another plane.
 
-Parameters:
+**Parameters:**
 - *newBasis*
   - an AbstractPlane
 
-Return
+**Returns:**
 - a Vector
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/changeBasis.js)
@@ -2168,25 +2225,41 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 
 Get cross product with another vector.
 
-Parameters:
+**Parameters:**
 - *vec*
   - a Vector, or {x,y,z} in the same space.
 
-Return
+**Returns:**
 - a Vector
 
 Source: [cross.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/cross.js)
+
+<a name="tapspacegeometryvectordifference"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[difference](#tapspacegeometryvectordifference)(vec)
+
+Vector subtraction, this minus the given vector.
+
+**Parameters:**
+- *vec*
+  - a Vector, or {x,y,z} in the same space.
+
+**Returns:**
+- a Vector
+
+Aliases: [tapspace.geometry.Vector:subtract](#tapspacegeometryvectorsubtract)
+
+Source: [difference.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/difference.js)
 
 <a name="tapspacegeometryvectordot"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[dot](#tapspacegeometryvectordot)(vec)
 
 Get dot product with another vector.
 
-Parameters:
+**Parameters:**
 - *vec*
   - a Vector, or {x,y,z} in the same space.
 
-Return
+**Returns:**
 - a Vector
 
 Source: [dot.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/dot.js)
@@ -2197,11 +2270,11 @@ Source: [dot.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vecto
 Scale the vector uniformly so that its length
 becomes the given optional magnitude, 1 by default.
 
-Parameters:
+**Parameters:**
 - *magnitude*
   - optional number, default 1.
 
-Return
+**Returns:**
 - a Vector
 
 Aliases: [tapspace.geometry.Vector:scaleTo](#tapspacegeometryvectorscaleto)
@@ -2213,11 +2286,11 @@ Source: [normalize.js](https://github.com/taataa/tapspace/blob/main/lib/geometry
 
 Scale the vector uniformly with multiplier.
 
-Parameters:
+**Parameters:**
 - *multiplier*
   - a number
 
-Return
+**Returns:**
 - a Vector
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/scaleBy.js)
@@ -2228,6 +2301,13 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/V
 Alias of [tapspace.geometry.Vector:normalize](#tapspacegeometryvectornormalize)
 
 Source: [normalize.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/normalize.js)
+
+<a name="tapspacegeometryvectorsubtract"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[subtract](#tapspacegeometryvectorsubtract)
+
+Alias of [tapspace.geometry.Vector:difference](#tapspacegeometryvectordifference)
+
+Source: [difference.js](https://github.com/taataa/tapspace/blob/main/lib/geometry/Vector/difference.js)
 
 <a name="tapspaceinteraction"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction)
@@ -2252,7 +2332,7 @@ Source: [interaction/index.js](https://github.com/taataa/tapspace/blob/main/lib/
 
 Drag interaction. Move the target element around.
 
-Parameters:
+**Parameters:**
 - *source*
   - a Component. Get drag input form this component.
 - *target*
@@ -2309,7 +2389,7 @@ Source: [Drag/index.js](https://github.com/taataa/tapspace/blob/main/lib/interac
 Pinch interaction for viewports.
 Pan, zoom, and rotate viewport planes by using pointers.
 
-Parameters:
+**Parameters:**
 - *viewport*
   - a Viewport. Get input form this component.
 - options, optional object with properties:
@@ -2339,7 +2419,7 @@ Source: [PinchView/index.js](https://github.com/taataa/tapspace/blob/main/lib/in
 <a name="tapspaceinteractionpinchviewgetfreedom"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[PinchView](#tapspaceinteractionpinchview):[getFreedom](#tapspaceinteractionpinchviewgetfreedom)()
 
-Return
+**Returns:**
 - object, the freedom object
 
 Source: [PinchView/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/PinchView/index.js)
@@ -2359,7 +2439,7 @@ Keeps the viewport center relatively at the same position.
 Pan the viewport during the resize so that the center stays fixed to
 the same space point.
 
-Parameters:
+**Parameters:**
 - *viewport*
   - a Viewport. Observe resize events form this component.
 - options, object with properties:
@@ -2395,7 +2475,7 @@ Source: [ResizeAlign/index.js](https://github.com/taataa/tapspace/blob/main/lib/
 
 Tap interaction.
 
-Parameters:
+**Parameters:**
 - *source*
   - a Component. The tap input source.
 - *target*
@@ -2443,7 +2523,7 @@ Source: [Tap/index.js](https://github.com/taataa/tapspace/blob/main/lib/interact
 Wheel rotate interaction for viewports.
 Rotate the viewport planes by mouse wheel left-right axis.
 
-Parameters:
+**Parameters:**
 - *viewport*
   - a Viewport. Get input form this component.
 - options, object with properties:
@@ -2476,7 +2556,7 @@ Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/main/lib/
 Wheel zoom interaction for viewports.
 Scale the viewport planes by mouse wheel.
 
-Parameters:
+**Parameters:**
 - *viewport*
   - a Viewport. Get input form this component.
 - options, object with properties:
@@ -2507,6 +2587,7 @@ Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/in
 ## [tapspace](#tapspace).[version](#tapspaceversion)
 
 The semantic version string, for example '1.2.3'.
+It is identical to the version string in the [tapspace](#tapspace) package.json.
 
 Source: [lib/index.js](https://github.com/taataa/tapspace/blob/main/lib/index.js)
 
