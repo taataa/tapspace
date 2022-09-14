@@ -1,7 +1,9 @@
-Exhaustive sketch for tapspace v2 api.
-List all aliases and possible methods here.
+# Tapspace progressive architectural notes
 
-# Design principles
+These notes try to capture the process that lead to design decisions in
+the current Tapspace library.
+
+## Design principles
 
 API design problems
   explicity vs simplicity
@@ -20,7 +22,7 @@ DOT - Do one thing
   does or allows too much.
   Bad example: addChild(comp, position) where position can be many things.
 
-# Construction
+## Construction
 
 The init code style is important. It is the first thing the user learns.
 
@@ -54,7 +56,7 @@ we need explicit conceptual separation between the viewport and space.
     view = space.viewport()
     plane = space.plane()
 
-# Affine Element
+## Affine Element
 
 To avoid duplicating the DOM structure, we must somehow
 be able to find affine properties for DOM elements.
@@ -95,16 +97,8 @@ With view, these are converted into a CSS transform matrix.
 Consider affine frames instead of affine elements.
 AffineFrame, AffineContainer, AffineSection, AffineSpace, or AffineBlock
 
-# Layout managers
 
-Layout managers are DOM elements that control the positions of their immediate children. In contrast, normal affine DOM elements do not manipulate their children.
-
-Examples of layout managers:
-- viewport: transformations on the view are reflected on the children.
-- perspective viewport: children can be assigned z coordinate.
-- fractal: similar to viewport, with recursive modules
-
-# Applying transforms in DOM
+## Applying transforms in DOM
 
 Tapspace uses CSS Transform to move elements. The CSS transforms allow smooth scale and rotation. In early versions the lib used element.offsetLeft and .offsetTop. Rotations and scalings were difficult.
 
@@ -150,7 +144,7 @@ Approach 1 is probably enough. CSS can handle nested 3D with perspective. Theref
 [1] Zakas. High Performance JavaScript. Book.
 [2] Difference between ways of event handling https://stackoverflow.com/q/6570523/638546
 
-# Affine Layers
+## Affine Layers
 
 Layer position is controlled by its parent.
 Layer parent is usually a viewport.
@@ -179,7 +173,9 @@ Projection to viewport might produce perspective projection.
 Maybe planes could be connected so we can compute orthogonal projections
 regardless of perspective?
 
-# Get positions
+## Element positioning
+
+### Get positions
 
 aelem.getPosition() .getLocalTransform() .getFormation()
 The position of element in the parent coordinates system.
@@ -194,7 +190,7 @@ aelem.atNorm()
 aelem.atTopLeft() .atNW()
 
 
-# Convert positions
+### Convert positions
 
 Explicit or implicit basis?
   explicit { basis { transform, element }, geom { x, y } }
@@ -213,13 +209,13 @@ Very tedious. On the other hand { basis { transform, element } } too complex.
 Alternatively alias for element: el, elem, base, basel, basis
 
 
-# Setting positions
+### Setting positions
 
 aelem.transformTo()
 aelem.transformBy()
 
 
-# Estimate moves
+### Estimate moves
 
 affine.transform.estimate({ sourcePoints, targetPoints })
 All points must be in same system
@@ -227,7 +223,7 @@ sourcePoints.map(affine.point.changeBasis())
 
 component.snap({ anchors, targets })
 
-# Movement coordinate system
+### Movement coordinate system
 
 Pointer events provide the pointer position in various coordinate systems.
 
@@ -249,7 +245,7 @@ that floats in the space.
 There are ways to compute pageX/Y for elements by using getBoundingClientRect()
 See https://stackoverflow.com/q/442404/638546 for details.
 
-# Limiting and linking moves
+### Limiting and linking moves
 
 aelem.on('transformed', fn)
 
@@ -268,7 +264,45 @@ Limiter options
   hitbox: 'mid' the middle point must stay inside limiting area
   hitbox: <point>, <array of points>
 
-# Semantic zoom
+
+## Interaction
+
+Aspects: freedoms, capabilities, movement limits, modes, restriction
+
+movable, slidable, translatable, pannable
+
+view.setOptions({
+  interaction: {
+    panning: true,
+    scaling: true,
+    rotation: true
+  }
+})
+
+view.makeDraggable()
+view.interaction.enable() .enableInteraction()
+
+view.navigation .io .interaction .input
+
+const drag = new tapspace.interaction.Drag(params)
+
+### Direct manipulation
+
+The interaction features enable [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Tapspace apps. They make the elements react in a natural, paper-like way.
+
+Touchable's simplistic interaction design is based on usability research and ensures good design principles:
+- **No double tap** or triple+ tap gestures. They are hard for users to discover. Instead, updated the interface after each single tap in a way that tells user that another tap is needed.
+- **No hold.** It is hard for users to discover. Use single tap or multiple subsequent single taps with progressive visual feedback instead. [1]
+- **No info about number of fingers.** Fingers easily touch the screen by accident and cause unexpected behavior if UI behavior depends on number of fingers. [1]
+- **Respect each finger equally.** If only two fingers are respected in transformations such as scaling then movement of additional fingers do not affect at all which is not the way how objects behave in the physical world familiar to users. [2]
+
+Additional design decisions:
+- **No hover** even for mouse. We treat mouse as a single finger. Simpler for developers, less bugs for users to discover.
+
+[1] [Microsoft touch design guidelines](https://msdn.microsoft.com/en-us/windows/uwp/input-and-devices/guidelines-for-user-interaction)<br />
+[2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
+
+### Semantic zoom
 
 tt(space).zoomable()
 tt(el).approachable()
@@ -300,46 +334,9 @@ except if controlled by perspective z
 
 initial creation vs depth updates
 
+## Viewport
 
-# Interaction
-
-Aspects: freedoms, capabilities, movement limits, modes, restriction
-
-movable, slidable, translatable, pannable
-
-view.setOptions({
-  interaction: {
-    panning: true,
-    scaling: true,
-    rotation: true
-  }
-})
-
-view.makeDraggable()
-view.interaction.enable() .enableInteraction()
-
-view.navigation .io .interaction .input
-
-const drag = new tapspace.interaction.Drag(params)
-
-## Direct manipulation
-
-The interaction features enable [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Tapspace apps. They make the elements react in a natural, paper-like way.
-
-Touchable's simplistic interaction design is based on usability research and ensures good design principles:
-- **No double tap** or triple+ tap gestures. They are hard for users to discover. Instead, updated the interface after each single tap in a way that tells user that another tap is needed.
-- **No hold.** It is hard for users to discover. Use single tap or multiple subsequent single taps with progressive visual feedback instead. [1]
-- **No info about number of fingers.** Fingers easily touch the screen by accident and cause unexpected behavior if UI behavior depends on number of fingers. [1]
-- **Respect each finger equally.** If only two fingers are respected in transformations such as scaling then movement of additional fingers do not affect at all which is not the way how objects behave in the physical world familiar to users. [2]
-
-Additional design decisions:
-- **No hover** even for mouse. We treat mouse as a single finger. Simpler for developers, less bugs for users to discover.
-
-[1] [Microsoft touch design guidelines](https://msdn.microsoft.com/en-us/windows/uwp/input-and-devices/guidelines-for-user-interaction)<br />
-[2] Palen, 2016, [Advanced algorithms for manipulating 2D objects on touch screens](http://dspace.cc.tut.fi/dpub/handle/123456789/24173).
-
-
-# Perspective and orthogonal viewport
+### Perspective vs orthogonal viewport
 
 Do we need to switch between perspective and orthogonal viewport projection modes? Should we project always orthogonally but simulate the depth via extra scaling derived from dz? Or should we implement everything in 3D and use that as the primary way to zoom, even when all the content resides on the same plane?
 
@@ -348,12 +345,24 @@ We cannot implement everything twice for the two projection modes. Therefore API
 The perspective projection is enabled by setting CSS perspective property.
 Maybe we can revent back to orthogonal projection just by removing the property from the viewport element.
 
+## Layout managers
 
-# Tunnel
+Layout managers are DOM elements that control the positions of their immediate children. In contrast, normal affine DOM elements do not manipulate their children.
 
+Examples of layout managers:
+- viewport: transformations on the view are reflected on the children.
+- perspective viewport: children can be assigned z coordinate.
+- fractal: similar to viewport, with recursive modules
 
+We first thought fractal as a layout manager but later decided it to be a loader.
 
-# Fractal
+## Loaders
+
+### Image loaders
+
+Image dimensions cannot always be know beforehand. Therefore it is good to load images before adding them to the space. Is it necessary for Tapspace to implement these? Does this responsibility suit the dev better?
+
+### Fractal
 
 Fractal is a framework to drive a sequence of origin planes in order
 to implement an infinite progression.
@@ -402,7 +411,13 @@ Fractal is a loader! It is a tool that helps developer to load and forget.
 - It is quite different form the image loader. However, the image loader too
   deals with asynchronous interaction.
 
-# Spiral
+## Geometries for layout
+
+### Tunnel
+
+Either a true pipe-like arrangement of content in 3D or a flat 2D circle or fan where content gets smaller closer the center point.
+
+### Spiral
 
 Archimedian spiral might be good for even, equally distributed spiral layout.
 See for example https://codegolf.stackexchange.com/q/247259/107547
