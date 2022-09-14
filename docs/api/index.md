@@ -255,13 +255,3 @@ A function to preload an image file or an array of them and call back when finis
       // img is now loaded and has correct dimensions instead of 0x0.
       var si = new tapspace.SpaceImage(space, img)
     })
-
-
-
-## Definitions
-
-Here are detailed definitions for some terminology used above.
-
-### Hull order
-
-When a `Path` represents the convex hull of an item, the `Vector` points of the path have strict order. 1) The first point is the `Vector` with most negative x and y value. 2) The points after the first come in anticlockwise order. For example the convex hull of a unit square is (0,0), (0,1), (1,1), and (1,0).
