@@ -23,6 +23,7 @@ const tapspace = require('tapspace')
 - [tapspace.effects](#tapspaceeffects)
 - [tapspace.geometry](#tapspacegeometry)
 - [tapspace.interaction](#tapspaceinteraction)
+- [tapspace.loaders](#tapspaceloaders)
 - [tapspace.version](#tapspaceversion)
 
 
@@ -354,7 +355,8 @@ Source: [getWidth.js](https://github.com/taataa/tapspace/blob/main/lib/component
 <a name="tapspacecomponentsabstractframesetsize"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[AbstractFrame](#tapspacecomponentsabstractframe):[setSize](#tapspacecomponentsabstractframesetsize)(size)
 
-Set component size.
+Set component size. This does not change the scale or depth of the
+element, only the local pixel width and height.
 
 **Parameters:**
 - *size*
@@ -1576,14 +1578,23 @@ Source: [rotatable/index.js](https://github.com/taataa/tapspace/blob/main/lib/co
 
 Make the viewport zoomable.
 The viewport can be scaled by pinch gesture and mouse wheel.
+If the viewport panning is also enabled, the viewport can
+be moved and zoomed freely.
 
 **Parameters:**
 - opts, optional boolean or object with props:
   - *center*
-    - a Point, the vanishing point for zoom. Default to gesture mean.
+    - a Point, the vanishing point for zoom.
+    - Defaults to gesture mean point.
 
 **Returns:**
 - this, for chaining
+
+**Usage:**
+```
+const view = space.getViewport()
+view.zoomable()
+```
 
 Source: [zoomable/index.js](https://github.com/taataa/tapspace/blob/main/lib/components/Viewport/zoomable/index.js)
 
@@ -1694,6 +1705,10 @@ Source: [press/index.js](https://github.com/taataa/tapspace/blob/main/lib/effect
 
 Various geometries in affine space.
 
+All geometry models are *immutable* meaning that their state
+does not change and new objects are returned instead. For example,
+`vec.rotateBy(PI)` does not change `vec` but returns a new rotated vector.
+
 Each geometry provides methods to transit it between affine elements,
 meaning that its coordinates can be mapped and represented in the
 coordinate systems of other elements.
@@ -1756,7 +1771,7 @@ not affect the distance. Only the scale does.
 
 **Parameters:**
 - *basis*
-  - a Component
+  - a component, the frame of reference for the distance.
 - *d*
   - number, a measure. Cannot be negative.
 
@@ -1998,6 +2013,8 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/main/lib/geomet
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Size](#tapspacegeometrysize)(basis, width, height)
 
 A rectangular size in space. Basically it is two-dimensional distance.
+If you need to represent a rectangular shape in space, use Path or Polygon
+instead.
 
 **Parameters:**
 - *basis*
@@ -2073,6 +2090,11 @@ Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometr
 <a name="tapspacegeometrytransform"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform)(basis, a, b, x, y, z)
 
+The Transform models rotations and uniform scalings on xy-plane and
+translations in xyz-space.
+The Transform also has a reference to its basis element
+which allows us to represent the transform in other bases when needed.
+
 **Parameters:**
 - *basis*
   - a Component
@@ -2086,6 +2108,9 @@ Source: [Size/index.js](https://github.com/taataa/tapspace/blob/main/lib/geometr
   - a number
 - *z*
   - a number
+
+Object properties:
+- basis, a, b, x, y, z
 
 - [tapspace.geometry.Transform:changeBasis](#tapspacegeometrytransformchangebasis)
 - [tapspace.geometry.Transform:fromFeatures](#tapspacegeometrytransformfromfeatures)
@@ -2521,7 +2546,7 @@ Source: [Tap/index.js](https://github.com/taataa/tapspace/blob/main/lib/interact
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[WheelRotate](#tapspaceinteractionwheelrotate)(viewport, options)
 
 Wheel rotate interaction for viewports.
-Rotate the viewport planes by mouse wheel left-right axis.
+Rotate the origin planes by mouse wheel left-right axis.
 
 **Parameters:**
 - *viewport*
@@ -2554,14 +2579,14 @@ Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/main/lib/
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[WheelZoom](#tapspaceinteractionwheelzoom)(viewport, options)
 
 Wheel zoom interaction for viewports.
-Scale the viewport planes by mouse wheel.
+Scale the origin planes by mouse wheel.
 
 **Parameters:**
 - *viewport*
   - a Viewport. Get input form this component.
 - options, object with properties:
   - *center*
-    - a Point. The center point for the scaling. TODO Defaults to the cursor position.
+    - a Point. The center point for the scaling. Defaults to the cursor position.
 
 - [tapspace.interaction.WheelZoom:bind](#tapspaceinteractionwheelzoombind)
 - [tapspace.interaction.WheelZoom:unbind](#tapspaceinteractionwheelzoomunbind)
@@ -2582,6 +2607,35 @@ Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/in
 Unbind listeners
 
 Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/main/lib/interaction/WheelZoom/index.js)
+
+<a name="tapspaceloaders"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders)
+
+Helpers to preload content such as images to determine their dimensions
+before inserting to space.
+
+- [tapspace.loaders.loadImages](#tapspaceloadersloadimages)
+
+
+Source: [loaders/index.js](https://github.com/taataa/tapspace/blob/main/lib/loaders/index.js)
+
+<a name="tapspaceloadersloadimages"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[loadImages](#tapspaceloadersloadimages)(imgSrcs, callback)
+
+Preload one or more images and call back when finished.
+
+**Usage:**
+```
+tapspace.loaders.loadImages('hello.png', function (err, img) {
+  if (err) { throw err }
+  // img is now loaded and has correct dimensions instead of 0x0. 
+})
+```
+
+See [loadimages](https://www.npmjs.com/package/loadimages) package
+for details.
+
+Source: [loaders/index.js](https://github.com/taataa/tapspace/blob/main/lib/loaders/index.js)
 
 <a name="tapspaceversion"></a>
 ## [tapspace](#tapspace).[version](#tapspaceversion)

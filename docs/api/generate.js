@@ -7,7 +7,7 @@ yamdog.generate({
   // Where to start collecting comment blocks
   entry: path.resolve(__dirname, '../../'),
   // Where to generate
-  output: path.resolve(__dirname, 'API.md'),
+  output: path.resolve(__dirname, 'index.md'),
   // Earmark; include blocks that begin with this name.
   earmark: 'tapspace',
   // Main title of the document
