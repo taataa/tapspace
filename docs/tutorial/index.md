@@ -15,6 +15,10 @@ Adjust the title to your liking.
 
 ## Install tapspace
 
+Copy the Tapspace style sheet and include it in the document head to make the space work as expected:
+
+    <link rel="stylesheet" href="tapspace.css">
+
 Add script line:
 
     <script src="todo cdn link here"></script>
