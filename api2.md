@@ -355,6 +355,52 @@ Maybe we can revent back to orthogonal projection just by removing the property 
 
 # Fractal
 
+Fractal is a framework to drive a sequence of origin planes in order
+to implement an infinite progression.
+
+Is Fractal a View? Or is it a Component?
+- Can we have multiple fractals on space?
+  - Multiple networks on frameless space to interact.
+- Can fractals be nested?
+- Fractal does not span a coordinate system, so it is not a Component.
+- Fractal does not have a unique element in DOM, so it is not a Component.
+- Fractal creates and positions other elements, especially origin planes.
+  Therefore it shares features with the viewport.
+- Fractal takes in a plane template that is kind of a piece of the space.
+
+One approach is to form a new category of classes called "layouts" and
+classify the Fractal as a layout.
+The term "layout manager" might be appropriate.
+In order to show the layouts form a separate category, can we come up with
+alternative layouts?
+- Grid layout is implemented as a geometry that components can snap to.
+  Therefore it is not a layout manager but only provides guides for components.
+  However, Grid could be modeled as a layout where it could drive content.
+  For example, think of a dynamic grid that can move lots of attached content
+  just by modifying the grid properties, phase, and spacing.
+  On the other hand Grid spans a coordinate system and it could be a component.
+- Tunnel layout helps to position content into a tunnel shape.
+  Therefore it is mostly like the grid, and can work as both a geometry
+  and component.
+
+Thus, Fractal is not same thing as these basic layouts.
+Fractal is quite special recursive utility. An algorithm. A layout algorithm.
+Can we come up with other possible layout algorithms?
+- force-driven graph. Cyclic graphs would require cyclic Fractal.
+  Graph could also be a component and help in creation of edges and nodes.
+- L-system. A recursive tree. Kind of same as the Fractal.
+- depth-firsth search. Recursive search algorithm that could be applied
+  to Fractal but it is not the same thing.
+
+Fractal is a navigational structure with recursive progression.
+It facilitates content loading and hiding.
+- A quad tree stack could be a special case of a Fractal.
+- A network of rooms in some dungeon game. This would benefit from a tool
+  that loads and displays the rooms as the player navigates the space.
+
+Fractal is a loader! It is a tool that helps developer to load and forget.
+- It is quite different form the image loader. However, the image loader too
+  deals with asynchronous interaction.
 
 # Spiral
 
