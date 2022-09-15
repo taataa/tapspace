@@ -1,6 +1,7 @@
 const yamdog = require('yamdog')
 const path = require('path')
 const version = require('../../package.json').version
+const introText = require('./intro')
 const deco = yamdog.decorators
 
 yamdog.generate({
@@ -13,7 +14,7 @@ yamdog.generate({
   // Main title of the document
   title: 'Tapspace API Documentation v' + version,
   // Introduction; the initial paragraph
-  intro: 'Build your zoomable application with the following tools.',
+  intro: introText,
   // Styling; decorate the docs
   decorators: [
     deco.alphabetical(),
