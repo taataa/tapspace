@@ -1,58 +1,95 @@
-
 # Tutorial
 
 Ready to build your first Tapspace app? You have come to the right place. Here we go through the basics from setting up a *space* to hold your content, a *viewport* to navigate your content, and how to place elements into the space.
 
 In this tutorial we assume you have basic knowledge on web programming concepts such as HTML, CSS, DOM, and JavaScript.
 
-## Create a web app
+## Step 1: Prepare a web page for the app
 
 Create a directory named `tapspace-hello` and in it a file `index.html` with the following content:
 
-    insert html boilerplate here
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Hello Tapspace</title>
+    </head>
+    <body>
+    </body>
+    </html>
 
 Adjust the title to your liking.
 
-## Install tapspace
+Copy the Tapspace stylesheet and include it in the document head to make the space work as expected:
 
-Copy the Tapspace style sheet and include it in the document head to make the space work as expected:
+    ...
+      <link rel="stylesheet" href="tapspace.css">
+    </head>
+    ...
 
-    <link rel="stylesheet" href="tapspace.css">
+Import Tapspace script by adding the following line after the stylesheet:
 
-Add script line:
+    ...
+      <link rel="stylesheet" href="tapspace.css">
+      <script defer src="TODO cdn link here"></script>
+    </head>
+    ...
 
-    <script src="todo cdn link here"></script>
+Note the [defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) keyword. It ensures the script does not block the browser from loading the rest of the page.
 
-Let us also add empty script tag in which we begin to write the app.
+Let us also add a script tag into which we begin to write the app.
 
-    <script>
-      // My first tapspace app
-    </script>
+    ...
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // My first tapspace app
+        })
+      </script>
+    </head>
+    ...
 
-## Create a space
+We listen for the [DOMContentLoaded](https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event) event to ensure the page and its assets are fully loaded before running our app.
 
-Create an empty container element. This will contain all the space elements and also act as a viewport to the space.
+## Step 2: Create a space with content
+
+Inside the body tag, create an empty container element for our space. This element will contain all the space elements and also act as a viewport to the space.
 
     <div id="mytapspace"></div>
 
-In the script init the space.
+In the script, add the following to register the container as a space.
 
+    ...
+    // My first tapspace app
     const space = tapspace.create('#mytapspace')
+    ...
 
-## Create a space element
+In order to achieve infinite zoomability, the space itself does not specify a fixed world coordinate system. Instead, we need to create at least one *origin plane* that provides us a *frame of reference* onto which we can position our content.
 
-Then we create our first space element. This does not yet add the element to the space, that we do later.
+    const plane = space.plane()
 
-    const hello = tapspace.element('<strong>Hello</hello>', {
-      size: { width: 300, height: 300 },
-      anchor: { x: 150, y: 150 }
-    })
+Then, we create our first content element.
+
+    const hello = tapspace.element('<strong>Hello</strong>')
+
+The element is not yet added to the space nor DOM. Let us do that.
+
+    plane.add(hello, plane.at(200, 100))
+
+This will add the hello element at the point { x: 200 y: 100 } on the plane.
+
+Now you can open your `index.html` in your web browser. The result should look something like this:
+
+    TODO insert screenshot here
+
+Great!
+
+## Add elements to the space
+
+Default size, positioning....
 
 Why size? Unlike normal web pages, the space is infinite. Therefore, we must set the size for the elements. The default size is 256x256 pixels.
 
 The anchor point defines the default point on the element. For example, if you place the element at viewport (200,100) the element will be moved so that its anchor point aligns with the viewport at (200,100).
-
-## Add elements to the space
 
 Now we can add the element to the space. First we have to create an *origin plane*.
 
