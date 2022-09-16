@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Zoomable Viewport - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <!-- Content to test zoomability when viewport has some offset -->
+  <h1>Viewport Controls – Tapspace Features</h1>
+  <p>You can interact with the viewport by using the zoom buttons.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const space = tapspace.create('#tapspace')
+    const viewport = space.getViewport().pannable()
+    const layer = space.plane()
+
+    // Create a component for reference
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const compOptions = { className: 'mycomponent' }
+    const blockA = tapspace.element(template('Hello'), compOptions)
+    layer.add(blockA, viewport.atNorm(0.1, 0.1))
+
+    // Center viewport to components
+    viewport.match({
+      source: viewport.atMid(),
+      target: blockA.atBottomRight()
+    })
+
+    // Add a control
+    const zoomControl = new tapspace.components.ZoomControl()
+    viewport.addControl(zoomControl)
+  </script>
+</body>
+</html>
