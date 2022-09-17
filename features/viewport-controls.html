@@ -58,12 +58,16 @@
     // Center viewport to components
     viewport.match({
       source: viewport.atMid(),
-      target: blockA.atBottomRight()
+      target: blockA.atMid()
     })
 
     // Add a control
     const zoomControl = new tapspace.components.ZoomControl()
     viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(10, -10)
+    })
   </script>
 </body>
 </html>
