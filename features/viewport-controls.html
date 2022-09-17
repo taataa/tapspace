@@ -62,7 +62,9 @@
     })
 
     // Add a control
-    const zoomControl = new tapspace.components.ZoomControl()
+    const zoomControl = new tapspace.components.ZoomControl({
+      scaleStep: 1.3
+    })
     viewport.addControl(zoomControl)
     zoomControl.match({
       source: zoomControl.atBottomLeft(),
