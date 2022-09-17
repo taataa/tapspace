@@ -112,9 +112,9 @@
     cards[4].element.style.fontSize = '0.79em'
 
     // Rotate a little bit.
-    cards[0].rotateBy(-0.1, { anchor: cards[0].atBottomMid() })
-    cards[1].rotateBy(0, { anchor: cards[1].atBottomMid() })
-    cards[2].rotateBy(0.1, { anchor: cards[2].atBottomMid() })
+    cards[0].rotateBy(-0.1, cards[0].atBottomMid())
+    cards[1].rotateBy(0, cards[1].atBottomMid())
+    cards[2].rotateBy(0.1, cards[2].atBottomMid())
 
     // Nodes
     const nodes = space.group()
