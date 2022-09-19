@@ -20,7 +20,7 @@ This will install Tapspace 1.x. For upcoming Tapspace 2.x, see [2.0-dev](https:/
 See [taataa.github.io/tapspace](https://taataa.github.io/tapspace) for:
 - [Features](https://taataa.github.io/tapspace#features)
 - [Example applications](https://taataa.github.io/tapspace#examples)
-- [API Reference](https://taataa.github.io/tapspace/api)
+- [API Reference](https://taataa.github.io/tapspace/api/v1)
 - [Developer's Cheat Sheet](https://taataa.github.io/tapspace/dev)
 
 
