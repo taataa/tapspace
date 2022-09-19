@@ -21,8 +21,16 @@
       background: white;
       color: black;
     }
+    .hello {
+      background: transparent;
+      color: black;
+      border: 0px dotted gray;
+    }
+    .world {
+      background: red;
+    }
     .mylabel {
-      margin-top: 5rem;
+      margin-top: 0;
       text-align: center;
       font-size: 2rem;
     }
@@ -46,14 +54,45 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.create('#tapspace')
-    const viewport = space.getViewport().pannable()
+    const viewport = space.getViewport().pannable().zoomable().perspective()
     const layer = space.plane()
 
-    // Create a component for reference
+    // Create a component for reference. A group of hellos
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const compOptions = { className: 'mycomponent' }
-    const blockA = tapspace.element(template('Hello'), compOptions)
+
+    const blockOptions = { className: 'mycomponent' }
+    const blockA = tapspace.element('', blockOptions)
     layer.add(blockA, viewport.atNorm(0.1, 0.1))
+
+    // 2D Hellos
+    const numHellos = 16
+    const helloOpts = { className: 'hello', size: { w: 80, h: 40 } }
+    let prevHello = null
+    for (let i = 0; i < numHellos; i += 1) {
+      const html = template('Hello')
+      const hello = tapspace.element(html, helloOpts)
+      layer.add(hello)
+      hello.scaleBy(Math.pow(0.618, i))
+      let position
+      if (i === 0) {
+        position = blockA.atNorm(0.38, 0.38)
+      } else {
+        position = prevHello.atNorm(0.51, 0.8)
+      }
+      hello.translateTo(position)
+      prevHello = hello
+    }
+
+    // 3D Worlds
+    const numWorlds = 128
+    const worldOptions = { className: 'world', size: { w: 80, h: 40 } }
+    for (let i = 0; i < numWorlds; i += 1) {
+      const html = template('World')
+      const world = tapspace.element(html, worldOptions)
+      const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
+      layer.add(world, position)
+      world.rotateBy(0.05 * i, world.atCenter())
+    }
 
     // Center viewport to components
     viewport.match({
