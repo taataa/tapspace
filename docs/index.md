@@ -4,7 +4,7 @@ We believe **zoomable touch user interfaces** to be the best way for humans to e
 
 [**Tutorial**](tutorial/) is a good place to start for newcomers.
 
-[**API Reference**](api/) comes handy when coding.
+[**API Reference**](api/v1/) comes handy when coding.
 
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Tapspace to a next level.
 

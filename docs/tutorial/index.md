@@ -1,7 +1,98 @@
 
 # Tutorial
 
-For now, it is best for you to inspect the example apps for tutoring comments. The tutorial is a work in progress!
+Quick tutorial into Tapspace 1.6 basics. Inspect also the [example apps](../#examples) for tutoring comments. See also [Tapspace 2.0.0-alpha tutorial](https://github.com/taataa/tapspace/blob/2.0-dev/docs/tutorial/index.md).
+
+## Installation
+
+To use tapspace in your JavaScript project, install via npm:
+
+    $ npm install tapspace
+
+and require in your app:
+
+    const tapspace = require('tapspace')
+
+Another way is to copy one of the standalone bundles:
+
+- https://unpkg.com/tapspace@1.6.0/dist/tapspace.min.js
+- https://unpkg.com/tapspace@2.0.0-alpha.1/dist/tapspace.min.js
+
+The standalone bundle can be imported by adding a script tag before your app script:
+
+    <script src="https://unpkg.com/tapspace@1.6.0/dist/tapspace.min.js"></script>
+    <script src="my-app-in-a-file.js"></script>
+    <script>
+      // My app in literal code
+      console.log('hello')
+    </script>
+
+You can bring tapspace in your app like this:
+
+    var space = new tapspace.Space()
+
+The space contains items. To see the items, we need a view:
+
+    var view = new tapspace.SpaceView(space)
+
+We connect the view to a HTML element on the page of your app:
+
+    var spaceEl = document.getElementById('space')
+    view.mount(spaceEl)
+
+Then just add some content to the space and they show up in the view:
+
+    var hello = new tapspace.SpaceHTML(space, '<h1>Hello</h1>')
+
+In addition to SpaceHTML, there are also SpaceImage, and SpacePixel.
+
+You can position the content items freely by moving, scaling, and rotating them. The following moves the middle of our hello to the middle of the view.
+
+    var source = hello.atMid()
+    var target = view.atMid()
+    hello.translate(source, target)
+
+There are various positioning methods like `translateRotate` and `scale`. See [API docs](https://taataa.github.io/tapspace/api/#tapspaceabstractplane) for more.
+
+## Navigation
+
+Basic navigation is easy, we setup interaction for the view.
+
+    // Setup the view interaction
+    var viewtouch = new tapspace.Touchable(view, view)
+    var viewwheel = new tapspace.Wheelable(view, view)
+
+Now the viewtouch object listens to view for touch events, recognizes a move gesture, and applies it the the view. Also, mouse wheel events are listened and applied to view.
+
+Before anything moves, we must define what kind of movement we allow and start the gesture recognition.
+
+    // Pinch zoom and mouse wheel
+    viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
+    viewwheel.start({ scale: true })
+
+Now the viewport reacts to touch and mouse.
+
+Zooming by tapping is a bit more technical. First we want to listen to our touch recognizer for tap events:
+
+    viewtouch.on('tap', function (ev) {
+      // handler code here
+      view.scale(view.atMid(), 0.618)
+    })
+
+That would zoom the viewport toward the middle. Would it be more natural if zooming is done towards the tap position?
+
+    viewtouch.on('tap', function (ev) {
+      // handler code here
+      view.scale(ev.points[0], 0.618)
+    })
+
+Better yet, if user produced the tap with multiple fingers, we want to zoom to their average, not just on the first.
+
+    // Tap to zoom in at the middle of the gesture
+    viewtouch.on('tap', function (ev) {
+      var mean = tapspace.geom.IVector.mean(ev.points), 0.618)
+      view.scale(mean, 0.618)
+    })
 
 ## Interaction
 
@@ -45,4 +136,4 @@ An active manager emits events about the recognized gestures. You can bind to th
         console.log(ev.duration)
       })
 
-This tutorial covered the most about Touchable's API. The details about the methods and events can be found in the API Reference.
+This tutorial covered the most about Touchable's API. The details about the methods and events can be found in the [API Reference](../api/v1/).
