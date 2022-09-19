@@ -67,6 +67,7 @@
     "audit": "npm audit --production",
     "start": "node docs/examples/server.js",
     "build": "webpack",
+    "build:production": "webpack --mode production",
     "build:watch": "webpack --watch",
     "build:docs": "node docs/api/generate.js",
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
@@ -76,7 +77,7 @@
     "test:headless": "webpack --config test/webpack.headless.config.js",
     "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "release": "npm run lint && npm run gv && npm run test:headless && npm run build && npm publish",
+    "release": "npm run lint && npm run gv && npm run test:headless && npm run build:production && npm publish",
     "gv": "genversion lib/version.js"
   }
 }
