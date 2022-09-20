@@ -69,7 +69,7 @@
     "build": "webpack",
     "build:production": "webpack --mode production",
     "build:watch": "webpack --watch",
-    "build:docs": "node docs/api/generate.js",
+    "build:docs": "node docs/api/v2/generate.js",
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "lint:lib": "standard 'lib/**/*.js'",

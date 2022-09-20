@@ -1,12 +1,12 @@
 const yamdog = require('yamdog')
 const path = require('path')
-const version = require('../../package.json').version
+const version = require('../../../package.json').version
 const introText = require('./intro')
 const deco = yamdog.decorators
 
 yamdog.generate({
   // Where to start collecting comment blocks
-  entry: path.resolve(__dirname, '../../'),
+  entry: path.resolve(__dirname, '../../../'),
   // Where to generate
   output: path.resolve(__dirname, 'index.md'),
   // Earmark; include blocks that begin with this name.

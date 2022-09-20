@@ -4,7 +4,7 @@ We believe **zoomable touch user interfaces** to be the best way for humans to e
 
 [**Tutorial**](tutorial/) is a good place to start for newcomers.
 
-[**API Reference**](api/) comes handy when coding.
+[**API Reference**](api/v2/) comes handy when coding.
 
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Tapspace to a next level.
 
@@ -17,8 +17,8 @@ We believe **zoomable touch user interfaces** to be the best way for humans to e
 
 With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com/en/package/tapspace):
 
-    $ npm install tapspace
-    $ yarn add tapspace
+    $ npm install tapspace@alpha
+    $ yarn add tapspace@alpha
 
 
 ## Features
@@ -27,8 +27,6 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 - Pan, zoom, and rotate views and elements
 - Robust multi-touch and mouse support, backed by [our M.Sc. thesis](http://urn.fi/URN:NBN:fi:tty-201605264186)
 - Multiple users on the same screen? No problem.
-- Allows multiple viewports to the same content
-- Layout grid system to snap content
 - [Apache Cordova](https://cordova.apache.org/) compatible
 
 
