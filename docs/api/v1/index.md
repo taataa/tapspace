@@ -1,5 +1,7 @@
 # API Reference
 
+Welcome to Tapspace v1.6.0 API documentation. Other versions of the docs are available: [Tapspace v2.0.0-alpha API docs](../v2/).
+
 Contents:
 - [Module](#module)
   - [tapspace](#tapspace)
