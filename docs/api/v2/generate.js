@@ -45,8 +45,8 @@ yamdog.generate({
     ]),
     deco.toc(),
     deco.sourceLinks({
-      basePath: path.resolve(__dirname, '..', '..'),
-      baseUrl: 'https://github.com/taataa/tapspace/blob/main/'
+      basePath: path.resolve(__dirname, '..', '..', '..'),
+      baseUrl: 'https://github.com/taataa/tapspace/blob/2.0-dev/'
     }),
     deco.backTopLinks()
   ]
