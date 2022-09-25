@@ -17,7 +17,9 @@ yamdog.generate({
   intro: introText,
   // Styling; decorate the docs
   decorators: [
-    deco.alphabetical(),
+    deco.alphabetical({
+      groupCase: true
+    }),
     deco.aliases(),
     deco.italicSingles(),
     deco.linkNames(),
@@ -43,7 +45,9 @@ yamdog.generate({
         replacement: '**Usage:**'
       },
     ]),
-    deco.toc(),
+    deco.toc({
+      title: '**Contents:**'
+    }),
     deco.sourceLinks({
       basePath: path.resolve(__dirname, '..', '..', '..'),
       baseUrl: 'https://github.com/taataa/tapspace/blob/2.0-dev/'
