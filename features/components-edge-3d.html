@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>3D Edge Component - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+    }
+    .container {
+      background: #BBB;
+    }
+    .myspaceapp {
+      background: #DDD;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const space = tapspace.space('#tapspace')
+    const view = space.viewport().zoomable().perspective()
+
+    // Layer creation order determines drawing order.
+    // Last created, top drawn.
+    const edgelayer = space.plane()
+    const nodelayer = space.plane()
+
+    // Create nodes
+    const m0 = tapspace.circle(20, 'red')
+    const m1 = tapspace.circle(20, 'blue')
+    const m2 = tapspace.circle(20, 'green')
+    const m3 = tapspace.circle(20, 'orange')
+
+    nodelayer.add(m0, view.atNorm(0.38, 0.3, 0))
+    nodelayer.add(m1, view.atNorm(0.62, 0.6, 1))
+    nodelayer.add(m2, view.atNorm(0.38, 0.3, 2))
+    nodelayer.add(m3, view.atNorm(1, 0.1, 1))
+
+    // Create edges
+    const edge01 = tapspace.edge('0.6em dotted black')
+    const edge12 = tapspace.edge('0.6em solid black')
+    const edge13 = tapspace.edge('0.6em dashed #333')
+
+    edgelayer.add(edge01)
+    edgelayer.add(edge12)
+    edgelayer.add(edge13)
+
+    edge01.setPoints(m0.atAnchor(), m1.atAnchor())
+    edge12.setPoints(m1.atAnchor(), m2.atAnchor())
+
+    // Offset the endpoints by radius
+    const vec13 = m1.atAnchor().vectorTo(m3.atAnchor()).normalize(20)
+    const start13 = m1.atAnchor().offset(vec13.x, vec13.y, vec13.z)
+    const end13 = m3.atAnchor().offset(-vec13.x, -vec13.y, -vec13.z)
+    edge13.setPoints(start13, end13)
+
+    // HACK render edge each viewport transform
+    const onIdle = () => {
+      edge01.renderTransform()
+      edge12.renderTransform()
+      edge13.renderTransform()
+    }
+    view.capturer('gesture').on('gesturemove', onIdle)
+    view.capturer('wheel').on('wheel', onIdle)
+  </script>
+</body>
+</html>

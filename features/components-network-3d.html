@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Network Component 3D - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- base styles for affine elements -->
+  <link rel="stylesheet" href="../tapspace.css">
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #BBB;
+      width: 100%;
+      height: 100%;
+    }
+    .myspaceapp {
+      background: #DDD;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const space = tapspace.space('#tapspace', {
+      size: { width: '100%', height: '600px' }
+    })
+    const view = space.viewport().zoomable().perspective()
+
+    // Layer creation order determines drawing order.
+    // Last created, top drawn.
+    const edgelayer = space.plane()
+    const nodelayer = space.plane()
+
+    let totalNodes = 0
+
+    const firstNode = tapspace.circle(20, 'black')
+    firstNode.element.style.color = 'white'
+    firstNode.element.style.textAlign = 'center'
+    firstNode.element.style.paddingTop = '10px'
+    nodelayer.add(firstNode, view.atMid().offset(0, 0, -200))
+    totalNodes += 1
+
+    const updateNodeCount = () => {
+      firstNode.element.innerHTML = totalNodes
+    }
+
+    const openNode = (node, j, depthLimit) => {
+      const origin = node.atAnchor()
+      // Generate six nodes
+      const kids = []
+      // Available colors. Maybe customize per node?
+      // const colors = ['red', 'green', 'blue', 'orange', 'pink', 'gray']
+      const colors = ['#000', '#222', '#444', '#666', '#888', '#AAA']
+      // Iterate some
+      for (let i = 0; i < 5; i += 1) {
+        // Drop some frames for more organic vibe
+        if (Math.random() > 0.5) continue;
+        // Create node
+        const angle = 2 * Math.PI * (i - 0.25) / 5
+        const radius = 50
+        const dz = 20 * Math.pow(0.3, j) // but is uniform scaling?
+        const point = origin.polarOffset(radius, angle).offset(0, 0, dz)
+        const circle = tapspace.circle(20, colors[j])
+        kids.push(circle)
+        nodelayer.add(circle, point)
+        circle.scaleBy(Math.pow(0.3, j + 1), circle.atMid())
+        totalNodes += 1
+        // Create edge
+        // const edge = tapspace.edge('5px solid black')
+        // edgelayer.add(edge, origin)
+        // edge.scaleBy(Math.pow(0.3, j + 1))
+        // edge.setPoints(origin, circle.atAnchor())
+        // edge.renderTransform()
+      }
+
+      // Update node count meter
+      updateNodeCount()
+
+      // Open kid nodes after delay
+      if (j < depthLimit) {
+        const delay = 240;
+        setTimeout(() => {
+          kids.forEach((kid) => {
+            openNode(kid, j + 1, depthLimit)
+          })
+        }, delay)
+      }
+    }
+
+    openNode(firstNode, 0, 4)
+  </script>
+</body>
+</html>
