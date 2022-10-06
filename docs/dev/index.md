@@ -14,6 +14,26 @@ The architecture is loosely based on [Jazz](http://www.cs.umd.edu/hcil/piccolo/l
 For more detailed notes on architecture and the tough processes behind the design decisions, see [dev/design](./design.md). Also, there exists hundreds of pages of drawings, writings, and sketches on paper that are not publicly avaibalbe but can be made available per-request basis.
 
 
+## Coding style
+
+We use StandardJS linter. Therefore:
+- use camelCase naming.
+- avoid semicolons.
+- max 80 characters per line.
+
+We should follow conventions apparent in browser DOM API:
+- begin each function name with a verb.
+- begin each variable and property name with a noun.
+- names should be descriptive but minimal.
+
+Guidelines for commenting:
+- Comments should answer to the question "why" instead of "what" especially when the code makes latter obvious.
+- Use proper sentences whenever applicable.
+- Use comments to title sections of code.
+- Do not fear to write long comments if it is necessary for understanding.
+- "No uncommon abbr." Better: Avoid uncommon abbreviations.
+
+
 ## Developing example apps
 
 Most of the example apps are targeted for touch screens. Therefore, when developing and testing an interactive app, it is necessary to serve it for touch screen devices in the same **local area network**. To make this easy, we have `examples/server.js`, a static file server that serves the apps. The server displays a QR code of the URL to the apps when started. Read the QR code with your touch device and you are ready to go. Start the `examples/server` by:
