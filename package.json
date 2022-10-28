@@ -73,11 +73,12 @@
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "lint:lib": "standard 'lib/**/*.js'",
-    "test": "npm run lint && npm run test:headless && webpack",
-    "test:headless": "webpack --config test/webpack.headless.config.js",
-    "test:headless:watch": "webpack --watch --config test/webpack.headless.config.js",
+    "test": "npm run lint",
+    "test:browser": "npm run test:browser:build && npm run test:browser:open",
+    "test:browser:open": "open -a \"Google Chrome\" test/browser.html",
+    "test:browser:build": "webpack --config test/webpack.browser.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "release": "npm run lint && npm run gv && npm run test:headless && npm run build:production && npm publish",
+    "release": "npm run lint && npm run gv && npm run build:production && npm publish",
     "gv": "genversion lib/version.js"
   }
 }
