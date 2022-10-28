@@ -8,6 +8,7 @@ const units = {
   // Geometry
   Point: require('./Point.test'),
   // Elements
+  AbstractNode: require('./AbstractNode.test')
   // Element: require('./Element.test')
 }
 
