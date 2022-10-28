@@ -51,22 +51,27 @@
     nodelayer.add(m1, view.atNorm(0.62, 0.3))
 
     // Equilateral triangle
-    const dist = m0.atAnchor().distanceTo(m1.atAnchor())
+    const dist = m0.atAnchor().getDistanceTo(m1.atAnchor())
     const p2 = m0.atAnchor().polarOffset(dist, Math.PI / 3)
     nodelayer.add(m2, p2)
 
     // Create edges
     const edge01 = tapspace.edge('0.6em dotted black')
-    const edge02 = tapspace.edge('0.6em solid gray')
-    const edge12 = tapspace.edge('0.6em dashed black')
+    const edge12 = tapspace.edge('0.6em solid gray')
+    const edge20 = tapspace.edge('0.6em dashed black')
 
     edgelayer.add(edge01)
-    edgelayer.add(edge02)
     edgelayer.add(edge12)
+    edgelayer.add(edge20)
 
     edge01.setPoints(m0.atAnchor(), m1.atAnchor())
-    edge02.setPoints(m0.atAnchor(), m2.atAnchor())
     edge12.setPoints(m1.atAnchor(), m2.atAnchor())
+    edge20.setPoints(m2.atAnchor(), m0.atAnchor())
+
+    // Attach titles for inspection
+    edge01.element.title = 'Edge from m0 to m1'
+    edge12.element.title = 'Edge from m1 to m2'
+    edge20.element.title = 'Edge from m2 to m0'
 
     // Find mean
     const mMean = tapspace.circle(10, 'black')
