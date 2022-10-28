@@ -7,17 +7,20 @@ module.exports = function (test) {
   test('Point:getDistanceTo', (t) => {
     // Setup
     container.innerHTML = template()
-    const aview = tapspace.viewport('.affine-viewport')
-    const aelem = tapspace('.affine-element')
-    aelem.translateBy({ x: 10, y: 6 })
-    // Two points dx:40, dy:30
-    const pointAOnElem = aelem.at(0, 0)
-    const pointBOnView = aview.at(-30, -24)
-    // Distance between them
-    const dist = pointAOnElem.getDistanceTo(pointBOnView)
+    const aspace = tapspace.create('#testspace')
+    const aview = aspace.viewport()
+    const abasis = aspace.basis()
+    // Create two points
+    const pa = abasis.at(10, 6)
+    const pb = abasis.at(20, 6)
 
-    t.equal(dist.basis, aelem.el)
-    t.equal(dist.dist, 50)
+    // Distance between them
+    const dist = pa.getDistanceTo(pb)
+    t.equal(dist.dist, 10)
+
+    // Vector between them
+    const vec = pa.getVectorTo(pb)
+    t.deepEqual(vec.vec, { x: 10, y: 0, z: 0 })
 
     t.end()
   })
