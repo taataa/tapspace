@@ -4,7 +4,7 @@ const template = require('./template.ejs')
 module.exports = function (test) {
   const container = document.getElementById('container')
 
-  test('Point:distanceTo', (t) => {
+  test('Point:getDistanceTo', (t) => {
     // Setup
     container.innerHTML = template()
     const aview = tapspace.viewport('.affine-viewport')
@@ -14,10 +14,10 @@ module.exports = function (test) {
     const pointAOnElem = aelem.at(0, 0)
     const pointBOnView = aview.at(-30, -24)
     // Distance between them
-    const dist = pointAOnElem.distanceTo(pointBOnView)
+    const dist = pointAOnElem.getDistanceTo(pointBOnView)
 
     t.equal(dist.basis, aelem.el)
-    t.equal(dist.d, 50)
+    t.equal(dist.dist, 50)
 
     t.end()
   })
