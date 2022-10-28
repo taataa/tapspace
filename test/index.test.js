@@ -1,4 +1,5 @@
 const test = require('tape')
+const tapspace = require('../index')
 
 const units = {
   // General
@@ -10,6 +11,9 @@ const units = {
   // Element: require('./Element.test')
 }
 
+// Reusable container element. Each test is allowed to clear innerHTML.
+const container = document.querySelector('#container')
+
 Object.keys(units).forEach((unitName) => {
-  units[unitName](test)
+  units[unitName](test, container, tapspace)
 })

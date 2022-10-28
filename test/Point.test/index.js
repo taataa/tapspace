@@ -1,18 +1,15 @@
-const tapspace = require('../../index')
 const template = require('./template.ejs')
 
-module.exports = function (test) {
-  const container = document.getElementById('container')
-
+module.exports = function (test, container, tapspace) {
   test('Point:getDistanceTo', (t) => {
     // Setup
     container.innerHTML = template()
-    const aspace = tapspace.create('#testspace')
-    const aview = aspace.viewport()
-    const abasis = aspace.basis()
+    const space = tapspace.create('#testspace')
+    const view = space.viewport()
+    const basis = space.basis()
     // Create two points
-    const pa = abasis.at(10, 6)
-    const pb = abasis.at(20, 6)
+    const pa = basis.at(10, 6)
+    const pb = basis.at(20, 6)
 
     // Distance between them
     const dist = pa.getDistanceTo(pb)
