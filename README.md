@@ -37,6 +37,7 @@ Run only linter:
 
     $ npm run lint
 
+See [testing docs](https://taataa.github.io/tapspace/dev/#testing) for details.
 
 ## License
 

@@ -2,6 +2,16 @@
 
 Here you find an introduction how to develop and contribute to Tapspace project.
 
+Table of Contents:
+- [Architecture](#architecture)
+- [Coding style](#coding-style)
+- [Developing example apps](#developing-example-apps)
+- [Building](#building)
+- [Testing](#testing)
+- [Continuous integration](#continuous-integration)
+- [Release](#release)
+- [Maintenance](#maintenance)
+
 
 ## Architecture
 
@@ -49,45 +59,66 @@ Example apps can also be used for **manual testing** while developing tapspace c
 To repeat the build every time you make a change, use `npm run build:watch` instead. When this is the case, it is often necessary to have two terminals open. The first is running the examples server (`npm start`) and the second is repeatedly building the bundle (`npm run build:watch`).
 
 
+## Building
+
+Tapspace is a package and thus needs to be packed with a build tool. Tapspace uses [webpack](https://webpack.js.org/) for this. We have separate builds for testing and production purposes. Each build has a script in package.json. The builds output files into `dist/` directory, standalone bundle at `dist/tapspace.min.js` and source maps at `dist/tapspace.min.js.map`.
+
+Minified bundle for production:
+
+    $ npm run build:production
+
+Development bundle:
+
+    $ npm run build
+
+Automatic development build after a file change:
+
+    $ npm run build:watch
+
+Documentation needs a build too.
+
+    $ npm run build:docs
+
+A build is necessary before running tests.
+
+
 ## Testing
 
-Tests are run in a browser and built on [tape](https://github.com/substack/tape).
+Tapspace is a user interface library and therefore its test suite must be run in a web browser. Static code checking, linting, can be done without. Tests are built on [tape](https://github.com/substack/tape).
 
-### npm run build
+To check the code syntax and style against [standardJS](https://standardjs.com/):
 
-Build a minified, standalone bundle at `dist/tapspace.min.js` and source maps at `dist/tapspace.min.js.map`.
+    $ npm run lint
 
-### npm run lint
+To fix common lint issues automatically:
 
-Lint source against [standardJS](https://standardjs.com/) style. To fix automatically fixable issues, use `npm run lint:fix`.
+    $ npm run lint:fix
 
-### npm run test:headless
+To run the test suite:
 
-Run the test suite once in a headless *Electron* browser and output results to console. In case of a failed test, the output is so poor for debugging that it is better to use `npm run test:browser:watch`.
+    $ npm run test:browser
 
-### npm run test:browser:watch
+A browser tab opens. The test report is available through browser developer console.
 
-Run the test suite in a real browser every time a file changes. Real browsers usually have good debugging tools.
+To automatically rebuild the test suite upon file change:
 
-Steps:
+    $ npm run test:browser:watch
 
-1. Start building of the test suite by `$ npm run test:browser:watch`.
-1. Then open a test runner `test/index.html` with your browser of choice.
-1. Open the development tool to view the test results and to start debugging.
+The runner `test/index.html` uses `webpack-livereload-plugin` so expect automatic page refresh at each webpack rebuild.
 
-Features:
-
-- The build uses `webpack --watch` under the hood so any change to lib or test code rebuilds the suite.
-- The runner `test/index.html` uses `webpack-livereload-plugin` so expect automatic page refresh at each webpack rebuild.
+**Headless testing** would be great but suitable tools lack maintenance. Therefore
+tests must be observed via the browser. Additionally, debugging is usually much easier via the browser.
 
 
 ## Release
 
+When a new Tapspace version is ready for the release, we must ensure its correctness.
+
 First, in your local environment:
 
 1. Ensure you are in a `feature-myfeat` branch.
-1. Run `npm run lint` and `npm run test:headless`.
-1. Commit changes.
+1. Run `npm run lint` and `npm run test:browser`.
+1. Commit repairs if any.
 
 Then, go to GitHub:
 
