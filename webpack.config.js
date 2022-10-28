@@ -11,5 +11,17 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ]
+      }
+    ]
+  },
+
   mode: 'development'
 }
