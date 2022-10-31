@@ -10,6 +10,7 @@ const units = {
   Distance: require('./Distance.test'),
   Path: require('./Path.test'),
   Point: require('./Point.test'),
+  Scale: require('./Scale.test'),
   Transform: require('./Transform.test'),
   Vector: require('./Vector.test'),
   // Elements
