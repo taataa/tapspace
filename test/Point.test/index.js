@@ -20,4 +20,21 @@ module.exports = function (test, container, tapspace) {
 
     t.end()
   })
+
+  test('Point:getPlain', (t) => {
+    // Setup
+    container.innerHTML = template()
+    const space = tapspace.create('#testspace')
+    const basis = space.basis()
+    // Create a Point
+    const p = basis.at(10, 6)
+
+    t.deepEqual(
+      p.getPlain(),
+      { x: 10, y: 6, z: 0 },
+      'should convert to point3'
+    )
+
+    t.end()
+  })
 }
