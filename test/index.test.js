@@ -6,6 +6,7 @@ const units = {
   version: require('./version.test'),
   // tools: require('./tools.test'),
   // Geometry
+  Distance: require('./Distance.test'),
   Point: require('./Point.test'),
   Transform: require('./Transform.test'),
   Vector: require('./Vector.test'),
