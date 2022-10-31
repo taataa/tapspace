@@ -7,6 +7,7 @@ const units = {
   // tools: require('./tools.test'),
   // Geometry
   Point: require('./Point.test'),
+  Transform: require('./Transform.test'),
   Vector: require('./Vector.test'),
   // Elements
   AbstractNode: require('./AbstractNode.test')
