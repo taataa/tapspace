@@ -1,7 +1,7 @@
 const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
-
+  //
   test('Size:getPlain', (t) => {
     // Setup
     container.innerHTML = template()
@@ -11,6 +11,7 @@ module.exports = function (test, container, tapspace) {
     const hel = tapspace.element('hello', {
       size: { w: 200, h: 200 }
     })
+    basis.add(hel)
     // Get its size
     const size = hel.getSize()
 

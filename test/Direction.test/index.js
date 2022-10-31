@@ -1,7 +1,7 @@
 const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
-
+  //
   test('Direction:getPlain', (t) => {
     // Setup
     container.innerHTML = template()

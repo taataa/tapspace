@@ -1,7 +1,7 @@
 const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
-
+  //
   test('Scale :changeBasis :getPlain', (t) => {
     // Setup
     container.innerHTML = template()
