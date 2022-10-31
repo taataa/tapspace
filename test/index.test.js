@@ -8,6 +8,7 @@ const units = {
   // Geometry
   Direction: require('./Direction.test'),
   Distance: require('./Distance.test'),
+  Path: require('./Path.test'),
   Point: require('./Point.test'),
   Transform: require('./Transform.test'),
   Vector: require('./Vector.test'),
