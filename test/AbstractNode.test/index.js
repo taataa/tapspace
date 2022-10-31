@@ -8,7 +8,6 @@ module.exports = (test, container, tapspace) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const view = space.viewport()
     const basis = space.basis()
 
     // Construct a hierarchy of nodes
