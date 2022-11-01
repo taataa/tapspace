@@ -23,4 +23,26 @@ module.exports = function (test, container, tapspace) {
 
     t.end()
   })
+
+  test('Size:scaleBy', (t) => {
+    // Setup
+    container.innerHTML = template()
+    const space = tapspace.create('#testspace')
+    const basis = space.basis()
+    // Create an element
+    const hel = tapspace.element('hello', {
+      size: { w: 200, h: 200 }
+    })
+    basis.add(hel)
+    // Get its size
+    const size = hel.getSize()
+
+    t.deepEqual(
+      size.scaleBy(2).getPlain(),
+      { w: 400, h: 400 },
+      'should double the width and height'
+    )
+
+    t.end()
+  })
 }
