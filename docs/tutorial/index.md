@@ -23,11 +23,13 @@ Adjust the title to your liking.
 Import Tapspace script by adding the following line before the ending head tag:
 
     ...
-      <script defer src="TODO cdn link here"></script>
+      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.1/dist/tapspace.min.js"></script>
     </head>
     ...
 
-Note the [defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) keyword. It ensures the script does not block the browser from loading the rest of the page.
+The bundle hosted by unpkg.com delivery network is okay for development and toy apps. If you need production-grade performance and reliability, it is best to host the bundle along your other assets or even build it with your app.
+
+Note the [defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) keyword. It ensures the script download does not block the browser from loading the rest of the page.
 
 Let us also add a script tag into which we begin to write the app.
 
