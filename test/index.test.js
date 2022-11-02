@@ -10,6 +10,9 @@ const units = {
   components: require('./components.test/index.test')
 }
 
+// Custom assertations
+test.Test.prototype.almostEqualVector = require('./utils/almostEqualVector')
+
 // Reusable container element. Each test is allowed to clear innerHTML.
 const container = document.querySelector('#container')
 
