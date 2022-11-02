@@ -5,7 +5,7 @@ module.exports = function (actual, expected, message) {
   // Custom tape.js assertion.
   this._assert(vec3AlmostEqual(actual, expected), {
     message: message || 'vector should have correct elements',
-    operator: 'vectorEqual',
+    operator: 'almostEqualVector',
     actual,
     expected
   })
