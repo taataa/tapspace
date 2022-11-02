@@ -1,4 +1,5 @@
 const units = {
+  fromPolar: require('./fromPolar.test'),
   fromSpherical: require('./fromSpherical.test'),
   getRaw: require('./getRaw.test')
 }
