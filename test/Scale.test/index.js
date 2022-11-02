@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Scale :changeBasis :getPlain', (t) => {
+  test('Scale :changeBasis :getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -14,13 +14,13 @@ module.exports = function (test, container, tapspace) {
     const scale = bb.getScale()
 
     t.equal(
-      scale.getPlain(),
+      scale.getRaw(),
       1,
       'should convert scale to number'
     )
 
     t.equal(
-      scale.changeBasis(ba).getPlain(),
+      scale.changeBasis(ba).getRaw(),
       4,
       'should convert scale to number'
     )

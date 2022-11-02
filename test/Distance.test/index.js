@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Distance:getPlain', (t) => {
+  test('Distance:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
     const d = pa.getDistanceTo(pb)
 
     t.equal(
-      d.getPlain(),
+      d.getRaw(),
       5,
       'should convert to dist3 number'
     )

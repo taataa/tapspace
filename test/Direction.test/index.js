@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Direction:getPlain', (t) => {
+  test('Direction:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
     const d = pa.getDirectionTo(pb)
 
     t.deepEqual(
-      d.getPlain(),
+      d.getRaw(),
       { x: 0.8, y: 0.6, z: 0 },
       'should convert to dir3 unit vector'
     )

@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Vector:getPlain', (t) => {
+  test('Vector:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
     const v = pa.getVectorTo(pb)
 
     t.deepEqual(
-      v.getPlain(),
+      v.getRaw(),
       { x: 10, y: 10, z: 0 },
       'should convert to vec3'
     )

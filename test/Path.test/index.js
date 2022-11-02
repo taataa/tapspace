@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Path:getPlain', (t) => {
+  test('Path:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -16,7 +16,7 @@ module.exports = function (test, container, tapspace) {
     const ps = new tapspace.geometry.Path(basis, path)
 
     t.deepEqual(
-      ps.getPlain(),
+      ps.getRaw(),
       path,
       'should convert to path3'
     )

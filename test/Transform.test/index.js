@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Transform:getPlain', (t) => {
+  test('Transform:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -12,7 +12,7 @@ module.exports = function (test, container, tapspace) {
     const tr = new tapspace.geometry.Transform(basis, helm)
 
     t.deepEqual(
-      tr.getPlain(),
+      tr.getRaw(),
       helm,
       'should convert to helm3'
     )

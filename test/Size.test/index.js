@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Size:getPlain', (t) => {
+  test('Size:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -16,7 +16,7 @@ module.exports = function (test, container, tapspace) {
     const size = hel.getSize()
 
     t.deepEqual(
-      size.getPlain(),
+      size.getRaw(),
       { w: 200, h: 200 },
       'should convert size to object'
     )
@@ -38,7 +38,7 @@ module.exports = function (test, container, tapspace) {
     const size = hel.getSize()
 
     t.deepEqual(
-      size.scaleBy(2).getPlain(),
+      size.scaleBy(2).getRaw(),
       { w: 400, h: 400 },
       'should double the width and height'
     )

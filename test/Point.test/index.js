@@ -21,7 +21,7 @@ module.exports = function (test, container, tapspace) {
     t.end()
   })
 
-  test('Point:getPlain', (t) => {
+  test('Point:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
@@ -30,7 +30,7 @@ module.exports = function (test, container, tapspace) {
     const p = basis.at(10, 6)
 
     t.deepEqual(
-      p.getPlain(),
+      p.getRaw(),
       { x: 10, y: 6, z: 0 },
       'should convert to point3'
     )
