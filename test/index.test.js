@@ -4,19 +4,10 @@ const tapspace = require('../index')
 const units = {
   // General
   version: require('./version.test'),
-  // tools: require('./tools.test'),
   // Geometry
-  Direction: require('./Direction.test'),
-  Distance: require('./Distance.test'),
-  Path: require('./Path.test'),
-  Point: require('./Point.test'),
-  Scale: require('./Scale.test'),
-  Size: require('./Size.test'),
-  Transform: require('./Transform.test'),
-  Vector: require('./Vector.test'),
-  // Elements
-  AbstractNode: require('./AbstractNode.test')
-  // Element: require('./Element.test')
+  geometry: require('./geometry.test/index.test'),
+  // Components
+  components: require('./components.test/index.test')
 }
 
 // Reusable container element. Each test is allowed to clear innerHTML.

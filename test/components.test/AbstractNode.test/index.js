@@ -1,9 +1,10 @@
 const template = require('./template.ejs')
 const hierarchy = require('./hierarchy.ejs')
-const AbstractNode = require('../../lib/components/AbstractNode')
 
 module.exports = (test, container, tapspace) => {
   //
+  const AbstractNode = tapspace.components.AbstractNode
+
   test('findCommonAncestor', (t) => {
     // Setup
     container.innerHTML = template()
