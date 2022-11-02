@@ -27,8 +27,8 @@
   overflow: hidden;
   /* Mobile browsers have touch actions that cancel our gestures */
   touch-action: none;
-  /* Default 3D perspective */
-  perspective: 300px;
+  /* Use orthogonal projection by default */
+  perspective: none;
 }
 .affine-layer,
 .affine-group,
