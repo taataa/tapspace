@@ -5,9 +5,9 @@ const units = {
   // General
   version: require('./version.test'),
   // Geometry
-  geometry: require('./geometry.test/index.test'),
+  geometry: require('./geometry.test'),
   // Components
-  components: require('./components.test/index.test')
+  components: require('./components.test')
 }
 
 // Custom assertations

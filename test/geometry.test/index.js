@@ -6,7 +6,7 @@ const units = {
   Scale: require('./Scale.test'),
   Size: require('./Size.test'),
   Transform: require('./Transform.test'),
-  Vector: require('./Vector.test'),
+  Vector: require('./Vector.test')
 }
 
 module.exports = (test, container, tapspace) => {
