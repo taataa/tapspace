@@ -20,17 +20,9 @@ Create a directory named `tapspace-hello` and in it a file `index.html` with the
 
 Adjust the title to your liking.
 
-Copy the Tapspace stylesheet and include it in the document head to make the space work as expected:
+Import Tapspace script by adding the following line before the ending head tag:
 
     ...
-      <link rel="stylesheet" href="tapspace.css">
-    </head>
-    ...
-
-Import Tapspace script by adding the following line after the stylesheet:
-
-    ...
-      <link rel="stylesheet" href="tapspace.css">
       <script defer src="TODO cdn link here"></script>
     </head>
     ...
