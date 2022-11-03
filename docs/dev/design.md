@@ -1,26 +1,30 @@
 # Tapspace progressive architectural notes
 
 These notes try to capture the process that lead to design decisions in
-the current Tapspace library.
+the current Tapspace library. Whenever new features are planned, each aspect
+laid out in these notes should be considered.
 
 ## Design principles
 
-API design problems
-  explicity vs simplicity
-  relative vs absolute
-  computation efficiency vs expressiveness
-  one vs multiple ways to do things
+API design problems:
+- explicity vs simplicity
+- relative vs absolute
+- computation efficiency vs expressiveness
+- one vs multiple ways to do things
 
 Separation of concerns
-  transformation construction vs moving the element
-  positioning vs interaction
+- transformation construction vs moving the element
+- positioning vs interaction
 
 KISS - Keep it simple stupid
 DOT - Do one thing
-  Avoid complicated methods and options.
-  If the method feels tedious to document, then it probably
+- Avoid complicated methods and options.
+- If the method feels tedious to document, then it probably
   does or allows too much.
-  Bad example: addChild(comp, position) where position can be many things.
+- Bad example: addChild(comp, position) where position can be many things.
+
+Premature optimization is the root of all evil
+YAGNI - You ain't gonna need it
 
 ## Construction
 
@@ -181,6 +185,7 @@ aelem.getPosition() .getLocalTransform() .getFormation()
 The position of element in the parent coordinates system.
 
 aelem.getTransform( relElem ) where relElem is optional, defaults to parent
+aelem.getTransformTo( relElem )
 aelem.getPositionOn( relElem )
 aelem.getTransformOn( relElem )
 aelem.getFormationOn( relElem )
@@ -207,6 +212,23 @@ If implicit basis, programmer needs to do this for each point separately.
 Very tedious. On the other hand { basis { transform, element } } too complex.
 { element, a, b, x, y } is probably the simplest for the programmer.
 Alternatively alias for element: el, elem, base, basel, basis
+
+In Oct 2022, we saw that trouping the basis element (vec.basis) and
+the geometry properties (vec.x, vec.y) in the same namespace leads to
+hard-to-detect bugs because raw geometry objects e.g {x,y,z} and the geometry
+class instances e.g. Vector { basis, x, y, z } could be used identically in
+the same context. This lead to extra checks if the object was raw or based.
+Also, all operations on based objects are implemented in affineplane that
+understands only the raw objects, thus it was often necessary to first
+compute the raw object and then copy the properties to a new based instance
+to maintain immutability. Sometimes only the raw object was needed, thus
+the constructed based instance had to be deconstructed immediately after its
+construction. For these reasons, it was better to follow Tapspace v1 approach
+where the "basis invariant" objects contained the raw object as an object.
+In Tapspace v2 this means for example Vector { basis, vec } where vec is
+a affineplane.vec3 {x,y,z}. This way geometric operations can be done on
+raw objects and the resulting object can be used directly without copying
+of the properties.
 
 
 ### Setting positions
@@ -304,9 +326,16 @@ Additional design decisions:
 
 ### Semantic zoom
 
-tt(space).zoomable()
-tt(el).approachable()
-tt(el).semanticZoom()
+Possible ability names:
+- tt(space).zoomable()
+- tt(el).approachable()
+- tt(el).semanticZoom()
+- sel.reactive() .sensible() .triggerable() .aware() .morphable()
+- .convertible() .openable() .detailable()
+- .enableProximitySensor
+- .emitOnProximity .emitProximity .emitDistance() .emitApparentSize
+- .addProximityListener
+- .excitable .sensitive .senseProximity
 
 aelem.getAreaOn( relElem ) .getCover(relElem) .depth()
 aelem.getArea( relElem? )
@@ -334,16 +363,28 @@ except if controlled by perspective z
 
 initial creation vs depth updates
 
+The feature depends on the distance between viewport camera and the element.
+How this works in orthogonal projection?
+
+The element itself might not change due to camera proximity. Instead, the proximity might trigger or undo behavior such as rendering new elements or removal of old elements.
+
+
+
 ## Viewport
 
 ### Perspective vs orthogonal viewport
 
 Do we need to switch between perspective and orthogonal viewport projection modes? Should we project always orthogonally but simulate the depth via extra scaling derived from dz? Or should we implement everything in 3D and use that as the primary way to zoom, even when all the content resides on the same plane?
 
-We cannot implement everything twice for the two projection modes. Therefore APIs and positions must always be in 3D. What we can do, however, is to modify the rendered projection according to the viewport settings. That has the drawback of the need to pass the viewport mode to every transform render, forcing each affine element to either find or carry reference to the viewport. We would like to avoid the coupling if possible.
+We cannot implement everything twice for the two projection modes. Therefore APIs and positions must always be in 3D. What we can do, however, is to modify the rendered projection according to the viewport settings. That has the drawback of the need to pass the viewport mode to every transform render, forcing each affine element to either find or carry a reference to the viewport. We would like to avoid the coupling if possible.
 
 The perspective projection is enabled by setting CSS perspective property.
 Maybe we can revent back to orthogonal projection just by removing the property from the viewport element.
+Better, we can set it to 'perspective:none'.
+
+2022: It seems that 2D projection is about 10x more faster than 3D projection. This limits the number of elements.
+
+Eventually we need to orient elements non-orthogonally. For example to visualize a network in 3D, we must be able to render edges that begin and end at different z-depth.
 
 ## Layout managers
 
@@ -421,3 +462,10 @@ Either a true pipe-like arrangement of content in 3D or a flat 2D circle or fan 
 
 Archimedian spiral might be good for even, equally distributed spiral layout.
 See for example https://codegolf.stackexchange.com/q/247259/107547
+
+
+## Accessibility
+
+Ability to navigate space and select content elements via keyboard.
+
+Point and click navigation.
