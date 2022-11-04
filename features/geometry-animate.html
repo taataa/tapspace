@@ -35,7 +35,7 @@
 </head>
 <body>
   <h1>Animate Geometry – Tapspace Features</h1>
-  <p>Tap the component to rotate it.</p>
+  <p>Tap the component to rotate it. Pan the viewport by dragging.</p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -81,9 +81,7 @@
     })
 
     block.tappable().on('tap', (ev) => {
-      block.rotateBy(Math.PI / 4, {
-        anchor: block.atMid()
-      })
+      block.rotateBy(Math.PI / 4, block.atMid())
       // Ensure exact rotation.
       block.snapPixels({
         anchor: block.atMid()
