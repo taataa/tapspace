@@ -67,8 +67,8 @@
 
     // Offset the endpoints by radius
     const vec13 = m1.atAnchor().getVectorTo(m3.atAnchor()).normalize(20)
-    const start13 = m1.atAnchor().offset(vec13.x, vec13.y, vec13.z)
-    const end13 = m3.atAnchor().offset(-vec13.x, -vec13.y, -vec13.z)
+    const start13 = m1.atAnchor().addVector(vec13)
+    const end13 = m3.atAnchor().addVector(vec13.negate())
     edge13.setPoints(start13, end13)
 
     // HACK render edge each viewport transform
