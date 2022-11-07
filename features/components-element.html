@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Element Component - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: gray;
+      color: white;
+    }
+    .myspaceapp {
+      background: black;
+    }
+    .hello {
+      font-size: 2rem;
+      border: 1px solid white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const space = tapspace.create('#tapspace')
+    const view = space.getView().pannable()
+    const basis = space.createBasis()
+    // Content
+    const hello = tapspace.createElement('Hello')
+    hello.getElement().className = 'hello'
+    hello.setSize(160, 100)
+    hello.setAnchor(hello.atMid())
+    basis.add(hello, view.atMid())
+    // Display anchor
+    const anc = tapspace.circle(5, 'white')
+    basis.add(anc, hello.atAnchor())
+  </script>
+</body>
+</html>
