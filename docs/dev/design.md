@@ -11,6 +11,7 @@ API design problems:
 - relative vs absolute
 - computation efficiency vs expressiveness
 - one vs multiple ways to do things
+- state vs parameters
 
 Separation of concerns
 - transformation construction vs moving the element
@@ -25,6 +26,12 @@ DOT - Do one thing
 
 Premature optimization is the root of all evil
 YAGNI - You ain't gonna need it
+
+Minimal state versus minimal options:
+- minimal state variables requires verbose API with lots of options.
+- for example: relative anchor. Solve via object state or via an options flag?
+- Minimal state has great benefit: less unexpected behavior because of smaller
+  state space. This comes with a price: options need to be given.
 
 ## Construction
 
