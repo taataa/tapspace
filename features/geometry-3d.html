@@ -17,9 +17,13 @@
     }
     .container {
       background: #AAA;
+      width: 100%;
+      height: 100%;
     }
     .myspaceapp {
       background: #BBB;
+      width: 100%;
+      height: 400px;
     }
     .card {
       border: 2px solid #333;
@@ -57,9 +61,7 @@
   <!-- Your code -->
   <script>
     // Init tapspace
-    const space = tapspace.space('#tapspace', {
-      size: { width: '100%', height: '600px' }
-    })
+    const space = tapspace.space('#tapspace')
     const view = space.viewport().zoomable().perspective()
     const layer = space.plane()
 

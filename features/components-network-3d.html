@@ -11,6 +11,9 @@
 
   <!-- your custom styles -->
   <style>
+    html {
+      height: 100%;
+    }
     body {
       background: white;
       color: black;
@@ -42,9 +45,7 @@
 
   <!-- Your code -->
   <script>
-    const space = tapspace.space('#tapspace', {
-      size: { width: '100%', height: '600px' }
-    })
+    const space = tapspace.space('#tapspace')
     const view = space.viewport().zoomable().perspective()
 
     // Layer creation order determines drawing order.

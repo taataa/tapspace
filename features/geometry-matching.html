@@ -20,6 +20,8 @@
     }
     .myspaceapp {
       background: white;
+      width: 600px;
+      height: 500px;
     }
     .mycomponent {
       background: lightblue;
@@ -47,9 +49,7 @@
   <script>
   const container = document.querySelector('#tapspace')
 
-  const space = tapspace.create(container, {
-    size: { width: 800, height: 600 }
-  })
+  const space = tapspace.create(container)
   const view = space.viewport()
   const layer = space.plane()
 
