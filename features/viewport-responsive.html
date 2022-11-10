@@ -24,7 +24,8 @@
       color: black;
     }
     .mylabel {
-      margin-top: 5rem;
+      margin-top: 1rem;
+      padding: 1rem;
       text-align: center;
       font-size: 2rem;
     }
@@ -36,7 +37,11 @@
 <body>
   <!-- Some content to test resize when viewport has some offset -->
   <h1>Responsive Viewport – Tapspace Features</h1>
-  <p>The viewport is kept centered at the same point when you change the page width.</p>
+  <p>The viewport is kept centered at the same point
+    when you change the page width.
+    On mobile devices, the re-centering action is triggered
+    when the device is tilted on its side and the screen rotates.
+  </p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -49,13 +54,17 @@
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
     const space = tapspace.create('#tapspace')
-    const viewport = space.viewport().responsive()
+    const viewport = space.viewport()
+    viewport.responsive()
+    viewport.pannable()
     const layer = space.plane()
 
     // Create a component for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const compOptions = { className: 'mycomponent' }
-    const block = tapspace.element(template('Resize the view'), compOptions)
+    const msg = 'Resize<br>the window.<br>The viewport<br>'
+      + 'recenters<br>automatically.'
+    const block = tapspace.element(template(msg), compOptions)
     block.setAnchor(block.atMid())
 
     layer.add(block, viewport.atMid())
