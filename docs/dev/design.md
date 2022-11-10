@@ -201,8 +201,7 @@ aelem.at(x, y)
 aelem.atNorm()
 aelem.atTopLeft() .atNW()
 
-
-### Convert positions
+### Geometry object structure
 
 Explicit or implicit basis?
   explicit { basis { transform, element }, geom { x, y } }
@@ -225,23 +224,38 @@ the geometry properties (vec.x, vec.y) in the same namespace leads to
 hard-to-detect bugs because raw geometry objects e.g {x,y,z} and the geometry
 class instances e.g. Vector { basis, x, y, z } could be used identically in
 the same context. This lead to extra checks if the object was raw or based.
-Also, all operations on based objects are implemented in affineplane that
-understands only the raw objects, thus it was often necessary to first
-compute the raw object and then copy the properties to a new based instance
+Also, because all operations on objects with bases are implemented in
+affineplane thus understands only the raw objects, it was often necessary to
+first compute the raw object and then copy the properties to a new based instance
 to maintain immutability. Sometimes only the raw object was needed, thus
 the constructed based instance had to be deconstructed immediately after its
-construction. For these reasons, it was better to follow Tapspace v1 approach
-where the "basis invariant" objects contained the raw object as an object.
-In Tapspace v2 this means for example Vector { basis, vec } where vec is
-a affineplane.vec3 {x,y,z}. This way geometric operations can be done on
-raw objects and the resulting object can be used directly without copying
-of the properties.
+construction.
+
+For these reasons, it was better to follow Tapspace v1 approach
+where the "basis invariant" objects contained the raw non-based geometry as an
+object references instead of in property values.
+In Tapspace v2, this means for example Vector to be { basis, vec } where vec
+is a affineplane.vec3 {x,y,z}. This way geometric operations can be done on
+raw objects and the resulting object can be reused directly without copying
+of the properties. This is possible due to immutability of the geometry objects
+in both Tapspace and Affineplane
+
+What property name to pick for the object reference? We see it practical
+to use affineplane names but without dimension number to distinguish from them.
+Thus for example, Vector has { basis, vec }, Transform has { basis, helm },
+and Distance has { basis, dist }, following affineplane geometries vec3, helm3, and dist3.
+
+An alternative was to pick a single generic property name, like plain, geom, or
+shape, but it carries a difficulty in determining the geometry type, thus
+a distict property name is preferred.
 
 
 ### Setting positions
 
 aelem.transformTo()
 aelem.transformBy()
+aelem.moveCenterTo()
+aelem.moveTo()
 
 
 ### Estimate moves
