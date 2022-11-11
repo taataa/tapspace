@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rotate Interaction - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rotate Gesture – Tapspace Features</h1>
+  <p>Drag a point on the element to rotate it around its center.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default basis for content.
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport()
+    const basis = space.createBasis()
+
+    // Create a component
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const block = tapspace.element(template('Rotate me!'))
+    block.getElement().classList.add('mycomponent')
+    basis.add(block)
+    block.setAnchor(block.atCenter())
+    block.moveTo(viewport.atCenter().offset(0, -20))
+
+    // Make the component rotatable
+    block.rotatable({
+      center: block.atCenter()
+    })
+
+    // React to slide events and modify the block label accordingly.
+    const label = block.getElement().querySelector('p')
+    block.on('rotatestart', (ev) => {
+      block.element.classList.add('active')
+      console.log('rotatestart', ev)
+    })
+    block.on('rotatemove', (ev) => {
+      console.log('rotatemove', ev)
+    })
+    block.on('rotateend', (ev) => {
+      block.element.classList.remove('active')
+      label.innerHTML = 'Rotate me!'
+      console.log('rotateend', ev)
+    })
+    block.on('rotatecancel', (ev) => {
+      block.element.classList.remove('active')
+      label.innerHTML = 'Rotate me!'
+      console.log('rotatecancel', ev)
+    })
+    block.on('rotate', (ev) => {
+      label.innerHTML = 'I rotate :)'
+      // console.log('slide', ev)
+    })
+
+    // Add another block for visual reference.
+    const ref = tapspace.element(template('A heavy rock'))
+    ref.element.classList.add('mycomponent')
+    ref.setParent(basis)
+    ref.scaleBy(0.618)
+    ref.matchPoints(ref.atBottomRight(), block.atBottomLeft())
+    const measure = ref.getWidth().scaleBy(0.618)
+    const offset = measure.getVector(ref.getDirection(Math.PI))
+    ref.translateBy(offset)
+
+  </script>
+</body>
+</html>
