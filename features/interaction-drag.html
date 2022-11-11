@@ -22,6 +22,7 @@
     .mycomponent {
       background: white;
       color: black;
+      cursor: grab;
     }
     .mylabel {
       margin-top: 5rem;
@@ -30,10 +31,14 @@
     }
     .mycomponent.active {
       background: #EEE;
+      cursor: grabbing;
     }
   </style>
 </head>
 <body>
+  <h1>Drag Gesture – Tapspace Features</h1>
+  <p>Drag the element to move it in space.</p>
+
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
 
@@ -59,25 +64,25 @@
     // Modify the label with gestures
     const label = block.getElement().querySelector('p')
 
-    // React to drag events
-    block.on('dragstart', (ev) => {
+    // React to pinch events
+    block.on('pinchstart', (ev) => {
       block.element.classList.add('active')
-      console.log('dragstart', ev)
+      console.log('pinchstart', ev)
     })
-    block.on('dragmove', (ev) => {
-      console.log('dragmove', ev)
+    block.on('pinchmove', (ev) => {
+      console.log('pinchmove', ev)
     })
-    block.on('dragend', (ev) => {
+    block.on('pinchend', (ev) => {
       block.element.classList.remove('active')
       label.innerHTML = 'Drag me!'
-      console.log('dragend', ev)
+      console.log('pinchend', ev)
     })
-    block.on('dragcancel', (ev) => {
+    block.on('pinchcancel', (ev) => {
       block.element.classList.remove('active')
       label.innerHTML = 'Drag me!'
-      console.log('dragcancel', ev)
+      console.log('pinchcancel', ev)
     })
-    block.on('drag', (ev) => {
+    block.on('pinch', (ev) => {
       label.innerHTML = 'I am dragged :)'
       // console.log('drag', ev)
     })
