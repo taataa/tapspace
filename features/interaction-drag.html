@@ -57,6 +57,7 @@
     const block = tapspace.element(template('Drag me!'))
     block.getElement().classList.add('mycomponent')
     layer.add(block)
+    block.matchPoints(block.atMid(), viewport.atMid())
 
     // Make the component emit drag events
     block.draggable()
