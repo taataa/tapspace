@@ -53,13 +53,15 @@
     block.setAnchor(block.atCenter())
     block.moveTo(viewport.atCenter().offset(0, -20))
 
+    // Determine slide direction
+    const deg10 = Math.PI / 18
     // Make the component emit slide events
-    block.slidable()
+    block.slidable({
+      direction: block.getDirection(-deg10)
+    })
 
-    // Modify the label with gestures
+    // React to slide events and modify the block label accordingly.
     const label = block.getElement().querySelector('p')
-
-    // React to slide events
     block.on('slidestart', (ev) => {
       block.element.classList.add('active')
       console.log('slidestart', ev)
@@ -82,7 +84,7 @@
       // console.log('slide', ev)
     })
 
-    // Add another block for reference
+    // Add another block for visual reference.
     const ref = tapspace.element(template('A heavy rock'))
     ref.element.classList.add('mycomponent')
     ref.setParent(basis)
