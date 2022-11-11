@@ -50,6 +50,8 @@
     const block = tapspace.element(template('Slide me!'))
     block.getElement().classList.add('mycomponent')
     basis.add(block)
+    block.setAnchor(block.atCenter())
+    block.moveTo(viewport.atCenter().offset(0, -20))
 
     // Make the component emit slide events
     block.slidable()
@@ -79,6 +81,17 @@
       label.innerHTML = 'I slide :)'
       // console.log('slide', ev)
     })
+
+    // Add another block for reference
+    const ref = tapspace.element(template('A heavy rock'))
+    ref.element.classList.add('mycomponent')
+    ref.setParent(basis)
+    ref.scaleBy(0.618)
+    ref.matchPoints(ref.atBottomRight(), block.atBottomLeft())
+    const measure = ref.getWidth().scaleBy(0.618)
+    const offset = measure.getVector(ref.getDirection(Math.PI))
+    ref.translateBy(offset)
+
   </script>
 </body>
 </html>
