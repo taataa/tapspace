@@ -54,16 +54,17 @@
   const layer = space.plane()
 
   const par = (t) => '<p>' + t + '</p>'
-  const opts = {
-    anchor: { x: 150, y: 150 },
-    size: { width: 300, height: 300 },
-    className: 'mycomponent'
-  }
-  const originComp = tapspace.element(par('Beginning'), opts)
+  const originComp = tapspace.createElement(par('Beginning'))
+  originComp.element.classList.add('mycomponent')
+  originComp.setSize(300, 300)
+  originComp.setAnchor(originComp.atMid())
 
   const iteration = (prev, i) => {
     const label = par('Component ' + i)
-    const comp = tapspace.element(label, opts)
+    const comp = tapspace.createElement(label)
+    comp.element.classList.add('mycomponent')
+    comp.setSize(300, 300)
+    comp.setAnchor(comp.atMid())
     layer.add(comp)
 
     comp.rotateBy(-1.9 - 0.5 * i)
@@ -90,18 +91,6 @@
   iterate(originComp, 9)
 
   view.scaleBy(0.8, view.atNorm(0.5, 0.9))
-
-  // DEBUG
-  // Helpful dot crosshair for debugging
-  // const crosshair = tapspace.component('', {
-  //   anchor: { x: 3, y: 3 },
-  //   size: { width: 6, height: 6 },
-  //   className: 'crosshair'
-  // })
-  // layer.add(crosshair, {
-  //   position: { x: 0, y: 0 }
-  // })
-  // crosshair.moveTo(view.atCenter())
   </script>
 </body>
 </html>
