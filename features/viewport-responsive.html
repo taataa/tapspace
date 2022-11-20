@@ -60,10 +60,10 @@
 
     // Create a component for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const compOptions = { className: 'mycomponent' }
     const msg = 'Resize<br>the window.<br>The viewport<br>'
       + 'recenters<br>automatically.'
-    const block = tapspace.element(template(msg), compOptions)
+    const block = tapspace.createElement(template(msg))
+    block.addClass('mycomponent')
     block.setAnchor(block.atMid())
 
     layer.add(block, viewport.atMid())

@@ -58,17 +58,19 @@
     // Create a component for reference. A group of hellos
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
-    const blockOptions = { className: 'mycomponent' }
-    const blockA = tapspace.element('', blockOptions)
+    const blockA = tapspace.element('')
+    blockA.element.classList.add('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))
 
     // 2D Hellos
     const numHellos = 16
-    const helloOpts = { className: 'hello', size: { w: 80, h: 40 } }
+    const helloSize = { w: 80, h: 40 }
     let prevHello = null
     for (let i = 0; i < numHellos; i += 1) {
       const html = template('Hello')
-      const hello = tapspace.element(html, helloOpts)
+      const hello = tapspace.createElement(html)
+      hello.element.classList.add('hello')
+      hello.setSize(helloSize)
       layer.add(hello)
       hello.scaleBy(Math.pow(0.618, i))
       let position
@@ -83,10 +85,12 @@
 
     // 3D Worlds
     const numWorlds = 128
-    const worldOptions = { className: 'world', size: { w: 80, h: 40 } }
+    const worldSize = { w: 80, h: 40 }
     for (let i = 0; i < numWorlds; i += 1) {
       const html = template('World')
-      const world = tapspace.element(html, worldOptions)
+      const world = tapspace.element(html)
+      world.element.classList.add('world')
+      world.setSize(worldSize)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
       layer.add(world, position)
       world.rotateBy(0.05 * i, world.atCenter())

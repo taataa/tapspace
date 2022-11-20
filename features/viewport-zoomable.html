@@ -53,9 +53,10 @@
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const compOptions = { className: 'mycomponent' }
-    const blockA = tapspace.element(template('Zoom'), compOptions)
-    const blockB = tapspace.element(template('Able'), compOptions)
+    const blockA = tapspace.element(template('Zoom'))
+    const blockB = tapspace.element(template('Able'))
+    blockA.addClass('mycomponent')
+    blockB.addClass('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))
     layer.add(blockB, blockA.atBottomRight())
 

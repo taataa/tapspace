@@ -52,21 +52,12 @@
 
     // Create components for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const blockConfig = {
-      className: 'mycomponent',
-    }
 
-    const blocka = plane.add(
-      template('Far away'),
-      view.atNorm(0.4, 0.5, 2),
-      blockConfig
-    )
+    const blocka = plane.add(template('Far away'), view.atNorm(0.4, 0.5, 2))
+    blocka.addClass('mycomponent')
 
-    const blockb = plane.add(
-      template('Up close'),
-      view.atNorm(0.6, 0.5, 0),
-      blockConfig
-    )
+    const blockb = plane.add(template('Up close'), view.atNorm(0.6, 0.5, 0))
+    blockb.addClass('mycomponent')
   </script>
 </body>
 </html>
