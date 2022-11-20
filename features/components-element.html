@@ -38,7 +38,7 @@
     const basis = space.createBasis()
     // Content
     const hello = tapspace.createElement('Hello')
-    hello.getElement().className = 'hello'
+    hello.addClass('hello')
     hello.setSize(160, 100)
     hello.setAnchor(hello.atMid())
     basis.add(hello, view.atMid())

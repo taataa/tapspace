@@ -48,7 +48,7 @@
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const block = tapspace.element(template('Slide me!'))
-    block.getElement().classList.add('mycomponent')
+    block.addClass('mycomponent')
     basis.add(block)
     block.setAnchor(block.atCenter())
     block.moveTo(viewport.atCenter().offset(0, -20))

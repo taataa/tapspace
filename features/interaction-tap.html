@@ -52,7 +52,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const component = tapspace.element(template('Tap me!'))
     component.setAnchor(component.atMid())
-    component.getElement().classList.add('mycomponent')
+    component.addClass('mycomponent')
     layer.add(component, viewport.atMid())
 
     // Make the component emit tap events

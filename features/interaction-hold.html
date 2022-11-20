@@ -48,7 +48,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const component = tapspace.createElement(template('Hold me!'))
     component.setAnchor(component.atMid())
-    component.getElement().classList.add('mycomponent')
+    component.addClass('mycomponent')
     layer.add(component, viewport.atMid())
     // Label for messages
     const label = component.element.querySelector('p')

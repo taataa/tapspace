@@ -59,7 +59,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
     const blockA = tapspace.element('')
-    blockA.element.classList.add('mycomponent')
+    blockA.addClass('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))
 
     // 2D Hellos
@@ -69,7 +69,7 @@
     for (let i = 0; i < numHellos; i += 1) {
       const html = template('Hello')
       const hello = tapspace.createElement(html)
-      hello.element.classList.add('hello')
+      hello.addClass('hello')
       hello.setSize(helloSize)
       layer.add(hello)
       hello.scaleBy(Math.pow(0.618, i))
@@ -89,7 +89,7 @@
     for (let i = 0; i < numWorlds; i += 1) {
       const html = template('World')
       const world = tapspace.element(html)
-      world.element.classList.add('world')
+      world.addClass('world')
       world.setSize(worldSize)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
       layer.add(world, position)

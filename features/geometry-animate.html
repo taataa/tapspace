@@ -54,12 +54,12 @@
     // Create a rotateable component at the middle of the viewport.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const block = tapspace.element(template('Tap me'))
-    block.element.classList.add('mycomponent')
+    block.addClass('mycomponent')
     layer.add(block, viewport.atMid().offset(0, -10))
 
     // A static reference block
     const refblock = tapspace.element(template('Reference'))
-    refblock.element.classList.add('mycomponent')
+    refblock.addClass('mycomponent')
     layer.add(refblock, viewport.atTopLeft())
 
     // Anchor at block middle
