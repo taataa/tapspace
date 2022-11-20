@@ -89,10 +89,7 @@
     ]
 
     // Tapspace element settings
-    const cardConfig = {
-      size: { width: 440, height: 220 },
-      anchor: { x: 220, y: 110 }
-    }
+    const cardSize = { w: 440, h: 220 }
 
     // Create cards elements, each having and image and text.
     const cardElements = [
@@ -105,7 +102,10 @@
 
     // Create affine cards
     const cards = cardElements.map((elem) => {
-      return tapspace.element(elem, cardConfig)
+      const card = tapspace.createElement(elem)
+      card.setSize(cardSize)
+      card.setAnchor(card.atCenter())
+      return card
     })
 
     // Position the cards into space, relative to each other.
@@ -140,10 +140,9 @@
       <li>Text generated with <br><a href="https://lotremipsum.com/">LOTRem Ipsum</a></li>
       <li>Images generated with <a href="https://www.midjourney.com/home/">Midjourney</a></li>
     </ul>`
-    const infoCard = tapspace.element(createInfoElement(infoText), {
-      size: { width: 162, height: 100 },
-      anchor: { x: 81, y: 50 }
-    })
+    const infoCard = tapspace.element(createInfoElement(infoText))
+    infoCard.setSize(162, 100)
+    infoCard.setAnchor(infoCard.atMid())
     layer.add(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
     infoCard.element.style.fontSize = '0.62em'
 
@@ -156,7 +155,6 @@
     nodes.add(tapspace.circle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
     nodes.add(tapspace.circle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
     nodes.add(tapspace.circle(20, 'orange'), infoCard.atBottomRight())
-
 
   </script>
 </body>
