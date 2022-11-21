@@ -85,9 +85,7 @@
     block.tappable().on('tap', (ev) => {
       block.rotateBy(Math.PI / 4, block.atMid())
       // Ensure exact rotation.
-      block.snapPixels({
-        anchor: block.atMid()
-      })
+      block.snapPixels(block.atMid())
       // Update corner marker
       m1.moveTo(block.atTopLeft())
     })
