@@ -51,6 +51,10 @@
     const greenPixel = plane.add(greenPixelElement, { x: 20, y: 10 })
     const bluePixel = plane.add(bluePixelElement, { x: 30, y: 10 })
 
+    // Snap to pixel grid for pixel-perfect gesture.
+    space.on('pinchend', () => {
+      view.snapPixels(view.atMid())
+    })
   </script>
 </body>
 </html>
