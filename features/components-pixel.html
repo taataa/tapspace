@@ -17,11 +17,15 @@
     }
     .myspaceapp {
       background: black;
+      height: 300px;
     }
     .mypixel {}
   </style>
 </head>
 <body>
+  <h1>Pixel Component – Tapspace Features</h1>
+  <p>Nine pixels: red, green, and blue. You can pan the viewport by dragging. Note how the pixels become blurry during pan and sharpen again afterwards. Ensure your browser zoom is at 100% to perceive the effect. We sharpen the pixels by snapping the viewport to the screen pixel grid by calling view.snapPixels() on every pinchend event.</p>
+
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
 
@@ -43,13 +47,16 @@
       div.className = 'mypixel'
       return div
     }
-    const redPixelElement = createPixelElement('#ff0000')
-    const greenPixelElement = createPixelElement('#00ff00')
-    const bluePixelElement = createPixelElement('#2222ff')
 
-    const redPixel = plane.add(redPixelElement, plane.at(10, 10))
-    const greenPixel = plane.add(greenPixelElement, { x: 20, y: 10 })
-    const bluePixel = plane.add(bluePixelElement, { x: 30, y: 10 })
+    const colors = ['#ff0000', '#00ff00', '#2222ff']
+
+    colors.forEach((color, i) => {
+      for (let j = 0; j < 3; j += 1) {
+        const position = view.atMid().offset(10 * i - 10, 10 * j - 20)
+        const pixelElement = createPixelElement(color)
+        plane.add(pixelElement, position)
+      }
+    })
 
     // Snap to pixel grid for pixel-perfect gesture.
     space.on('pinchend', () => {
