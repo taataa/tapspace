@@ -8,9 +8,8 @@ module.exports = function (test, container, tapspace) {
     const space = tapspace.create('#testspace')
     const basis = space.basis()
     // Create an element
-    const hel = tapspace.element('hello', {
-      size: { w: 200, h: 200 }
-    })
+    const hel = tapspace.element('hello')
+    hel.setSize({ w: 200, h: 200 })
     basis.add(hel)
     // Get its size
     const size = hel.getSize()
@@ -30,9 +29,8 @@ module.exports = function (test, container, tapspace) {
     const space = tapspace.create('#testspace')
     const basis = space.basis()
     // Create an element
-    const hel = tapspace.element('hello', {
-      size: { w: 200, h: 200 }
-    })
+    const hel = tapspace.element('hello')
+    hel.setSize(200, 200)
     basis.add(hel)
     // Get its size
     const size = hel.getSize()
