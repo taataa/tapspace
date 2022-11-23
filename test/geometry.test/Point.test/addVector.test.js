@@ -6,7 +6,7 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const basis = space.basis()
+    const basis = space.addBasis()
     // Create a Point
     const p = basis.at(10, 6)
     // Create a Vector

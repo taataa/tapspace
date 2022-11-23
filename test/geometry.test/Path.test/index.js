@@ -6,7 +6,7 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const basis = space.basis()
+    const basis = space.addBasis()
     // Create a Path
     const path = [
       { x: 1, y: 2, z: 3 },

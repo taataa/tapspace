@@ -6,7 +6,7 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const basis = space.createBasis()
+    const basis = space.addBasis()
 
     // Take a direction
     const dir = basis.getDirection(Math.PI, Math.PI / 2)

@@ -6,7 +6,7 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const basis = space.basis()
+    const basis = space.addBasis()
     // Create an element
     const hel = tapspace.element('hello')
     hel.setSize({ w: 200, h: 200 })
@@ -27,7 +27,7 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
-    const basis = space.basis()
+    const basis = space.addBasis()
     // Create an element
     const hel = tapspace.element('hello')
     hel.setSize(200, 200)

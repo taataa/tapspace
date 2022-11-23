@@ -7,8 +7,8 @@ module.exports = function (test, container, tapspace) {
     container.innerHTML = template()
     const space = tapspace.create('#testspace')
     // Create two bases
-    const ba = space.basis()
-    const bb = space.basis()
+    const ba = space.addBasis()
+    const bb = space.addBasis()
     // Scale another
     bb.scaleBy(4)
     const scale = bb.getScale()
