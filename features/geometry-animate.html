@@ -49,7 +49,7 @@
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.create('#tapspace')
     const viewport = space.viewport().pannable()
-    const layer = space.plane()
+    const layer = space.addBasis()
 
     // Create a rotateable component at the middle of the viewport.
     const template = (t) => '<p class="mylabel">' + t + '</p>'

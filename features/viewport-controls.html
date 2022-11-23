@@ -53,7 +53,7 @@
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.create('#tapspace')
     const viewport = space.getViewport().pannable().zoomable().perspective()
-    const layer = space.plane()
+    const layer = space.addBasis()
 
     // Create a component for reference. A group of hellos
     const template = (t) => '<p class="mylabel">' + t + '</p>'

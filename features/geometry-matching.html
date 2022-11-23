@@ -51,7 +51,7 @@
 
   const space = tapspace.create(container)
   const view = space.viewport()
-  const layer = space.plane()
+  const layer = space.addBasis()
 
   const par = (t) => '<p>' + t + '</p>'
   const originComp = tapspace.createElement(par('Beginning'))

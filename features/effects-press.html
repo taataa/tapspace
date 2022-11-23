@@ -45,7 +45,7 @@
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.space('#tapspace')
     const viewport = space.getViewport()
-    const layer = space.createPlane()
+    const layer = space.addBasis()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'

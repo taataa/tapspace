@@ -40,8 +40,8 @@
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.
-    const edgelayer = space.plane()
-    const nodelayer = space.plane()
+    const edgelayer = space.addBasis()
+    const nodelayer = space.addBasis()
 
     // Create nodes
     const m0 = tapspace.circle(20, 'red')
