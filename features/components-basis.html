@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Basis Component - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: gray;
+      color: white;
+    }
+    .myspaceapp {
+      background: black;
+      height: 500px;
+    }
+    .hello {
+      font-size: 2rem;
+      border: 1px solid white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Basis Component – Tapspace Features</h1>
+  <p>The two images below displays the coordinate systems of two basis elements.
+    A basis itself has no size and is practically boundless.
+    A basis provides a coordinate system by which we can place content.
+    The element of the basis provides a container for further elements.
+    There can be many bases, and often it is the necessary practice
+    when we zoom multiple orders of magnitude in or out.
+    The limits of the floating point arithmetic are quickly faced
+    if we only use single basis as a world coordinate system.
+  </p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport
+    const space = tapspace.create('#tapspace')
+    const view = space.getView().zoomable()
+
+    // Create a basis container.
+    const basisa = tapspace.createBasis()
+    space.add(basisa, view.atNorm(0.382, 0.382))
+    basisa.scaleBy(0.382)
+    // Create another basis. Even smaller and rotated.
+    const basisb = tapspace.createBasis()
+    space.add(basisb, basisa.at(400, 200))
+    basisb.setScale(basisa.getScale().scaleBy(0.618))
+    basisb.rotateBy(Math.PI / 5)
+
+    // Add image showing the axes.
+    const decorateBasis = (bas) => {
+      // Show basis axes
+      const img = tapspace.createElement(
+        '<img src="assets/basis_2d_size800_unit500_orig100.png" title="A basis.">'
+      )
+      img.setSize(800, 800)
+      img.setAnchor(100, 100)
+      // Match origins
+      bas.add(img, bas.atAnchor())
+      // Show basis origin
+      const anc = tapspace.circle(8, 'yellow')
+      bas.add(anc, bas.atAnchor())
+    }
+
+    decorateBasis(basisa)
+    decorateBasis(basisb)
+  </script>
+</body>
+</html>
