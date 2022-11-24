@@ -3,7 +3,7 @@ const hierarchy = require('./hierarchy.ejs')
 
 module.exports = (test, container, tapspace) => {
   //
-  const AbstractNode = tapspace.components.AbstractNode
+  const Basis = tapspace.components.Basis
 
   test('findCommonAncestor', (t) => {
     // Setup
@@ -13,10 +13,10 @@ module.exports = (test, container, tapspace) => {
 
     // Construct a hierarchy of nodes
     basis.element.innerHTML = hierarchy()
-    const na = new AbstractNode(basis.element.querySelector('#affine-a'))
-    const naa = new AbstractNode(basis.element.querySelector('#affine-aa'))
-    const naaa = new AbstractNode(basis.element.querySelector('#affine-aaa'))
-    const naab = new AbstractNode(basis.element.querySelector('#affine-aab'))
+    const na = new Basis(basis.element.querySelector('#affine-a'))
+    const naa = new Basis(basis.element.querySelector('#affine-aa'))
+    const naaa = new Basis(basis.element.querySelector('#affine-aaa'))
+    const naab = new Basis(basis.element.querySelector('#affine-aab'))
     const naac = document.querySelector('#nonaffine-aac')
     // naac is not affine
 
