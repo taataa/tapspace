@@ -59,7 +59,7 @@
     })
 
     // Snap to pixel grid for pixel-perfect gesture.
-    space.on('pinchend', () => {
+    view.on('pinchend', () => {
       view.snapPixels(view.atMid())
     })
   </script>
