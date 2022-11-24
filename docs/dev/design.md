@@ -339,6 +339,25 @@ view.navigation .io .interaction .input
 
 const drag = new tapspace.interaction.Drag(params)
 
+Interactions take in source and target item. The source is the item from which
+the gesture events are emitted. The target is the item to which the effect,
+the transformation, is applied.
+
+The interactions can emit their own events. For example tap interaction emits
+tap events. Should these events be emitted on the source or on the target?
+Because the physical interaction happens on the source, it is natural that
+the interaction events are emitted on the source. Infinite emit loops may
+occur if there are event name clashes, although the capturers listen DOM,
+the gesture events are emitted only by the capturer, and the interaction events
+are emitted by the item.
+
+Reusability of pinch interaction. We first tried separate Pinch interaction
+for items and for viewport (PinchView). However they mostly followed the same
+logic. Only difference was how the gesture was mapped to transformation and
+how the gesture was finished (snapPixels was called for view). To follow DRY
+principle, the PinchView was merged to Pinch with a new option to select
+the "applicator" function from 'item' or 'viewport'.
+
 ### Direct manipulation
 
 The interaction features enable [direct manipulation](https://www.nngroup.com/articles/direct-manipulation/) in Tapspace apps. They make the elements react in a natural, paper-like way.
