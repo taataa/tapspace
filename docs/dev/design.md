@@ -67,6 +67,12 @@ we need explicit conceptual separation between the viewport and space.
     view = space.viewport()
     plane = space.plane()
 
+Method names should begin with a verb to make the meaning and direction
+more clear.
+    space = tapspace.createSpace(querystring or element)
+    view = space.getViewport()
+    basis = space.addBasis()
+
 ## Affine Element
 
 To avoid duplicating the DOM structure, we must somehow
@@ -256,6 +262,9 @@ aelem.transformTo()
 aelem.transformBy()
 aelem.moveCenterTo()
 aelem.moveTo()
+aelem.scaleBy()
+aelem.rotateBy()
+aelem.rotateByDegrees()
 
 
 ### Estimate moves
@@ -264,7 +273,8 @@ affine.transform.estimate({ sourcePoints, targetPoints })
 All points must be in same system
 sourcePoints.map(affine.point.changeBasis())
 
-component.snap({ anchors, targets })
+component.snap({ anchors, targets }) OR
+component.match({ source, target })
 
 ### Movement coordinate system
 
