@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('AbstractPlane:at', (t) => {
+  test('Plane:at', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.create('#testspace')

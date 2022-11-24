@@ -1,6 +1,6 @@
 const units = {
   Basis: require('./Basis.test'),
-  AbstractPlane: require('./AbstractPlane.test')
+  Plane: require('./Plane.test')
   // Element: require('./Element.test')
 }
 
