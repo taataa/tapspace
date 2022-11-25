@@ -54,7 +54,8 @@
       for (let j = 0; j < 3; j += 1) {
         const position = view.atMid().offset(10 * i - 10, 10 * j - 20)
         const pixelElement = createPixelElement(color)
-        plane.add(pixelElement, position)
+        const pixel = tapspace.createElement(pixelElement)
+        plane.add(pixel, position)
       }
     })
 
