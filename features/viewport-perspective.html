@@ -50,14 +50,16 @@
     const view = space.getView().pannable().perspective()
     const plane = space.addBasis()
 
-    // Create components for reference.
+    // Content template for blocks. Blocks give us visual reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
-    const blocka = plane.add(template('Far away'), view.atNorm(0.4, 0.5, 2))
+    const blocka = tapspace.createElement(template('Far away'))
     blocka.addClass('mycomponent')
+    plane.add(blocka, view.atNorm(0.4, 0.5, 2))
 
-    const blockb = plane.add(template('Up close'), view.atNorm(0.6, 0.5, 0))
+    const blockb = tapspace.createElement(template('Up close'))
     blockb.addClass('mycomponent')
+    plane.add(blockb, view.atNorm(0.6, 0.5, 0))
   </script>
 </body>
 </html>
