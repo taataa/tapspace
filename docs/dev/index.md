@@ -5,6 +5,7 @@ Here you find an introduction how to develop and contribute to Tapspace project.
 Table of Contents:
 - [Architecture](#architecture)
 - [Coding style](#coding-style)
+- [Documentation style](#documentation-style)
 - [Developing example apps](#developing-example-apps)
 - [Building](#building)
 - [Testing](#testing)
@@ -21,7 +22,7 @@ The main components are Space, Viewport, Plane, and Element. The Viewport is the
 
 The architecture is loosely based on [Jazz](http://www.cs.umd.edu/hcil/piccolo/learn/jazz/doc-1.3/), [libgdx.scene2d](https://github.com/libgdx/libgdx/wiki/Scene2d), and [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model).
 
-For more detailed notes on architecture and the tough processes behind the design decisions, see [dev/design](./design.md). Also, there exists hundreds of pages of drawings, writings, and sketches on paper that are not publicly avaibalbe but can be made available per-request basis.
+For more detailed notes on architecture and the tough processes behind the design decisions, see [dev/design](./design.md). Also, there exists hundreds of pages of drawings, writings, and sketches on paper that are not publicly available but can be made available per-request basis.
 
 
 ## Coding style
@@ -42,6 +43,11 @@ Guidelines for commenting:
 - Use comments to title sections of code.
 - Do not fear to write long comments if it is necessary for understanding.
 - "No uncommon abbr." Better: Avoid uncommon abbreviations.
+
+
+## Documentation style
+
+See [Documentation Style Guide](docstyle.md) for styling of illustrations, symbols, example apps and such.
 
 
 ## Developing example apps
