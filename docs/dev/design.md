@@ -12,6 +12,7 @@ API design problems:
 - computation efficiency vs expressiveness
 - one vs multiple ways to do things
 - state vs parameters
+- modularity vs consistency
 
 Separation of concerns
 - transformation construction vs moving the element

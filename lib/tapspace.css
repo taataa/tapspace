@@ -1,3 +1,12 @@
+/*
+Architectural guidelines for tapspace classes:
+
+1. Do not give CSS classes for abstract component classes.
+   Why? Avoid deep, interlocking dependencies between classes which
+   can make changes fragile and debugging difficult. Embrace modularity.
+   This is against DRY but for a reason.
+*/
+
 .affine-layer,
 .affine-group,
 .affine-plane {
