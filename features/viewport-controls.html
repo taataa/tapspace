@@ -58,7 +58,7 @@
     // Create a component for reference. A group of hellos
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
-    const blockA = tapspace.createElement('')
+    const blockA = tapspace.createItem('')
     blockA.addClass('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))
 
@@ -68,7 +68,7 @@
     let prevHello = null
     for (let i = 0; i < numHellos; i += 1) {
       const html = template('Hello')
-      const hello = tapspace.createElement(html)
+      const hello = tapspace.createItem(html)
       hello.addClass('hello')
       hello.setSize(helloSize)
       layer.add(hello)
@@ -88,7 +88,7 @@
     const worldSize = { w: 80, h: 40 }
     for (let i = 0; i < numWorlds; i += 1) {
       const html = template('World')
-      const world = tapspace.createElement(html)
+      const world = tapspace.createItem(html)
       world.addClass('world')
       world.setSize(worldSize)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)

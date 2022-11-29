@@ -46,7 +46,7 @@
 
     // Create an affine element
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const component = tapspace.createElement(template('Hold me!'))
+    const component = tapspace.createItem(template('Hold me!'))
     component.setAnchor(component.atMid())
     component.addClass('mycomponent')
     layer.add(component, viewport.atMid())

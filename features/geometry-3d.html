@@ -102,7 +102,7 @@
 
     // Create affine cards
     const cards = cardElements.map((elem) => {
-      const card = tapspace.createElement(elem)
+      const card = tapspace.createItem(elem)
       card.setSize(cardSize)
       card.setAnchor(card.atCenter())
       return card
@@ -140,7 +140,7 @@
       <li>Text generated with <br><a href="https://lotremipsum.com/">LOTRem Ipsum</a></li>
       <li>Images generated with <a href="https://www.midjourney.com/home/">Midjourney</a></li>
     </ul>`
-    const infoCard = tapspace.createElement(createInfoElement(infoText))
+    const infoCard = tapspace.createItem(createInfoElement(infoText))
     infoCard.setSize(162, 100)
     infoCard.setAnchor(infoCard.atMid())
     layer.add(infoCard, cards[0].atBottomMid().offset(50, 200, 800))

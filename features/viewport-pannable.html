@@ -57,8 +57,8 @@
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const blockA = tapspace.createElement(template('Block A'))
-    const blockB = tapspace.createElement(template('Block B'))
+    const blockA = tapspace.createItem(template('Block A'))
+    const blockB = tapspace.createItem(template('Block B'))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))

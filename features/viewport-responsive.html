@@ -62,7 +62,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const msg = 'Resize<br>the window.<br>The viewport<br>'
       + 'recenters<br>automatically.'
-    const block = tapspace.createElement(template(msg))
+    const block = tapspace.createItem(template(msg))
     block.addClass('mycomponent')
     block.setAnchor(block.atMid())
 

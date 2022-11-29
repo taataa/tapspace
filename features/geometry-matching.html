@@ -54,14 +54,14 @@
   const layer = space.addBasis()
 
   const par = (t) => '<p>' + t + '</p>'
-  const originComp = tapspace.createElement(par('Beginning'))
+  const originComp = tapspace.createItem(par('Beginning'))
   originComp.addClass('mycomponent')
   originComp.setSize(300, 300)
   originComp.setAnchor(originComp.atMid())
 
   const iteration = (prev, i) => {
     const label = par('Component ' + i)
-    const comp = tapspace.createElement(label)
+    const comp = tapspace.createItem(label)
     comp.addClass('mycomponent')
     comp.setSize(300, 300)
     comp.setAnchor(comp.atMid())

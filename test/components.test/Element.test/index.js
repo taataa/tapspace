@@ -63,7 +63,7 @@ module.exports = function (test) {
     container.innerHTML = template()
     const aspace = tapspace.createSpace('.affine-viewport')
     const aview = aspace.getViewport()
-    const aelem = tapspace.createElement('.affine-element')
+    const aelem = tapspace.createItem('.affine-element')
     const tr = tapspace.createTransform(aview, {
       rotate: Math.PI / 6, // rotate 30 degrees clockwise
       scale: 0.5

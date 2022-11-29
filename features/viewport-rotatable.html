@@ -53,9 +53,9 @@
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const blockA = tapspace.createElement(template('Rotatable<br>viewport'))
-    const blockB = tapspace.createElement(template(''))
-    const blockC = tapspace.createElement(template(''))
+    const blockA = tapspace.createItem(template('Rotatable<br>viewport'))
+    const blockB = tapspace.createItem(template(''))
+    const blockC = tapspace.createItem(template(''))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     blockC.addClass('mycomponent')
