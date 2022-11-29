@@ -65,15 +65,15 @@ With a basis we can construct *Point* objects:
 
     const p = basis.at(200, 100)
 
-Let's we create our first content element.
+Let us create our first content item. The item wraps HTML content and provides various methods for interaction and moving it in the space.
 
-    const hello = tapspace.element('<strong>Hello</strong>')
+    const hello = tapspace.createItem('<strong>Hello</strong>')
 
-The element is not yet added to the space nor DOM. Let us do that.
+The item is not yet added to the space nor DOM. Let us do that.
 
     basis.add(hello, p)
 
-This will add the hello element at the coordinates { x: 200 y: 100 } relative to the origin of the basis.
+This will add the hello item at the coordinates { x: 200 y: 100 } relative to the origin of the basis.
 
 Now you can open your `index.html` in your web browser. The result should look something like this:
 
