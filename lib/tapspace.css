@@ -1,7 +1,7 @@
 /*
 Architectural guidelines for tapspace classes:
 
-1. Do not give CSS classes for abstract component classes.
+1. Avoid giving CSS classes for abstract component classes.
    Why? Avoid deep, interlocking dependencies between classes which
    can make changes fragile and debugging difficult. Embrace modularity.
    This is against DRY but for a reason.
@@ -34,7 +34,7 @@ Architectural guidelines for tapspace classes:
   transform-style: preserve-3d;
 }
 
-.affine-element {
+.affine-frame {
   display: block;
   /* Ensure zero margin and zero padding */
   margin: 0;
@@ -90,6 +90,11 @@ Architectural guidelines for tapspace classes:
   transform-origin: 0 0;
   /* Controls are 2D only. */
   transform-style: flat;
-  /* Ensure orthogonal projection. */
+  /* Ensure orthogonal projection regardless of viewport. */
   perspective: none;
+}
+
+.affine-frame.affine-control {
+  /* Controls are 2D only. */
+  transform-style: flat;
 }
