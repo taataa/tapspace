@@ -19,8 +19,8 @@ module.exports = function (test) {
   test('Element:at', (t) => {
     // Setup
     container.innerHTML = template()
-    const aspace = tapspace.create('.affine-viewport')
     const aview = aspace.viewport()
+    const aspace = tapspace.createSpace('.affine-viewport')
     const aelem = aspace.add('.affine-element')
     aelem.translateBy({ x: 10, y: 6 })
 
@@ -40,7 +40,7 @@ module.exports = function (test) {
   test('Element:rotateBy', (t) => {
     // Setting
     container.innerHTML = template()
-    const aspace = tapspace.create('.affine-viewport')
+    const aspace = tapspace.createSpace('.affine-viewport')
     const aelem = aspace.add('.affine-element')
 
     aelem.rotateBy(aelem.atMid(), Math.PI / 2)

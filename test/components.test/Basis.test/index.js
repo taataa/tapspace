@@ -8,7 +8,7 @@ module.exports = (test, container, tapspace) => {
   test('findCommonAncestor', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.create('#testspace')
+    const space = tapspace.createSpace('#testspace')
     const basis = space.addBasis()
 
     // Construct a hierarchy of nodes

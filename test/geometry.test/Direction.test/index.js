@@ -5,7 +5,7 @@ module.exports = function (test, container, tapspace) {
   test('Direction:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.create('#testspace')
+    const space = tapspace.createSpace('#testspace')
     const basis = space.addBasis()
     // Create two Points
     const pa = basis.at(10, 6)

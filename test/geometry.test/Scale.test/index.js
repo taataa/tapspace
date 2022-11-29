@@ -5,7 +5,7 @@ module.exports = function (test, container, tapspace) {
   test('Scale :changeBasis :getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.create('#testspace')
+    const space = tapspace.createSpace('#testspace')
     // Create two bases
     const ba = space.addBasis()
     const bb = space.addBasis()
