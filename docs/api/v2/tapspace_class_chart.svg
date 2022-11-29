@@ -9,6 +9,9 @@
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
    sodipodi:docname="tapspace_class_chart.svg"
+   inkscape:export-filename="tapspace_class_chart.png"
+   inkscape:export-xdpi="88.349998"
+   inkscape:export-ydpi="88.349998"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +28,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.78305976"
-     inkscape:cx="457.81946"
-     inkscape:cy="515.28634"
+     inkscape:cx="395.24442"
+     inkscape:cy="516.56338"
      inkscape:window-width="1390"
      inkscape:window-height="1035"
      inkscape:window-x="1953"
@@ -152,7 +155,7 @@
        y="0"><tspan
          x="140.43237"
          y="739.03403"
-         id="tspan9283">Interactive</tspan></text>
+         id="tspan1409">Interactive</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect539"
@@ -176,7 +179,7 @@
        y="0"><tspan
          x="163.55733"
          y="739.03403"
-         id="tspan9285">Basis</tspan></text>
+         id="tspan1411">Basis</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect541"
@@ -193,7 +196,7 @@
        y="0"><tspan
          x="159.39588"
          y="739.03403"
-         id="tspan9287">Space</tspan></text>
+         id="tspan1413">Space</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect543"
@@ -210,7 +213,7 @@
        y="0"><tspan
          x="162.35942"
          y="739.03403"
-         id="tspan9289">Plane</tspan></text>
+         id="tspan1415">Plane</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect545"
@@ -227,7 +230,7 @@
        y="0"><tspan
          x="163.55733"
          y="739.03403"
-         id="tspan9291">Block</tspan></text>
+         id="tspan1417">Block</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect547"
@@ -244,7 +247,7 @@
        y="0"><tspan
          x="159.99484"
          y="739.03403"
-         id="tspan9293">Group</tspan></text>
+         id="tspan1419">Group</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect549"
@@ -261,7 +264,7 @@
        y="0"><tspan
          x="148.32819"
          y="739.03403"
-         id="tspan9295">Viewport</tspan></text>
+         id="tspan1421">Viewport</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect551"
@@ -278,7 +281,7 @@
        y="0"><tspan
          x="158.82297"
          y="739.03403"
-         id="tspan9297">Frame</tspan></text>
+         id="tspan1423">Frame</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect553"
@@ -295,7 +298,7 @@
        y="0"><tspan
          x="168.89587"
          y="739.03403"
-         id="tspan9299">Item</tspan></text>
+         id="tspan1425">Item</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,159.9597,-24.636802)"
@@ -305,7 +308,7 @@
        y="0"><tspan
          x="155.25526"
          y="739.03403"
-         id="tspan9301">Control</tspan></text>
+         id="tspan1427">Control</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="m 125.56455,68.334543 c 0.13041,-9.075147 -17.67477,-4.129881 -17.73892,-11.99488"
@@ -375,6 +378,6 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan9303">Tapspace 2.0.0-alpha.2 - Inheritance relations of core components</tspan></text>
+         id="tspan1429">Tapspace 2.0.0-alpha.2 - Inheritance relations of core components</tspan></text>
   </g>
 </svg>
