@@ -23,6 +23,7 @@ and managing components.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.capturers](#tapspacecapturers)
 - [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
 - [tapspace.create](#tapspacecreate)
@@ -40,6 +41,250 @@ and managing components.
 
 
 Source: [lib/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/index.js)
+
+<a name="tapspacecapturers"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers)
+
+Classes to capture and preprocess input such as touch gestures
+and mouse wheel movements.
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.GestureCapturer](#tapspacecapturersgesturecapturer)
+- [tapspace.capturers.ResizeCapturer](#tapspacecapturersresizecapturer)
+- [tapspace.capturers.WheelCapturer](#tapspacecapturerswheelcapturer)
+
+
+Source: [capturers/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/index.js)
+
+<a name="tapspacecapturersgesturecapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer)(component, options)
+
+Begin to capture and recognize pointer gestures
+on the given affine element and emit them as gesture events.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - a Component or an affine HTMLElement.
+  - The input events will be listened for and captured here.
+- *options*
+  - an optional object with props:
+    - *freedom*
+      - optional object with props
+        - *type*
+          - optional string, default 'TSR'. The movement type.
+        - *center*
+          - optional point2 on the view or Point.
+          - The center point for types 'S', 'R', and 'SR'.
+          - If a Point, the basis is preserved and followed.
+        - *angle*
+          - optional number in radians or Direction.
+          - The line angle for type 'L'.
+          - If a Direction, the basis is preserved and followed.
+    - *preventDefault*
+      - an optional boolean, default true. Set false allow default browser behavior on all handled events.
+    - *stopPropagation*
+      - an optional boolean, default false. Set true to stop event bubbling on all handled events.
+
+
+<p style="margin-bottom: 0">Emits</p>
+
+
+- gesturestart event with a transform-gesture object
+- gesturemove event with a transform-gesture object
+- gestureend event with a transform-gesture object
+- gesturecancel event with a transform-gesture object
+
+
+<p style="margin-bottom: 0">Transform-gesture objects have following properties:</p>
+
+
+- *travel*
+  - a number, total travel in viewport pixels. Manhattan distance.
+- *duration*
+  - a number, duration of the gesture in milliseconds
+- *component*
+  - a Component where the input events were listened and captured.
+- *target*
+  - a Component where the input landed. Helps e.g. in determining depth.
+- *transform*
+  - a Transform, the total transformation on the viewport
+- *delta*
+  - a Transform, difference to the previous gesture event (on the viewport)
+- *center*
+  - a Point, the middle point of the gesture. With multipointer gestures this is the mean of the active pointers.
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.GestureCapturer:getFreedom](#tapspacecapturersgesturecapturergetfreedom)
+- [tapspace.capturers.GestureCapturer:unbind](#tapspacecapturersgesturecapturerunbind)
+- [tapspace.capturers.GestureCapturer:update](#tapspacecapturersgesturecapturerupdate)
+
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacecapturersgesturecapturergetfreedom"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer):[getFreedom](#tapspacecapturersgesturecapturergetfreedom)()
+
+Get freedom object for example for debugging.
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacecapturersgesturecapturerunbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer):[unbind](#tapspacecapturersgesturecapturerunbind)()
+
+Unbind the DOM element listeners of the sensor.
+Unbind own listeners, if any.
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacecapturersgesturecapturerupdate"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer):[update](#tapspacecapturersgesturecapturerupdate)(options)
+
+Update capturer options.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- options, object with properties:
+  - *freedom*
+    - optional object
+  - *preventDefault*
+    - optional boolean
+  - *stopPropagation*
+    - optional boolean
+
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacecapturersresizecapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[ResizeCapturer](#tapspacecapturersresizecapturer)(component, options)
+
+Resize event capturer.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - the source for the resize events
+- options, optional object with props:
+  - *TODO*
+
+
+<p style="margin-bottom: 0">Emits</p>
+
+
+- resize with new size dimensions of the element.
+
+
+<p style="margin-bottom: 0">Resize event object has properties:</p>
+
+
+- *size*
+  - a Size, the new size
+- *prevSize*
+  - a Size, the old size
+- *target*
+  - a Component
+- TODO deltaW
+- TODO  horizontal movement in viewport pixels
+- TODO deltaH
+- TODO  vertical movement in viewport pixels
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.ResizeCapturer:unbind](#tapspacecapturersresizecapturerunbind)
+- [tapspace.capturers.ResizeCapturer:update](#tapspacecapturersresizecapturerupdate)
+
+
+Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/ResizeCapturer/index.js)
+
+<a name="tapspacecapturersresizecapturerunbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[ResizeCapturer](#tapspacecapturersresizecapturer):[unbind](#tapspacecapturersresizecapturerunbind)()
+
+Stop resize observation.
+
+Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/ResizeCapturer/index.js)
+
+<a name="tapspacecapturersresizecapturerupdate"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[ResizeCapturer](#tapspacecapturersresizecapturer):[update](#tapspacecapturersresizecapturerupdate)(options)
+
+Update capturer options.
+
+Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/ResizeCapturer/index.js)
+
+<a name="tapspacecapturerswheelcapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[WheelCapturer](#tapspacecapturerswheelcapturer)(component, options)
+
+Mouse wheel capturer. Attempts to normalise and add compatibility
+to wheeling and scrolling.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - the source for the wheel events
+- options, optional object with props:
+  - *preventDefault*
+    - an optional boolean, default true. Set false to allow default browser behavior on all handled events.
+  - *stopPropagation*
+    - an optional boolean, default false. Set true to stop event bubbling on all handled events.
+
+
+<p style="margin-bottom: 0">Emits</p>
+
+
+- wheel with wheel-gesture object
+
+
+<p style="margin-bottom: 0">Wheel-gesture object has properties:</p>
+
+
+- *center*
+  - a Point
+- *component*
+  - a Component on which the center is measured. The viewport.
+- *target*
+  - a Component closest to the original event target.
+- *deltaX*
+  - a number, normalized horizontal movement of the mouse wheel.
+- *deltaY*
+  - a number, normalized vertical movement of the mouse wheel.
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.WheelCapturer:unbind](#tapspacecapturerswheelcapturerunbind)
+- [tapspace.capturers.WheelCapturer:update](#tapspacecapturerswheelcapturerupdate)
+
+
+Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
+
+<a name="tapspacecapturerswheelcapturerunbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[WheelCapturer](#tapspacecapturerswheelcapturer):[unbind](#tapspacecapturerswheelcapturerunbind)()
+
+Remove event listeners from element.
+
+Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
+
+<a name="tapspacecapturerswheelcapturerupdate"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[WheelCapturer](#tapspacecapturerswheelcapturer):[update](#tapspacecapturerswheelcapturerupdate)(options)
+
+Update capturer options
+
+Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
 
 <a name="tapspacecircle"></a>
 ## [tapspace](#tapspace).[circle](#tapspacecircle)(radius, color)
