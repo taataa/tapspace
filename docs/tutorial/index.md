@@ -27,7 +27,7 @@ Import Tapspace script by adding the following line before the ending head tag:
     </head>
     ...
 
-The bundle hosted by unpkg.com delivery network is okay for development and toy apps. If you need production-grade performance and reliability, it is best to host the bundle along your other assets or even build it with your app.
+The bundle hosted by unpkg.com delivery network is okay for development and toy apps. If you need production-grade performance and reliability, it is best to host the bundle along your other assets or even bundle it with your app code.
 
 Note the [defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) keyword. It ensures the script download does not block the browser from loading the rest of the page.
 
@@ -54,22 +54,26 @@ In the script, add the following to register the container as a space.
 
     ...
     // My first tapspace app
-    const space = tapspace.create('#mytapspace')
+    const space = tapspace.createSpace('#mytapspace')
     ...
 
-In order to achieve infinite zoomability, the space itself does not specify a fixed world coordinate system. Instead, we need to create at least one *basis* that provides us a *frame of reference* onto which we can position our content.
+Limits of floating point arithmetics are quickly faced in zoomable applications. Therefore, in order to achieve limitless space, the space itself cannot specify a fixed world coordinate system. Instead, we need to create at least one *basis* that provides us a *frame of reference* onto which we can place our content.
 
-    const basis = space.createBasis()
+    const basis = space.addBasis()
 
-Then, we create our first content element.
+With a basis we can construct *Point* objects:
+
+    const p = basis.at(200, 100)
+
+Let's we create our first content element.
 
     const hello = tapspace.element('<strong>Hello</strong>')
 
 The element is not yet added to the space nor DOM. Let us do that.
 
-    basis.add(hello, basis.at(200, 100))
+    basis.add(hello, p)
 
-This will add the hello element at the point { x: 200 y: 100 } relative to the origin of the basis.
+This will add the hello element at the coordinates { x: 200 y: 100 } relative to the origin of the basis.
 
 Now you can open your `index.html` in your web browser. The result should look something like this:
 
@@ -97,19 +101,12 @@ Set the anchor with `setAnchor` method:
 
     hello.setAnchor({ x: 200, y: 100 })
 
-You can also specify the size and anchor when creating the element:
-
-    const world = tapspace.element('<strong>world!</strong>', {
-      size: { w: 400, h: 200 },
-      anchor: { x: 200, y: 100 }
-    })
-
 In addition to positioning, the anchor acts as the default pivot point when you scale or rotate the element:
 
     const deg45 = Math.PI / 4
     hello.rotateBy(deg45)
 
-Also, such transformation methods usually allow a custom pivot point to override the anchor:
+Also, such transformation methods usually allow a custom pivot point to be used instead of the anchor:
 
     hello.rotateBy(deg45, hello.atTopRight())
 
@@ -147,6 +144,11 @@ You can also chain the ability methods for a bit more compact code:
 In most parts the viewport behaves as any other space element. Thus it can be moved around, scaled, and rotated.
 
     viewport.translateTo(hello.atCenter())
+
+The viewport also provides a basis. Initially, when the space is empty, the viewport it is the only basis we have.
+We can use it to position the origin of content bases.
+
+    space.addBasis(viewport.atCenter())
 
 See [Viewport](../api#tapspacecomponentsviewport) for all available viewport methods.
 
