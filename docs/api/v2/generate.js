@@ -12,6 +12,7 @@ yamdog.generate({
   // Earmark; include blocks that begin with this name.
   earmark: {
     'tapspace': 'tapspace',
+    // Components
     'Basis': 'tapspace.components.Basis',
     'Block': 'tapspace.components.Block',
     'Circle': 'tapspace.components.Circle',
@@ -26,6 +27,15 @@ yamdog.generate({
     'Space': 'tapspace.components.Space',
     'Viewport': 'tapspace.components.Viewport',
     'ZoomControl': 'tapspace.components.ZoomControl',
+    // Geometry
+    'Direction': 'tapspace.geometry.Direction',
+    'Distance': 'tapspace.geometry.Distance',
+    'Path': 'tapspace.geometry.Path',
+    'Point': 'tapspace.geometry.Point',
+    'Scale': 'tapspace.geometry.Scale',
+    'Size': 'tapspace.geometry.Size',
+    'Transform': 'tapspace.geometry.Transform',
+    'Vector': 'tapspace.geometry.Vector'
   },
   // Main title of the document
   title: 'Tapspace API Documentation v' + version,
