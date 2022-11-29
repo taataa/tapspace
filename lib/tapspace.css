@@ -28,6 +28,8 @@ Architectural guidelines for tapspace classes:
      It must fill the viewport behind controls. */
   width: 100%;
   height: 100%;
+  /* Ensure default transform origin. */
+  transform-origin: 0 0;
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
@@ -51,9 +53,10 @@ Architectural guidelines for tapspace classes:
   /* Ensure default transform origin.
     Planes with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
-  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
+  /* Init 3D transform. Maybe unnecessary. */
+  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
 
 .affine-viewport {
@@ -83,4 +86,10 @@ Architectural guidelines for tapspace classes:
   width: 0;
   height: 0;
   overflow: visible;
+  /* Ensure default transform origin. */
+  transform-origin: 0 0;
+  /* Controls are 2D only. */
+  transform-style: flat;
+  /* Ensure orthogonal projection. */
+  perspective: none;
 }
