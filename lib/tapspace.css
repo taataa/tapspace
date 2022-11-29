@@ -1,3 +1,28 @@
+.affine-layer,
+.affine-group,
+.affine-plane {
+  /* Planes themselves have zero size to allow pointer events reach
+    elements on the layers below. To make elements on the plane visible,
+    they must be visible over the plane borders. */
+  width: 0;
+  height: 0;
+  overflow: visible;
+  /* Ensure default transform origin.
+    Planes with custom anchor may overwrite the origin. */
+  transform-origin: 0 0;
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
+}
+
+.affine-space {
+  /* The space contains the layers and is a child of viewport.
+     It must fill the viewport behind controls. */
+  width: 100%;
+  height: 100%;
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
+}
+
 .affine-element {
   display: block;
   /* Ensure zero margin and zero padding */
@@ -21,6 +46,7 @@
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
+
 .affine-viewport {
   /* Space elements are absolutely positioned and therefore
     the view must be either absolutely or relatively positioned. */
@@ -37,21 +63,6 @@
     Therefore set a minimum height to avoid the annoyance. */
   min-height: 200px;
 }
-.affine-layer,
-.affine-group,
-.affine-plane {
-  /* Planes themselves have zero size to allow pointer events reach
-    elements on the layers below. To make elements on the plane visible,
-    they must be visible over the plane borders. */
-  width: 0;
-  height: 0;
-  overflow: visible;
-  /* Ensure default transform origin.
-    Planes with custom anchor may overwrite the origin. */
-  transform-origin: 0 0;
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
-}
 
 .affine-controls {
   /* Controls must be visible on top of layers but their container
@@ -63,13 +74,4 @@
   width: 0;
   height: 0;
   overflow: visible;
-}
-
-.affine-space {
-  /* The space contains the layers and is a child of viewport.
-     It must fill the viewport behind controls. */
-  width: 100%;
-  height: 100%;
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
 }
