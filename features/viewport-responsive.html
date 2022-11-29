@@ -52,8 +52,8 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
-    const space = tapspace.create('#tapspace')
-    const viewport = space.viewport()
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport()
     viewport.responsive()
     viewport.pannable()
     const layer = space.addBasis()

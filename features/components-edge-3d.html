@@ -44,10 +44,10 @@
     const nodelayer = space.addBasis()
 
     // Create nodes
-    const m0 = tapspace.circle(20, 'red')
-    const m1 = tapspace.circle(20, 'blue')
-    const m2 = tapspace.circle(20, 'green')
-    const m3 = tapspace.circle(20, 'orange')
+    const m0 = tapspace.createCircle(20, 'red')
+    const m1 = tapspace.createCircle(20, 'blue')
+    const m2 = tapspace.createCircle(20, 'green')
+    const m3 = tapspace.createCircle(20, 'orange')
 
     nodelayer.add(m0, view.atNorm(0.38, 0.3, 0))
     nodelayer.add(m1, view.atNorm(0.62, 0.6, 1))
@@ -55,9 +55,9 @@
     nodelayer.add(m3, view.atNorm(1, 0.1, 1))
 
     // Create edges
-    const edge01 = tapspace.edge('0.6em dotted black')
-    const edge12 = tapspace.edge('0.6em solid black')
-    const edge13 = tapspace.edge('0.6em dashed #333')
+    const edge01 = tapspace.createEdge('0.6em dotted black')
+    const edge12 = tapspace.createEdge('0.6em solid black')
+    const edge13 = tapspace.createEdge('0.6em dashed #333')
 
     edgelayer.add(edge01)
     edgelayer.add(edge12)

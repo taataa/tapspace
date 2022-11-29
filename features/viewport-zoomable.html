@@ -47,14 +47,14 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.create('#tapspace')
+    const space = tapspace.createSpace('#tapspace')
     const viewport = space.getViewport()
     const layer = space.addBasis()
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const blockA = tapspace.element(template('Zoom'))
-    const blockB = tapspace.element(template('Able'))
+    const blockA = tapspace.createElement(template('Zoom'))
+    const blockB = tapspace.createElement(template('Able'))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     layer.add(blockA, viewport.atNorm(0.1, 0.1))

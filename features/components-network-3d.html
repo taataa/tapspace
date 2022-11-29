@@ -55,7 +55,7 @@
 
     let totalNodes = 0
 
-    const firstNode = tapspace.circle(20, 'black')
+    const firstNode = tapspace.createCircle(20, 'black')
     firstNode.element.style.color = 'white'
     firstNode.element.style.textAlign = 'center'
     firstNode.element.style.paddingTop = '10px'
@@ -82,7 +82,7 @@
         const radius = 50
         const dz = 20 * Math.pow(0.3, j) // but is uniform scaling?
         const point = origin.polarOffset(radius, angle).offset(0, 0, dz)
-        const circle = tapspace.circle(20, colors[j])
+        const circle = tapspace.createCircle(20, colors[j])
         kids.push(circle)
         nodelayer.add(circle, point)
         circle.scaleBy(Math.pow(0.3, j + 1), circle.atMid())

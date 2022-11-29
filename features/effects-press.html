@@ -43,13 +43,13 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.space('#tapspace')
+    const space = tapspace.createSpace('#tapspace')
     const viewport = space.getViewport()
     const layer = space.addBasis()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const tapel = tapspace.element(template('Tap me for a tiny effect'))
+    const tapel = tapspace.createElement(template('Tap me for a tiny effect'))
     tapel.setSize(256, 256)
     tapel.setAnchor(tapel.atCenter())
     tapel.addClass('mycomponent')

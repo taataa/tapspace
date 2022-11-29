@@ -67,7 +67,7 @@
   <!-- Your code -->
   <script>
     // Init tapspace
-    const space = tapspace.space('#tapspace')
+    const space = tapspace.createSpace('#tapspace')
     const view = space.viewport().zoomable().perspective()
     const layer = space.addBasis()
 
@@ -140,7 +140,7 @@
       <li>Text generated with <br><a href="https://lotremipsum.com/">LOTRem Ipsum</a></li>
       <li>Images generated with <a href="https://www.midjourney.com/home/">Midjourney</a></li>
     </ul>`
-    const infoCard = tapspace.element(createInfoElement(infoText))
+    const infoCard = tapspace.createElement(createInfoElement(infoText))
     infoCard.setSize(162, 100)
     infoCard.setAnchor(infoCard.atMid())
     layer.add(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
@@ -149,12 +149,12 @@
     // Nodes
     const nodes = space.addBasis()
 
-    nodes.add(tapspace.circle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
-    nodes.add(tapspace.circle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
-    nodes.add(tapspace.circle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
-    nodes.add(tapspace.circle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
-    nodes.add(tapspace.circle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
-    nodes.add(tapspace.circle(20, 'orange'), infoCard.atBottomRight())
+    nodes.add(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
+    nodes.add(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
+    nodes.add(tapspace.createCircle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
+    nodes.add(tapspace.createCircle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
+    nodes.add(tapspace.createCircle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
+    nodes.add(tapspace.createCircle(20, 'orange'), infoCard.atBottomRight())
 
   </script>
 </body>

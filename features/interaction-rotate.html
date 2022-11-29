@@ -47,7 +47,7 @@
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const block = tapspace.element(template('Rotate me!'))
+    const block = tapspace.createElement(template('Rotate me!'))
     block.addClass('mycomponent')
     basis.add(block)
     block.setAnchor(block.atMiddle())
@@ -81,7 +81,7 @@
     })
 
     // Add another block for visual reference.
-    const ref = tapspace.element(template('A heavy rock'))
+    const ref = tapspace.createElement(template('A heavy rock'))
     ref.element.classList.add('mycomponent')
     ref.setParent(basis)
     ref.scaleBy(0.618)

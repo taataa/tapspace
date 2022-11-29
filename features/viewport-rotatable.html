@@ -47,15 +47,15 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.create('#tapspace')
-    const viewport = space.viewport()
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport()
     const layer = space.addBasis()
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const blockA = tapspace.createElement(template('Rotatable<br>viewport'))
-    const blockB = tapspace.element(template(''))
-    const blockC = tapspace.element(template(''))
+    const blockB = tapspace.createElement(template(''))
+    const blockC = tapspace.createElement(template(''))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     blockC.addClass('mycomponent')

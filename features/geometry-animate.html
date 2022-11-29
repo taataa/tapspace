@@ -47,18 +47,18 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.create('#tapspace')
+    const space = tapspace.createSpace('#tapspace')
     const viewport = space.viewport().pannable()
     const layer = space.addBasis()
 
     // Create a rotateable component at the middle of the viewport.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const block = tapspace.element(template('Tap me'))
+    const block = tapspace.createElement(template('Tap me'))
     block.addClass('mycomponent')
     layer.add(block, viewport.atMid().offset(0, -10))
 
     // A static reference block
-    const refblock = tapspace.element(template('Reference'))
+    const refblock = tapspace.createElement(template('Reference'))
     refblock.addClass('mycomponent')
     layer.add(refblock, viewport.atTopLeft())
 
@@ -66,9 +66,9 @@
     block.setAnchor(block.atMid())
 
     // Create markers
-    const m0 = tapspace.circle(5, '#ff0000')
-    const m1 = tapspace.circle(5, '#00ff00')
-    const m2 = tapspace.circle(5, '#3333ff')
+    const m0 = tapspace.createCircle(5, '#ff0000')
+    const m1 = tapspace.createCircle(5, '#00ff00')
+    const m2 = tapspace.createCircle(5, '#3333ff')
     // Mark block anchor
     layer.add(m0, block.atAnchor())
     // Mark block corner

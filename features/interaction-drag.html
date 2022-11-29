@@ -48,13 +48,13 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.space('#tapspace')
-    const viewport = space.viewport()
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport()
     const layer = space.addBasis()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'
-    const block = tapspace.element(template('Drag me!'))
+    const block = tapspace.createElement(template('Drag me!'))
     block.addClass('mycomponent')
     layer.add(block)
     block.matchPoints(block.atMid(), viewport.atMid())

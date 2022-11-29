@@ -49,8 +49,8 @@
   <script>
   const container = document.querySelector('#tapspace')
 
-  const space = tapspace.create(container)
-  const view = space.viewport()
+  const space = tapspace.createSpace(container)
+  const view = space.getViewport()
   const layer = space.addBasis()
 
   const par = (t) => '<p>' + t + '</p>'
