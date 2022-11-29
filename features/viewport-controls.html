@@ -88,7 +88,7 @@
     const worldSize = { w: 80, h: 40 }
     for (let i = 0; i < numWorlds; i += 1) {
       const html = template('World')
-      const world = tapspace.element(html)
+      const world = tapspace.createElement(html)
       world.addClass('world')
       world.setSize(worldSize)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
