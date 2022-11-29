@@ -10,7 +10,23 @@ yamdog.generate({
   // Where to generate
   output: path.resolve(__dirname, 'index.md'),
   // Earmark; include blocks that begin with this name.
-  earmark: 'tapspace',
+  earmark: {
+    'tapspace': 'tapspace',
+    'Basis': 'tapspace.components.Basis',
+    'Block': 'tapspace.components.Block',
+    'Circle': 'tapspace.components.Circle',
+    'Control': 'tapspace.components.Control',
+    'Edge': 'tapspace.components.Edge',
+    'Frame': 'tapspace.components.Frame',
+    'Group': 'tapspace.components.Group',
+    'Interactive': 'tapspace.components.Interactive',
+    'Item': 'tapspace.components.Item',
+    'Pixel': 'tapspace.components.Pixel',
+    'Plane': 'tapspace.components.Plane',
+    'Space': 'tapspace.components.Space',
+    'Viewport': 'tapspace.components.Viewport',
+    'ZoomControl': 'tapspace.components.ZoomControl',
+  },
   // Main title of the document
   title: 'Tapspace API Documentation v' + version,
   // Introduction; the initial paragraph
