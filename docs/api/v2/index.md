@@ -24,16 +24,13 @@ and managing components.
 
 
 - [tapspace.capturers](#tapspacecapturers)
-- [tapspace.circle](#tapspacecircle)
 - [tapspace.components](#tapspacecomponents)
-- [tapspace.create](#tapspacecreate)
 - [tapspace.createBasis](#tapspacecreatebasis)
 - [tapspace.createCircle](#tapspacecreatecircle)
 - [tapspace.createEdge](#tapspacecreateedge)
-- [tapspace.createElement](#tapspacecreateelement)
+- [tapspace.createItem](#tapspacecreateitem)
 - [tapspace.createSpace](#tapspacecreatespace)
 - [tapspace.effects](#tapspaceeffects)
-- [tapspace.element](#tapspaceelement)
 - [tapspace.geometry](#tapspacegeometry)
 - [tapspace.interaction](#tapspaceinteraction)
 - [tapspace.loaders](#tapspaceloaders)
@@ -69,7 +66,7 @@ on the given affine element and emit them as gesture events.
 
 
 - *component*
-  - a Component or an affine HTMLElement.
+  - a [Plane](#tapspacecomponentsplane) or an affine HTMLElement.
   - The input events will be listened for and captured here.
 - *options*
   - an optional object with props:
@@ -78,13 +75,13 @@ on the given affine element and emit them as gesture events.
         - *type*
           - optional string, default 'TSR'. The movement type.
         - *center*
-          - optional point2 on the view or Point.
+          - optional point2 on the view or [Point](#tapspacegeometrypoint).
           - The center point for types 'S', 'R', and 'SR'.
-          - If a Point, the basis is preserved and followed.
+          - If a [Point](#tapspacegeometrypoint), the basis is preserved and followed.
         - *angle*
-          - optional number in radians or Direction.
+          - optional number in radians or [Direction](#tapspacegeometrydirection).
           - The line angle for type 'L'.
-          - If a Direction, the basis is preserved and followed.
+          - If a [Direction](#tapspacegeometrydirection), the basis is preserved and followed.
     - *preventDefault*
       - an optional boolean, default true. Set false allow default browser behavior on all handled events.
     - *stopPropagation*
@@ -100,7 +97,7 @@ on the given affine element and emit them as gesture events.
 - gesturecancel event with a transform-gesture object
 
 
-<p style="margin-bottom: 0">Transform-gesture objects have following properties:</p>
+<p style="margin-bottom: 0"><a href="#tapspacegeometrytransform">Transform</a>-gesture objects have following properties:</p>
 
 
 - *travel*
@@ -112,11 +109,11 @@ on the given affine element and emit them as gesture events.
 - *target*
   - a Component where the input landed. Helps e.g. in determining depth.
 - *transform*
-  - a Transform, the total transformation on the viewport
+  - a [Transform](#tapspacegeometrytransform), the total transformation on the viewport
 - *delta*
-  - a Transform, difference to the previous gesture event (on the viewport)
+  - a [Transform](#tapspacegeometrytransform), difference to the previous gesture event (on the viewport)
 - *center*
-  - a Point, the middle point of the gesture. With multipointer gestures this is the mean of the active pointers.
+  - a [Point](#tapspacegeometrypoint), the middle point of the gesture. With multipointer gestures this is the mean of the active pointers.
 
 
 
@@ -173,7 +170,7 @@ Resize event capturer.
 
 
 - *component*
-  - the source for the resize events
+  - a [Plane](#tapspacecomponentsplane), the source for the resize events
 - options, optional object with props:
   - *TODO*
 
@@ -188,9 +185,9 @@ Resize event capturer.
 
 
 - *size*
-  - a Size, the new size
+  - a [Size](#tapspacegeometrysize), the new size
 - *prevSize*
-  - a Size, the old size
+  - a [Size](#tapspacegeometrysize), the old size
 - *target*
   - a Component
 - TODO deltaW
@@ -233,7 +230,7 @@ to wheeling and scrolling.
 
 
 - *component*
-  - the source for the wheel events
+  - a [Plane](#tapspacecomponentsplane), the source for the wheel events
 - options, optional object with props:
   - *preventDefault*
     - an optional boolean, default true. Set false to allow default browser behavior on all handled events.
@@ -251,7 +248,7 @@ to wheeling and scrolling.
 
 
 - *center*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 - *component*
   - a Component on which the center is measured. The viewport.
 - *target*
@@ -286,30 +283,6 @@ Update capturer options
 
 Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
 
-<a name="tapspacecircle"></a>
-## [tapspace](#tapspace).[circle](#tapspacecircle)(radius, color)
-
-Make a circle-shaped element.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-
-- *radius*
-  - a number
-- *color*
-  - a CSS color string
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- a [Circle](#tapspacecomponentscircle)
-
-
-Aliases: [tapspace.createCircle](#tapspacecreatecircle)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Circle/create.js)
-
 <a name="tapspacecomponents"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents)
 
@@ -340,14 +313,17 @@ Source: [components/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/li
 <a name="tapspacecomponentsbasis"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis)(element)
 
-Abstract class for all affine components that have a HTML element.
-Multiple bases together form an affine subtree in DOM.
+Inherits Emitter
+
+[Basis](#tapspacecomponentsbasis) is an abstract class for all affine components that have
+an HTML element and a position within a Space.
+Multiple bases together form an *affine subtree* in DOM.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *element*
-  - a HTMLElement
+  - an HTMLElement
 
 
 
@@ -395,7 +371,7 @@ Place a component onto this basis.
 - *component*
   - a [Basis](#tapspacecomponentsbasis)
 - *position*
-  - optional Point or {x,y} or {x,y,z}.
+  - optional [Point](#tapspacegeometrypoint) or {x,y} or {x,y,z}.
   - Defines the initial position for the component.
   - You can leave the position parameter undefined and move the component to its position afterwards.
   - Also, if you have already prepared the local coordinates of the component and want to preserve them as is, then leave the position parameter undefined.
@@ -512,7 +488,7 @@ This element wraps affine or non-affine content. It can also be empty.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a HTMLElement
+- an HTMLElement
 
 
 Source: [getElement.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getElement.js)
@@ -659,7 +635,7 @@ the element does not have an affine parent.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- *boolean*
+- a boolean
 
 
 Source: [isRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/isRoot.js)
@@ -712,8 +688,10 @@ Source: [setParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compo
 <a name="tapspacecomponentsblock"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Block](#tapspacecomponentsblock)(element)
 
-Abstract class for rectangular affine components that cannot change
-their size or the size depends on the browser layout.
+Inherits [Plane](#tapspacecomponentsplane)
+
+[Block](#tapspacecomponentsblock) is an abstract class for rectangular affine components that
+cannot change their size or the size depends on the browser layout.
 For example, View is a [Block](#tapspacecomponentsblock) because its dimensions depend on
 external CSS rules and page dimensions.
 
@@ -724,7 +702,7 @@ getWidth.
 
 
 - *element*
-  - a HTMLElement. The element does not need to be in DOM.
+  - an HTMLElement. The element does not need to be in DOM.
 
 
 
@@ -740,6 +718,7 @@ getWidth.
 - [tapspace.components.Block:atMidMid](#tapspacecomponentsblockatmidmid)
 - [tapspace.components.Block:atMidRight](#tapspacecomponentsblockatmidright)
 - [tapspace.components.Block:atMiddle](#tapspacecomponentsblockatmiddle)
+- [tapspace.components.Block:atNorm](#tapspacecomponentsblockatnorm)
 - [tapspace.components.Block:atToNorm](#tapspacecomponentsblockattonorm)
 - [tapspace.components.Block:atTopLeft](#tapspacecomponentsblockattopleft)
 - [tapspace.components.Block:atTopMid](#tapspacecomponentsblockattopmid)
@@ -748,7 +727,6 @@ getWidth.
 - [tapspace.components.Block:getSize](#tapspacecomponentsblockgetsize)
 - [tapspace.components.Block:getWidth](#tapspacecomponentsblockgetwidth)
 - [tapspace.components.Block:moveCenterTo](#tapspacecomponentsblockmovecenterto)
-- [tapspace.components.Block.atNorm](#tapspacecomponentsblockatnorm)
 
 
 Source: [Block/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/index.js)
@@ -761,7 +739,7 @@ Get point at the bottom left corner of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atBottomLeft.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atBottomLeft.js)
@@ -774,7 +752,7 @@ Get point at the middle of the bottom edge of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atBottomMid.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atBottomMid.js)
@@ -787,7 +765,7 @@ Get point at the bottom right corner of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atBottomRight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atBottomRight.js)
@@ -807,7 +785,7 @@ Get point at the middle the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Aliases: [tapspace.components.Block:atMidMid](#tapspacecomponentsblockatmidmid), [tapspace.components.Block:atMiddle](#tapspacecomponentsblockatmiddle), [tapspace.components.Block:atCenter](#tapspacecomponentsblockatcenter)
@@ -822,7 +800,7 @@ Get point at the middle of the left edge of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atMidLeft.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atMidLeft.js)
@@ -842,7 +820,7 @@ Get point at the middle of the right edge of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atMidRight.js)
@@ -853,6 +831,31 @@ Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/comp
 Alias of [tapspace.components.Block:atMid](#tapspacecomponentsblockatmid)
 
 Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atMidMid.js)
+
+<a name="tapspacecomponentsblockatnorm"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Block](#tapspacecomponentsblock):[atNorm](#tapspacecomponentsblockatnorm)(rx, ry)
+
+**Subclasses must override this method.**
+
+Get a point by coordinates that are normalized over the width and height
+so that (0,0) means the top-left and (1,1) the bottom-right corner.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *rx*
+  - a number
+- *ry*
+  - a number
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Point](#tapspacegeometrypoint)
+
+
+Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atNorm.js)
 
 <a name="tapspacecomponentsblockattonorm"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Block](#tapspacecomponentsblock):[atToNorm](#tapspacecomponentsblockattonorm)(x, y)
@@ -868,7 +871,7 @@ for the point (2, 1) are (0.5, 0.25).
 
 
 - *x*
-  - a number or a Point
+  - a number or a [Point](#tapspacegeometrypoint)
 - *y*
   - a number
 
@@ -889,7 +892,7 @@ Get point at the top left corner of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atTopLeft.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atTopLeft.js)
@@ -902,7 +905,7 @@ Get point at the middle of the top edge of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atTopMid.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atTopMid.js)
@@ -915,7 +918,7 @@ Get point at the top right corner of the element.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atTopRight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atTopRight.js)
@@ -925,12 +928,12 @@ Source: [atTopRight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/comp
 
 **Subclasses must override this method.**
 
-Get block height as a Distance.
+Get block height as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getHeight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/getHeight.js)
@@ -945,7 +948,7 @@ Get block size dimensions.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Size
+- a [Size](#tapspacegeometrysize)
 
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/getSize.js)
@@ -955,12 +958,12 @@ Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 
 **Subclasses must override this method.**
 
-Get block width as a Distance.
+Get block width as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getWidth.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/getWidth.js)
@@ -974,7 +977,7 @@ Translate the block so that its middle point matches the given point.
 
 
 - *position*
-  - a point { x, y } on the parent or a Point. Required. The block will be moved on the parent so that the center of the block matches the position.
+  - a [Point](#tapspacegeometrypoint), or a point2 { x, y } on the parent basis. The block will be moved on the parent so that the center of the block matches the position.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -985,33 +988,10 @@ Translate the block so that its middle point matches the given point.
 
 Source: [moveCenterTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/moveCenterTo.js)
 
-<a name="tapspacecomponentsblockatnorm"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Block](#tapspacecomponentsblock).[atNorm](#tapspacecomponentsblockatnorm)(rx, ry)
-
-**Subclasses must override this method.**
-
-Get a point by coordinates that are normalized over the width and height
-so that (0,0) means the top-left and (1,1) the bottom-right corner.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-
-- *rx*
-  - a number
-- *ry*
-  - a number
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- a Point
-
-
-Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Block/atNorm.js)
-
 <a name="tapspacecomponentscircle"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Circle](#tapspacecomponentscircle)(radius, color)
+
+Inherits [Frame](#tapspacecomponentsframe)
 
 A colorful circle.
 Instance class for a circle-like object on an affine plane.
@@ -1031,15 +1011,15 @@ Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/co
 <a name="tapspacecomponentscontrol"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Control](#tapspacecomponentscontrol)(element)
 
-Base class for viewport control areas.
-
 Inherits [Frame](#tapspacecomponentsframe)
+
+Base class for viewport control areas.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *element*
-  - a HTMLElement. The element does not need to be in DOM.
+  - an HTMLElement. The element does not need to be in DOM.
 
 
 Source: [Control/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Control/index.js)
@@ -1069,7 +1049,6 @@ It can be used as a line. Lines can visually connect components.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
-- [tapspace.components.Edge basis](#tapspacecomponentsedgebasis)
 - [tapspace.components.Edge:atEnd](#tapspacecomponentsedgeatend)
 - [tapspace.components.Edge:atStart](#tapspacecomponentsedgeatstart)
 - [tapspace.components.Edge:getLength](#tapspacecomponentsedgegetlength)
@@ -1080,30 +1059,21 @@ It can be used as a line. Lines can visually connect components.
 
 Source: [Edge/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/index.js)
 
-<a name="tapspacecomponentsedgebasis"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge) [basis](#tapspacecomponentsedgebasis)
-
-Start and end points are in inner basis.
-Starting point is always zero.
-const start = this.startpoint
-
-Source: [renderOrthogonalTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/utils/renderOrthogonalTransform.js)
-
 <a name="tapspacecomponentsedgeatend"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge):[atEnd](#tapspacecomponentsedgeatend)()
 
-Get the Point at the edge ending, at the middle of the border.
+Get the [Point](#tapspacegeometrypoint) at the edge ending, at the middle of the border.
 
-**Returns:** a Point
+**Returns:** a [Point](#tapspacegeometrypoint)
 
 Source: [atEnd.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/atEnd.js)
 
 <a name="tapspacecomponentsedgeatstart"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge):[atStart](#tapspacecomponentsedgeatstart)()
 
-Get the Point at the edge beginning, at the middle of the border.
+Get the [Point](#tapspacegeometrypoint) at the edge beginning, at the middle of the border.
 
-**Returns:** a Point
+**Returns:** a [Point](#tapspacegeometrypoint)
 
 Source: [atStart.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/atStart.js)
 
@@ -1137,9 +1107,9 @@ Note that this does not scale the edge.
 
 
 - *startPoint*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 - *endPoint*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1169,7 +1139,7 @@ change their size.
 
 
 - *element*
-  - a HTMLElement. The element does not need to be in DOM.
+  - an HTMLElement. The element does not need to be in DOM.
 
 
 
@@ -1192,7 +1162,7 @@ Source: [Frame/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 <a name="tapspacecomponentsframeatnorm"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Frame](#tapspacecomponentsframe):[atNorm](#tapspacecomponentsframeatnorm)(rx, ry[, rz])
 
-Get a Point from unit coordinates that map the element width and height.
+Get a point from unit coordinates that map the element width and height.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -1208,7 +1178,7 @@ Get a Point from unit coordinates that map the element width and height.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point on the element
+- a [Point](#tapspacegeometrypoint) on the element
 
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Frame/atNorm.js)
@@ -1225,7 +1195,7 @@ for the point (2, 1) are (0.5, 0.25).
 
 
 - *x*
-  - a number or a Point
+  - a number or a [Point](#tapspacegeometrypoint)
 - *y*
   - a number
 
@@ -1241,12 +1211,12 @@ Source: [atToNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 <a name="tapspacecomponentsframegetheight"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Frame](#tapspacecomponentsframe):[getHeight](#tapspacecomponentsframegetheight)()
 
-Get frame height as a Distance.
+Get frame height as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getHeight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Frame/getHeight.js)
@@ -1259,7 +1229,7 @@ Get frame size dimensions in pixels.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Size
+- a [Size](#tapspacegeometrysize)
 
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Frame/getSize.js)
@@ -1267,12 +1237,12 @@ Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <a name="tapspacecomponentsframegetwidth"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Frame](#tapspacecomponentsframe):[getWidth](#tapspacecomponentsframegetwidth)()
 
-Get frame width as a Distance.
+Get frame width as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getWidth.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Frame/getWidth.js)
@@ -1340,7 +1310,7 @@ see [Frame:setSize](#tapspacecomponentsframesetsize).
 
 
 - *newSize*
-  - a {w,h}, a {width,height}, or a Size. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
+  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1365,7 +1335,7 @@ To preserve the relative anchor position, see [Frame:resize](#tapspacecomponents
 
 
 - *newSize*
-  - a {w,h}, a {width,height}, or a Size. If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
+  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1377,23 +1347,43 @@ To preserve the relative anchor position, see [Frame:resize](#tapspacecomponents
 Source: [setSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Frame/setSize.js)
 
 <a name="tapspacecomponentsgroup"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup)()
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup)(element)
 
-Inherits [Plane](#tapspacecomponentsplane)
-Inherits [Interactive](#tapspacecomponentsinteractive)
+Inherits [Plane](#tapspacecomponentsplane) and [Interactive](#tapspacecomponentsinteractive)
 
-A set of affine components.
+A container for affine components.
 The group element has zero width and height.
 Still, it can be interacted on its content.
 
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *element*
+  - an HTMLElement
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.components.Group.create](#tapspacecomponentsgroupcreate)
+
+
 Source: [Group/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/index.js)
+
+<a name="tapspacecomponentsgroupcreate"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup).[create](#tapspacecomponentsgroupcreate)
+
+Alias of [tapspace.createBasis](#tapspacecreatebasis)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/create.js)
 
 <a name="tapspacecomponentsinteractive"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive)()
 
 Interaction methods for affine components.
 Designed to be inherited by instance classes that
-inherit also from [Plane](#tapspacecomponentsplane) or down.
+inherit also from [Plane](#tapspacecomponentsplane).
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -1418,7 +1408,7 @@ already exists.
 
 
 - *name*
-  - a string, name of the interaction. Necessary to prevent doubles.
+  - a string, name of the interaction. Necessary to prevent duplicate interactions.
 - *interaction*
   - an Interaction
 
@@ -1441,7 +1431,7 @@ For Tapspace internal use.
 
 
 - *capturerName*
-  - a string. One of 'gesture', 'keyboard', 'wheel'
+  - a string. One of 'gesture', 'keyboard', 'resize', 'wheel'
 - *opts*
   - options for the capturer.
 
@@ -1515,14 +1505,16 @@ Source: [removeInteraction.js](https://github.com/taataa/tapspace/blob/2.0-dev/l
 <a name="tapspacecomponentsitem"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem)(element)
 
-Instance class for interactive material items on affine plane.
+Inherits [Frame](#tapspacecomponentsframe) and [Interactive](#tapspacecomponentsinteractive)
+
+[Item](#tapspacecomponentsitem) is an instance class for interactive material items in affine space.
 The items can have abilities like slidable, tappable, or draggable.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *element*
-  - a HTMLElement. The element does not need to be in DOM.
+  - an HTMLElement. The element does not need to be in DOM.
 
 
 
@@ -1597,7 +1589,7 @@ Set affine element contents. Any pre-existing content is removed.
 <p style="margin-bottom: 0">content</p>
 
 
-- a HTMLElement or HTML string. The given element(s) will replace the affine element contents.
+- an HTMLElement or HTML string. The given element(s) will replace the affine element contents.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1627,7 +1619,7 @@ A rotatable item can be turned around a center point.
   - a boolean, set false to disable the ability to rotate.
   - an optional object with properties:
     - *center*
-      - optional Point. Specifies a center point about which the item can be rotated. If the point is relative to the inner basis of the item, then the rotation center follows possible translations of the item.
+      - optional [Point](#tapspacegeometrypoint). Specifies a center point about which the item can be rotated. If the point is relative to the inner basis of the item, then the rotation center follows possible translations of the item.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1660,7 +1652,7 @@ Controls item scale but does not affect item pixel size.
   - a boolean, set false to disable the ability to dilate.
   - an optional object with properties:
     - *center*
-      - optional Point. Specifies a center point that stays fixed during dilation. If the point is relative to the inner basis of the item, then the dilation center follows possible translations of the item.
+      - optional [Point](#tapspacegeometrypoint). Specifies a center point that stays fixed during dilation. If the point is relative to the inner basis of the item, then the dilation center follows possible translations of the item.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1682,10 +1674,11 @@ A slidable component can be moved along a straight line.
 
 
 - *options*
-  - a boolean, set false to disable the slide ability.
-  - OR an optional object with properties:
-    - *direction*
-      - a Direction or Vector. Specifies a line along which the item can be slid.
+  - optional, various types:
+    - a boolean, set false to disable the slide ability.
+    - an object with properties:
+      - *direction*
+        - a [Direction](#tapspacegeometrydirection) or [Vector](#tapspacegeometryvector). Specifies a line along which the item can be slid.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1723,6 +1716,7 @@ Make item tappable i.e. make it emit tap events.
 
 - *tap*
 - *tapstart*
+- *tapcancel*
 - *tapend*
 
 
@@ -1760,6 +1754,8 @@ Source: [Pixel/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 <a name="tapspacecomponentsplane"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane)(element)
 
+Inherits [Basis](#tapspacecomponentsbasis)
+
 Abstract class for affine components that behave like a transformable
 2D plane in 3D space.
 
@@ -1767,7 +1763,7 @@ Abstract class for affine components that behave like a transformable
 
 
 - *element*
-  - a HTMLElement
+  - an HTMLElement
 
 
 
@@ -1797,7 +1793,6 @@ Abstract class for affine components that behave like a transformable
 - [tapspace.components.Plane:transformBy](#tapspacecomponentsplanetransformby)
 - [tapspace.components.Plane:translateBy](#tapspacecomponentsplanetranslateby)
 - [tapspace.components.Plane:translateTo](#tapspacecomponentsplanetranslateto)
-- [tapspace.components.Plane.create](#tapspacecomponentsplanecreate)
 
 
 Source: [Plane/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/index.js)
@@ -1842,7 +1837,7 @@ Get a point on the plane by using local plane coordinates.
     - a number, the x coordinate on the plane.
     - a point2, {x,y} relative to the plane.
     - a point3, {x,y,z} relative to the plane.
-    - a Point, relative to its basis.
+    - a [Point](#tapspacegeometrypoint), relative to its basis.
 - *y*
   - a number, the y coordinate on the plane. Required if x is a number.
 - *z*
@@ -1852,7 +1847,7 @@ Get a point on the plane by using local plane coordinates.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point, relative to the plane
+- a [Point](#tapspacegeometrypoint), relative to the plane
 
 
 Source: [at.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/at.js)
@@ -1866,7 +1861,7 @@ Get the plane anchor point or the optional given point on the plane.
 
 
 - *alt*
-  - optional point2 or Point. If given, returns this point instead,
+  - optional point2 or [Point](#tapspacegeometrypoint). If given, returns this point instead,
   - after transited onto the plane. Useful way to default a point to the
   - plane anchor if the point is nullish.
 
@@ -1874,7 +1869,7 @@ Get the plane anchor point or the optional given point on the plane.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/atAnchor.js)
@@ -1897,7 +1892,7 @@ relative to the inner basis.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Direction
+- a [Direction](#tapspacegeometrydirection)
 
 
 Source: [getDirection.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/getDirection.js)
@@ -1915,7 +1910,7 @@ Source: [getDirection.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/co
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getDistanceTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/getDistanceTo.js)
@@ -1930,7 +1925,7 @@ will return null if the plane has no parent.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point or null if no parent.
+- a [Point](#tapspacegeometrypoint) or null if no parent.
 
 
 Source: [getPosition.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/getPosition.js)
@@ -1943,7 +1938,7 @@ The scale of the plane.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Scale
+- a [Scale](#tapspacegeometryscale)
 
 
 Source: [getScale.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/getScale.js)
@@ -1963,7 +1958,7 @@ Get vector from this anchor to the anchor of the given plane.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector, represented on this plane.
+- a [Vector](#tapspacegeometryvector), represented on this plane.
 
 
 Source: [getVectorTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/getVectorTo.js)
@@ -1982,9 +1977,9 @@ closely as possible.
 
 - **Parameters:**, object with properties
   - source, alias sources
-    - a Point or an array of Points. The length must match the targets. Alias: source.
+    - a [Point](#tapspacegeometrypoint) or an array of [Point](#tapspacegeometrypoint)s. The length must match the targets. Alias: source.
   - target, alias targets
-    - a Point or an array of Points. The length must match the sources. Alias: target.
+    - a [Point](#tapspacegeometrypoint) or an array of [Point](#tapspacegeometrypoint)s. The length must match the sources. Alias: target.
   - *estimator*
     - string. The estimator type restricts the ways the plane is allowed to move during the operation. For details on the estimator types, see [nudged.estimate](https://github.com/axelpale/nudged/).
       - 'TSR': allow translation, scaling, and rotation. The default.
@@ -1998,9 +1993,9 @@ closely as possible.
       - 'Y': allow only translation along the y-axis of the plane.
       - 'L': allow only translation along the given angle.
   - *center*
-    - a Point or {x,y}. Optional. The center for the estimators 'SR', 'R', and 'S'.
+    - a [Point](#tapspacegeometrypoint) or {x,y}. Optional. The center for the estimators 'SR', 'R', and 'S'.
   - *angle*
-    - a number in radians or Direction. Optional. The angle for the estimator 'L'.
+    - a number in radians or [Direction](#tapspacegeometrydirection). Optional. The angle for the estimator 'L'.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2042,9 +2037,9 @@ matches the target position.
 
 
 - *source*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 - *target*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2125,7 +2120,7 @@ Rotate the element.
 - *radians*
   - a number, delta angle to rotate.
 - *center*
-  - optional Point. Rotation is performed around this point. Defaults to the plane anchor.
+  - optional [Point](#tapspacegeometrypoint). Rotation is performed around this point. Defaults to the plane anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2147,7 +2142,7 @@ Rotate the element by degrees around an optional pivot point.
 - *degrees*
   - a number, delta angle to rotate.
 - *center*
-  - optional Point. Rotation is performed around this point. Defaults to the plane anchor.
+  - optional [Point](#tapspacegeometrypoint). Rotation is performed around this point. Defaults to the plane anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2161,7 +2156,7 @@ Source: [rotateByDegrees.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 <a name="tapspacecomponentsplanescaleby"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[scaleBy](#tapspacecomponentsplanescaleby)(multiplier, center)
 
-Scale the element.
+[Scale](#tapspacegeometryscale) the element.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -2169,7 +2164,7 @@ Scale the element.
 - *multiplier*
   - a number, the scale multiplier.
 - *center*
-  - optional Point. Scaling is performed about this point. Defaults to the plane anchor.
+  - optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the plane anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2189,7 +2184,7 @@ Set the anchor point of the plane. This does not move the plane.
 
 
 - *point*
-  - a point2 on the plane or a Point in its space. The new anchor point.
+  - a point2 on the plane or a [Point](#tapspacegeometrypoint). The new anchor point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2210,7 +2205,7 @@ the given scale. The dilation is performed about the plane anchor.
 
 
 - *scale*
-  - a Scale or number. If number, it is relative to the parent plane.
+  - a [Scale](#tapspacegeometryscale) or number. If number, it is relative to the parent plane.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2241,7 +2236,7 @@ The method does not modify the plane transition, only the latent CSS.
 
 
 - *anchor*
-  - optional Point. The point is the pivot about to perform the rotation snapping. Rotation snapping around a point that is far from the user's gaze point – like viewport (0,0) – can cause visible movement near the gaze point. This movement can be annoying during or after a rotation gesture. Therefore the rotation snapping should be performed around a point near the gesture and the gaze point. Defaults to the plane anchor.
+  - optional [Point](#tapspacegeometrypoint). The point is the pivot about to perform the rotation snapping. Rotation snapping around a point that is far from the user's gaze point – like viewport (0,0) – can cause visible movement near the gaze point. This movement can be annoying during or after a rotation gesture. Therefore the rotation snapping should be performed around a point near the gesture and the gaze point. Defaults to the plane anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2255,8 +2250,8 @@ Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/comp
 <a name="tapspacecomponentsplanetransformby"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[transformBy](#tapspacecomponentsplanetransformby)(tr, center)
 
-Transform (move) the plane in space.
-For example, let `rotate90` be a Transform that rotates the element
+[Transform](#tapspacegeometrytransform) (move) the plane in space.
+For example, let `rotate90` be a [Transform](#tapspacegeometrytransform) that rotates the element
 90 degrees clockwise. The rotation is performed around the plane anchor.
 If the plane was already at the angle of 45 degrees, then after
 the transformation, the plane is at the angle of 135 degrees.
@@ -2265,9 +2260,9 @@ the transformation, the plane is at the angle of 135 degrees.
 
 
 - *tr*
-  - a Transform
+  - a [Transform](#tapspacegeometrytransform)
 - *center*
-  - optional Point, default to plane anchor. The transform origin. The scaling and rotation will be applied around this point.
+  - optional [Point](#tapspacegeometrypoint), default to plane anchor. The transform origin. The scaling and rotation will be applied around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2291,8 +2286,8 @@ Translation along z-axis can change the perceived size of the element.
 - *translation*
   - Any of the following:
     - a vec3 {x,y,z} represented on the parent.
-    - a Vector.
-    - a Transform, from which only the translation is extracted.
+    - a [Vector](#tapspacegeometryvector).
+    - a [Transform](#tapspacegeometrytransform), from which only the translation is extracted.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2316,7 +2311,7 @@ depending on the viewport projection mode.
 
 
 - *point*
-  - a Point.
+  - a [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2326,13 +2321,6 @@ depending on the viewport projection mode.
 
 
 Source: [translateTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/translateTo.js)
-
-<a name="tapspacecomponentsplanecreate"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane).[create](#tapspacecomponentsplanecreate)
-
-Alias of [tapspace.createBasis](#tapspacecreatebasis)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/create.js)
 
 <a name="tapspacecomponentsspace"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace)(viewport)
@@ -2377,14 +2365,13 @@ spans a coordinate system, unlike the space.
 
 
 - *position*
-  - a Point, the origin of the plane.
-  - a Transit, the origin of the plane with scale and orientation.
+  - a [Point](#tapspacegeometrypoint), the origin of the plane.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a [Plane](#tapspacecomponentsplane)
+- a Group
 
 
 Aliases: [tapspace.components.Space:addPlane](#tapspacecomponentsspaceaddplane)
@@ -2409,7 +2396,7 @@ Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[transformBy](#tapspacecomponentsspacetransformby)(tr, center)
 
 Use to navigate the space.
-Transform the root bases in relation to the viewport. In effect, this
+[Transform](#tapspacegeometrytransform) the root bases in relation to the viewport. In effect, this
 transforms the immediate children of the space.
 The transition from space to viewport stays identity and intact.
 
@@ -2417,9 +2404,9 @@ The transition from space to viewport stays identity and intact.
 
 
 - *tr*
-  - a Transform
+  - a [Transform](#tapspacegeometrytransform)
 - *center*
-  - optional Point, default is (0,0). The transform origin. The scaling and rotation will be applied around this point.
+  - optional [Point](#tapspacegeometrypoint), default is (0,0). The transform origin. The scaling and rotation will be applied around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2439,7 +2426,7 @@ Translate the space in relation to the viewport along x, y, and z axis.
 
 
 - *translation*
-  - a Vector or vec2 or vec3
+  - a [Vector](#tapspacegeometryvector) or vec2 or vec3
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2470,7 +2457,7 @@ Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <a name="tapspacecomponentsviewport"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport)(element)
 
-Inherits [Block](#tapspacecomponentsblock)
+Inherits [Block](#tapspacecomponentsblock) and [Interactive](#tapspacecomponentsinteractive)
 
 A view is a viewport to space.
 At the same time, it is a rectangular component that can be moved
@@ -2482,7 +2469,7 @@ determined by the container element and the host app CSS rules.
 
 
 - *element*
-  - a HTMLElement, becomes the viewport.
+  - an HTMLElement, becomes the viewport.
 
 
 When the viewport is transformed, it does not move on the page.
@@ -2532,7 +2519,7 @@ Source: [Viewport/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 <a name="tapspacecomponentsviewportatnorm"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[atNorm](#tapspacecomponentsviewportatnorm)(rx, ry[, rz])
 
-Get a Point by relative coordinates, rounded to nearest integers.
+Get a [Point](#tapspacegeometrypoint) by relative coordinates, rounded to nearest integers.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -2548,7 +2535,7 @@ Get a Point by relative coordinates, rounded to nearest integers.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- Point on the element
+- a [Point](#tapspacegeometrypoint) on the element
 
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/atNorm.js)
@@ -2556,12 +2543,12 @@ Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/componen
 <a name="tapspacecomponentsviewportgetheight"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getHeight](#tapspacecomponentsviewportgetheight)()
 
-Get viewport height as a Distance.
+Get viewport height as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getHeight.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/getHeight.js)
@@ -2575,7 +2562,7 @@ element.offsetWidth and element.offsetHeight.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Size
+- a [Size](#tapspacegeometrysize)
 
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/getSize.js)
@@ -2583,12 +2570,12 @@ Source: [getSize.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <a name="tapspacecomponentsviewportgetwidth"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getWidth](#tapspacecomponentsviewportgetwidth)()
 
-Get viewport width as a Distance.
+Get viewport width as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getWidth.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/getWidth.js)
@@ -2671,7 +2658,7 @@ is enough to rotate.
   - a boolean, set false to disable the ability.
   - an object with props:
     - *center*
-      - a Point, the center point for rotation.
+      - a [Point](#tapspacegeometrypoint), the center point for rotation.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2693,7 +2680,7 @@ Rotate the viewport in space around anchor.
 - *angle*
   - a number, the delta angle to rotate the viewport.
 - *center*
-  - optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+  - optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the viewport anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2715,7 +2702,7 @@ Translate the viewport in space along x and y axis.
 - *factor*
   - a number
 - *center*
-  - an optional Point. Scaling is performed about this point. Defaults to the viewport anchor.
+  - an optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the viewport anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2738,7 +2725,7 @@ because almost nothing is exact.
 
 
 - *anchor*
-  - optional Point. Snap rotation around this point.
+  - optional [Point](#tapspacegeometrypoint). Snap rotation around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2777,16 +2764,16 @@ Source: [toPage.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/componen
 
 Overwrites [Plane:transformBy](#tapspacecomponentsplanetransformby)
 
-Transform the viewport in relation to the root bases. In effect, this
+[Transform](#tapspacegeometrytransform) the viewport in relation to the root bases. In effect, this
 transforms all root bases with the inversion of the transform.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *tr*
-  - a Transform
+  - a [Transform](#tapspacegeometrytransform)
 - *center*
-  - optional Point, default is anchor. The transform origin. The scaling and rotation will be applied around this point.
+  - optional [Point](#tapspacegeometrypoint), default is anchor. The transform origin. The scaling and rotation will be applied around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2806,7 +2793,7 @@ Translate the viewport in space along x, y, and z axis.
 
 
 - *translation*
-  - a Vector or vec2 or vec3
+  - a [Vector](#tapspacegeometryvector) or vec2 or vec3
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2826,12 +2813,18 @@ If center point is not set, the viewport can also be panned meaning that
 the viewport can be moved and zoomed freely. If the center point is set
 then no pan is possible and zooming happens about the fixed center point.
 
+Example:
+```
+const view = space.getViewport()
+view.zoomable()
+```
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - options, optional boolean or object with props:
   - *center*
-    - a Point, the vanishing point for zoom, the center for scaling.
+    - a [Point](#tapspacegeometrypoint), the vanishing point for zoom, the center for scaling.
     - If not set, enables viewport translation aka panning.
 
 
@@ -2841,26 +2834,20 @@ then no pan is possible and zooming happens about the fixed center point.
 - this, for chaining
 
 
-**Usage:**
-```
-const view = space.getViewport()
-view.zoomable()
-```
-
 Source: [zoomable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/zoomable.js)
 
 <a name="tapspacecomponentszoomcontrol"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[ZoomControl](#tapspacecomponentszoomcontrol)(options)
 
-Basic +/- buttons to zoom the viewport in and out.
+Inherits Control
 
-Inherits [tapspace.components.Control](#tapspacecomponentscontrol)
+This control provides basic +/- buttons to zoom the viewport in and out.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *options*
-  - optional object with properties
+  - optional object with properties:
     - *scaleStep*
       - optional number, default 1.2.
       - The scale multiplier of single zoom step.
@@ -2868,80 +2855,68 @@ Inherits [tapspace.components.Control](#tapspacecomponentscontrol)
 
 Source: [ZoomControl/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/ZoomControl/index.js)
 
-<a name="tapspacecreate"></a>
-## [tapspace](#tapspace).[create](#tapspacecreate)(element)
+<a name="tapspacecreatebasis"></a>
+## [tapspace](#tapspace).[createBasis](#tapspacecreatebasis)()
 
-Convert element into a zoomable space.
+Create a group for further content.
+Groups can be used for root planes.
+Root planes are immediate children of the space.
+Each root plane spans a coordinate system, unlike the space.
+
+Group has zero width and height.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a Group
+
+
+Aliases: [tapspace.components.Group.create](#tapspacecomponentsgroupcreate)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/create.js)
+
+<a name="tapspacecreatecircle"></a>
+## [tapspace](#tapspace).[createCircle](#tapspacecreatecircle)(radius, color)
+
+Make a circle-shaped element.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *element*
-  - a HTMLElement or query string. The element will become the main container for viewport, space, and space contents.
+- *radius*
+  - a number
+- *color*
+  - a CSS color string
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Space
+- a [Circle](#tapspacecomponentscircle)
 
-
-**Usage:**
-```
-const space = tapspace.create('#space')
-```
-
-Aliases: [tapspace.createSpace](#tapspacecreatespace)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/create.js)
-
-<a name="tapspacecreatebasis"></a>
-## [tapspace](#tapspace).[createBasis](#tapspacecreatebasis)()
-
-Create a root plane for further content. Root planes
-are immediate children of the space. Each root plane
-spans a coordinate system, unlike the space.
-
-Root plane element has zero width and height.
-Root planes cannot be interacted with, except via viewport.
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- a [Plane](#tapspacecomponentsplane)
-
-
-Aliases: [tapspace.components.Plane.create](#tapspacecomponentsplanecreate)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/create.js)
-
-<a name="tapspacecreatecircle"></a>
-## [tapspace](#tapspace).[createCircle](#tapspacecreatecircle)
-
-Alias of [tapspace.circle](#tapspacecircle)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Circle/create.js)
 
 <a name="tapspacecreateedge"></a>
 ## [tapspace](#tapspace).[createEdge](#tapspacecreateedge)(border)
 
-Create an [Edge](#tapspacecomponentsedge) component. The edge is a straight line between
+Create an edge component. The edge is a straight line between
 two points. Set points after adding the edge to basis.
 
-**Parameters:** see [tapspace.components.Edge](#tapspacecomponentsedge)
+**Parameters:** see [Edge](#tapspacecomponentsedge)
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a [tapspace.components.Edge](#tapspacecomponentsedge)
+- an [Edge](#tapspacecomponentsedge)
 
 
 Aliases: [tapspace.components.Edge.create](#tapspacecomponentsedgecreate)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/create.js)
 
-<a name="tapspacecreateelement"></a>
-## [tapspace](#tapspace).[createElement](#tapspacecreateelement)(content)
+<a name="tapspacecreateitem"></a>
+## [tapspace](#tapspace).[createItem](#tapspacecreateitem)(content)
 
 Make an affine item from HTML content. Wraps the content inside a div.
 
@@ -2949,7 +2924,7 @@ Make an affine item from HTML content. Wraps the content inside a div.
 
 
 - *content*
-  - a HTMLElement or HTML string. The given element(s) will be wrapped in a div.
+  - an HTMLElement or HTML string. The given element(s) will be wrapped in a div.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2958,14 +2933,30 @@ Make an affine item from HTML content. Wraps the content inside a div.
 - a [Item](#tapspacecomponentsitem)
 
 
-Aliases: [tapspace.element](#tapspaceelement)
-
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/create.js)
 
 <a name="tapspacecreatespace"></a>
-## [tapspace](#tapspace).[createSpace](#tapspacecreatespace)
+## [tapspace](#tapspace).[createSpace](#tapspacecreatespace)(element)
 
-Alias of [tapspace.create](#tapspacecreate)
+Elevate an element into a zoomable space.
+
+Example:
+```
+const space = tapspace.createSpace('#space')
+```
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *element*
+  - an HTMLElement or query string. The element will become the main container for viewport, space, and space contents.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a Space
+
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/create.js)
 
@@ -3005,13 +2996,6 @@ Pressing effect: the element moves down a bit and then back up.
 
 Source: [press/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/effects/press/index.js)
 
-<a name="tapspaceelement"></a>
-## [tapspace](#tapspace).[element](#tapspaceelement)
-
-Alias of [tapspace.createElement](#tapspacecreateelement)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/create.js)
-
 <a name="tapspacegeometry"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry)
 
@@ -3028,7 +3012,7 @@ coordinate systems of other elements.
 Geometry transitions are *passive transformations* in a sense that
 they do not change the geometry, only the frame of reference.
 
-An example of an *active transformation* is the Transform class
+An example of an *active transformation* is the [Transform](#tapspacegeometrytransform) class
 which can be used to move both geometry and affine elements around.
 
 
@@ -3050,19 +3034,19 @@ Source: [geometry/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 <a name="tapspacegeometrydirection"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection)(basis, vec)
 
-Direction in 3D space, modeled as a unit vector.
+[Direction](#tapspacegeometrydirection) in 3D space, modeled as a unit vector.
 
 The values of the direction depend on the orientation of the coordinate
 space and therefore they need conversion when transited between planes.
-Direction models a passive shape in space. Its active variant is Rotation.
+[Direction](#tapspacegeometrydirection) models a passive shape in space. Its active variant is Rotation.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *vec*
-  - a Vector, or {x,y,z} relative to the basis.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} relative to the basis.
 
 
 
@@ -3084,7 +3068,7 @@ Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 <a name="tapspacegeometrydirectionbasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[basis](#tapspacegeometrydirectionbasis)
 
-The basis component. Usage: `dir.basis`.
+Property for the basis component. Usage: `dir.basis`.
 
 Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/index.js)
 
@@ -3095,13 +3079,13 @@ Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Direction
+- a [Direction](#tapspacegeometrydirection)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/changeBasis.js)
@@ -3109,7 +3093,7 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometrydirectiondir"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[dir](#tapspacegeometrydirectiondir)
 
-A unit vector, affineplane.dir3. Usage: `dir.dir`.
+Property for the unit vector, affineplane.dir3. Usage: `dir.dir`.
 
 Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/index.js)
 
@@ -3123,7 +3107,7 @@ https://en.wikipedia.org/wiki/Spherical_coordinate_system).
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *theta*
   - a number, an angle in radians around z-axis of the basis, measured from positive x-axis according to the right-hand rule.
 - *phi*
@@ -3133,7 +3117,7 @@ https://en.wikipedia.org/wiki/Spherical_coordinate_system).
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Direction
+- a [Direction](#tapspacegeometrydirection)
 
 
 Source: [fromSpherical.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/fromSpherical.js)
@@ -3141,21 +3125,21 @@ Source: [fromSpherical.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/g
 <a name="tapspacegeometrydirectionfromvector"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[fromVector](#tapspacegeometrydirectionfromvector)(basis, vec)
 
-Create a Direction from a vector.
+Create a [Direction](#tapspacegeometrydirection) from a vector.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *vec*
-  - a Vector, or {x,y,z} relative to the basis.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} relative to the basis.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Direction
+- a [Direction](#tapspacegeometrydirection)
 
 
 Source: [fromVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/fromVector.js)
@@ -3176,14 +3160,14 @@ Create a vector from direction by giving it a length.
 
 
 - *magnitude*
-  - a number or Distance, the length of the vector to create.
+  - a number or [Distance](#tapspacegeometrydistance), the length of the vector to create.
   - A negative magnitude creates a vector to opposite direction.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [getVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/getVector.js)
@@ -3198,7 +3182,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3212,7 +3196,7 @@ Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 <a name="tapspacegeometrydistance"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance)(basis, dist)
 
-Distance represents a scalar measure in affine space.
+[Distance](#tapspacegeometrydistance) represents a scalar measure in affine space.
 In coordinate system transitions, rotations and translations do
 not affect the distance. Only the scale does.
 
@@ -3220,7 +3204,7 @@ not affect the distance. Only the scale does.
 
 
 - *basis*
-  - a component, the frame of reference for the distance.
+  - a [Basis](#tapspacecomponentsbasis), the frame of reference for the distance.
 - *dist*
   - a number, a measure. Cannot be negative.
 
@@ -3254,13 +3238,13 @@ Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 
 
 - *newBasis*
-  - an affine component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/changeBasis.js)
@@ -3296,13 +3280,13 @@ Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry
 
 
 - *dir*
-  - a Direction
+  - a [Direction](#tapspacegeometrydirection)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [getVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/getVector.js)
@@ -3317,7 +3301,7 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometr
 <a name="tapspacegeometrydistancescaleby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[scaleBy](#tapspacegeometrydistancescaleby)(multiplier)
 
-Multiply the distance. Returns new Distance.
+Multiply the distance. Returns new [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -3329,7 +3313,7 @@ Multiply the distance. Returns new Distance.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Aliases: [tapspace.geometry.Distance:multiply](#tapspacegeometrydistancemultiply)
@@ -3346,7 +3330,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3366,7 +3350,7 @@ Transit the path to another coordinate basis.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3394,7 +3378,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3415,7 +3399,7 @@ See [tapspace.geometry.Vector](#tapspacegeometryvector) for a 3D displacement ve
 
 
 - *basis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 - *point*
   - a object {x,y,z}, the coordinates.
 
@@ -3449,13 +3433,13 @@ Source: [Point/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometrypoint"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint)(basis, points)
 
-A sequence of Points in 3D space.
+A sequence of [Point](#tapspacegeometrypoint) in 3D space.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *basis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 - *points*
   - an array of plain point objects {x,y,z}
 
@@ -3489,6 +3473,13 @@ let pa = new tapspace.geometry.Path(basis, [
 
 Source: [Path/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Path/index.js)
 
+<a name="tapspacegeometrypointforgesturecenter"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint) [for](#tapspacegeometrypointfor) [gesture](#tapspacegeometrypointforgesture) [center](#tapspacegeometrypointforgesturecenter)
+
+TODO use [Vector](#tapspacegeometryvector) for delta
+
+Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
+
 <a name="tapspacegeometrypointaddvector"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[addVector](#tapspacegeometrypointaddvector)(vec)
 
@@ -3498,13 +3489,13 @@ Translate the point by a vector.
 
 
 - *vec*
-  - a Vector
+  - a [Vector](#tapspacegeometryvector)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [addVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/addVector.js)
@@ -3516,13 +3507,13 @@ Source: [addVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geome
 
 
 - *newBasis*
-  - an affine component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/changeBasis.js)
@@ -3530,19 +3521,19 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometrypointgetdirectionto"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[getDirectionTo](#tapspacegeometrypointgetdirectionto)(p)
 
-Direction from this point to another.
+[Direction](#tapspacegeometrydirection) from this point to another.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *p*
-  - a Point or {x,y,z}. The latter is assumed to be on the same basis.
+  - a [Point](#tapspacegeometrypoint) or {x,y,z}. The latter is assumed to be on the same basis.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getDirectionTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/getDirectionTo.js)
@@ -3550,19 +3541,19 @@ Source: [getDirectionTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 <a name="tapspacegeometrypointgetdistanceto"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[getDistanceTo](#tapspacegeometrypointgetdistanceto)(p)
 
-Distance between points.
+[Distance](#tapspacegeometrydistance) between points.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *p*
-  - a Point or {x,y,z}. The latter is assumed to be on the same basis.
+  - a [Point](#tapspacegeometrypoint) or {x,y,z}. The latter is assumed to be on the same basis.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [getDistanceTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/getDistanceTo.js)
@@ -3583,13 +3574,13 @@ Get a vector from this to the point p.
 
 
 - *p*
-  - a Point
+  - a [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector on this basis.
+- a [Vector](#tapspacegeometryvector) on this basis.
 
 
 Source: [getVectorTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/getVectorTo.js)
@@ -3613,7 +3604,7 @@ Get a point when the current point is offset by dx, dy, and dz.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [offset.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/offset.js)
@@ -3628,19 +3619,19 @@ Get the point at the given distance and direction.
 
 - *distance*
   - accepts any of the following:
-    - a Distance
+    - a [Distance](#tapspacegeometrydistance)
     - a number, a distance measure in the basis of the point.
 - *direction*
   - accepts any of the following:
-    - a Direction, pointing to the desired direction.
-    - a Vector, pointing to the desired direction.
+    - a [Direction](#tapspacegeometrydirection), pointing to the desired direction.
+    - a [Vector](#tapspacegeometryvector), pointing to the desired direction.
     - a number, angle in radians around z-axis in the basis of the point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [polarOffset.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/polarOffset.js)
@@ -3654,15 +3645,15 @@ Project the point onto the given plane
 
 
 - *basis*
-  - an affine component, the target basis.
+  - a [Basis](#tapspacecomponentsbasis), the target basis.
 - *camera*
-  - a Point, relative to the reference basis.
+  - a [Point](#tapspacegeometrypoint), relative to the reference basis.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point, represented on the target basis.
+- a [Point](#tapspacegeometrypoint), represented on the target basis.
 
 
 Source: [projectTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/projectTo.js)
@@ -3675,7 +3666,7 @@ Round the point to nearest integers.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [round.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/round.js)
@@ -3690,7 +3681,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3710,15 +3701,15 @@ Mean of an array of points.
 
 
 - *basis*
-  - a [Plane](#tapspacecomponentsplane)
+  - a [Basis](#tapspacecomponentsbasis)
 - *points*
-  - an array of Point instances
+  - an array of [Point](#tapspacegeometrypoint) instances
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point on the given basis
+- a [Point](#tapspacegeometrypoint) on the given basis
 
 
 Example
@@ -3737,6 +3728,22 @@ Alias of [tapspace.geometry.Point.fromAverage](#tapspacegeometrypointfromaverage
 
 Source: [fromAverage.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/fromAverage.js)
 
+<a name="tapspacegeometrypointerexistsonboth"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Pointer](#tapspacegeometrypointer) [exists](#tapspacegeometrypointerexists) [on](#tapspacegeometrypointerexistson) [both](#tapspacegeometrypointerexistsonboth)
+
+Normalise freedom arguments onto the root.
+We must do this every move because the gesture might eventually
+move the viewport.
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacegeometrypointerexistsonboth"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Pointer](#tapspacegeometrypointer) [exists](#tapspacegeometrypointerexists) [on](#tapspacegeometrypointerexistson) [both](#tapspacegeometrypointerexistsonboth)
+
+Accumulate transform
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
 <a name="tapspacegeometryscale"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale)(basis, multiplier)
 
@@ -3752,7 +3759,7 @@ and therefore does not depend on the plane.
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *multiplier*
   - a number, the scale multiplier relative to the basis scale.
 
@@ -3769,6 +3776,27 @@ and therefore does not depend on the plane.
 
 Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Scale/index.js)
 
+<a name="tapspacegeometryscaleandrotationinabasisvector"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale) [and](#tapspacegeometryscaleand) [rotation](#tapspacegeometryscaleandrotation) [in](#tapspacegeometryscaleandrotationin) [a](#tapspacegeometryscaleandrotationina) [basis](#tapspacegeometryscaleandrotationinabasis) [vector](#tapspacegeometryscaleandrotationinabasisvector)
+
+Camera position
+
+Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/utils/renderTrackingTransform.js)
+
+<a name="tapspacegeometryscalethetransitionimage"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale) [the](#tapspacegeometryscalethe) [transition](#tapspacegeometryscalethetransition) [image](#tapspacegeometryscalethetransitionimage)
+
+Update transition matrix
+
+Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/rotateBy.js)
+
+<a name="tapspacegeometryscalethetransitionimage"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale) [the](#tapspacegeometryscalethe) [transition](#tapspacegeometryscalethetransition) [image](#tapspacegeometryscalethetransitionimage)
+
+Update transition matrix
+
+Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/scaleBy.js)
+
 <a name="tapspacegeometryscalechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale):[changeBasis](#tapspacegeometryscalechangebasis)(newBasis)
 
@@ -3778,13 +3806,13 @@ Represent the scale in another coordinate basis.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Scale
+- a [Scale](#tapspacegeometryscale)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Scale/changeBasis.js)
@@ -3799,7 +3827,7 @@ Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry
 <a name="tapspacegeometryscalescaleby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale):[scaleBy](#tapspacegeometryscalescaleby)(multiplier)
 
-Multiply the scale. Returns new Scale.
+Multiply the scale. Returns new [Scale](#tapspacegeometryscale).
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -3811,7 +3839,7 @@ Multiply the scale. Returns new Scale.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Scale
+- a [Scale](#tapspacegeometryscale)
 
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Scale/scaleBy.js)
@@ -3826,7 +3854,7 @@ Unlike changeBasis, returns a plain number without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3848,7 +3876,7 @@ instead.
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *size*
   - a size2 object `{ w, h }`.
 
@@ -3885,7 +3913,7 @@ Get point at (x,y).
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [at.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Size/at.js)
@@ -3908,7 +3936,7 @@ the ry is relative to the height.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Point
+- a [Point](#tapspacegeometrypoint)
 
 
 Source: [atNorm.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Size/atNorm.js)
@@ -3923,7 +3951,7 @@ For example, relative coords of point (2, 1) in size (4, 4) is (0.5, 0.25)
 
 
 - *x*
-  - a number or a Point
+  - a number or a [Point](#tapspacegeometrypoint)
 - *y*
   - a number
 
@@ -3945,13 +3973,13 @@ TODO This is impossible. Rotation cannot be applied to size.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Size
+- a [Size](#tapspacegeometrysize)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Size/changeBasis.js)
@@ -3978,7 +4006,7 @@ Multiply the size.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Size
+- a [Size](#tapspacegeometrysize)
 
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Size/scaleBy.js)
@@ -3993,7 +4021,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4007,11 +4035,11 @@ Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 <a name="tapspacegeometrytransform"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform)(basis, helmert)
 
-The Transform models rotations on xy-plane, uniform scalings and
+The [Transform](#tapspacegeometrytransform) models rotations on xy-plane, uniform scalings and
 translations in xyz-space.
-The Transform also has a reference to its basis element
+The [Transform](#tapspacegeometrytransform) also has a reference to its basis element
 which allows us to represent the transform in other bases when needed.
-The Transform is a compact special case of a
+The [Transform](#tapspacegeometrytransform) is a compact special case of a
 Helmert transformation, and more generally, a special case of
 a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 
@@ -4019,7 +4047,7 @@ a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 
 
 - *basis*
-  - a Component
+  - a [Basis](#tapspacecomponentsbasis)
 - *helmert*
   - a helm3 object, a Helmert transformation.
 
@@ -4034,6 +4062,7 @@ a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Transform capturing](#tapspacegeometrytransformcapturing)
 - [tapspace.geometry.Transform:changeBasis](#tapspacegeometrytransformchangebasis)
 - [tapspace.geometry.Transform:fromFeatures](#tapspacegeometrytransformfromfeatures)
 - [tapspace.geometry.Transform:getRaw](#tapspacegeometrytransformgetraw)
@@ -4046,6 +4075,57 @@ a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 
 Source: [Transform/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/index.js)
 
+<a name="tapspacegeometrytransformcapturing"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform) [capturing](#tapspacegeometrytransformcapturing)
+
+<p style="margin-bottom: 0">Notes:</p>
+
+
+- [1] Useful for hold event detection. We can place a threshold how far
+  - we allow fingers to move to still classify it as a press.
+- [2] The movement must be measured in the viewport. The viewport is
+  - assumed to stay still during the gesture unlike the component
+  - itself. We cannot measure on the parent component because the parent
+  - may be a target for the gesture effect and also move.
+- [3] The movement cannot be measured on the page, regardless of the view
+  - usually has the same orientation and pixel resolution with offset.
+  - The offset makes it difficult to deal with fixed pivot points.
+  - In 2.0.0-alpha.0 we tried to transit the pivot onto page and do
+  - the estimation in page coordinates. However, the resulting
+  - transformation was offsetted and would have needed transiting back
+  - to our viewport. This felt sketchy and therefore we decided to
+  - transit the pointer page coordinates onto the viewport instead.
+- [4] We want to know the depth of the touched items so that panning
+  - and zooming can be performed in a natural, relative way.
+  - Therefore we try to remember the first target elem of the gesture.
+
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacegeometrytransformeachchildbasissilently"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform) [each](#tapspacegeometrytransformeach) [child](#tapspacegeometrytransformeachchild) [basis](#tapspacegeometrytransformeachchildbasis) [silently](#tapspacegeometrytransformeachchildbasissilently)
+
+Alias of [tapspace.geometry.Transform the children](#tapspacegeometrytransformthechildren)
+
+Source: [transformBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/transformBy.js)
+
+<a name="tapspacegeometrytransformthechildren"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform) [the](#tapspacegeometrytransformthe) [children](#tapspacegeometrytransformthechildren), not the space itself.
+
+This looks like the space is transformed or that viewport
+is inversely transformed.
+
+Aliases: [tapspace.geometry.Transform each child basis silently.](#tapspacegeometrytransformeachchildbasissilently)
+
+Source: [transformBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/transformBy.js)
+
+<a name="tapspacegeometrytransformtheplane"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform) [the](#tapspacegeometrytransformthe) [plane](#tapspacegeometrytransformtheplane)
+
+Subclass instances like viewports may implement their own transformBy.
+
+Source: [match.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/match.js)
+
 <a name="tapspacegeometrytransformchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[changeBasis](#tapspacegeometrytransformchangebasis)(newBasis)
 
@@ -4055,13 +4135,13 @@ Represent the transform on another plane.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Transform
+- a [Transform](#tapspacegeometrytransform)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/changeBasis.js)
@@ -4074,9 +4154,9 @@ Create transform in intuitive way from human-readable parameters.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *params*
+- **Parameters:**, object with properties:
   - *basis*
-    - HTMLElement, required.
+    - a [Basis](#tapspacecomponentsbasis), required.
   - *rotate*
     - number, radians. Optional, default 0.
   - *scale*
@@ -4088,7 +4168,7 @@ Create transform in intuitive way from human-readable parameters.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Transform
+- a [Transform](#tapspacegeometrytransform)
 
 
 Source: [fromFeatures.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/fromFeatures.js)
@@ -4109,7 +4189,7 @@ and scaling.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Transform
+- a [Transform](#tapspacegeometrytransform)
 
 
 Source: [getRotation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/getRotation.js)
@@ -4123,7 +4203,7 @@ and scaling.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Transform
+- a [Transform](#tapspacegeometrytransform)
 
 
 Source: [getTranslation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/getTranslation.js)
@@ -4131,12 +4211,12 @@ Source: [getTranslation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 <a name="tapspacegeometrytransformgetvector"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[getVector](#tapspacegeometrytransformgetvector)()
 
-Get the translation component of the transform as a Vector.
+Get the translation component of the transform as a [Vector](#tapspacegeometryvector).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [getVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/getVector.js)
@@ -4149,7 +4229,7 @@ Invert the transform.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Transform
+- a [Transform](#tapspacegeometrytransform)
 
 
 Source: [inverse.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/inverse.js)
@@ -4164,7 +4244,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4175,16 +4255,24 @@ Unlike changeBasis, returns a plain object without basis data.
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/transitRaw.js)
 
+<a name="tapspacegeometrytransformsarelocationlessacenterpointgivesitalocation"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transforms](#tapspacegeometrytransforms) [are](#tapspacegeometrytransformsare) [locationless](#tapspacegeometrytransformsarelocationless). [A](#tapspacegeometrytransformsarelocationlessa) [center](#tapspacegeometrytransformsarelocationlessacenter) [point](#tapspacegeometrytransformsarelocationlessacenterpoint) [gives](#tapspacegeometrytransformsarelocationlessacenterpointgives) [it](#tapspacegeometrytransformsarelocationlessacenterpointgivesit) [a](#tapspacegeometrytransformsarelocationlessacenterpointgivesita) [location](#tapspacegeometrytransformsarelocationlessacenterpointgivesitalocation)
+
+Think that the transform will be applied at a point.
+
+Source: [itemApplicator.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Pinch/applicators/itemApplicator.js)
+
 <a name="tapspacegeometryvector"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector)(basis, vec)
 
-Creates a vector that can be transited between planes.
+Creates a vector that can be transited between bases.
 The vector has length and direction but no position.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *basis*
+  - a [Basis](#tapspacecomponentsbasis)
 - *vec*
   - a vec3 object {x,y,z}
 
@@ -4219,22 +4307,29 @@ The vector has length and direction but no position.
 
 Source: [Vector/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/index.js)
 
+<a name="tapspacegeometryvectorfromedgestarttoedgeend"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector) [from](#tapspacegeometryvectorfrom) [edge](#tapspacegeometryvectorfromedge) [start](#tapspacegeometryvectorfromedgestart) [to](#tapspacegeometryvectorfromedgestartto) [edge](#tapspacegeometryvectorfromedgestarttoedge) [end](#tapspacegeometryvectorfromedgestarttoedgeend)
+
+Construct rotation basis
+
+Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/utils/renderTrackingTransform.js)
+
 <a name="tapspacegeometryvectoradd"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[add](#tapspacegeometryvectoradd)(vec)
 
-Vector addition, this plus the given vector.
+[Vector](#tapspacegeometryvector) addition, this plus the given vector.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *vec*
-  - a Vector, or {x,y,z} in the same space.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} in the same space.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [add.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/add.js)
@@ -4248,7 +4343,7 @@ Test if vectors are almost equal.
 
 
 - *vec*
-  - a Vector, or {x,y,z} in the same space.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} in the same space.
 - *tolerance*
   - optional number. Defaults to affineplane.epsilon
 
@@ -4264,21 +4359,21 @@ Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometryvectorchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[changeBasis](#tapspacegeometryvectorchangebasis)(newBasis)
 
-Represent the vector on another plane.
+Represent the vector in another basis.
 Note that vectors are only affected by
-scale and angle differences between planes.
+scale and angle differences between bases.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *newBasis*
-  - a [Plane](#tapspacecomponentsplane)
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/changeBasis.js)
@@ -4291,7 +4386,7 @@ Clone the vector.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector, the clone.
+- a [Vector](#tapspacegeometryvector), the clone.
 
 
 Source: [copy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/copy.js)
@@ -4305,13 +4400,13 @@ Get cross product with another vector.
 
 
 - *vec*
-  - a Vector, or {x,y,z} in the same space.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} in the same space.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [cross.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/cross.js)
@@ -4319,19 +4414,19 @@ Source: [cross.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/
 <a name="tapspacegeometryvectordifference"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[difference](#tapspacegeometryvectordifference)(vec)
 
-Vector subtraction, this minus the given vector.
+[Vector](#tapspacegeometryvector) subtraction, this minus the given vector.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *vec*
-  - a Vector, or {x,y,z} in the same space.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} on the same basis.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Aliases: [tapspace.geometry.Vector:subtract](#tapspacegeometryvectorsubtract)
@@ -4347,13 +4442,13 @@ Get dot product with another vector.
 
 
 - *vec*
-  - a Vector, or {x,y,z} in the same space.
+  - a [Vector](#tapspacegeometryvector), or {x,y,z} in the same space.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Source: [dot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/dot.js)
@@ -4366,7 +4461,7 @@ Get vector direction.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Direction
+- a [Direction](#tapspacegeometrydirection)
 
 
 Source: [getDirection.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/getDirection.js)
@@ -4374,12 +4469,12 @@ Source: [getDirection.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/ge
 <a name="tapspacegeometryvectorgetdistance"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[getDistance](#tapspacegeometryvectorgetdistance)()
 
-Get vector norm as a Distance.
+Get vector norm as a [Distance](#tapspacegeometrydistance).
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Distance
+- a [Distance](#tapspacegeometrydistance)
 
 
 Aliases: [tapspace.geometry.Vector:norm](#tapspacegeometryvectornorm)
@@ -4401,7 +4496,7 @@ Get same vector but in opposite direction.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [negate.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/negate.js)
@@ -4416,20 +4511,20 @@ Source: [getDistance.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometryvectornormalize"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[normalize](#tapspacegeometryvectornormalize)([magnitude])
 
-Scale the vector uniformly so that its length
+[Scale](#tapspacegeometryscale) the vector uniformly so that its length
 becomes the given optional magnitude, 1 by default.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *magnitude*
-  - optional number or a Distance. Default 1.
+  - optional number or a [Distance](#tapspacegeometrydistance). Default 1.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Aliases: [tapspace.geometry.Vector:scaleTo](#tapspacegeometryvectorscaleto)
@@ -4453,7 +4548,7 @@ Rotate the vector. The vector magnitude stays the same.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/rotateBy.js)
@@ -4461,7 +4556,7 @@ Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geomet
 <a name="tapspacegeometryvectorscaleby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[scaleBy](#tapspacegeometryvectorscaleby)(multiplier)
 
-Scale the vector uniformly with multiplier.
+[Scale](#tapspacegeometryscale) the vector uniformly with multiplier.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -4473,7 +4568,7 @@ Scale the vector uniformly with multiplier.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/scaleBy.js)
@@ -4495,7 +4590,7 @@ Source: [difference.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 <a name="tapspacegeometryvectortransformby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[transformBy](#tapspacegeometryvectortransformby)(tr)
 
-Transform the displacement vector by affine transformation.
+[Transform](#tapspacegeometrytransform) the displacement vector by affine transformation.
 This can rotate and scale the vector but cannot translate it
 because only position vectors can be translated.
 
@@ -4503,13 +4598,13 @@ because only position vectors can be translated.
 
 
 - *tr*
-  - a Transform
+  - a [Transform](#tapspacegeometrytransform)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector
+- a [Vector](#tapspacegeometryvector)
 
 
 Source: [transformBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/transformBy.js)
@@ -4524,7 +4619,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 
 - *newBasis*
-  - a component
+  - a [Basis](#tapspacecomponentsbasis)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4542,15 +4637,15 @@ Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 
 
 - *basis*
-  - a component, the basis for the vector to return. In other words, the given vectors will be transited to this basis and then averaged.
+  - a [Basis](#tapspacecomponentsbasis), the basis for the vector to return. In other words, the given vectors will be transited to this basis and then averaged.
 - *vecs*
-  - array of Vector
+  - array of [Vector](#tapspacegeometryvector)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector, on the given basis.
+- a [Vector](#tapspacegeometryvector), on the given basis.
 
 
 Source: [fromAverage.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/fromAverage.js)
@@ -4564,7 +4659,7 @@ Create a vector from cylindrical polar coordinates.
 
 
 - *basis*
-  - a component, the basis for the vector to return.
+  - a [Basis](#tapspacecomponentsbasis), the basis for the vector to return.
 - *radius*
   - a number, a distance on the basis. The radial distance. Equals the length of the vector if the depth is zero.
 - *angle*
@@ -4576,7 +4671,7 @@ Create a vector from cylindrical polar coordinates.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector, on the given basis.
+- a [Vector](#tapspacegeometryvector), on the given basis.
 
 
 Source: [fromPolar.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/fromPolar.js)
@@ -4588,7 +4683,7 @@ Source: [fromPolar.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geome
 
 
 - *basis*
-  - a component, the basis for the vector to return.
+  - a [Basis](#tapspacecomponentsbasis), the basis for the vector to return.
 - *magnitude*
   - a number, a distance on the basis. The length of the vector.
 - *theta*
@@ -4600,7 +4695,7 @@ Source: [fromPolar.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geome
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Vector, on the given basis.
+- a [Vector](#tapspacegeometryvector), on the given basis.
 
 
 Source: [fromSpherical.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/fromSpherical.js)
@@ -4649,9 +4744,9 @@ of the environment and the motor skills of your users.
 
 
 - *source*
-  - a Component. The hold input source. The source begins to emit hold events.
+  - a [Plane](#tapspacecomponentsplane). The hold input source. The source begins to emit hold events.
 - *target*
-  - a Component. The target for the hold effects, if any.
+  - a [Plane](#tapspacecomponentsplane). The target for the hold effects, if any.
 - *options*
   - *holdDuration*
     - optional number, default 500. The time in milliseconds the pointers need to stay still before hold event can be emitted.
@@ -4711,7 +4806,7 @@ Source: [Hold/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/inte
 <a name="tapspaceinteractionpinch"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch)(source, target, options)
 
-Pinch transform interaction for items.
+Pinch transform interaction for items and other interactive planes.
 Drag, scale, and rotate items by using pointers.
 During pinch the target has the class `active-pinch`.
 
@@ -4719,18 +4814,18 @@ During pinch the target has the class `active-pinch`.
 
 
 - *source*
-  - an [Item](#tapspacecomponentsitem). Get gesture input from this component. The source begins to emit pinch events.
+  - a [Plane](#tapspacecomponentsplane). Get gesture input from this component. The source begins to emit pinch events.
 - *target*
-  - an [Item](#tapspacecomponentsitem). Apply gesture effects to this component.
+  - a [Plane](#tapspacecomponentsplane). Apply gesture effects to this component.
 - options, object with properties:
   - *freedom*
     - optional object with properties:
       - *type*
         - a string, for example 'TS'
       - *center*
-        - a Point. The center point for the types 'S', 'R', 'SR'. Default is null.
+        - a [Point](#tapspacegeometrypoint). The center point for the types 'S', 'R', 'SR'. Default is null.
       - *angle*
-        - a Direction. The line angle for the freedom type 'L'. Default is null.
+        - a [Direction](#tapspacegeometrydirection). The line angle for the freedom type 'L'. Default is null.
   - *applicator*
     - optional string, one of 'item', 'viewport'. Default is 'item'. This selects the applicator function that applies the pinch transformation to the target element.
 
@@ -4825,7 +4920,7 @@ Enable scaling freedom. Mix it with other enabled freedoms.
 
 
 - *center*
-  - optional Point
+  - optional [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4845,7 +4940,7 @@ Enable rotation freedom. Mix it with other enabled freedoms.
 
 
 - *center*
-  - optional Point
+  - optional [Point](#tapspacegeometrypoint)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4961,12 +5056,12 @@ allows movement along a certain direction.
 
 
 - *source*
-  - a Component. The slide input source. The source will emit slide events.
+  - a [Plane](#tapspacecomponentsplane). The slide input source. The source will emit slide events.
 - *target*
-  - a Component. The target for the slide transformation and effects.
+  - a [Plane](#tapspacecomponentsplane). The target for the slide transformation and effects.
 - *options*
   - *direction*
-    - optional Direction or Vector. Default to inner x-axis of the source. The movement is allowed only along the line specified by this direction.
+    - optional [Direction](#tapspacegeometrydirection) or [Vector](#tapspacegeometryvector). Default to inner x-axis of the source. The movement is allowed only along the line specified by this direction.
   - *minTravel*
     - optional number in viewport pixels. Default is 5. The minimum pointer travel required for the slide to begin. Set zero or negative for the slide to begin immediately at the first pointer.
 
@@ -5025,9 +5120,9 @@ Tap interaction.
 
 
 - *source*
-  - a Component. The tap input source. The source will emit 'tap' events.
+  - a [Plane](#tapspacecomponentsplane). The tap input source. The source will emit 'tap' events.
 - *target*
-  - a Component. The target for the tap effect
+  - a [Plane](#tapspacecomponentsplane). The target for the tap effect
 - *options*
   - *effect*
     - TODO string, one of 'shrink', 'shake', 'down'.
@@ -5039,6 +5134,7 @@ Tap interaction.
 
 
 - *tapstart*
+  - when the first pointer enters the element.
 - *tapend*
   - when the tap gesture ends succesfully, before the tap event.
 - *tapcancel*
@@ -5085,7 +5181,7 @@ Rotate the origin planes by mouse wheel left-right axis.
   - a [Viewport](#tapspacecomponentsviewport). Get input form this component.
 - options, object with properties:
   - *center*
-    - a Point. The center point for the rotation. TODO Defaults to the cursor position.
+    - a [Point](#tapspacegeometrypoint). The center point for the rotation. TODO Defaults to the cursor position.
 
 
 
@@ -5116,7 +5212,7 @@ Source: [WheelRotate/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/l
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[WheelZoom](#tapspaceinteractionwheelzoom)(viewport, options)
 
 Wheel zoom interaction for viewports.
-Scale the origin planes by mouse wheel.
+[Scale](#tapspacegeometryscale) the origin planes by mouse wheel.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -5125,7 +5221,7 @@ Scale the origin planes by mouse wheel.
   - a [Viewport](#tapspacecomponentsviewport). Get input form this component.
 - options, object with properties:
   - *center*
-    - a Point. The center point for the scaling. Defaults to the cursor position.
+    - a [Point](#tapspacegeometrypoint). The center point for the scaling. Defaults to the cursor position.
 
 
 
@@ -5195,7 +5291,7 @@ Test if the given HTMLElement is affine.
 
 
 - *element*
-  - a HTMLElement or any other object.
+  - an HTMLElement or any other object.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
