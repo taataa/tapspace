@@ -48,7 +48,7 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.createSpace('#tapspace')
-    const viewport = space.viewport().pannable()
+    const viewport = space.getViewport().pannable()
     const layer = space.addBasis()
 
     // Create a rotateable component at the middle of the viewport.

@@ -68,7 +68,7 @@
   <script>
     // Init tapspace
     const space = tapspace.createSpace('#tapspace')
-    const view = space.viewport().zoomable().perspective()
+    const view = space.getViewport().zoomable().perspective()
     const layer = space.addBasis()
 
     // Create html card element with image and text
