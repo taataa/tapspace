@@ -65,9 +65,9 @@
     blockC.scaleBy(0.5, blockC.atTopRight())
 
     // Make the viewport pannable and rotateable.
-    // However, free panning is prevented by the fixed rotation center.
+    // However, free panning is prevented by the fixed pivot.
     viewport.pannable().rotatable({
-      center: blockA.atBottomRight()
+      pivot: blockA.atBottomRight()
     })
 
     // Center viewport to blocks
