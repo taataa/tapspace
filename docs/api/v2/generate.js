@@ -3,6 +3,7 @@ const path = require('path')
 const version = require('../../../package.json').version
 const introText = require('./intro')
 const deco = yamdog.decorators
+const affineplaneDocs = 'https://axelpale.github.io/affineplane/docs/API.html'
 
 yamdog.generate({
   // Where to start collecting comment blocks
@@ -49,6 +50,21 @@ yamdog.generate({
     deco.aliases(),
     deco.italicSingles(),
     deco.linkNames(),
+    deco.linkKeywords({
+      'dir2': affineplaneDocs + '#affineplanedir2',
+      'dir3': affineplaneDocs + '#affineplanedir3',
+      'dist2': affineplaneDocs + '#affineplanedist2',
+      'dist3': affineplaneDocs + '#affineplanedist3',
+      'helm2': affineplaneDocs + '#affineplanehelm2',
+      'helm3': affineplaneDocs + '#affineplanehelm3',
+      'plane2': affineplaneDocs + '#affineplaneplane2',
+      'plane3': affineplaneDocs + '#affineplaneplane3',
+      'point2': affineplaneDocs + '#affineplanepoint2',
+      'point3': affineplaneDocs + '#affineplanepoint3',
+      'size2': affineplaneDocs + '#affineplanesize2',
+      'vec2': affineplaneDocs + '#affineplanevec2',
+      'vec3': affineplaneDocs + '#affineplanevec3'
+    }),
     deco.replace([
       {
         // Normalize parameters title
