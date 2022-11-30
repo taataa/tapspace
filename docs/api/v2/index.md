@@ -66,7 +66,7 @@ on the given affine element and emit them as gesture events.
 
 
 - *component*
-  - a [Plane](#tapspacecomponentsplane) or an affine HTMLElement.
+  - a [Plane](#tapspacecomponentsplane) or an affine [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement).
   - The input events will be listened for and captured here.
 - *options*
   - an optional object with props:
@@ -74,9 +74,9 @@ on the given affine element and emit them as gesture events.
       - optional object with props
         - *type*
           - optional string, default 'TSR'. The movement type.
-        - *center*
-          - optional point2 on the view or [Point](#tapspacegeometrypoint).
-          - The center point for types 'S', 'R', and 'SR'.
+        - *pivot*
+          - optional [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2) on the view or [Point](#tapspacegeometrypoint).
+          - The pivot point for types 'S', 'R', and 'SR'.
           - If a [Point](#tapspacegeometrypoint), the basis is preserved and followed.
         - *angle*
           - optional number in radians or [Direction](#tapspacegeometrydirection).
@@ -105,15 +105,17 @@ on the given affine element and emit them as gesture events.
 - *duration*
   - a number, duration of the gesture in milliseconds
 - *component*
-  - a Component where the input events were listened and captured.
+  - a [Plane](#tapspacecomponentsplane) where the input events were listened and captured.
 - *target*
-  - a Component where the input landed. Helps e.g. in determining depth.
+  - a [Plane](#tapspacecomponentsplane) where the input landed. Helps e.g. in determining depth.
 - *transform*
   - a [Transform](#tapspacegeometrytransform), the total transformation on the viewport
 - *delta*
   - a [Transform](#tapspacegeometrytransform), difference to the previous gesture event (on the viewport)
 - *center*
   - a [Point](#tapspacegeometrypoint), the middle point of the gesture. With multipointer gestures this is the mean of the active pointers.
+- *pivot*
+  - a [Point](#tapspacegeometrypoint). TODO
 
 
 
@@ -189,7 +191,7 @@ Resize event capturer.
 - *prevSize*
   - a [Size](#tapspacegeometrysize), the old size
 - *target*
-  - a Component
+  - a [Plane](#tapspacecomponentsplane)
 - TODO deltaW
 - TODO  horizontal movement in viewport pixels
 - TODO deltaH
@@ -248,11 +250,11 @@ to wheeling and scrolling.
 
 
 - *center*
-  - a [Point](#tapspacegeometrypoint)
+  - a [Point](#tapspacegeometrypoint), the pointer location.
 - *component*
-  - a Component on which the center is measured. The viewport.
+  - a [Plane](#tapspacecomponentsplane) on which the center is measured. The viewport.
 - *target*
-  - a Component closest to the original event target.
+  - a [Plane](#tapspacecomponentsplane) closest to the original event target.
 - *deltaX*
   - a number, normalized horizontal movement of the mouse wheel.
 - *deltaY*
@@ -301,7 +303,6 @@ Various components to render into the affine space.
 - [tapspace.components.Group](#tapspacecomponentsgroup)
 - [tapspace.components.Interactive](#tapspacecomponentsinteractive)
 - [tapspace.components.Item](#tapspacecomponentsitem)
-- [tapspace.components.Pixel](#tapspacecomponentspixel)
 - [tapspace.components.Plane](#tapspacecomponentsplane)
 - [tapspace.components.Space](#tapspacecomponentsspace)
 - [tapspace.components.Viewport](#tapspacecomponentsviewport)
@@ -323,7 +324,7 @@ Multiple bases together form an *affine subtree* in DOM.
 
 
 - *element*
-  - an HTMLElement
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
 
 
@@ -488,7 +489,7 @@ This element wraps affine or non-affine content. It can also be empty.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- an HTMLElement
+- an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
 
 Source: [getElement.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getElement.js)
@@ -547,7 +548,7 @@ Source: [getRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a plane3, a plane transition matrix.
+- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a plane transition matrix.
 
 
 Source: [getTransitionFrom.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionFrom.js)
@@ -570,7 +571,7 @@ to compute the same geometry represented on the the target basis.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a plane3. A transition from this plane to the target plane.
+- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3). A transition from this plane to the target plane.
 
 
 <p style="margin-bottom: 0"><strong>Throws:</strong></p>
@@ -607,7 +608,7 @@ If the target is a root, then transition is to its virtual parent.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a plane3, a transition to the real or virtual parent of the target.
+- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a transition to the real or virtual parent of the target.
 
 
 Source: [getTransitionToParentOf.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionToParentOf.js)
@@ -702,7 +703,7 @@ getWidth.
 
 
 - *element*
-  - an HTMLElement. The element does not need to be in DOM.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). The element does not need to be in DOM.
 
 
 
@@ -977,7 +978,7 @@ Translate the block so that its middle point matches the given point.
 
 
 - *position*
-  - a [Point](#tapspacegeometrypoint), or a point2 { x, y } on the parent basis. The block will be moved on the parent so that the center of the block matches the position.
+  - a [Point](#tapspacegeometrypoint), or a [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2) { x, y } on the parent basis. The block will be moved on the parent so that the center of the block matches the position.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1019,7 +1020,7 @@ Base class for viewport control areas.
 
 
 - *element*
-  - an HTMLElement. The element does not need to be in DOM.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). The element does not need to be in DOM.
 
 
 Source: [Control/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Control/index.js)
@@ -1139,7 +1140,7 @@ change their size.
 
 
 - *element*
-  - an HTMLElement. The element does not need to be in DOM.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). The element does not need to be in DOM.
 
 
 
@@ -1359,7 +1360,7 @@ Still, it can be interacted on its content.
 
 
 - *element*
-  - an HTMLElement
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
 
 
@@ -1514,7 +1515,7 @@ The items can have abilities like slidable, tappable, or draggable.
 
 
 - *element*
-  - an HTMLElement. The element does not need to be in DOM.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). The element does not need to be in DOM.
 
 
 
@@ -1589,7 +1590,7 @@ Set affine element contents. Any pre-existing content is removed.
 <p style="margin-bottom: 0">content</p>
 
 
-- an HTMLElement or HTML string. The given element(s) will replace the affine element contents.
+- an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or HTML string. The given element(s) will replace the affine element contents.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1610,7 +1611,7 @@ Source: [draggable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compo
 <a name="tapspacecomponentsitemrotatable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[rotatable](#tapspacecomponentsitemrotatable)(options)
 
-A rotatable item can be turned around a center point.
+A rotatable item can be turned around a pivot point.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -1618,8 +1619,8 @@ A rotatable item can be turned around a center point.
 - options, various types:
   - a boolean, set false to disable the ability to rotate.
   - an optional object with properties:
-    - *center*
-      - optional [Point](#tapspacegeometrypoint). Specifies a center point about which the item can be rotated. If the point is relative to the inner basis of the item, then the rotation center follows possible translations of the item.
+    - *pivot*
+      - optional [Point](#tapspacegeometrypoint). Specifies a fixed point about which the item can be rotated. If the point is relative to the inner basis of the item, then the rotation center follows possible translations of the item.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1651,8 +1652,8 @@ Controls item scale but does not affect item pixel size.
 - options, various types:
   - a boolean, set false to disable the ability to dilate.
   - an optional object with properties:
-    - *center*
-      - optional [Point](#tapspacegeometrypoint). Specifies a center point that stays fixed during dilation. If the point is relative to the inner basis of the item, then the dilation center follows possible translations of the item.
+    - *pivot*
+      - optional [Point](#tapspacegeometrypoint). Specifies a fixed point that stays fixed during dilation. If the point is relative to the inner basis of the item, then the dilation center follows possible translations of the item.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1735,22 +1736,6 @@ Alias of [tapspace.components.Item:draggable](#tapspacecomponentsitemdraggable)
 
 Source: [draggable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/draggable.js)
 
-<a name="tapspacecomponentspixel"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Pixel](#tapspacecomponentspixel)(color)
-
-Inherits [Frame](#tapspacecomponentsframe)
-
-Instance class for a 1x1 pixel on affine plane.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-
-- *color*
-  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
-
-
-Source: [Pixel/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Pixel/index.js)
-
 <a name="tapspacecomponentsplane"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane)(element)
 
@@ -1763,7 +1748,7 @@ Abstract class for affine components that behave like a transformable
 
 
 - *element*
-  - an HTMLElement
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 
 
 
@@ -1835,8 +1820,8 @@ Get a point on the plane by using local plane coordinates.
 - *x*
   - Any of the following:
     - a number, the x coordinate on the plane.
-    - a point2, {x,y} relative to the plane.
-    - a point3, {x,y,z} relative to the plane.
+    - a [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2), {x,y} relative to the plane.
+    - a [point3](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint3), {x,y,z} relative to the plane.
     - a [Point](#tapspacegeometrypoint), relative to its basis.
 - *y*
   - a number, the y coordinate on the plane. Required if x is a number.
@@ -1861,7 +1846,7 @@ Get the plane anchor point or the optional given point on the plane.
 
 
 - *alt*
-  - optional point2 or [Point](#tapspacegeometrypoint). If given, returns this point instead,
+  - optional [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2) or [Point](#tapspacegeometrypoint). If given, returns this point instead,
   - after transited onto the plane. Useful way to default a point to the
   - plane anchor if the point is nullish.
 
@@ -1967,7 +1952,7 @@ Source: [getVectorTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[match](#tapspacecomponentsplanematch)(params)
 
 Matching is a powerful way to position elements without the need to know
-the exact rotation, scaling, or translation. Give one or more source
+their exact rotation, scaling, or translation. Give one or more source
 points and their targets. The match operation attempts to move the plane
 so that the source points match their target points exactly or as
 closely as possible.
@@ -1983,17 +1968,17 @@ closely as possible.
   - *estimator*
     - string. The estimator type restricts the ways the plane is allowed to move during the operation. For details on the estimator types, see [nudged.estimate](https://github.com/axelpale/nudged/).
       - 'TSR': allow translation, scaling, and rotation. The default.
-      - 'SR': allow scaling and rotation around the center point.
+      - 'SR': allow scaling and rotation around the pivot point.
       - 'TR': allow translation and rotation but no scaling.
       - 'TS': allow translation and scaling but no rotation.
-      - 'R': allow only rotation around the center point.
-      - 'S': allow only scaling about the center point.
+      - 'R': allow only rotation around the pivot point.
+      - 'S': allow only scaling about the pivot point.
       - 'T': allow only translation aka panning.
       - 'X': allow only translation along the x-axis of the plane.
       - 'Y': allow only translation along the y-axis of the plane.
       - 'L': allow only translation along the given angle.
-  - *center*
-    - a [Point](#tapspacegeometrypoint) or {x,y}. Optional. The center for the estimators 'SR', 'R', and 'S'.
+  - *pivot*
+    - a [Point](#tapspacegeometrypoint) or {x,y}. Optional. The pivot for the estimators 'SR', 'R', and 'S' acts as a fixed center of rotation and scaling.
   - *angle*
     - a number in radians or [Direction](#tapspacegeometrydirection). Optional. The angle for the estimator 'L'.
 
@@ -2104,13 +2089,13 @@ or replaced the component.tran object.
 
 
 - *alt*
-  - optional plane3 transition to be used instead of this.tran. Useful when the position needs visual adjustment without modifying the transition. See for example snapPixels.
+  - optional [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3) transition to be used instead of this.tran. Useful when the position needs visual adjustment without modifying the transition. See for example snapPixels.
 
 
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/renderTransform.js)
 
 <a name="tapspacecomponentsplanerotateby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[rotateBy](#tapspacecomponentsplanerotateby)(radians, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[rotateBy](#tapspacecomponentsplanerotateby)(radians, pivot)
 
 Rotate the element.
 
@@ -2119,7 +2104,7 @@ Rotate the element.
 
 - *radians*
   - a number, delta angle to rotate.
-- *center*
+- *pivot*
   - optional [Point](#tapspacegeometrypoint). Rotation is performed around this point. Defaults to the plane anchor.
 
 
@@ -2132,7 +2117,7 @@ Rotate the element.
 Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/rotateBy.js)
 
 <a name="tapspacecomponentsplanerotatebydegrees"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[rotateByDegrees](#tapspacecomponentsplanerotatebydegrees)(degrees, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[rotateByDegrees](#tapspacecomponentsplanerotatebydegrees)(degrees, pivot)
 
 Rotate the element by degrees around an optional pivot point.
 
@@ -2141,7 +2126,7 @@ Rotate the element by degrees around an optional pivot point.
 
 - *degrees*
   - a number, delta angle to rotate.
-- *center*
+- *pivot*
   - optional [Point](#tapspacegeometrypoint). Rotation is performed around this point. Defaults to the plane anchor.
 
 
@@ -2154,7 +2139,7 @@ Rotate the element by degrees around an optional pivot point.
 Source: [rotateByDegrees.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/rotateByDegrees.js)
 
 <a name="tapspacecomponentsplanescaleby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[scaleBy](#tapspacecomponentsplanescaleby)(multiplier, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[scaleBy](#tapspacecomponentsplanescaleby)(multiplier, pivot)
 
 [Scale](#tapspacegeometryscale) the element.
 
@@ -2163,7 +2148,7 @@ Source: [rotateByDegrees.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 
 - *multiplier*
   - a number, the scale multiplier.
-- *center*
+- *pivot*
   - optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the plane anchor.
 
 
@@ -2184,7 +2169,7 @@ Set the anchor point of the plane. This does not move the plane.
 
 
 - *point*
-  - a point2 on the plane or a [Point](#tapspacegeometrypoint). The new anchor point.
+  - a [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2) on the plane or a [Point](#tapspacegeometrypoint). The new anchor point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2217,26 +2202,33 @@ the given scale. The dilation is performed about the plane anchor.
 Source: [setScale.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/setScale.js)
 
 <a name="tapspacecomponentsplanesnappixels"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[snapPixels](#tapspacecomponentsplanesnappixels)([anchor])
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[snapPixels](#tapspacecomponentsplanesnappixels)([pivot])
 
-Rotation and non-integer translation blurs the pixels.
-This can be annoying if the angle is close to the 90 deg modulo.
-This method rounds the transition rotation slightly if it is close,
-and rounds translation also to integer pixels if so.
+Coordinates of plane do not always match the pixel grid
+of the screen device. This causes especially
+rotation and non-integer translation to blur the pixels of images a bit.
+This blurring can be annoying if the angle is close to a 90 deg or its
+multitude but not exactly.
 
-Note that the rounding affects the input coordinates and thus
-snapPixels should NOT be used during a gesture except at the end.
+To make the images crispier and the pixels match the screen pixel grid,
+snapPixels method adjusts the translation and visible rotation slightly.
+
+The method does not modify the plane transition, i.e. the true coordinates
+of the plane, only the latent CSS rendered by the browser.
+However when snapPixels is applied to interactive planes, such as
+the viewport, the rounding can affect the input pointer coordinates.
+Therefore snapPixels should NOT be used during a gesture,
+but immediately after at the gesture end.
 Otherwise the gesture appears jittery and unpleasant.
-Also in the perspective view mode the snapping is a lost cause,
-because almost nothing matches the screen pixels exactly.
 
-The method does not modify the plane transition, only the latent CSS.
+In the perspective view mode (3D) the pixel snapping is a lost cause,
+because in that case almost nothing matches the screen pixels exactly.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *anchor*
-  - optional [Point](#tapspacegeometrypoint). The point is the pivot about to perform the rotation snapping. Rotation snapping around a point that is far from the user's gaze point – like viewport (0,0) – can cause visible movement near the gaze point. This movement can be annoying during or after a rotation gesture. Therefore the rotation snapping should be performed around a point near the gesture and the gaze point. Defaults to the plane anchor.
+- *pivot*
+  - optional [Point](#tapspacegeometrypoint). Defaults to the plane anchor. The pivot is the point about to perform the rotation snapping. Rotation snapping around a point that is far from the user's gaze point – like viewport (0,0) – can cause visible unexpected movement near the gaze point. Therefore pick a pivot point that is near the gesture and the gaze point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2248,11 +2240,11 @@ The method does not modify the plane transition, only the latent CSS.
 Source: [snapPixels.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/snapPixels.js)
 
 <a name="tapspacecomponentsplanetransformby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[transformBy](#tapspacecomponentsplanetransformby)(tr, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[transformBy](#tapspacecomponentsplanetransformby)(tr, origin)
 
 [Transform](#tapspacegeometrytransform) (move) the plane in space.
-For example, let `rotate90` be a [Transform](#tapspacegeometrytransform) that rotates the element
-90 degrees clockwise. The rotation is performed around the plane anchor.
+For example, imagine a transform that rotates the plane
+90 degrees clockwise around the plane anchor.
 If the plane was already at the angle of 45 degrees, then after
 the transformation, the plane is at the angle of 135 degrees.
 
@@ -2261,7 +2253,7 @@ the transformation, the plane is at the angle of 135 degrees.
 
 - *tr*
   - a [Transform](#tapspacegeometrytransform)
-- *center*
+- *origin*
   - optional [Point](#tapspacegeometrypoint), default to plane anchor. The transform origin. The scaling and rotation will be applied around this point.
 
 
@@ -2280,12 +2272,18 @@ Translate the element along x-, y-, and z-axis.
 Translation does not rotate or scale the element.
 Translation along z-axis can change the perceived size of the element.
 
+Example:
+```
+const vec = item.atTopLeft().getVectorTo(item.atBottomRight())
+plane.translateBy(vec)
+```
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *translation*
   - Any of the following:
-    - a vec3 {x,y,z} represented on the parent.
+    - a [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3) {x,y,z} represented on the parent.
     - a [Vector](#tapspacegeometryvector).
     - a [Transform](#tapspacegeometrytransform), from which only the translation is extracted.
 
@@ -2393,9 +2391,9 @@ Alias of [tapspace.components.Space:viewport](#tapspacecomponentsspaceviewport)
 Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/getView.js)
 
 <a name="tapspacecomponentsspacetransformby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[transformBy](#tapspacecomponentsspacetransformby)(tr, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[transformBy](#tapspacecomponentsspacetransformby)(tr, origin)
 
-Use to navigate the space.
+Use this to navigate the space.
 [Transform](#tapspacegeometrytransform) the root bases in relation to the viewport. In effect, this
 transforms the immediate children of the space.
 The transition from space to viewport stays identity and intact.
@@ -2405,7 +2403,7 @@ The transition from space to viewport stays identity and intact.
 
 - *tr*
   - a [Transform](#tapspacegeometrytransform)
-- *center*
+- *origin*
   - optional [Point](#tapspacegeometrypoint), default is (0,0). The transform origin. The scaling and rotation will be applied around this point.
 
 
@@ -2426,7 +2424,7 @@ Translate the space in relation to the viewport along x, y, and z axis.
 
 
 - *translation*
-  - a [Vector](#tapspacegeometryvector) or vec2 or vec3
+  - a [Vector](#tapspacegeometryvector) or [vec2](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec2) or [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2469,7 +2467,7 @@ determined by the container element and the host app CSS rules.
 
 
 - *element*
-  - an HTMLElement, becomes the viewport.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), becomes the viewport.
 
 
 When the viewport is transformed, it does not move on the page.
@@ -2614,7 +2612,7 @@ or replaced a plane.tran object.
 
 
 - *alt*
-  - optional plane3 transition to render instead of this.tran. See [Plane:renderTransform](#tapspacecomponentsplanerendertransform) for details.
+  - optional [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3) transition to render instead of this.tran. See [Plane:renderTransform](#tapspacecomponentsplanerendertransform) for details.
 
 
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/renderTransform.js)
@@ -2631,7 +2629,7 @@ Keeps the viewport center at the same position relative to its size.
 - *opts*
   - optional boolean false to disable the ability.
   - optional object with props:
-    - *relativeCenter*
+    - *relativeAnchor*
       - optional { rx, ry }, the relative point to keep fixed while resizing. Default { rx: 0.5, ry: 0.5 }
 
 
@@ -2648,7 +2646,7 @@ Source: [responsive.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/comp
 
 Make the viewport rotatable.
 The viewport can be rotated by pinch gesture and mouse wheel.
-If a fixed center point is given, a single-pointer drag gesture
+If a pivot point is given, a single-pointer drag gesture
 is enough to rotate.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
@@ -2657,8 +2655,8 @@ is enough to rotate.
 - options, various types:
   - a boolean, set false to disable the ability.
   - an object with props:
-    - *center*
-      - a [Point](#tapspacegeometrypoint), the center point for rotation.
+    - *pivot*
+      - a [Point](#tapspacegeometrypoint), the fixed point for rotation center.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2670,16 +2668,16 @@ is enough to rotate.
 Source: [rotatable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/rotatable.js)
 
 <a name="tapspacecomponentsviewportrotateby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[rotateBy](#tapspacecomponentsviewportrotateby)(angle, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[rotateBy](#tapspacecomponentsviewportrotateby)(angle, pivot)
 
-Rotate the viewport in space around anchor.
+Rotate the viewport in space around a pivot point.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *angle*
   - a number, the delta angle to rotate the viewport.
-- *center*
+- *pivot*
   - optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the viewport anchor.
 
 
@@ -2692,17 +2690,17 @@ Rotate the viewport in space around anchor.
 Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/rotateBy.js)
 
 <a name="tapspacecomponentsviewportscaleby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[scaleBy](#tapspacecomponentsviewportscaleby)(factor, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[scaleBy](#tapspacecomponentsviewportscaleby)(factor, pivot)
 
-Translate the viewport in space along x and y axis.
+[Scale](#tapspacegeometryscale) the viewport in space about a pivot point.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *factor*
   - a number
-- *center*
-  - an optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the viewport anchor.
+- *pivot*
+  - optional [Point](#tapspacegeometrypoint). Scaling is performed about this point. Defaults to the viewport anchor.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2714,7 +2712,7 @@ Translate the viewport in space along x and y axis.
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/scaleBy.js)
 
 <a name="tapspacecomponentsviewportsnappixels"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[snapPixels](#tapspacecomponentsviewportsnappixels)([anchor])
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[snapPixels](#tapspacecomponentsviewportsnappixels)([pivot])
 
 Snap viewport position and angle to pixels when the angle is near
 a multitude of 90 degrees.
@@ -2724,7 +2722,7 @@ because almost nothing is exact.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *anchor*
+- *pivot*
   - optional [Point](#tapspacegeometrypoint). Snap rotation around this point.
 
 
@@ -2754,13 +2752,13 @@ Practical if points need to be normalised on the page.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a point2 on the page
+- a [point2](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint2) on the page
 
 
 Source: [toPage.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/toPage.js)
 
 <a name="tapspacecomponentsviewporttransformby"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[transformBy](#tapspacecomponentsviewporttransformby)(tr, center)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[transformBy](#tapspacecomponentsviewporttransformby)(tr, origin)
 
 Overwrites [Plane:transformBy](#tapspacecomponentsplanetransformby)
 
@@ -2772,8 +2770,8 @@ transforms all root bases with the inversion of the transform.
 
 - *tr*
   - a [Transform](#tapspacegeometrytransform)
-- *center*
-  - optional [Point](#tapspacegeometrypoint), default is anchor. The transform origin. The scaling and rotation will be applied around this point.
+- *origin*
+  - optional [Point](#tapspacegeometrypoint), default is the viewport anchor. The transform origin. The scaling and rotation will be applied around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2793,7 +2791,7 @@ Translate the viewport in space along x, y, and z axis.
 
 
 - *translation*
-  - a [Vector](#tapspacegeometryvector) or vec2 or vec3
+  - a [Vector](#tapspacegeometryvector) or [vec2](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec2) or [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3)
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2809,9 +2807,9 @@ Source: [translateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 
 Make the viewport zoomable.
 The viewport can be scaled by pinch gesture and mouse wheel.
-If center point is not set, the viewport can also be panned meaning that
-the viewport can be moved and zoomed freely. If the center point is set
-then no pan is possible and zooming happens about the fixed center point.
+If the pivot is not set, the viewport can also be panned meaning that
+the viewport can be moved and zoomed freely. If the pivot point is set
+then no pan is possible and zooming happens about the pivot.
 
 Example:
 ```
@@ -2823,7 +2821,7 @@ view.zoomable()
 
 
 - options, optional boolean or object with props:
-  - *center*
+  - *pivot*
     - a [Point](#tapspacegeometrypoint), the vanishing point for zoom, the center for scaling.
     - If not set, enables viewport translation aka panning.
 
@@ -2924,7 +2922,7 @@ Make an affine item from HTML content. Wraps the content inside a div.
 
 
 - *content*
-  - an HTMLElement or HTML string. The given element(s) will be wrapped in a div.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or HTML string. The given element(s) will be wrapped in a div.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -2949,7 +2947,7 @@ const space = tapspace.createSpace('#space')
 
 
 - *element*
-  - an HTMLElement or query string. The element will become the main container for viewport, space, and space contents.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or query string. The element will become the main container for viewport, space, and space contents.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3147,7 +3145,7 @@ Source: [fromVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 <a name="tapspacegeometrydirectiongetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[getRaw](#tapspacegeometrydirectiongetraw)()
 
-**Returns:** plain dir3 object {x,y,z} without basis data.
+**Returns:** plain [dir3](https://axelpale.github.io/affineplane/docs/API.html#affineplanedir3) object {x,y,z} without basis data.
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/getRaw.js)
 
@@ -3188,7 +3186,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a dir3 unit vector
+- a [dir3](https://axelpale.github.io/affineplane/docs/API.html#affineplanedir3) unit vector
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Direction/transitRaw.js)
@@ -3268,7 +3266,7 @@ Source: [getNumber.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geome
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a dist3, a number without basis data.
+- a [dist3](https://axelpale.github.io/affineplane/docs/API.html#affineplanedist3), a number without basis data.
 
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/getRaw.js)
@@ -3336,7 +3334,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a dist3 number
+- a [dist3](https://axelpale.github.io/affineplane/docs/API.html#affineplanedist3) number
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/transitRaw.js)
@@ -3384,7 +3382,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a path3, an array of point3
+- a path3, an array of [point3](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint3)
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Path/transitRaw.js)
@@ -3392,8 +3390,8 @@ Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geom
 <a name="tapspacegeometrypoint"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint)(basis, point)
 
-A 3D point in a space. This can also be called a 3D position vector.
-See [tapspace.geometry.Vector](#tapspacegeometryvector) for a 3D displacement vector.
+A 3D point in a space. This can also be called a 3D *position vector*.
+See [Vector](#tapspacegeometryvector) for a 3D *displacement vector*.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -3561,7 +3559,7 @@ Source: [getDistanceTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/g
 <a name="tapspacegeometrypointgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[getRaw](#tapspacegeometrypointgetraw)()
 
-**Returns:** plain point3 object {x,y,z} without basis data.
+**Returns:** plain [point3](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint3) object {x,y,z} without basis data.
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/getRaw.js)
 
@@ -3637,15 +3635,15 @@ Get the point at the given distance and direction.
 Source: [polarOffset.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/polarOffset.js)
 
 <a name="tapspacegeometrypointprojectto"></a>
-## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[projectTo](#tapspacegeometrypointprojectto)(basis, camera)
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[projectTo](#tapspacegeometrypointprojectto)(plane, camera)
 
-Project the point onto the given plane
+Project the point onto a plane.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *basis*
-  - a [Basis](#tapspacecomponentsbasis), the target basis.
+- *plane*
+  - a [Plane](#tapspacecomponentsplane), the target plane.
 - *camera*
   - a [Point](#tapspacegeometrypoint), relative to the reference basis.
 
@@ -3687,7 +3685,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a point3, an object.
+- a [point3](https://axelpale.github.io/affineplane/docs/API.html#affineplanepoint3), an object.
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Point/transitRaw.js)
@@ -3860,7 +3858,7 @@ Unlike changeBasis, returns a plain number without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a dist3, a number.
+- a [dist3](https://axelpale.github.io/affineplane/docs/API.html#affineplanedist3), a number.
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Scale/transitRaw.js)
@@ -3878,7 +3876,7 @@ instead.
 - *basis*
   - a [Basis](#tapspacecomponentsbasis)
 - *size*
-  - a size2 object `{ w, h }`.
+  - a [size2](https://axelpale.github.io/affineplane/docs/API.html#affineplanesize2) object `{ w, h }`.
 
 
 
@@ -4027,7 +4025,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a size2, an object.
+- a [size2](https://axelpale.github.io/affineplane/docs/API.html#affineplanesize2), an object.
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Size/transitRaw.js)
@@ -4049,7 +4047,7 @@ a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 - *basis*
   - a [Basis](#tapspacecomponentsbasis)
 - *helmert*
-  - a helm3 object, a Helmert transformation.
+  - a [helm3](https://axelpale.github.io/affineplane/docs/API.html#affineplanehelm3) object, a Helmert transformation.
 
 
 <p style="margin-bottom: 0">Properties:</p>
@@ -4070,6 +4068,7 @@ a homogeneous (aka augmented) 4x4 transform matrix for 3D space.
 - [tapspace.geometry.Transform:getTranslation](#tapspacegeometrytransformgettranslation)
 - [tapspace.geometry.Transform:getVector](#tapspacegeometrytransformgetvector)
 - [tapspace.geometry.Transform:inverse](#tapspacegeometrytransforminverse)
+- [tapspace.geometry.Transform:invert](#tapspacegeometrytransforminvert)
 - [tapspace.geometry.Transform:transitRaw](#tapspacegeometrytransformtransitraw)
 
 
@@ -4162,7 +4161,7 @@ Create transform in intuitive way from human-readable parameters.
   - *scale*
     - number, multiplier. Optional, default 1.
   - *translate*
-    - a vec3, { x, y, z }. Optional, default { x: 0, y: 0, z: 0 }.
+    - a [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3), { x, y, z }. Optional, default { x: 0, y: 0, z: 0 }.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4176,7 +4175,7 @@ Source: [fromFeatures.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/ge
 <a name="tapspacegeometrytransformgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[getRaw](#tapspacegeometrytransformgetraw)()
 
-**Returns:** plain helm3 object `{a,b,x,y,z}` without basis data.
+**Returns:** plain [helm3](https://axelpale.github.io/affineplane/docs/API.html#affineplanehelm3) object `{a,b,x,y,z}` without basis data.
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/getRaw.js)
 
@@ -4222,7 +4221,14 @@ Get the translation component of the transform as a [Vector](#tapspacegeometryve
 Source: [getVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/getVector.js)
 
 <a name="tapspacegeometrytransforminverse"></a>
-## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[inverse](#tapspacegeometrytransforminverse)()
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[inverse](#tapspacegeometrytransforminverse)
+
+Alias of [tapspace.geometry.Transform:invert](#tapspacegeometrytransforminvert)
+
+Source: [inverse.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/inverse.js)
+
+<a name="tapspacegeometrytransforminvert"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[invert](#tapspacegeometrytransforminvert)()
 
 Invert the transform.
 
@@ -4231,6 +4237,8 @@ Invert the transform.
 
 - a [Transform](#tapspacegeometrytransform)
 
+
+Aliases: [tapspace.geometry.Transform:inverse](#tapspacegeometrytransforminverse)
 
 Source: [inverse.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/inverse.js)
 
@@ -4250,13 +4258,13 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a helm3, an object.
+- a [helm3](https://axelpale.github.io/affineplane/docs/API.html#affineplanehelm3), an object.
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Transform/transitRaw.js)
 
-<a name="tapspacegeometrytransformsarelocationlessacenterpointgivesitalocation"></a>
-## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transforms](#tapspacegeometrytransforms) [are](#tapspacegeometrytransformsare) [locationless](#tapspacegeometrytransformsarelocationless). [A](#tapspacegeometrytransformsarelocationlessa) [center](#tapspacegeometrytransformsarelocationlessacenter) [point](#tapspacegeometrytransformsarelocationlessacenterpoint) [gives](#tapspacegeometrytransformsarelocationlessacenterpointgives) [it](#tapspacegeometrytransformsarelocationlessacenterpointgivesit) [a](#tapspacegeometrytransformsarelocationlessacenterpointgivesita) [location](#tapspacegeometrytransformsarelocationlessacenterpointgivesitalocation)
+<a name="tapspacegeometrytransformsarelocationlessanoriginpointgivesitalocation"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transforms](#tapspacegeometrytransforms) [are](#tapspacegeometrytransformsare) [locationless](#tapspacegeometrytransformsarelocationless). [An](#tapspacegeometrytransformsarelocationlessan) [origin](#tapspacegeometrytransformsarelocationlessanorigin) [point](#tapspacegeometrytransformsarelocationlessanoriginpoint) [gives](#tapspacegeometrytransformsarelocationlessanoriginpointgives) [it](#tapspacegeometrytransformsarelocationlessanoriginpointgivesit) [a](#tapspacegeometrytransformsarelocationlessanoriginpointgivesita) [location](#tapspacegeometrytransformsarelocationlessanoriginpointgivesitalocation)
 
 Think that the transform will be applied at a point.
 
@@ -4274,7 +4282,7 @@ The vector has length and direction but no position.
 - *basis*
   - a [Basis](#tapspacecomponentsbasis)
 - *vec*
-  - a vec3 object {x,y,z}
+  - a [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3) object {x,y,z}
 
 
 
@@ -4484,7 +4492,7 @@ Source: [getDistance.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 <a name="tapspacegeometryvectorgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[getRaw](#tapspacegeometryvectorgetraw)()
 
-**Returns:** plain vec3 object {x,y,z} without basis data.
+**Returns:** plain [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3) object {x,y,z} without basis data.
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/getRaw.js)
 
@@ -4625,7 +4633,7 @@ Unlike changeBasis, returns a plain object without basis data.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a vec3, an object.
+- a [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3), an object.
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Vector/transitRaw.js)
@@ -4822,8 +4830,8 @@ During pinch the target has the class `active-pinch`.
     - optional object with properties:
       - *type*
         - a string, for example 'TS'
-      - *center*
-        - a [Point](#tapspacegeometrypoint). The center point for the types 'S', 'R', 'SR'. Default is null.
+      - *pivot*
+        - a [Point](#tapspacegeometrypoint). The pivot point for the types 'S', 'R', 'SR'. Default is null.
       - *angle*
         - a [Direction](#tapspacegeometrydirection). The line angle for the freedom type 'L'. Default is null.
   - *applicator*
@@ -4900,8 +4908,8 @@ Source: [disableRotation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[disableTranslation](#tapspaceinteractionpinchdisabletranslation)()
 
 Disable translation freedom. Preserve other enabled freedoms.
-If freedom did not have center set,
-the item anchor becomes the new center.
+If freedom did not have a pivot set,
+the item anchor becomes the new pivot.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -4912,15 +4920,15 @@ the item anchor becomes the new center.
 Source: [disableTranslation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Pinch/disableTranslation.js)
 
 <a name="tapspaceinteractionpinchenabledilation"></a>
-## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[enableDilation](#tapspaceinteractionpinchenabledilation)(center)
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[enableDilation](#tapspaceinteractionpinchenabledilation)(pivot)
 
 Enable scaling freedom. Mix it with other enabled freedoms.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *center*
-  - optional [Point](#tapspacegeometrypoint)
+- *pivot*
+  - optional [Point](#tapspacegeometrypoint). The scaling is only allowed about this fixed point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4932,15 +4940,15 @@ Enable scaling freedom. Mix it with other enabled freedoms.
 Source: [enableDilation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Pinch/enableDilation.js)
 
 <a name="tapspaceinteractionpinchenablerotation"></a>
-## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[enableRotation](#tapspaceinteractionpinchenablerotation)(center)
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[enableRotation](#tapspaceinteractionpinchenablerotation)(pivot)
 
 Enable rotation freedom. Mix it with other enabled freedoms.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- *center*
-  - optional [Point](#tapspacegeometrypoint)
+- *pivot*
+  - optional [Point](#tapspacegeometrypoint). The rotation is allowed only around this point.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4955,7 +4963,7 @@ Source: [enableRotation.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch):[enableTranslation](#tapspaceinteractionpinchenabletranslation)()
 
 Enable translation freedom. Mix it with other enabled freedoms.
-This cancels any fixed center points.
+This cancels any fixed pivot points.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -5001,9 +5009,9 @@ Source: [unbind.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interact
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[RealignView](#tapspaceinteractionrealignview)(viewport, options)
 
 Re-align the viewport on resize.
-Keeps the viewport center at the same position relative to the space.
-Pan the viewport during the resize so that the center stays fixed to
-the same space point.
+Keeps the viewport anchor at the same position relative to the space.
+Pan the viewport during the resize so that the anchor stays fixed to
+the same position in space.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -5011,7 +5019,7 @@ the same space point.
 - *viewport*
   - a [Viewport](#tapspacecomponentsviewport). Resize events will be observed form this component.
 - options, object with properties:
-  - *relativeCenter*
+  - *relativeAnchor*
     - optional { rx, ry }. The relative point on the viewport to keep fixed during the resize.
 
 
@@ -5180,8 +5188,8 @@ Rotate the origin planes by mouse wheel left-right axis.
 - *viewport*
   - a [Viewport](#tapspacecomponentsviewport). Get input form this component.
 - options, object with properties:
-  - *center*
-    - a [Point](#tapspacegeometrypoint). The center point for the rotation. TODO Defaults to the cursor position.
+  - *pivot*
+    - optional [Point](#tapspacegeometrypoint). Defaults to the mouse cursor position. The rotation is performed around this fixed point.
 
 
 
@@ -5220,8 +5228,8 @@ Wheel zoom interaction for viewports.
 - *viewport*
   - a [Viewport](#tapspacecomponentsviewport). Get input form this component.
 - options, object with properties:
-  - *center*
-    - a [Point](#tapspacegeometrypoint). The center point for the scaling. Defaults to the cursor position.
+  - *pivot*
+    - optional [Point](#tapspacegeometrypoint). Defaults to the cursor position. The scaling is performed about this fixed point.
 
 
 
@@ -5285,19 +5293,19 @@ Source: [loadImages.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/load
 <a name="tapspaceutilsisaffine"></a>
 ## [tapspace](#tapspace).[utils](#tapspaceutils).[isAffine](#tapspaceutilsisaffine)(element)
 
-Test if the given HTMLElement is affine.
+Test if the given [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *element*
-  - an HTMLElement or any other object.
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or any other object.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- boolean. True if the given element is HTMLElement with affine property.
+- boolean. True if the given element is [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) with affine property.
 
 
 Source: [isAffine.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/utils/isAffine.js)
