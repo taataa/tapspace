@@ -3,6 +3,7 @@ const path = require('path')
 const version = require('../../../package.json').version
 const introText = require('./intro')
 const deco = yamdog.decorators
+const mdnDocs = 'https://developer.mozilla.org/en-US/docs/Web/API/'
 const affineplaneDocs = 'https://axelpale.github.io/affineplane/docs/API.html'
 
 yamdog.generate({
@@ -51,6 +52,9 @@ yamdog.generate({
     deco.italicSingles(),
     deco.linkNames(),
     deco.linkKeywords({
+      // Web APIs
+      'HTMLElement': mdnDocs + 'HTMLElement',
+      // Affineplane geometries
       'dir2': affineplaneDocs + '#affineplanedir2',
       'dir3': affineplaneDocs + '#affineplanedir3',
       'dist2': affineplaneDocs + '#affineplanedist2',
