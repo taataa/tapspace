@@ -78,8 +78,7 @@
       edge12.renderTransform()
       edge13.renderTransform()
     }
-    view.capturer('gesture').on('gesturemove', onIdle)
-    view.capturer('wheel').on('wheel', onIdle)
+    view.on('idle', onIdle)
   </script>
 </body>
 </html>
