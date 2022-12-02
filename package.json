@@ -37,6 +37,7 @@
     "loadimages": "^1.0.0",
     "monotone-convex-hull-2d": "^1.0.1",
     "nudged": "^2.0.0",
+    "throttle-debounce": "^5.0.0",
     "to-px": "^1.1.0"
   },
   "devDependencies": {
