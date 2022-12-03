@@ -451,7 +451,12 @@ Source: [addClass.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 <a name="tapspacecomponentsbasisfindcommonancestor"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[findCommonAncestor](#tapspacecomponentsbasisfindcommonancestor)(node)
 
-Find lowest common affine ancestor of self and the given node.
+Find lowest common affine ancestor of this and the given node.
+If a mother has two children and the father of the mother is
+the grandfather of the children, then the lowest common ancestor
+for the children is the mother. If the mother has a sister from
+the same father, then the grandfather is the lowest common ancestor
+of the sister and one of the children.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -469,13 +474,11 @@ Find lowest common affine ancestor of self and the given node.
 <p style="margin-bottom: 0">Note that the result might not be a true ancestor:</p>
 
 
-- If the given node is a predecessor of self, then self is returned and vice versa.
-- If the given node equals self, then self is returned.
+- If this is an ancestor of the given node, then this is returned.
+- If the given node is an ancestor of this node, then the given node
+- is returned.
+- If this node equals the given node, then this is returned.
 
-
-For algorithmic comparison, see note 2022-04-01-19
-
-See also https://en.wikipedia.org/wiki/Lowest_common_ancestor
 
 Source: [findCommonAncestor.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/findCommonAncestor.js)
 
