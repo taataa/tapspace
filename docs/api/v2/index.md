@@ -294,8 +294,8 @@ Various components to render into space.
 
 
 - [Item](#tapspacecomponentsitem), a movable HTML container in space.
-- Space, the container for all space items.
-- Group, a set of space items.
+- [Space](#tapspacecomponentsspace), the container for all space items.
+- [Group](#tapspacecomponentsgroup), a set of space items.
 - [Viewport](#tapspacecomponentsviewport), a viewport to space. The root element.
 
 
@@ -319,10 +319,11 @@ Various components to render into space.
 - [Plane](#tapspacecomponentsplane) is a [Basis](#tapspacecomponentsbasis) that is transformable.
 - [Block](#tapspacecomponentsblock) is a [Plane](#tapspacecomponentsplane) that has rectangular boundaries and size.
 - [Frame](#tapspacecomponentsframe) is a [Block](#tapspacecomponentsblock) that has known size which can be changed.
-- Control is a [Frame](#tapspacecomponentsframe) that stays fixed to the viewport.
+- [Control](#tapspacecomponentscontrol) is a [Frame](#tapspacecomponentsframe) that stays fixed to the viewport.
 
 
 **Inheritance chart:**
+
 ![Inheritance between core components](tapspace_class_chart.png)
 
 
@@ -352,7 +353,7 @@ Source: [components/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/li
 Inherits Emitter
 
 [Basis](#tapspacecomponentsbasis) is an abstract class for all affine components that have
-an HTML element and a position within a Space.
+an HTML element and a position within a [Space](#tapspacecomponentsspace).
 Multiple bases together form an *affine subtree* in DOM.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
@@ -1738,7 +1739,7 @@ Source: [rotatable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compo
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[scalable](#tapspacecomponentsitemscalable)(options)
 
 A dilatable item can be scaled larger and smaller.
-Controls item scale but does not affect item pixel size.
+[Control](#tapspacecomponentscontrol)s item scale but does not affect item pixel size.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -1978,6 +1979,8 @@ Source: [getDirection.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/co
 
 <a name="tapspacecomponentsplanegetdistanceto"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[getDistanceTo](#tapspacecomponentsplanegetdistanceto)(plane)
+
+Get distance between the anchors of two planes.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -2419,8 +2422,8 @@ Source: [translateTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 
 Inherits [Basis](#tapspacecomponentsbasis)
 
-Space is a part of viewport and acts as a container for basis and planes.
-[Viewport](#tapspacecomponentsviewport) needs Space to keep Controls and [Plane](#tapspacecomponentsplane)s separate and
+[Space](#tapspacecomponentsspace) is a part of viewport and acts as a container for basis and planes.
+[Viewport](#tapspacecomponentsviewport) needs [Space](#tapspacecomponentsspace) to keep [Control](#tapspacecomponentscontrol)s and [Plane](#tapspacecomponentsplane)s separate and
 still enable transitions between controls and the space content.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
@@ -2439,9 +2442,10 @@ The space has zero size. TODO where to capture input, in view or space?
 - [tapspace.components.Space:addBasis](#tapspacecomponentsspaceaddbasis)
 - [tapspace.components.Space:addPlane](#tapspacecomponentsspaceaddplane)
 - [tapspace.components.Space:getView](#tapspacecomponentsspacegetview)
+- [tapspace.components.Space:getViewport](#tapspacecomponentsspacegetviewport)
 - [tapspace.components.Space:transformBy](#tapspacecomponentsspacetransformby)
 - [tapspace.components.Space:translateBy](#tapspacecomponentsspacetranslateby)
-- [tapspace.components.Space:viewport](#tapspacecomponentsspaceviewport)
+- [tapspace.components.Space.create](#tapspacecomponentsspacecreate)
 
 
 Source: [Space/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/index.js)
@@ -2463,7 +2467,7 @@ spans a coordinate system, unlike the space.
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Group
+- a [Group](#tapspacecomponentsgroup)
 
 
 Aliases: [tapspace.components.Space:addPlane](#tapspacecomponentsspaceaddplane)
@@ -2480,7 +2484,24 @@ Source: [addBasis.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 <a name="tapspacecomponentsspacegetview"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[getView](#tapspacecomponentsspacegetview)()
 
-Alias of [tapspace.components.Space:viewport](#tapspacecomponentsspaceviewport)
+Alias of [tapspace.components.Space:getViewport](#tapspacecomponentsspacegetviewport)
+
+Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/getView.js)
+
+<a name="tapspacecomponentsspacegetviewport"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[getViewport](#tapspacecomponentsspacegetviewport)()
+
+Get the viewport that is associated with the space.
+This is the main way for users to access the viewport
+after initializing the space.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Viewport](#tapspacecomponentsviewport)
+
+
+Aliases: [tapspace.components.Space:getView](#tapspacecomponentsspacegetview)
 
 Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/getView.js)
 
@@ -2529,22 +2550,12 @@ Translate the space in relation to the viewport along x, y, and z axis.
 
 Source: [translateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/translateBy.js)
 
-<a name="tapspacecomponentsspaceviewport"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[viewport](#tapspacecomponentsspaceviewport)()
+<a name="tapspacecomponentsspacecreate"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace).[create](#tapspacecomponentsspacecreate)
 
-Get the viewport that is associated with the space.
-This is the main way for users to access the viewport
-after initializing the space.
+Alias of [tapspace.createSpace](#tapspacecreatespace)
 
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- a [Viewport](#tapspacecomponentsviewport)
-
-
-Aliases: [tapspace.components.Space:getView](#tapspacecomponentsspacegetview)
-
-Source: [getView.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/getView.js)
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/create.js)
 
 <a name="tapspacecomponentsviewport"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport)(element)
@@ -2931,7 +2942,7 @@ Source: [zoomable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 <a name="tapspacecomponentszoomcontrol"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[ZoomControl](#tapspacecomponentszoomcontrol)(options)
 
-Inherits Control
+Inherits [Control](#tapspacecomponentscontrol)
 
 This control provides basic +/- buttons to zoom the viewport in and out.
 
@@ -2951,16 +2962,16 @@ Source: [ZoomControl/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/l
 ## [tapspace](#tapspace).[createBasis](#tapspacecreatebasis)()
 
 Create a group for further content.
-Groups can be used for root planes.
+[Group](#tapspacecomponentsgroup)s can be used for root planes.
 Root planes are immediate children of the space.
 Each root plane spans a coordinate system, unlike the space.
 
-Group has zero width and height.
+[Group](#tapspacecomponentsgroup) has zero width and height.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Group
+- a [Group](#tapspacecomponentsgroup)
 
 
 Aliases: [tapspace.components.Group.create](#tapspacecomponentsgroupcreate)
@@ -3047,8 +3058,10 @@ const space = tapspace.createSpace('#space')
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a Space
+- a [Space](#tapspacecomponentsspace)
 
+
+Aliases: [tapspace.components.Space.create](#tapspacecomponentsspacecreate)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Space/create.js)
 
