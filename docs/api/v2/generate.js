@@ -93,6 +93,11 @@ yamdog.generate({
         pattern: /^usage:?/i,
         replacement: '**Usage:**'
       },
+      {
+        // Normalize example title
+        pattern: /^examples?:?/i,
+        replacement: '**Example:**'
+      },
     ]),
     deco.toc({
       title: '**Contents:**'
