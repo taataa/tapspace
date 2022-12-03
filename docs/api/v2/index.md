@@ -290,12 +290,12 @@ Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev
 
 Various components to render into space.
 
-<p style="margin-bottom: 0"><strong>Overview:</strong></p>
+<p style="margin-bottom: 0"><strong>Core components:</strong></p>
 
 
 - [Item](#tapspacecomponentsitem), a movable HTML container in space.
 - [Space](#tapspacecomponentsspace), the container for all space items.
-- [Group](#tapspacecomponentsgroup), a set of space items.
+- [Group](#tapspacecomponentsgroup), a set of items and other groups.
 - [Viewport](#tapspacecomponentsviewport), a viewport to space. The root element.
 
 
