@@ -288,7 +288,42 @@ Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev
 <a name="tapspacecomponents"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents)
 
-Various components to render into the affine space.
+Various components to render into space.
+
+<p style="margin-bottom: 0"><strong>Overview:</strong></p>
+
+
+- [Item](#tapspacecomponentsitem), a movable HTML container in space.
+- Space, the container for all space items.
+- Group, a set of space items.
+- [Viewport](#tapspacecomponentsviewport), a viewport to space. The root element.
+
+
+<p style="margin-bottom: 0"><strong>Special components:</strong></p>
+
+
+- [Circle](#tapspacecomponentscircle), a round HTML element in space.
+- [Edge](#tapspacecomponentsedge), a CSS border as a line segment in space.
+
+
+<p style="margin-bottom: 0"><strong>Viewport controls:</strong></p>
+
+
+- [ZoomControl](#tapspacecomponentszoomcontrol), a button pair for zooming in and out.
+
+
+<p style="margin-bottom: 0"><strong>Abstract components:</strong></p>
+
+
+- [Basis](#tapspacecomponentsbasis) is a node in affine space.
+- [Plane](#tapspacecomponentsplane) is a [Basis](#tapspacecomponentsbasis) that is transformable.
+- [Block](#tapspacecomponentsblock) is a [Plane](#tapspacecomponentsplane) that has rectangular boundaries and size.
+- [Frame](#tapspacecomponentsframe) is a [Block](#tapspacecomponentsblock) that has known size which can be changed.
+- Control is a [Frame](#tapspacecomponentsframe) that stays fixed to the viewport.
+
+
+**Inheritance chart:**
+![Inheritance between core components](tapspace_class_chart.png)
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -350,6 +385,8 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Basis:isRoot](#tapspacecomponentsbasisisroot)
 - [tapspace.components.Basis:removeClass](#tapspacecomponentsbasisremoveclass)
 - [tapspace.components.Basis:setParent](#tapspacecomponentsbasissetparent)
+- [tapspace.components.Basis.findAffineAncestor](#tapspacecomponentsbasisfindaffineancestor)
+- [tapspace.components.Basis.isAffine](#tapspacecomponentsbasisisaffine)
 
 
 Source: [Basis/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/index.js)
@@ -685,6 +722,63 @@ setParent to possibly match the position if in the same space.
 
 
 Source: [setParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/setParent.js)
+
+<a name="tapspacecomponentsbasisfindaffineancestor"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis).[findAffineAncestor](#tapspacecomponentsbasisfindaffineancestor)(el)
+
+Find the nearest affine element, if any.
+Travels DOM towards root and tests each element for affine properties
+until one is found.
+
+Example:
+```
+const elem = document.getElementById('myelem')
+Basis.findAffineAncestor()
+```
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *el*
+  - *HTMLElement*
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- null, if no affine ancestor.
+- a [Basis](#tapspacecomponentsbasis), if has affine ancestor.
+
+
+Source: [findAffineAncestor.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/dom/findAffineAncestor.js)
+
+<a name="tapspacecomponentsbasisisaffine"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis).[isAffine](#tapspacecomponentsbasisisaffine)(element)
+
+Test if the given [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine.
+An [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine if elem.affine object is set and
+elem.affine is a [Basis](#tapspacecomponentsbasis) or inherits [Basis](#tapspacecomponentsbasis).
+
+Example:
+```
+const el = document.getElementById('myelem')
+if (Basis.isAffine(el)) { ... }
+```
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *element*
+  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or any other object.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- boolean. True if the given element is [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) with affine property.
+
+
+Source: [isAffine.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/dom/isAffine.js)
 
 <a name="tapspacecomponentsblock"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Block](#tapspacecomponentsblock)(element)
@@ -3779,7 +3873,7 @@ Source: [Scale/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geo
 
 Camera position
 
-Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/utils/renderTrackingTransform.js)
+Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/dom/renderTrackingTransform.js)
 
 <a name="tapspacegeometryscalethetransitionimage"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Scale](#tapspacegeometryscale) [the](#tapspacegeometryscalethe) [transition](#tapspacegeometryscalethetransition) [image](#tapspacegeometryscalethetransitionimage)
@@ -4320,7 +4414,7 @@ Source: [Vector/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/ge
 
 Construct rotation basis
 
-Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/utils/renderTrackingTransform.js)
+Source: [renderTrackingTransform.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/dom/renderTrackingTransform.js)
 
 <a name="tapspacegeometryvectoradd"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[add](#tapspacegeometryvectoradd)(vec)
@@ -4714,7 +4808,7 @@ Source: [fromSpherical.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/g
 Interactions define how gestures affect components.
 
 Interactions do not share a common interface.
-But, how about WheelInteraction base class for Wheel interactions?
+Interactions are not emitters. They make the components emit.
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -5289,26 +5383,6 @@ See [loadimages](https://www.npmjs.com/package/loadimages) package
 for details.
 
 Source: [loadImages.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/loaders/loadImages.js)
-
-<a name="tapspaceutilsisaffine"></a>
-## [tapspace](#tapspace).[utils](#tapspaceutils).[isAffine](#tapspaceutilsisaffine)(element)
-
-Test if the given [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-
-- *element*
-  - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) or any other object.
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- boolean. True if the given element is [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) with affine property.
-
-
-Source: [isAffine.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/utils/isAffine.js)
 
 <a name="tapspaceversion"></a>
 ## [tapspace](#tapspace).[version](#tapspaceversion)
