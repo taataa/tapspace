@@ -322,6 +322,7 @@ Various components to render into space.
 - [Block](#tapspacecomponentsblock) is a [Plane](#tapspacecomponentsplane) that has rectangular boundaries and size.
 - [Frame](#tapspacecomponentsframe) is a [Block](#tapspacecomponentsblock) that has known size which can be changed.
 - [Control](#tapspacecomponentscontrol) is a [Frame](#tapspacecomponentsframe) that stays fixed to the viewport.
+- [Interactive](#tapspacecomponentsinteractive) is a [Plane](#tapspacecomponentsplane) that can capture touch and mouse gestures.
 
 
 **Inheritance chart:**
