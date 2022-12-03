@@ -738,8 +738,9 @@ until one is found.
 
 Example:
 ```
-const elem = document.getElementById('myelem')
-Basis.findAffineAncestor()
+const btn = document.getElementById('mybutton')
+const affine = Basis.findAffineAncestor(btn)
+if (affine) { affine.rotateByDegrees(10) }
 ```
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
