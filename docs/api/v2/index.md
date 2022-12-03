@@ -15,9 +15,11 @@ See also: [Introduction](https://taataa.github.io/tapspace/) – [Tutorial](http
 <a name="tapspace"></a>
 ## [tapspace](#tapspace)
 
-The [tapspace](#tapspace) namespace provides components for space, geometry classes,
-and tools for interaction. There are also helpers for loading resources
-and managing components.
+The [tapspace](#tapspace) namespace provides [components](#tapspacecomponents) for space,
+[geometry](#tapspacegeometry) classes,
+and [interaction](#tapspaceinteraction) tools.
+There are also [loaders](#tapspaceloaders) to help in managing
+components, images, and other resources.
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -350,7 +352,7 @@ Source: [components/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/li
 <a name="tapspacecomponentsbasis"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis)(element)
 
-Inherits Emitter
+Inherits [Emitter](https://www.npmjs.com/package/component-emitter)
 
 [Basis](#tapspacecomponentsbasis) is an abstract class for all affine components that have
 an HTML element and a position within a [Space](#tapspacecomponentsspace).

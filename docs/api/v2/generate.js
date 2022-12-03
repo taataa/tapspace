@@ -54,6 +54,7 @@ yamdog.generate({
     deco.linkKeywords({
       // Web APIs
       'HTMLElement': mdnDocs + 'HTMLElement',
+      'Emitter': 'https://www.npmjs.com/package/component-emitter',
       // Affineplane geometries
       'dir2': affineplaneDocs + '#affineplanedir2',
       'dir3': affineplaneDocs + '#affineplanedir3',
