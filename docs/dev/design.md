@@ -419,7 +419,50 @@ How this works in orthogonal projection?
 
 The element itself might not change due to camera proximity. Instead, the proximity might trigger or undo behavior such as rendering new elements or removal of old elements.
 
+Trigger method sketch:
+- plane.setScaleTrigger
+- plane.setDistanceTrigger
+- plane.addDistanceTrigger
+- plane.addScaleTrigger
+- plane.addProximityTrigger (no)
+- plane.addTransformTrigger
+- plane.addPositionTrigger
+- plane.removeTriggers()
 
+Trigger methods call when the value is crossed. Example:
+plane.addDistanceTrigger(10, (ev) => {
+  switch (ev.direction || ev.way ) {
+    case 'enter':
+    case 'in':
+    plane.rotateByDegrees(10)
+    break
+    case 'exit':
+    case 'out':
+    plane.rotateByDegrees(-10)
+    break
+  }
+  if (ev.enter) {
+
+  }
+  if (ev.exit) {
+
+  }
+
+  ev.value
+  ev.distance
+})
+
+Listeners or trackers (hard emits; emits every move)
+- plane.addDistanceListener()
+- plane.addScaleListener()
+- plane.addPositionListener()
+- plane.addDilationListener() // relative to current
+- plane.addDistanceTracker()
+
+Trackers could have memory unlike listeners.
+They could track cumulative path length for example.
+On the other hand, a dilation listener might be equivalent to
+scale tracker.
 
 ## Viewport
 
