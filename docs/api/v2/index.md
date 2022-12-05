@@ -93,13 +93,13 @@ on the given affine element and emit them as gesture events.
 <p style="margin-bottom: 0">Emits</p>
 
 
-- gesturestart event with a transform-gesture object
-- gesturemove event with a transform-gesture object
-- gestureend event with a transform-gesture object
-- gesturecancel event with a transform-gesture object
+- *gesturestart* with a gesture event object
+- *gesturemove* with a gesture event object
+- *gestureend* with a gesture event object
+- *gesturecancel* with a gesture event object
 
 
-<p style="margin-bottom: 0"><a href="#tapspacegeometrytransform">Transform</a>-gesture objects have following properties:</p>
+<p style="margin-bottom: 0">Gesture event objects have following properties:</p>
 
 
 - *travel*
@@ -110,14 +110,16 @@ on the given affine element and emit them as gesture events.
   - a [Plane](#tapspacecomponentsplane) where the input events were listened and captured.
 - *target*
   - a [Plane](#tapspacecomponentsplane) where the input landed. Helps e.g. in determining depth.
+- *mean*
+  - a [Point](#tapspacegeometrypoint), the average of the coordinates of active pointers.
 - *transform*
-  - a [Transform](#tapspacegeometrytransform), the total transformation on the viewport
+  - a [Transform](#tapspacegeometrytransform), the total transformation on the viewport, the sum of all movements from the gesture start to this event.
+- *transformOrigin*
+  - a [Point](#tapspacegeometrypoint). The position of the transform on the viewport.
 - *delta*
-  - a [Transform](#tapspacegeometrytransform), difference to the previous gesture event (on the viewport)
-- *center*
-  - a [Point](#tapspacegeometrypoint), the middle point of the gesture. With multipointer gestures this is the mean of the active pointers.
-- *pivot*
-  - a [Point](#tapspacegeometrypoint). TODO
+  - a [Transform](#tapspacegeometrytransform), difference to the previous gesture event. Measured on the viewport.
+- *deltaOrigin*
+  - a [Point](#tapspacegeometrypoint). The position of the delta transform on the viewport.
 
 
 
@@ -432,7 +434,8 @@ Source: [addChild.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 <a name="tapspacecomponentsbasisaddclass"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[addClass](#tapspacecomponentsbasisaddclass)
 
-Add a CSS class name into the affine wrapper element.
+Add a CSS class name into the affine element.
+This is equivalent to `basis.element.classList.add(className)`.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -476,8 +479,7 @@ of the sister and one of the children.
 
 
 - If this is an ancestor of the given node, then this is returned.
-- If the given node is an ancestor of this node, then the given node
-- is returned.
+- If the given node is an ancestor of this node, then the given node is returned.
 - If this node equals the given node, then this is returned.
 
 
@@ -486,8 +488,10 @@ Source: [findCommonAncestor.js](https://github.com/taataa/tapspace/blob/2.0-dev/
 <a name="tapspacecomponentsbasisgetancestors"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getAncestors](#tapspacecomponentsbasisgetancestors)()
 
-Affine ancestors, ordered from the immediate parent to
-the farthest ancestor, the immediate parent first.
+Get an array of affine ancestors of this node, ordered from
+the immediate parent to the farthest ancestor, the immediate parent first.
+The list of ancestors includes a space and a viewport, given that
+the node is placed in a space.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -500,7 +504,8 @@ Source: [getAncestors.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/co
 <a name="tapspacecomponentsbasisgetchildren"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getChildren](#tapspacecomponentsbasisgetchildren)()
 
-Get all affine children from DOM.
+Get all affine child nodes of this node. The children are found via DOM.
+The children in DOM that do not have affine properties will be skipped.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -527,8 +532,8 @@ Source: [getDescendants.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/
 <a name="tapspacecomponentsbasisgetelement"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getElement](#tapspacecomponentsbasisgetelement)()
 
-Get the affine HTML element of the node.
-This element wraps affine or non-affine content. It can also be empty.
+Get the affine element of the node. Each [Basis](#tapspacecomponentsbasis) has one affine element.
+This element can wrap further affine or non-affine content.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -543,6 +548,7 @@ Source: [getElement.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/comp
 
 All affine leaf descendants in a list. A leaf has no own children.
 The affine leaves must be connected to this node in the subset of DOM.
+An affine leaf may have non-affine children in DOM.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -582,6 +588,12 @@ Source: [getRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <a name="tapspacecomponentsbasisgettransitionfrom"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getTransitionFrom](#tapspacecomponentsbasisgettransitionfrom)(source)
 
+Compute a coordinate transition matrix from the source basis
+to this basis. The transition matrix can be used to convert
+coordinates and geometry between bases.
+Note that if one of the two bases or a basis between them moves
+then you should compute the transition matrix again.
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
@@ -592,7 +604,7 @@ Source: [getRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compone
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a plane transition matrix.
+- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a basis transition matrix.
 
 
 Source: [getTransitionFrom.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionFrom.js)
@@ -629,10 +641,16 @@ Source: [getTransitionTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 <a name="tapspacecomponentsbasisgettransitiontoparent"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getTransitionToParent](#tapspacecomponentsbasisgettransitiontoparent)()
 
-**Returns:** a transition from the coordinate system of the element
-to its parent.
+Get a coordinate transition matrix from this basis to its parent basis.
+If this basis does not have a parent, it is either root affine node in DOM
+or is not yet added to DOM, and in this case a transition matrix to
+a virtual parent is returned.
 
-TODO what if parent is non-affine
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), the coordinate transition matrix from this to parent.
+
 
 Source: [getTransitionToParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionToParent.js)
 
@@ -660,13 +678,15 @@ Source: [getTransitionToParentOf.js](https://github.com/taataa/tapspace/blob/2.0
 <a name="tapspacecomponentsbasisisleaf"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[isLeaf](#tapspacecomponentsbasisisleaf)()
 
-Node is a leaf if it has no affine children.
-Note that also a non-leaf can have non-affine children.
+This basis is a leaf if it has no affine children in DOM.
+A leaf can have non-affine children in DOM.
+A basis that is not a leaf has one or more affine children and
+may also have non-affine chilren.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
 
-- a boolean, true if the node has no affine children.
+- a boolean, true if the basis has no affine children.
 
 
 Source: [isLeaf.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/isLeaf.js)
@@ -674,8 +694,9 @@ Source: [isLeaf.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/componen
 <a name="tapspacecomponentsbasisisroot"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[isRoot](#tapspacecomponentsbasisisroot)()
 
-Is the element an affine root i.e.
-the element does not have an affine parent.
+Test is the basis an affine root i.e.
+does the element have no affine parent.
+A root basis can have non-affine parent in DOM.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -688,7 +709,8 @@ Source: [isRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/componen
 <a name="tapspacecomponentsbasisremoveclass"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[removeClass](#tapspacecomponentsbasisremoveclass)
 
-Remove a CSS class name from the affine wrapper element.
+Remove a CSS class name from the affine element.
+This is equivalent to `basis.element.classList.remove(className)`.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -710,10 +732,11 @@ Source: [removeClass.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 
 Appends the basis node as a child of another basis.
 Removes the basis from the current parent, if any.
-Appending makes the node the last child.
+Appending places the node after its siblings in DOM.
 
-Keeps the basis transition intact. Inheriting classes may overwrite
-setParent to possibly match the position if in the same space.
+The operation keeps the basis transition intact.
+Inheriting classes may overwrite setParent for example to match
+the position if the new parent belongs to the same space.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -734,8 +757,8 @@ Source: [setParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compo
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis).[findAffineAncestor](#tapspacecomponentsbasisfindaffineancestor)(el)
 
 Find the nearest affine element, if any.
-Travels DOM towards root and tests each element for affine properties
-until one is found.
+Travels DOM towards document root and tests each element along the way for
+affine properties until one is found or the document root is reached.
 
 **Example:**
 ```
@@ -764,8 +787,8 @@ Source: [findAffineAncestor.js](https://github.com/taataa/tapspace/blob/2.0-dev/
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis).[isAffine](#tapspacecomponentsbasisisaffine)(element)
 
 Test if the given [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine.
-An [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine if elem.affine object is set and
-elem.affine is a [Basis](#tapspacecomponentsbasis) or inherits [Basis](#tapspacecomponentsbasis).
+An [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) is affine if elem.affine object is set
+and that the elem.affine is a [Basis](#tapspacecomponentsbasis) or inherits [Basis](#tapspacecomponentsbasis).
 
 **Example:**
 ```
