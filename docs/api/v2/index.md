@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.1
+# Tapspace API Documentation v2.0.0-alpha.2
 
 
 Welcome to Tapspace API documentation.
