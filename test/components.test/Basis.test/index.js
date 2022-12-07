@@ -1,5 +1,6 @@
 const units = {
   findCommonAncestor: require('./findCommonAncestor.test'),
+  prependChild: require('./prependChild.test'),
   setId: require('./setId.test')
 }
 
