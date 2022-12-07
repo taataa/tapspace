@@ -1,10 +1,7 @@
 const template = require('./template.ejs')
-const hierarchy = require('./hierarchy.ejs')
 
 module.exports = (test, container, tapspace) => {
   //
-  const Basis = tapspace.components.Basis
-
   test('case: setId', (t) => {
     // Setup
     container.innerHTML = template()
