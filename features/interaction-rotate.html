@@ -49,7 +49,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const block = tapspace.createItem(template('Rotate me!'))
     block.addClass('mycomponent')
-    basis.add(block)
+    basis.addChild(block)
     block.setAnchor(block.atMiddle())
     block.moveTo(viewport.atCenter().offset(0, -20))
 

@@ -60,7 +60,7 @@
 
     const blockA = tapspace.createItem('')
     blockA.addClass('mycomponent')
-    layer.add(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
 
     // 2D Hellos
     const numHellos = 16
@@ -71,7 +71,7 @@
       const hello = tapspace.createItem(html)
       hello.addClass('hello')
       hello.setSize(helloSize)
-      layer.add(hello)
+      layer.addChild(hello)
       hello.scaleBy(Math.pow(0.618, i))
       let position
       if (i === 0) {
@@ -92,7 +92,7 @@
       world.addClass('world')
       world.setSize(worldSize)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
-      layer.add(world, position)
+      layer.addChild(world, position)
       world.rotateBy(0.05 * i, world.atCenter())
     }
 

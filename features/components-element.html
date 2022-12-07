@@ -41,10 +41,10 @@
     hello.addClass('hello')
     hello.setSize(160, 100)
     hello.setAnchor(hello.atMid())
-    basis.add(hello, view.atMid())
+    basis.addChild(hello, view.atMid())
     // Display anchor
     const anc = tapspace.createCircle(5, 'white')
-    basis.add(anc, hello.atAnchor())
+    basis.addChild(anc, hello.atAnchor())
   </script>
 </body>
 </html>

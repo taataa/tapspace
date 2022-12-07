@@ -49,19 +49,19 @@
     const m2 = tapspace.createCircle(20, 'green')
     const m3 = tapspace.createCircle(20, 'orange')
 
-    nodelayer.add(m0, view.atNorm(0.38, 0.3, 0))
-    nodelayer.add(m1, view.atNorm(0.62, 0.6, 1))
-    nodelayer.add(m2, view.atNorm(0.38, 0.3, 2))
-    nodelayer.add(m3, view.atNorm(1, 0.1, 1))
+    nodelayer.addChild(m0, view.atNorm(0.38, 0.3, 0))
+    nodelayer.addChild(m1, view.atNorm(0.62, 0.6, 1))
+    nodelayer.addChild(m2, view.atNorm(0.38, 0.3, 2))
+    nodelayer.addChild(m3, view.atNorm(1, 0.1, 1))
 
     // Create edges
     const edge01 = tapspace.createEdge('0.6em dotted black')
     const edge12 = tapspace.createEdge('0.6em solid black')
     const edge13 = tapspace.createEdge('0.6em dashed #333')
 
-    edgelayer.add(edge01)
-    edgelayer.add(edge12)
-    edgelayer.add(edge13)
+    edgelayer.addChild(edge01)
+    edgelayer.addChild(edge12)
+    edgelayer.addChild(edge13)
 
     edge01.setPoints(m0.atAnchor(), m1.atAnchor())
     edge12.setPoints(m1.atAnchor(), m2.atAnchor())

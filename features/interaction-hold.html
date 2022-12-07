@@ -49,7 +49,7 @@
     const component = tapspace.createItem(template('Hold me!'))
     component.setAnchor(component.atMid())
     component.addClass('mycomponent')
-    layer.add(component, viewport.atMid())
+    layer.addChild(component, viewport.atMid())
     // Label for messages
     const label = component.element.querySelector('p')
 

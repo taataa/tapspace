@@ -59,9 +59,9 @@
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     blockC.addClass('mycomponent')
-    layer.add(blockA, viewport.atNorm(0.1, 0.1))
-    layer.add(blockB, blockA.atBottomRight())
-    layer.add(blockC, blockA.atTopRight())
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockB, blockA.atBottomRight())
+    layer.addChild(blockC, blockA.atTopRight())
     blockC.scaleBy(0.5, blockC.atTopRight())
 
     // Make the viewport pannable and rotateable.

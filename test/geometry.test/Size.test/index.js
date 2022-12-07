@@ -10,7 +10,7 @@ module.exports = function (test, container, tapspace) {
     // Create an element
     const hel = tapspace.createItem('hello')
     hel.setSize({ w: 200, h: 200 })
-    basis.add(hel)
+    basis.addChild(hel)
     // Get its size
     const size = hel.getSize()
 
@@ -31,7 +31,7 @@ module.exports = function (test, container, tapspace) {
     // Create an element
     const hel = tapspace.createItem('hello')
     hel.setSize(200, 200)
-    basis.add(hel)
+    basis.addChild(hel)
     // Get its size
     const size = hel.getSize()
 

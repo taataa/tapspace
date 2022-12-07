@@ -71,7 +71,7 @@ Let us create our first content item. The item wraps HTML content and provides v
 
 The item is not yet added to the space nor DOM. Let us do that.
 
-    basis.add(hello, p)
+    basis.addChild(hello, p)
 
 This will add the hello item at the coordinates { x: 200 y: 100 } relative to the origin of the basis.
 

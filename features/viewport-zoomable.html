@@ -57,8 +57,8 @@
     const blockB = tapspace.createItem(template('Able'))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
-    layer.add(blockA, viewport.atNorm(0.1, 0.1))
-    layer.add(blockB, blockA.atBottomRight())
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockB, blockA.atBottomRight())
 
     // Make the viewport pannable and zoomable
     viewport.zoomable()

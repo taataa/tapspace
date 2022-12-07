@@ -53,7 +53,7 @@
     const component = tapspace.createItem(template('Tap me!'))
     component.setAnchor(component.atMid())
     component.addClass('mycomponent')
-    layer.add(component, viewport.atMid())
+    layer.addChild(component, viewport.atMid())
 
     // Make the component emit tap events
     component.tappable()

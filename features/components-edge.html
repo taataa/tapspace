@@ -48,22 +48,22 @@
     const m1 = tapspace.createCircle(20, 'blue')
     const m2 = tapspace.createCircle(20, 'green')
 
-    nodelayer.add(m0, view.atNorm(0.38, 0.3))
-    nodelayer.add(m1, view.atNorm(0.62, 0.3))
+    nodelayer.addChild(m0, view.atNorm(0.38, 0.3))
+    nodelayer.addChild(m1, view.atNorm(0.62, 0.3))
 
     // Equilateral triangle
     const dist = m0.atAnchor().getDistanceTo(m1.atAnchor())
     const p2 = m0.atAnchor().polarOffset(dist, Math.PI / 3)
-    nodelayer.add(m2, p2)
+    nodelayer.addChild(m2, p2)
 
     // Create edges
     const edge01 = tapspace.createEdge('0.6em dotted black')
     const edge12 = tapspace.createEdge('0.6em solid gray')
     const edge20 = tapspace.createEdge('0.6em dashed black')
 
-    edgelayer.add(edge01)
-    edgelayer.add(edge12)
-    edgelayer.add(edge20)
+    edgelayer.addChild(edge01)
+    edgelayer.addChild(edge12)
+    edgelayer.addChild(edge20)
 
     edge01.setPoints(m0.atAnchor(), m1.atAnchor())
     edge12.setPoints(m1.atAnchor(), m2.atAnchor())
@@ -81,7 +81,7 @@
       m1.atAnchor(),
       m2.atAnchor()
     ])
-    nodelayer.add(mMean, pMean)
+    nodelayer.addChild(mMean, pMean)
   </script>
 </body>
 </html>

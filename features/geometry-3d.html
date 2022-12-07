@@ -109,11 +109,11 @@
     })
 
     // Position the cards into space, relative to each other.
-    layer.add(cards[0], view.atNorm(0.3, 0.4, 0))
-    layer.add(cards[1], cards[0].atTopRight().offset(0, -100, 100))
-    layer.add(cards[2], cards[1].atBottomRight().offset(0, 100, 100))
-    layer.add(cards[3], cards[1].atBottomMid().offset(150, 450, 50))
-    layer.add(cards[4], cards[1].atBottomMid().offset(-150, 550, -50))
+    layer.addChild(cards[0], view.atNorm(0.3, 0.4, 0))
+    layer.addChild(cards[1], cards[0].atTopRight().offset(0, -100, 100))
+    layer.addChild(cards[2], cards[1].atBottomRight().offset(0, 100, 100))
+    layer.addChild(cards[3], cards[1].atBottomMid().offset(150, 450, 50))
+    layer.addChild(cards[4], cards[1].atBottomMid().offset(-150, 550, -50))
 
     // Adjust font size to fit square.
     cards[0].element.style.fontSize = '1.1em'
@@ -143,18 +143,18 @@
     const infoCard = tapspace.createItem(createInfoElement(infoText))
     infoCard.setSize(162, 100)
     infoCard.setAnchor(infoCard.atMid())
-    layer.add(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
+    layer.addChild(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
     infoCard.element.style.fontSize = '0.62em'
 
     // Nodes
     const nodes = space.addBasis()
 
-    nodes.add(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
-    nodes.add(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
-    nodes.add(tapspace.createCircle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
-    nodes.add(tapspace.createCircle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
-    nodes.add(tapspace.createCircle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
-    nodes.add(tapspace.createCircle(20, 'orange'), infoCard.atBottomRight())
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), infoCard.atBottomRight())
 
   </script>
 </body>

@@ -65,7 +65,7 @@
     comp.addClass('mycomponent')
     comp.setSize(300, 300)
     comp.setAnchor(comp.atMid())
-    layer.add(comp)
+    layer.addChild(comp)
 
     comp.rotateBy(-1.9 - 0.5 * i)
     comp.scaleBy(Math.pow(0.62, i))
@@ -85,7 +85,7 @@
   }
 
   // Insert components to space.
-  layer.add(originComp, view.atMid())
+  layer.addChild(originComp, view.atMid())
 
   // Recursively insert the same component n times
   iterate(originComp, 9)

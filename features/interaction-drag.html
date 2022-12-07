@@ -56,7 +56,7 @@
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const block = tapspace.createItem(template('Drag me!'))
     block.addClass('mycomponent')
-    layer.add(block)
+    layer.addChild(block)
     block.matchPoints(block.atMid(), viewport.atMid())
 
     // Make the component emit drag events
