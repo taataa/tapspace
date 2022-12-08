@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Approach Interaction - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Approach Gesture – Tapspace Features</h1>
+  <p>Navigate close to the circles to activate them. Use mouse wheel or pinch to navigate the space.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default basis for content.
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport().zoomable().perspective()
+    const circles = space.addBasis()
+
+    // Create a component
+    const circle = tapspace.createCircle(20, 'white')
+    circles.addChild(circle, viewport.atMiddle())
+
+    const cameraCapturer = circle.capturer('camera')
+    cameraCapturer.on('cameraenter', (ev) => {
+      console.log('cameraenter', ev)
+    })
+    cameraCapturer.on('cameraleave', (ev) => {
+      console.log('cameraleave', ev)
+    })
+  </script>
+</body>
+</html>
