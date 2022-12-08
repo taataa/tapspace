@@ -13,11 +13,12 @@ module.exports = (test, container, tapspace) => {
 
     // Construct a hierarchy of nodes
     basis.element.innerHTML = hierarchy()
+    // eslint-disable-next-line
     const na = new Basis(basis.element.querySelector('#affine-a'))
     const naa = new Basis(basis.element.querySelector('#affine-aa'))
     const naaa = new Basis(basis.element.querySelector('#affine-aaa'))
     const naab = new Basis(basis.element.querySelector('#affine-aab'))
-    const naac = document.querySelector('#nonaffine-aac')
+    // const naac = document.querySelector('#nonaffine-aac')
     // naac is not affine
 
     t.equal(
