@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Arc Component - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+    }
+    .container {
+      background: #BBB;
+    }
+    .myspaceapp {
+      background: #DDD;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const space = tapspace.createSpace('#tapspace')
+    const view = space.getViewport().zoomable()
+
+    const edgelayer = space.addBasis()
+    const nodelayer = space.addBasis()
+
+    // Create nodes
+    const m0 = tapspace.createCircle(20, 'red')
+    const m1 = tapspace.createCircle(20, 'blue')
+
+    nodelayer.addChild(m0, view.atNorm(0.38, 0.3))
+    nodelayer.addChild(m1, view.atNorm(0.62, 0.3))
+
+    // Create arcs
+    const edge01 = tapspace.createArc(90, '2px dotted black')
+
+    edgelayer.addChild(edge01)
+
+    edge01.setPoints(m1.atAnchor(), m0.atAnchor())
+    // edge01.translateTo(m0.atMidRight())
+
+    // Attach titles for inspection
+    edge01.element.title = 'Edge from m0 to m1'
+  </script>
+</body>
+</html>
