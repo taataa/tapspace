@@ -14,6 +14,9 @@ yamdog.generate({
   // Earmark; include blocks that begin with this name.
   earmark: {
     'tapspace': 'tapspace',
+    // Capturers
+    'CameraCapturer': 'tapspace.capturers.CameraCapturer',
+    'GestureCapturer': 'tapspace.capturers.GestureCapturer',
     // Components
     'Basis': 'tapspace.components.Basis',
     'Block': 'tapspace.components.Block',
