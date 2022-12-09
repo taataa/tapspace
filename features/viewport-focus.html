@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Focusing Viewport - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+      cursor: grab;
+    }
+    .myspaceapp .active-pinch {
+      cursor: grabbing;
+    }
+    .myitem {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Focusing Viewport – Tapspace Features</h1>
+  <p>Viewport can be moved to show content with focusTo method.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const space = tapspace.createSpace('#tapspace')
+    const viewport = space.getViewport().pannable()
+    const plane = space.addBasis()
+
+    // Create a component
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const item = tapspace.createItem(template('Item of Interest'))
+    item.addClass('myitem')
+    plane.addChild(item)
+
+    // Move item so that it is not trivially positioned.
+    item.rotateByDegrees(25).scaleBy(1.2).translateTo(plane.at(300, 200))
+
+    // Tap the item to focus the viewport to it.
+    item.tappable()
+    item.on('tap', () => {
+      console.log('focus')
+      viewport.animateOnce()
+      viewport.focusTo(item, { margin: '30%' })
+    })
+  </script>
+</body>
+</html>
