@@ -16,10 +16,16 @@
     }
     .ball {
       background: white;
-      color: black;
+      color: white;
+    }
+    .ball .label {
+      text-align: center;
+      padding-top: 0.38em;
+      font-size: 20px;
     }
     .ball.active {
       background: black;
+      color: white;
     }
   </style>
 </head>
@@ -38,29 +44,46 @@
     // Setup the tapspace viewport and the default basis for content.
     const space = tapspace.createSpace('#tapspace')
     const viewport = space.getViewport().zoomable().perspective()
-    const circles = space.addBasis()
+    const circleGroup = space.addBasis()
 
-    const createApproachableCircle = (position) => {
+    viewport.setAnchor(viewport.atMiddle())
+
+    const createApproachableCircle = (label) => {
       // Create a component
       const circle = tapspace.createCircle(20)
       circle.addClass('ball')
-      circles.addChild(circle, position)
+      // Make it easy to determine this is a ball
+      circle.isBall = true
 
-      const cameraCapturer = circle.capturer('camera')
-      cameraCapturer.on('cameraenter', (ev) => {
-        if (ev.distance < 500) {
-          circle.addClass('active')
-        }
+      circle.tappable()
+      circle.on('tap', (ev) => {
+        viewport.animateOnce({
+          duration: '1000ms'
+        })
+        viewport.translateTo(circle.atCenter())
+
+        // TODO animate and animateOnce should make viewport emit
+        // idle when animation ends.
+        setTimeout(() => {
+          viewport.emit('idle')
+        }, 1050)
       })
-      cameraCapturer.on('cameraleave', (ev) => {
-        if (ev.distance >= 500) {
-          circle.removeClass('active')
-        }
-      })
+
+      if (label) {
+        circle.element.innerHTML = '<div class="label">' + label + '</div>'
+      }
+
+      return circle
+    }
+
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase()
+    const pickCharacter = (i) => {
+      const modIndex = i % alphabet.length
+      return alphabet[modIndex]
     }
 
     const origin = viewport.atMid()
-    const W = 8
+    const W = 6
     const D = 200
     for (let i = 0; i < W; i += 1) {
       for (let j = 0; j < W; j += 1) {
@@ -68,7 +91,11 @@
           const x = (i + Math.random() / 3) * D
           const y = (j + Math.random() / 3) * D
           const z = (k + Math.random() / 3) * D
-          createApproachableCircle(origin.offset(x, y, z))
+          const position = origin.offset(x, y, z)
+          const index = i * W * W + j * W + k // unique; in [0, W^3[
+          const letter = pickCharacter(index)
+          const circle = createApproachableCircle(letter)
+          circleGroup.addChild(circle, position)
         }
       }
     }
