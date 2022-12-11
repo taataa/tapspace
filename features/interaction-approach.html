@@ -99,6 +99,23 @@
         }
       }
     }
+
+    viewport.on('idle', () => {
+      const measures = viewport.measurePlanes()
+      measures.forEach(measure => {
+        if (measure.plane.isBall) {
+          const ball = measure.plane
+          const distOnViewport = measure.distancePx
+
+          // Activate near by balls
+          if (distOnViewport < 600) {
+            ball.addClass('active')
+          } else {
+            ball.removeClass('active')
+          }
+        }
+      })
+    })
   </script>
 </body>
 </html>
