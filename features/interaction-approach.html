@@ -107,6 +107,20 @@
           const ball = measure.plane
           const distOnViewport = measure.distancePx
 
+          // Blur circles based on distance.
+          // Radius formula is adapted from Vishwanath & Blaser 2010.
+          // See also https://en.wikipedia.org/wiki/Depth_of_field#DOF_formulae
+          const b0 = viewport.getCameraDistance().getNumber() // retina dist
+          const z0 = b0 // fixation point / focus distance from camera
+          const f = 1 / (1 / b0 + 1 / z0) // focal length
+          const z = distOnViewport + b0 // viewing distance, dist to camera
+          const b = 1 / (1 / f - 1 / z)
+          const D = 10 // pupil size in px ~ aperature
+          const P = 0.9 // pupil factor
+          const blurDiameter = D * Math.abs(b0 - b) / (b + (P - 1) * f)
+          const blurRadius = Math.floor(blurDiameter / 2)
+          ball.element.style.filter = 'blur(' + blurRadius + 'px)'
+
           // Activate near by balls
           if (distOnViewport < 600) {
             ball.addClass('active')
