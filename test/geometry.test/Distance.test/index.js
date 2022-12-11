@@ -21,4 +21,21 @@ module.exports = function (test, container, tapspace) {
 
     t.end()
   })
+
+  test('Distance :isGreaterThan :isLessThan', (t) => {
+    // Setup
+    container.innerHTML = template()
+    const space = tapspace.createSpace('#testspace')
+    const ba = space.addBasis()
+    const bb = space.addBasis()
+    bb.scaleBy(2)
+
+    const da = new tapspace.geometry.Distance(ba, 10)
+    const db = new tapspace.geometry.Distance(bb, 10)
+
+    t.true(da.isLessThan(db), 'non-scaled should be less')
+    t.true(db.isGreaterThan(da), 'non-scaled should be less')
+
+    t.end()
+  })
 }
