@@ -1,11 +1,6 @@
 const test = require('tape')
 const tapspace = require('../index')
 
-// Render results to dom so that we do not need to open the console.
-// Use tape-dom. Tape-dom looks for element #tests
-const tapeDom = require('tape-dom')
-tapeDom(test)
-
 const units = {
   // General
   version: require('./version.test'),
