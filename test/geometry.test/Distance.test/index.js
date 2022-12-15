@@ -22,7 +22,7 @@ module.exports = function (test, container, tapspace) {
     t.end()
   })
 
-  test('Distance :isGreaterThan :isLessThan', (t) => {
+  test('Distance :isAlmostEqual :isGreaterThan :isLessThan', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.createSpace('#testspace')
@@ -35,6 +35,10 @@ module.exports = function (test, container, tapspace) {
 
     t.true(da.isLessThan(db), 'non-scaled should be less')
     t.true(db.isGreaterThan(da), 'non-scaled should be less')
+
+    t.true(da.isAlmostEqual(da), 'is equal with self')
+    t.false(da.isAlmostEqual(db), 'not almost equal')
+    t.true(da.isAlmostEqual(db, 11), 'equal within tolerance')
 
     t.end()
   })
