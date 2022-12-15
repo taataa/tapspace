@@ -107,8 +107,8 @@
           const ball = measure.plane
           const distOnViewport = measure.distancePx
 
-          // Blur circles based on distance.
-          // Radius formula is adapted from Vishwanath & Blaser 2010.
+          // Simulate depth of field: blur circles based on distance.
+          // Blur radius formula is adapted from Vishwanath & Blaser 2010.
           // See also https://en.wikipedia.org/wiki/Depth_of_field#DOF_formulae
           const b0 = viewport.getCameraDistance().getNumber() // retina dist
           const z0 = b0 // fixation point / focus distance from camera
