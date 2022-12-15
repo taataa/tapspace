@@ -58,6 +58,8 @@ yamdog.generate({
       // Web APIs
       'HTMLElement': mdnDocs + 'HTMLElement',
       'Emitter': 'https://www.npmjs.com/package/component-emitter',
+      // Terminology
+      'Complexity': 'https://en.wikipedia.org/wiki/Computational_complexity',
       // Affineplane geometries
       'dir2': affineplaneDocs + '#affineplanedir2',
       'dir3': affineplaneDocs + '#affineplanedir3',
