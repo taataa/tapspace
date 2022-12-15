@@ -10,6 +10,10 @@ Architectural guidelines for tapspace classes:
 .affine-layer,
 .affine-group,
 .affine-plane {
+  /* Space elements are absolutely positioned */
+  position: absolute;
+  top: 0;
+  left: 0;
   /* Planes themselves have zero size to allow pointer events reach
     elements on the layers below. To make elements on the plane visible,
     they must be visible over the plane borders. */
