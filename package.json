@@ -47,7 +47,6 @@
     "finalhandler": "^1.2.0",
     "genversion": "^3.0.2",
     "ip": "^1.1.5",
-    "jquery": "^3.6.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "qrcode-terminal": "^0.12.0",
