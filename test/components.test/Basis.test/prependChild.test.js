@@ -5,7 +5,7 @@ module.exports = (test, container, tapspace) => {
   //
   const Basis = tapspace.components.Basis
 
-  test('case: prependChild', (t) => {
+  test('Basis:prependChild', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.createSpace('#testspace')

@@ -5,7 +5,7 @@ module.exports = (test, container, tapspace) => {
   //
   const Basis = tapspace.components.Basis
 
-  test('findCommonAncestor', (t) => {
+  test('Basis.findCommonAncestor', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.createSpace('#testspace')

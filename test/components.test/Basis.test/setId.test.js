@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = (test, container, tapspace) => {
   //
-  test('case: setId', (t) => {
+  test('Basis:setId', (t) => {
     // Setup
     container.innerHTML = template()
     const space = tapspace.createSpace('#testspace')
