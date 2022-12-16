@@ -15,8 +15,11 @@ yamdog.generate({
   earmark: {
     'tapspace': 'tapspace',
     // Capturers
+    'Capturer': 'tapspace.capturers.Capturer',
     'CameraCapturer': 'tapspace.capturers.CameraCapturer',
     'GestureCapturer': 'tapspace.capturers.GestureCapturer',
+    'ResizeCapturer': 'tapspace.capturers.ResizeCapturer',
+    'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
     'Basis': 'tapspace.components.Basis',
     'Block': 'tapspace.components.Block',
