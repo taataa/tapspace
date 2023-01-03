@@ -49,22 +49,25 @@
     // Create three affine elements - one for each mode
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
-    const noinput = tapspace.createItem(template('No action'))
+    const noinput = tapspace.createItem(template('Disabled'))
     noinput.setAnchor(noinput.atMid())
     noinput.setSize(100, 100)
     noinput.addClass('mycomponent')
+    // noinput.disable()
     layer.addChild(noinput, viewport.at(200, 200))
 
     const handle = tapspace.createItem(template('Handle'))
     handle.setAnchor(handle.atMid())
     handle.setSize(100, 100)
     handle.addClass('mycomponent')
+    // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
 
     const frame = tapspace.createItem(template('Active content'))
     frame.setAnchor(frame.atMid())
     frame.setSize(100, 100)
     frame.addClass('mycomponent')
+    // frame.interactive() or just so by default
     layer.addChild(frame, viewport.at(600, 200))
 
     const movable = tapspace.createItem(template('Movable'))
@@ -88,6 +91,7 @@
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent')
+    inhandle.draggable()
     layer.addChild(inhandle, viewport.at(600, 400))
   </script>
 </body>
