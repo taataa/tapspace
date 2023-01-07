@@ -63,7 +63,9 @@
     // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
 
-    const frame = tapspace.createItem(template('Active content'))
+    const frame = tapspace.createItem(template('Active content ' +
+      'with <a href="#">links</a> and ' +
+      '<input value="fields" style="width: 80px"/>'))
     frame.setAnchor(frame.atMid())
     frame.setSize(100, 100)
     frame.addClass('mycomponent')
@@ -87,7 +89,8 @@
     tappable.on('tapcancel', () => { tappable.removeClass('active') })
     layer.addChild(tappable, viewport.at(400, 400))
 
-    const inhandle = tapspace.createItem(template('Active content with handle'))
+    const inhandle = tapspace.createItem(template('Active content with ' +
+      'a handle. <button data-affine-action="handle">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent')
