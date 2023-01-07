@@ -87,7 +87,7 @@
     tappable.setAnchor(tappable.atMid())
     tappable.setSize(100, 100)
     tappable.addClass('mycomponent')
-    // tappable.setAction('tap')
+    // tappable.setAction('tap', 'handle')
     tappable.tappable()
     tappable.on('tapstart', () => { tappable.addClass('active') })
     tappable.on('tapend', () => { tappable.removeClass('active') })
