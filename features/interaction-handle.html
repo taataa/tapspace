@@ -23,7 +23,7 @@
       cursor: pointer;
     }
     .mylabel {
-      margin-top: 2rem;
+      margin-top: 1rem;
       text-align: center;
       font-size: 1rem;
     }
@@ -46,6 +46,12 @@
     const viewport = space.getViewport().zoomable()
     const layer = space.addBasis()
 
+    viewport.getCapturer('gesture').update({
+      delegation: 'handles',
+      preventDefault: true
+    })
+    space.getElement().dataset.affineAction = 'handle'
+
     // Create three affine elements - one for each mode
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
@@ -57,10 +63,12 @@
     // noinput.disable()
     layer.addChild(noinput, viewport.at(200, 200))
 
-    const handle = tapspace.createItem(template('Handle'))
+    const handle = tapspace.createItem(template('Handle for viewport with ' +
+      'passive content.'))
     handle.setAnchor(handle.atMid())
     handle.setSize(100, 100)
     handle.addClass('mycomponent')
+    handle.getElement().dataset.affineAction = 'greedy-handle'
     // handle.setAction('handle')
     // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
@@ -75,32 +83,49 @@
     // frame.interactive() or just so by default
     layer.addChild(frame, viewport.at(600, 200))
 
-    const movable = tapspace.createItem(template('Movable'))
+    const movable = tapspace.createItem(template('Movable item'))
     movable.setAnchor(movable.atMid())
     movable.setSize(100, 100)
     movable.addClass('mycomponent')
     // movable.setAction('drag')
     movable.draggable()
+    movable.getCapturer('gesture').update({
+      delegation: 'all',
+      preventDefault: true
+    })
     layer.addChild(movable, viewport.at(200, 400))
 
-    const tappable = tapspace.createItem(template('Tappable handle'))
+    const tappable = tapspace.createItem(template('Tappable handle for viewport'))
     tappable.setAnchor(tappable.atMid())
     tappable.setSize(100, 100)
     tappable.addClass('mycomponent')
     // tappable.setAction('tap', 'handle')
     tappable.tappable()
+    tappable.getCapturer('gesture').update({
+      delegation: 'all',
+      preventDefault: false
+    })
+    tappable.getElement().dataset.affineAction = 'greedy-handle'
+    // tappable.setActionMode('greedy-handle')
+    // .setProxyMode, .setHandling, .makeHandle, .setActionMode,
+    // .setHandleMode, .setHandle
     tappable.on('tapstart', () => { tappable.addClass('active') })
     tappable.on('tapend', () => { tappable.removeClass('active') })
     tappable.on('tapcancel', () => { tappable.removeClass('active') })
+    tappable.on('tap', () => { tappable.rotateByDegrees(45, tappable.atMid()) })
     layer.addChild(tappable, viewport.at(400, 400))
 
-    const inhandle = tapspace.createItem(template('Active content with ' +
+    const inhandle = tapspace.createItem(template('Movable item with ' +
+      'active content and ' +
       'a handle. <button data-affine-action="handle">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent')
     // inhandle.setAction('content', 'drag')
     inhandle.draggable()
+    inhandle.getCapturer('gesture').update({
+      delegation: 'handles'
+    })
     layer.addChild(inhandle, viewport.at(600, 400))
   </script>
 </body>
