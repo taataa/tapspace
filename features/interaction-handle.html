@@ -46,12 +46,6 @@
     const viewport = space.getViewport().zoomable()
     const layer = space.addBasis()
 
-    viewport.getCapturer('gesture').update({
-      delegation: 'handles',
-      preventDefault: true
-    })
-    space.getElement().dataset.affineAction = 'handle'
-
     // Create three affine elements - one for each mode
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
@@ -60,7 +54,8 @@
     noinput.setSize(100, 100)
     noinput.addClass('mycomponent')
     // noinput.setAction('none')
-    // noinput.disable()
+    noinput.disable()
+    noinput.disableContent()
     layer.addChild(noinput, viewport.at(200, 200))
 
     const handle = tapspace.createItem(template('Handle for viewport with ' +
@@ -68,7 +63,7 @@
     handle.setAnchor(handle.atMid())
     handle.setSize(100, 100)
     handle.addClass('mycomponent')
-    handle.getElement().dataset.affineAction = 'greedy-handle'
+    handle.disableContent()
     // handle.setAction('handle')
     // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
@@ -89,10 +84,7 @@
     movable.addClass('mycomponent')
     // movable.setAction('drag')
     movable.draggable()
-    movable.getCapturer('gesture').update({
-      delegation: 'all',
-      preventDefault: true
-    })
+    movable.disableContent()
     layer.addChild(movable, viewport.at(200, 400))
 
     const tappable = tapspace.createItem(template('Tappable handle for viewport'))
@@ -102,10 +94,9 @@
     // tappable.setAction('tap', 'handle')
     tappable.tappable()
     tappable.getCapturer('gesture').update({
-      delegation: 'all',
       preventDefault: false
     })
-    tappable.getElement().dataset.affineAction = 'greedy-handle'
+    tappable.disableContent()
     // tappable.setActionMode('greedy-handle')
     // .setProxyMode, .setHandling, .makeHandle, .setActionMode,
     // .setHandleMode, .setHandle
@@ -117,15 +108,12 @@
 
     const inhandle = tapspace.createItem(template('Movable item with ' +
       'active content and ' +
-      'a handle. <button data-affine-action="handle">&hellip;</button>'))
+      'a handle. <button data-affine-action="proxy">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent')
     // inhandle.setAction('content', 'drag')
     inhandle.draggable()
-    inhandle.getCapturer('gesture').update({
-      delegation: 'handles'
-    })
     layer.addChild(inhandle, viewport.at(600, 400))
   </script>
 </body>
