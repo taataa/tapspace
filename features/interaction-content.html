@@ -80,8 +80,8 @@
     noinput.setContentInput(false)
     layer.addChild(noinput, viewport.at(200, 200))
 
-    const handle = tapspace.createItem(template('Handle for viewport with ' +
-      'passive content.'))
+    const handle = tapspace.createItem(template(
+      'Handle for viewport with passive content.'))
     handle.setAnchor(handle.atMid())
     handle.setSize(100, 100)
     handle.addClass('mycomponent')
@@ -118,21 +118,19 @@
     movable.setContentInput(false)
     layer.addChild(movable, viewport.at(200, 400))
 
-    const tappable = tapspace.createItem(template('Tappable handle for viewport'))
+    const tappable = tapspace.createItem(template(
+      'Tappable handle for viewport'))
     tappable.setAnchor(tappable.atMid())
     tappable.setSize(100, 100)
     tappable.addClass('mycomponent')
     tappable.tappable({ preventDefault: false })
     tappable.setContentInput(false)
-    tappable.on('tapstart', () => { tappable.addClass('active') })
-    tappable.on('tapend', () => { tappable.removeClass('active') })
-    tappable.on('tapcancel', () => { tappable.removeClass('active') })
-    tappable.on('tap', () => { tappable.rotateByDegrees(45, tappable.atMid()) })
+    tappable.on('tap', () => tappable.rotateByDegrees(45, tappable.atMid()))
     layer.addChild(tappable, viewport.at(400, 400))
 
-    const inhandle = tapspace.createItem(template('Movable item with ' +
-      'active content and ' +
-      'a handle. <button class="affine-proxy-pointer">&hellip;</button>'))
+    const inhandle = tapspace.createItem(template(
+      'Movable item with active content and a handle. ' +
+      '<button class="affine-proxy-pointer">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent', 'active-content')
