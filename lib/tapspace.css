@@ -102,3 +102,10 @@ Architectural guidelines for tapspace classes:
   /* Controls are 2D only. */
   transform-style: flat;
 }
+
+.affine-proxy {
+  /* Contents of an proxy act as passive part of the proxy element.
+     The proxy itself acts as an interactive part of its ancestors. */
+  touch-action: none;
+  user-select: none;
+}
