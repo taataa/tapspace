@@ -20,7 +20,6 @@
     .mycomponent {
       background: white;
       color: black;
-      cursor: pointer;
     }
     .mylabel {
       margin-top: 1rem;
@@ -29,6 +28,16 @@
     }
     .mycomponent.active {
       background: #EEE;
+    }
+    .mycomponent.disabled {
+      cursor: not-allowed;
+    }
+    .movable, .affine-proxy {
+      cursor: grab;
+    }
+    .affine-proxy.active-pinch,
+    .active-pinch .affine-proxy {
+      cursor: grabbing;
     }
   </style>
 </head>
@@ -52,7 +61,7 @@
     const noinput = tapspace.createItem(template('Disabled'))
     noinput.setAnchor(noinput.atMid())
     noinput.setSize(100, 100)
-    noinput.addClass('mycomponent')
+    noinput.addClass('mycomponent', 'disabled')
     // noinput.setAction('none')
     noinput.disable()
     noinput.disableContent()
@@ -68,8 +77,8 @@
     // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
 
-    const frame = tapspace.createItem(template('Active content ' +
-      'with <a href="#">links</a> and ' +
+    const frame = tapspace.createItem(template(
+      'Active content with <a href="#">links</a> and ' +
       '<input value="fields" style="width: 80px"/>'))
     frame.setAnchor(frame.atMid())
     frame.setSize(100, 100)
@@ -81,7 +90,7 @@
     const movable = tapspace.createItem(template('Movable item'))
     movable.setAnchor(movable.atMid())
     movable.setSize(100, 100)
-    movable.addClass('mycomponent')
+    movable.addClass('mycomponent', 'movable')
     // movable.setAction('drag')
     movable.draggable()
     movable.disableContent()
