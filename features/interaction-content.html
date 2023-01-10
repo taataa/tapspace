@@ -110,7 +110,7 @@
     scroller.setContentInput('wheel')
     layer.addChild(scroller, viewport.at(800, 200))
 
-    const movable = tapspace.createItem(template('Movable item'))
+    const movable = tapspace.createItem(template('Draggable item'))
     movable.setAnchor(movable.atMid())
     movable.setSize(100, 100)
     movable.addClass('mycomponent')
@@ -122,10 +122,7 @@
     tappable.setAnchor(tappable.atMid())
     tappable.setSize(100, 100)
     tappable.addClass('mycomponent')
-    tappable.tappable()
-    tappable.getCapturer('gesture').update({
-      preventDefault: false
-    })
+    tappable.tappable({ preventDefault: false })
     tappable.setContentInput(false)
     tappable.on('tapstart', () => { tappable.addClass('active') })
     tappable.on('tapend', () => { tappable.removeClass('active') })
