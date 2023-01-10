@@ -22,9 +22,11 @@
       color: black;
     }
     .mylabel {
-      margin-top: 1rem;
+      margin: 0;
+      padding-top: 1rem;
       text-align: center;
       font-size: 1rem;
+      height: 100%;
     }
     .mycomponent.active {
       background: #EEE;
@@ -38,6 +40,9 @@
     .affine-proxy.active-pinch,
     .active-pinch .affine-proxy {
       cursor: grabbing;
+    }
+    .mycomponent.scrollable {
+      overflow: scroll;
     }
   </style>
 </head>
@@ -86,6 +91,18 @@
     // frame.setAction('content')
     // frame.interactive() or just so by default
     layer.addChild(frame, viewport.at(600, 200))
+
+    const scroller = tapspace.createItem(template(
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text.'
+    ))
+    scroller.setAnchor(scroller.atMid())
+    scroller.setSize(100, 100)
+    scroller.addClass('mycomponent', 'scrollable')
+    layer.addChild(scroller, viewport.at(800, 200))
 
     const movable = tapspace.createItem(template('Movable item'))
     movable.setAnchor(movable.atMid())
