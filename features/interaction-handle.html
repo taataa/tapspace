@@ -69,7 +69,7 @@
     noinput.addClass('mycomponent', 'disabled')
     // noinput.setAction('none')
     noinput.disable()
-    noinput.disableContent()
+    noinput.setContentInput(false)
     layer.addChild(noinput, viewport.at(200, 200))
 
     const handle = tapspace.createItem(template('Handle for viewport with ' +
@@ -77,7 +77,7 @@
     handle.setAnchor(handle.atMid())
     handle.setSize(100, 100)
     handle.addClass('mycomponent')
-    handle.disableContent()
+    handle.setContentInput(false)
     // handle.setAction('handle')
     // handle.handlable()
     layer.addChild(handle, viewport.at(400, 200))
@@ -88,6 +88,7 @@
     frame.setAnchor(frame.atMid())
     frame.setSize(100, 100)
     frame.addClass('mycomponent')
+    frame.setContentInput('pointer')
     // frame.setAction('content')
     // frame.interactive() or just so by default
     layer.addChild(frame, viewport.at(600, 200))
@@ -102,6 +103,7 @@
     scroller.setAnchor(scroller.atMid())
     scroller.setSize(100, 100)
     scroller.addClass('mycomponent', 'scrollable')
+    scroller.setContentInput('wheel')
     layer.addChild(scroller, viewport.at(800, 200))
 
     const movable = tapspace.createItem(template('Movable item'))
@@ -110,7 +112,7 @@
     movable.addClass('mycomponent', 'movable')
     // movable.setAction('drag')
     movable.draggable()
-    movable.disableContent()
+    movable.setContentInput(false)
     layer.addChild(movable, viewport.at(200, 400))
 
     const tappable = tapspace.createItem(template('Tappable handle for viewport'))
@@ -122,7 +124,7 @@
     tappable.getCapturer('gesture').update({
       preventDefault: false
     })
-    tappable.disableContent()
+    tappable.setContentInput(false)
     // tappable.setActionMode('greedy-handle')
     // .setProxyMode, .setHandling, .makeHandle, .setActionMode,
     // .setHandleMode, .setHandle
@@ -134,7 +136,7 @@
 
     const inhandle = tapspace.createItem(template('Movable item with ' +
       'active content and ' +
-      'a handle. <button class="affine-proxy">&hellip;</button>'))
+      'a handle. <button class="affine-proxy-pointer">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
     inhandle.addClass('mycomponent')
