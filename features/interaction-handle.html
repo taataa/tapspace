@@ -16,6 +16,10 @@
     .myspaceapp {
       background: gray;
       height: 500px;
+      cursor: grab;
+    }
+    .active-pinch {
+      cursor: grabbing;
     }
     .mycomponent {
       background: white;
@@ -34,14 +38,19 @@
     .mycomponent.disabled {
       cursor: not-allowed;
     }
-    .movable, .affine-proxy {
-      cursor: grab;
-    }
-    .affine-proxy.active-pinch,
-    .active-pinch .affine-proxy {
+    .active-pinch .mycomponent {
       cursor: grabbing;
     }
-    .mycomponent.scrollable {
+    .mycomponent.active-content {
+      cursor: initial;
+    }
+    .mycomponent.active-content .affine-proxy-pointer {
+      cursor: grab;
+    }
+    .active-pinch.active-content .affine-proxy-pointer {
+      cursor: grabbing;
+    }
+    .scroller {
       overflow: scroll;
     }
   </style>
@@ -87,14 +96,14 @@
       '<input value="fields" style="width: 80px"/>'))
     frame.setAnchor(frame.atMid())
     frame.setSize(100, 100)
-    frame.addClass('mycomponent')
+    frame.addClass('mycomponent', 'active-content')
     frame.setContentInput('pointer')
     // frame.setAction('content')
     // frame.interactive() or just so by default
     layer.addChild(frame, viewport.at(600, 200))
 
     const scroller = tapspace.createItem(template(
-      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text but otherwise passive content. Scrollable text. ' +
       'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
       'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
       'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
@@ -102,14 +111,14 @@
     ))
     scroller.setAnchor(scroller.atMid())
     scroller.setSize(100, 100)
-    scroller.addClass('mycomponent', 'scrollable')
+    scroller.addClass('mycomponent', 'scroller')
     scroller.setContentInput('wheel')
     layer.addChild(scroller, viewport.at(800, 200))
 
     const movable = tapspace.createItem(template('Movable item'))
     movable.setAnchor(movable.atMid())
     movable.setSize(100, 100)
-    movable.addClass('mycomponent', 'movable')
+    movable.addClass('mycomponent')
     // movable.setAction('drag')
     movable.draggable()
     movable.setContentInput(false)
@@ -139,7 +148,7 @@
       'a handle. <button class="affine-proxy-pointer">&hellip;</button>'))
     inhandle.setAnchor(inhandle.atMid())
     inhandle.setSize(100, 100)
-    inhandle.addClass('mycomponent')
+    inhandle.addClass('mycomponent', 'active-content')
     // inhandle.setAction('content', 'drag')
     inhandle.draggable()
     layer.addChild(inhandle, viewport.at(600, 400))
