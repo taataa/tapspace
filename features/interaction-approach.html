@@ -23,7 +23,7 @@
       padding-top: 0.38em;
       font-size: 20px;
     }
-    .ball.active {
+    .ball.active-approach {
       background: black;
       color: white;
     }
@@ -46,6 +46,7 @@
     const viewport = space.getViewport().zoomable().perspective()
     const circleGroup = space.addBasis()
 
+    viewport.setMeasureMode('lazy')
     viewport.setAnchor(viewport.atMiddle())
 
     const createApproachableCircle = (label) => {
@@ -55,11 +56,9 @@
       // Make it easy to determine this is a ball
       circle.isBall = true
 
-      circle.tappable()
+      circle.tappable({ preventDefault: false })
       circle.on('tap', (ev) => {
-        viewport.animateOnce({
-          duration: '1000ms'
-        })
+        viewport.animateOnce({ duration: '1000ms' })
         viewport.translateTo(circle.atCenter())
 
         // TODO animate and animateOnce should make viewport emit
@@ -69,6 +68,12 @@
         }, 1050)
       })
 
+      // Disable content
+      circle.setContentInput(false)
+
+      // Will begin to mark near circles with 'active-approach'
+      circle.approachable({ threshold: 600 })
+
       if (label) {
         circle.element.innerHTML = '<div class="label">' + label + '</div>'
       }
@@ -76,12 +81,14 @@
       return circle
     }
 
+    // Label circles with letters.
     const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase()
     const pickCharacter = (i) => {
       const modIndex = i % alphabet.length
       return alphabet[modIndex]
     }
 
+    // Generate circles
     const origin = viewport.atMid()
     const W = 6
     const D = 200
@@ -99,6 +106,11 @@
         }
       }
     }
+
+    // Move view to show all the circles.
+    // TODO use fitting method.
+    const offx = D * (W - 1) / 2
+    viewport.translateBy({ x: offx, y: offx, z: -2 * D })
 
     viewport.on('idle', () => {
       const measures = viewport.measurePlanes()
@@ -120,13 +132,6 @@
           const blurDiameter = D * Math.abs(b0 - b) / (b + (P - 1) * f)
           const blurRadius = Math.floor(blurDiameter / 2)
           ball.element.style.filter = 'blur(' + blurRadius + 'px)'
-
-          // Activate near by balls
-          if (distOnViewport < 600) {
-            ball.addClass('active')
-          } else {
-            ball.removeClass('active')
-          }
         }
       })
     })
