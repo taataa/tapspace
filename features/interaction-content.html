@@ -18,6 +18,9 @@
       height: 500px;
       cursor: grab;
     }
+    .myspaceapp:focus-visible {
+      outline: 1px solid blue;
+    }
     .active-pinch {
       cursor: grabbing;
     }
@@ -30,6 +33,7 @@
       padding-top: 1rem;
       text-align: center;
       font-size: 1rem;
+      box-sizing: border-box;
       height: 100%;
     }
     .mycomponent.active-tap {
@@ -66,8 +70,13 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport().zoomable()
+    const viewport = space.getViewport().zoomable().focusable()
     const layer = space.addBasis()
+
+    // Steal focus to viewport when panning.
+    viewport.on('pinchstart', () => {
+      viewport.focus({ focusVisible: false })
+    })
 
     // Create three affine elements - one for each mode
     const template = (t) => '<p class="mylabel">' + t + '</p>'
