@@ -114,8 +114,11 @@
     movable.setAnchor(movable.atMid())
     movable.setSize(100, 100)
     movable.addClass('mycomponent')
-    movable.draggable()
+    movable.draggable().focusable()
     movable.setContentInput(false)
+    movable.on('pinchstart', () => {
+      movable.focus({ preventScroll: true, focusVisible: true })
+    })
     layer.addChild(movable, viewport.at(200, 400))
 
     const tappable = tapspace.createItem(template(
