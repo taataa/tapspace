@@ -27,9 +27,11 @@ components, images, and other resources.
 
 - [tapspace.capturers](#tapspacecapturers)
 - [tapspace.components](#tapspacecomponents)
+- [tapspace.createArc](#tapspacecreatearc)
 - [tapspace.createBasis](#tapspacecreatebasis)
 - [tapspace.createCircle](#tapspacecreatecircle)
 - [tapspace.createEdge](#tapspacecreateedge)
+- [tapspace.createGroup](#tapspacecreategroup)
 - [tapspace.createItem](#tapspacecreateitem)
 - [tapspace.createSpace](#tapspacecreatespace)
 - [tapspace.effects](#tapspaceeffects)
@@ -51,25 +53,95 @@ and mouse wheel movements.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.capturers.CameraCapturer](#tapspacecapturerscameracapturer)
+- [tapspace.capturers.Capturer](#tapspacecapturerscapturer)
 - [tapspace.capturers.GestureCapturer](#tapspacecapturersgesturecapturer)
+- [tapspace.capturers.KeyboardCapturer](#tapspacecapturerskeyboardcapturer)
 - [tapspace.capturers.ResizeCapturer](#tapspacecapturersresizecapturer)
 - [tapspace.capturers.WheelCapturer](#tapspacecapturerswheelcapturer)
 
 
 Source: [capturers/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/index.js)
 
-<a name="tapspacecapturersgesturecapturer"></a>
-## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer)(component, options)
+<a name="tapspacecapturerscameracapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[CameraCapturer](#tapspacecapturerscameracapturer)(component)
 
-Begin to capture and recognize pointer gestures
-on the given affine element and emit them as gesture events.
+Inherits [Capturer](#tapspacecapturerscapturer)
+
+Captures viewport moves towards and away from the plane anchor.
+Meant for semantic zoom features.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *component*
-  - a [Plane](#tapspacecomponentsplane) or an affine [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement).
-  - The input events will be listened for and captured here.
+  - a [Plane](#tapspacecomponentsplane), the component to capture.
+
+
+<p style="margin-bottom: 0">Emits:</p>
+
+
+- *cameraenter*
+  - when camera is moving closer
+- *cameraleave*
+  - when camera is moving farther
+
+
+**Under the hood:**
+The viewport iterates planes when necessary and checks if the plane
+has an active camera capturer. If so, the viewport is responsible
+of informing the camera capturer about the camera movement.
+This way the plane can be connected to viewport later, not necessarily
+at setup phase.
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.CameraCapturer:bind](#tapspacecapturerscameracapturerbind)
+- [tapspace.capturers.CameraCapturer:unbind](#tapspacecapturerscameracapturerunbind)
+
+
+Source: [CameraCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/CameraCapturer/index.js)
+
+<a name="tapspacecapturerscameracapturerbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[CameraCapturer](#tapspacecapturerscameracapturer):[bind](#tapspacecapturerscameracapturerbind)()
+
+Attach listeners.
+
+Source: [CameraCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/CameraCapturer/index.js)
+
+<a name="tapspacecapturerscameracapturerunbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[CameraCapturer](#tapspacecapturerscameracapturer):[unbind](#tapspacecapturerscameracapturerunbind)()
+
+Detach listeners.
+
+Source: [CameraCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/CameraCapturer/index.js)
+
+<a name="tapspacecapturerscapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[Capturer](#tapspacecapturerscapturer)()
+
+A base class for capturers. Every capturer must implement this interface.
+[Capturer](#tapspacecapturerscapturer)s may have extra methods on top of these.
+
+Source: [Capturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/Capturer/index.js)
+
+<a name="tapspacecapturersgesturecapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer)(component, options)
+
+Inherits [Capturer](#tapspacecapturerscapturer)
+
+Begin to capture and recognize pointer gestures
+on the given component and emit them as gesture events.
+The component does not need to be connected to camera at
+the time of construction, but eventually it needs to be connected
+in order to capture gestures.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - a [Plane](#tapspacecomponentsplane), the source of input events.
 - *options*
   - an optional object with props:
     - *freedom*
@@ -126,10 +198,18 @@ on the given affine element and emit them as gesture events.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.capturers.GestureCapturer:bind](#tapspacecapturersgesturecapturerbind)
 - [tapspace.capturers.GestureCapturer:getFreedom](#tapspacecapturersgesturecapturergetfreedom)
 - [tapspace.capturers.GestureCapturer:unbind](#tapspacecapturersgesturecapturerunbind)
 - [tapspace.capturers.GestureCapturer:update](#tapspacecapturersgesturecapturerupdate)
 
+
+Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
+
+<a name="tapspacecapturersgesturecapturerbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[GestureCapturer](#tapspacecapturersgesturecapturer):[bind](#tapspacecapturersgesturecapturerbind)()
+
+Start event listeners and gesture capturing.
 
 Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
 
@@ -167,8 +247,64 @@ Update capturer options.
 
 Source: [GestureCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/GestureCapturer/index.js)
 
+<a name="tapspacecapturerskeyboardcapturer"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[KeyboardCapturer](#tapspacecapturerskeyboardcapturer)(component, options)
+
+Inherits [Capturer](#tapspacecapturerscapturer)
+
+Detect keyboard navigation events. Only focusable components
+emit keyboard events.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - a [Plane](#tapspacecomponentsplane), the source for the keyboard events
+
+
+<p style="margin-bottom: 0">Emits</p>
+
+
+- *keydown*
+- *keyup*
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.capturers.KeyboardCapturer:bind](#tapspacecapturerskeyboardcapturerbind)
+- [tapspace.capturers.KeyboardCapturer:unbind](#tapspacecapturerskeyboardcapturerunbind)
+- [tapspace.capturers.KeyboardCapturer:update](#tapspacecapturerskeyboardcapturerupdate)
+
+
+Source: [KeyboardCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/KeyboardCapturer/index.js)
+
+<a name="tapspacecapturerskeyboardcapturerbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[KeyboardCapturer](#tapspacecapturerskeyboardcapturer):[bind](#tapspacecapturerskeyboardcapturerbind)()
+
+Attach event listeners.
+
+Source: [KeyboardCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/KeyboardCapturer/index.js)
+
+<a name="tapspacecapturerskeyboardcapturerunbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[KeyboardCapturer](#tapspacecapturerskeyboardcapturer):[unbind](#tapspacecapturerskeyboardcapturerunbind)()
+
+Remove all keyboard event listeners from the element.
+
+Source: [KeyboardCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/KeyboardCapturer/index.js)
+
+<a name="tapspacecapturerskeyboardcapturerupdate"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[KeyboardCapturer](#tapspacecapturerskeyboardcapturer):[update](#tapspacecapturerskeyboardcapturerupdate)(options)
+
+Update capturer options.
+
+Source: [KeyboardCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/KeyboardCapturer/index.js)
+
 <a name="tapspacecapturersresizecapturer"></a>
 ## [tapspace](#tapspace).[capturers](#tapspacecapturers).[ResizeCapturer](#tapspacecapturersresizecapturer)(component, options)
+
+Inherits [Capturer](#tapspacecapturerscapturer)
 
 Resize event capturer.
 
@@ -206,9 +342,17 @@ Resize event capturer.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.capturers.ResizeCapturer:bind](#tapspacecapturersresizecapturerbind)
 - [tapspace.capturers.ResizeCapturer:unbind](#tapspacecapturersresizecapturerunbind)
 - [tapspace.capturers.ResizeCapturer:update](#tapspacecapturersresizecapturerupdate)
 
+
+Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/ResizeCapturer/index.js)
+
+<a name="tapspacecapturersresizecapturerbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[ResizeCapturer](#tapspacecapturersresizecapturer):[bind](#tapspacecapturersresizecapturerbind)()
+
+Start listeners and observers.
 
 Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/ResizeCapturer/index.js)
 
@@ -228,6 +372,8 @@ Source: [ResizeCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-de
 
 <a name="tapspacecapturerswheelcapturer"></a>
 ## [tapspace](#tapspace).[capturers](#tapspacecapturers).[WheelCapturer](#tapspacecapturerswheelcapturer)(component, options)
+
+Inherits [Capturer](#tapspacecapturerscapturer)
 
 Mouse wheel capturer. Attempts to normalise and add compatibility
 to wheeling and scrolling.
@@ -269,9 +415,17 @@ to wheeling and scrolling.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.capturers.WheelCapturer:bind](#tapspacecapturerswheelcapturerbind)
 - [tapspace.capturers.WheelCapturer:unbind](#tapspacecapturerswheelcapturerunbind)
 - [tapspace.capturers.WheelCapturer:update](#tapspacecapturerswheelcapturerupdate)
 
+
+Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
+
+<a name="tapspacecapturerswheelcapturerbind"></a>
+## [tapspace](#tapspace).[capturers](#tapspacecapturers).[WheelCapturer](#tapspacecapturerswheelcapturer):[bind](#tapspacecapturerswheelcapturerbind)()
+
+Attach event listeners.
 
 Source: [WheelCapturer/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/capturers/WheelCapturer/index.js)
 
@@ -308,6 +462,7 @@ Various components to render into space.
 
 - [Circle](#tapspacecomponentscircle), a round HTML element in space.
 - [Edge](#tapspacecomponentsedge), a CSS border as a line segment in space.
+- [Arc](#tapspacecomponentsarc), a curved CSS border as an arc segment in space.
 
 
 <p style="margin-bottom: 0"><strong>Viewport controls:</strong></p>
@@ -335,6 +490,7 @@ Various components to render into space.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.components.Arc](#tapspacecomponentsarc)
 - [tapspace.components.Basis](#tapspacecomponentsbasis)
 - [tapspace.components.Block](#tapspacecomponentsblock)
 - [tapspace.components.Circle](#tapspacecomponentscircle)
@@ -351,6 +507,84 @@ Various components to render into space.
 
 
 Source: [components/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/index.js)
+
+<a name="tapspacecomponentsarc"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Arc](#tapspacecomponentsarc)(angle, border)
+
+Inherits [Frame](#tapspacecomponentsframe)
+
+[Arc](#tapspacecomponentsarc) is an instance class for curved edges.
+[Arc](#tapspacecomponentsarc) can be used to visually connect components.
+[Arc](#tapspacecomponentsarc) is rendered in 2D. Use setPoints(start, end) to place the arc.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *angle*
+  - a number, the arc angle in degrees. Half-circle has arc angle of 180. The angle must be within range [10, 180] or throws an error.
+- *border*
+  - optional string, for example '1px solid black'.
+
+
+**Under the hood:**
+[Arc](#tapspacecomponentsarc) is implemented by a div that displays a portion of its child element
+that has rounded border.
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.components.Arc:setPoints](#tapspacecomponentsarcsetpoints)
+- [tapspace.components.Arc.create](#tapspacecomponentsarccreate)
+
+
+Source: [Arc/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Arc/index.js)
+
+<a name="tapspacecomponentsarcsetpoints"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Arc](#tapspacecomponentsarc):[setPoints](#tapspacecomponentsarcsetpoints)(startPoint, endPoint)
+
+Set arc start and end points.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *startPoint*
+  - a [Point](#tapspacegeometrypoint)
+- *endPoint*
+  - a [Point](#tapspacegeometrypoint)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [setPoints.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Arc/setPoints.js)
+
+<a name="tapspacecomponentsarccreate"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Arc](#tapspacecomponentsarc).[create](#tapspacecomponentsarccreate)(angle, border)
+
+Create an [Arc](#tapspacecomponentsarc) item. [Arc](#tapspacecomponentsarc)s are like edges but with a curved shape.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *angle*
+  - a number in degrees. The range is limited between 10 and 180 degrees.
+- *border*
+  - a string, the border CSS style, for example '1px solid black'.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- an [Arc](#tapspacecomponentsarc)
+
+
+Aliases: [tapspace.createArc](#tapspacecreatearc)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Arc/create.js)
 
 <a name="tapspacecomponentsbasis"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis)(element)
@@ -372,9 +606,9 @@ Multiple bases together form an *affine subtree* in DOM.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
-- [tapspace.components.Basis:add](#tapspacecomponentsbasisadd)
 - [tapspace.components.Basis:addChild](#tapspacecomponentsbasisaddchild)
 - [tapspace.components.Basis:addClass](#tapspacecomponentsbasisaddclass)
+- [tapspace.components.Basis:appendChild](#tapspacecomponentsbasisappendchild)
 - [tapspace.components.Basis:findCommonAncestor](#tapspacecomponentsbasisfindcommonancestor)
 - [tapspace.components.Basis:getAncestors](#tapspacecomponentsbasisgetancestors)
 - [tapspace.components.Basis:getChildren](#tapspacecomponentsbasisgetchildren)
@@ -383,13 +617,17 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Basis:getLeaves](#tapspacecomponentsbasisgetleaves)
 - [tapspace.components.Basis:getParent](#tapspacecomponentsbasisgetparent)
 - [tapspace.components.Basis:getRoot](#tapspacecomponentsbasisgetroot)
+- [tapspace.components.Basis:getSpace](#tapspacecomponentsbasisgetspace)
 - [tapspace.components.Basis:getTransitionFrom](#tapspacecomponentsbasisgettransitionfrom)
 - [tapspace.components.Basis:getTransitionTo](#tapspacecomponentsbasisgettransitionto)
 - [tapspace.components.Basis:getTransitionToParent](#tapspacecomponentsbasisgettransitiontoparent)
 - [tapspace.components.Basis:getTransitionToParentOf](#tapspacecomponentsbasisgettransitiontoparentof)
+- [tapspace.components.Basis:getViewport](#tapspacecomponentsbasisgetviewport)
 - [tapspace.components.Basis:isLeaf](#tapspacecomponentsbasisisleaf)
 - [tapspace.components.Basis:isRoot](#tapspacecomponentsbasisisroot)
+- [tapspace.components.Basis:prependChild](#tapspacecomponentsbasisprependchild)
 - [tapspace.components.Basis:removeClass](#tapspacecomponentsbasisremoveclass)
+- [tapspace.components.Basis:setId](#tapspacecomponentsbasissetid)
 - [tapspace.components.Basis:setParent](#tapspacecomponentsbasissetparent)
 - [tapspace.components.Basis.findAffineAncestor](#tapspacecomponentsbasisfindaffineancestor)
 - [tapspace.components.Basis.isAffine](#tapspacecomponentsbasisisaffine)
@@ -397,17 +635,13 @@ Multiple bases together form an *affine subtree* in DOM.
 
 Source: [Basis/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/index.js)
 
-<a name="tapspacecomponentsbasisadd"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[add](#tapspacecomponentsbasisadd)
-
-Alias of [tapspace.components.Basis:addChild](#tapspacecomponentsbasisaddchild)
-
-Source: [addChild.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/addChild.js)
-
 <a name="tapspacecomponentsbasisaddchild"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[addChild](#tapspacecomponentsbasisaddchild)(component, position)
 
-Place a component onto this basis.
+Place a component onto this basis. In DOM, appends the element of
+the given component into the element of this basis.
+Appending means that the component is added after the last child.
+To add before the first child, see [Basis:prependChild](#tapspacecomponentsbasisprependchild).
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -418,7 +652,7 @@ Place a component onto this basis.
   - optional [Point](#tapspacegeometrypoint) or {x,y} or {x,y,z}.
   - Defines the initial position for the component.
   - You can leave the position parameter undefined and move the component to its position afterwards.
-  - Also, if you have already prepared the local coordinates of the component and want to preserve them as is, then leave the position parameter undefined.
+  - Also, if you have already prepared the local transition of the component and want to preserve it as is, then leave the position parameter undefined.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -427,15 +661,28 @@ Place a component onto this basis.
 - this, for chaining
 
 
-Aliases: [tapspace.components.Basis:add](#tapspacecomponentsbasisadd)
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- with position: O(d) where d is the depth of the affine tree.
+- without position: O(1)
+
+
+Aliases: [tapspace.components.Basis:appendChild](#tapspacecomponentsbasisappendchild)
 
 Source: [addChild.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/addChild.js)
 
 <a name="tapspacecomponentsbasisaddclass"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[addClass](#tapspacecomponentsbasisaddclass)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[addClass](#tapspacecomponentsbasisaddclass)(className[, secondClass[, ...]])
 
-Add a CSS class name into the affine element.
+Add one or more CSS class name into the affine element, up to three.
 This is equivalent to `basis.element.classList.add(className)`.
+
+<p style="margin-bottom: 0"><strong>Example:</strong></p>
+
+
+- `item.addClass('myitem', 'banner')`
+
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -450,7 +697,20 @@ This is equivalent to `basis.element.classList.add(className)`.
 - this, for chaining
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
+
+
 Source: [addClass.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/addClass.js)
+
+<a name="tapspacecomponentsbasisappendchild"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[appendChild](#tapspacecomponentsbasisappendchild)
+
+Alias of [tapspace.components.Basis:addChild](#tapspacecomponentsbasisaddchild)
+
+Source: [addChild.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/addChild.js)
 
 <a name="tapspacecomponentsbasisfindcommonancestor"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[findCommonAncestor](#tapspacecomponentsbasisfindcommonancestor)(node)
@@ -473,6 +733,12 @@ of the sister and one of the children.
 
 
 - a [Basis](#tapspacecomponentsbasis). Null if no common ancestor is found.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(d) where d is the depth of the affine tree.
 
 
 <p style="margin-bottom: 0">Note that the result might not be a true ancestor:</p>
@@ -499,6 +765,12 @@ the node is placed in a space.
 - array of [Basis](#tapspacecomponentsbasis)
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree
+
+
 Source: [getAncestors.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getAncestors.js)
 
 <a name="tapspacecomponentsbasisgetchildren"></a>
@@ -511,6 +783,12 @@ The children in DOM that do not have affine properties will be skipped.
 
 
 - array of [Basis](#tapspacecomponentsbasis)
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(c) where c is the number of children
 
 
 Source: [getChildren.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getChildren.js)
@@ -527,6 +805,12 @@ The affine descendants must be connected in affine part of DOM.
 - array of [Basis](#tapspacecomponentsbasis)
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(n) where n is the number of nodes in the affine tree
+
+
 Source: [getDescendants.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getDescendants.js)
 
 <a name="tapspacecomponentsbasisgetelement"></a>
@@ -539,6 +823,12 @@ This element can wrap further affine or non-affine content.
 
 
 - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
 
 
 Source: [getElement.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getElement.js)
@@ -556,6 +846,12 @@ An affine leaf may have non-affine children in DOM.
 - array of [Basis](#tapspacecomponentsbasis)
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(n) where n is the number of nodes in the affine tree.
+
+
 Source: [getLeaves.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getLeaves.js)
 
 <a name="tapspacecomponentsbasisgetparent"></a>
@@ -568,6 +864,12 @@ Get the affine parent of the plane. Null if no affine parent.
 
 - a [Basis](#tapspacecomponentsbasis), the parent.
 - null if no affine parent.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
 
 
 Source: [getParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getParent.js)
@@ -583,7 +885,33 @@ Get the affine root. Will return self if has no affine parent.
 - a [Basis](#tapspacecomponentsbasis)
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
+
+
 Source: [getRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getRoot.js)
+
+<a name="tapspacecomponentsbasisgetspace"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getSpace](#tapspacecomponentsbasisgetspace)()
+
+Find the affine viewport this basis currently belongs to, if any.
+Will return null if the basis is not connected to a space.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Space](#tapspacecomponentsspace) or null
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
+
+
+Source: [getSpace.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getSpace.js)
 
 <a name="tapspacecomponentsbasisgettransitionfrom"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getTransitionFrom](#tapspacecomponentsbasisgettransitionfrom)(source)
@@ -605,6 +933,12 @@ then you should compute the transition matrix again.
 
 
 - a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a basis transition matrix.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
 
 
 Source: [getTransitionFrom.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionFrom.js)
@@ -636,6 +970,12 @@ to compute the same geometry represented on the the target basis.
 - If the planes are not connected. Probably app programming error.
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
+
+
 Source: [getTransitionTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionTo.js)
 
 <a name="tapspacecomponentsbasisgettransitiontoparent"></a>
@@ -650,6 +990,12 @@ a virtual parent is returned.
 
 
 - a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), the coordinate transition matrix from this to parent.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(1)
 
 
 Source: [getTransitionToParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionToParent.js)
@@ -673,7 +1019,33 @@ If the target is a root, then transition is to its virtual parent.
 - a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), a transition to the real or virtual parent of the target.
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
+
+
 Source: [getTransitionToParentOf.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getTransitionToParentOf.js)
+
+<a name="tapspacecomponentsbasisgetviewport"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[getViewport](#tapspacecomponentsbasisgetviewport)()
+
+Get the affine viewport this basis currently belongs to, if any.
+Will return null if the basis is not connected to a viewport.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Viewport](#tapspacecomponentsviewport)
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(d) where d is the depth of the affine tree.
+
+
+Source: [getViewport.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/getViewport.js)
 
 <a name="tapspacecomponentsbasisisleaf"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[isLeaf](#tapspacecomponentsbasisisleaf)()
@@ -687,6 +1059,12 @@ may also have non-affine chilren.
 
 
 - a boolean, true if the basis has no affine children.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(c) where c is the number of children.
 
 
 Source: [isLeaf.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/isLeaf.js)
@@ -704,7 +1082,47 @@ A root basis can have non-affine parent in DOM.
 - a boolean
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(1)
+
+
 Source: [isRoot.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/isRoot.js)
+
+<a name="tapspacecomponentsbasisprependchild"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[prependChild](#tapspacecomponentsbasisprependchild)(component, position)
+
+Place a component onto this basis. In DOM, adds the element of
+the given component into the element of this basis before the first child.
+To add after the last child, see [Basis:appendChild](#tapspacecomponentsbasisappendchild).
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *component*
+  - a [Plane](#tapspacecomponentsplane)
+- *position*
+  - optional [Point](#tapspacegeometrypoint) or {x,y} or {x,y,z}.
+  - Defines the initial position for the component.
+  - You can leave the position parameter undefined and move the component to its position afterwards.
+  - Also, if you have already prepared the local coordinates of the component and want to preserve them as is, then leave the position parameter undefined.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- with position: O(d) where d is the depth of affine tree.
+- without position: O(1)
+
+
+Source: [prependChild.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/prependChild.js)
 
 <a name="tapspacecomponentsbasisremoveclass"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[removeClass](#tapspacecomponentsbasisremoveclass)
@@ -725,7 +1143,40 @@ This is equivalent to `basis.element.classList.remove(className)`.
 - this, for chaining
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+
+- O(1)
+
+
 Source: [removeClass.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/removeClass.js)
+
+<a name="tapspacecomponentsbasissetid"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[setId](#tapspacecomponentsbasissetid)
+
+Set the affine element ID property.
+This is equivalent to `basis.element.id = elemId`.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *elemId*
+  - a string, for example 'hero'
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
+
+
+Source: [setId.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/setId.js)
 
 <a name="tapspacecomponentsbasissetparent"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Basis](#tapspacecomponentsbasis):[setParent](#tapspacecomponentsbasissetparent)(newParent)
@@ -749,6 +1200,12 @@ the position if the new parent belongs to the same space.
 
 
 - this, for chaining
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
 
 
 Source: [setParent.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/setParent.js)
@@ -781,6 +1238,12 @@ if (affine) { affine.rotateByDegrees(10) }
 - a [Basis](#tapspacecomponentsbasis), if has affine ancestor.
 
 
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(D) where D is the depth of the document.
+
+
 Source: [findAffineAncestor.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/dom/findAffineAncestor.js)
 
 <a name="tapspacecomponentsbasisisaffine"></a>
@@ -807,6 +1270,12 @@ if (Basis.isAffine(el)) { ... }
 
 
 - boolean. True if the given element is [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) with affine property.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(1)
 
 
 Source: [isAffine.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Basis/dom/isAffine.js)
@@ -1117,7 +1586,7 @@ Source: [moveCenterTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/co
 <a name="tapspacecomponentscircle"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Circle](#tapspacecomponentscircle)(radius, color)
 
-Inherits [Frame](#tapspacecomponentsframe)
+Inherits [Item](#tapspacecomponentsitem)
 
 A colorful circle.
 Instance class for a circle-like object on an affine plane.
@@ -1129,7 +1598,8 @@ Useful for debugging coordinate positions.
 - *radius*
   - a number.
 - *color*
-  - a string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+  - optional string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+  - Leave undefined if you want to control the color via CSS classes.
 
 
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Circle/index.js)
@@ -1159,17 +1629,30 @@ Inherits [Frame](#tapspacecomponentsframe)
 It can be used as a line. Lines can visually connect components.
 [Edge](#tapspacecomponentsedge) is rendered in 3D. Use setPoints(start, end) to place the edge.
 
+**Example:**
+```
+const edge = tapspace.createEdge('2px solid white')
+edgeGroup.addChild(edge)
+edge.setPoints(itemA.atBottomMid(), itemB.atTopMid())
+```
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- border, either string or object.
-  - *string*
-    - A CSS border style e.g. '1px solid #ff2200'
-  - object with properties
-    - width: number or string, e.g. 10 or '10px' or '1em'
-    - style: string, e.g. 'solid'
-    - color: string, e.g. 'red'
+- *border*
+  - either string or object. This determines the style of border-top.
+    - *string*
+      - A CSS border style e.g. '1px solid #ff2200'
+    - object with properties
+      - width: number or string, e.g. 10 or '10px' or '1em'
+      - style: string, e.g. 'solid'
+      - color: string, e.g. 'red'
 
+
+**Under the hood:**
+The border parameter is required in order to know the border width.
+The pixel width determines how much we need to offset the edge element
+so that the edge endpoints match the middle of the border.
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -1500,7 +1983,7 @@ Source: [Group/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/com
 <a name="tapspacecomponentsgroupcreate"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup).[create](#tapspacecomponentsgroupcreate)
 
-Alias of [tapspace.createBasis](#tapspacecreatebasis)
+Alias of [tapspace.createGroup](#tapspacecreategroup)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/create.js)
 
@@ -1518,8 +2001,18 @@ inherit also from [Plane](#tapspacecomponentsplane).
 - [tapspace.components.Interactive:addInteraction](#tapspacecomponentsinteractiveaddinteraction)
 - [tapspace.components.Interactive:capturer](#tapspacecomponentsinteractivecapturer)
 - [tapspace.components.Interactive:converter](#tapspacecomponentsinteractiveconverter)
+- [tapspace.components.Interactive:focus](#tapspacecomponentsinteractivefocus)
+- [tapspace.components.Interactive:focusable](#tapspacecomponentsinteractivefocusable)
+- [tapspace.components.Interactive:getCapturer](#tapspacecomponentsinteractivegetcapturer)
+- [tapspace.components.Interactive:getCapturer](#tapspacecomponentsinteractivegetcapturer)
 - [tapspace.components.Interactive:getInteraction](#tapspacecomponentsinteractivegetinteraction)
+- [tapspace.components.Interactive:hasCapturer](#tapspacecomponentsinteractivehascapturer)
+- [tapspace.components.Interactive:removeAllInteractions](#tapspacecomponentsinteractiveremoveallinteractions)
 - [tapspace.components.Interactive:removeInteraction](#tapspacecomponentsinteractiveremoveinteraction)
+- [tapspace.components.Interactive:setContentInput](#tapspacecomponentsinteractivesetcontentinput)
+- [tapspace.components.Interactive:startCapturer](#tapspacecomponentsinteractivestartcapturer)
+- [tapspace.components.Interactive:stopCapturer](#tapspacecomponentsinteractivestopcapturer)
+- [tapspace.components.Interactive:updateCapturer](#tapspacecomponentsinteractiveupdatecapturer)
 
 
 Source: [Interactive/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/index.js)
@@ -1559,7 +2052,7 @@ For Tapspace internal use.
 - *capturerName*
   - a string. One of 'gesture', 'keyboard', 'resize', 'wheel'
 - *opts*
-  - options for the capturer.
+  - options for the capturer. Optional.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1567,6 +2060,8 @@ For Tapspace internal use.
 
 - a capturer
 
+
+Aliases: [tapspace.components.Interactive:startCapturer](#tapspacecomponentsinteractivestartcapturer), [tapspace.components.Interactive:updateCapturer](#tapspacecomponentsinteractiveupdatecapturer), [tapspace.components.Interactive:getCapturer](#tapspacecomponentsinteractivegetcapturer)
 
 Source: [capturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/capturer.js)
 
@@ -1594,6 +2089,66 @@ For Tapspace internal use.
 
 Source: [converter.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/converter.js)
 
+<a name="tapspacecomponentsinteractivefocus"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[focus](#tapspacecomponentsinteractivefocus)()
+
+Subclasses should implement this method.
+
+Source: [focus.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/focus.js)
+
+<a name="tapspacecomponentsinteractivefocusable"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[focusable](#tapspacecomponentsinteractivefocusable)(options)
+
+Make the item focusable. This means that the item can receive
+keyboard events, steal focus from other elements, be reachable by tabbing,
+and be visually outlined. [Item](#tapspacecomponentsitem) must be focusable in order to use
+[Interactive:focus](#tapspacecomponentsinteractivefocus) successfully. Call focusable(false) to disable
+the ability.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - optional object with properties:
+    - *tabindex*
+      - optional integer. Default is 0. Set -1 to make the component unreachable by tabbing. Set 0 to make the component reachable by tabbing in the order defined by the position in DOM. Set to a positive integer, like 3, to control the tabbing order.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [focusable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/focusable.js)
+
+<a name="tapspacecomponentsinteractivegetcapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[getCapturer](#tapspacecomponentsinteractivegetcapturer)(capturerName)
+
+Alias of [tapspace.components.Interactive:capturer](#tapspacecomponentsinteractivecapturer)
+
+Source: [capturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/capturer.js)
+
+<a name="tapspacecomponentsinteractivegetcapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[getCapturer](#tapspacecomponentsinteractivegetcapturer)(capturerName)
+
+Get specific capturer if the component has one. Null if does not.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *capturerName*
+  - a string, for example 'wheel'
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Capturer](#tapspacecapturerscapturer), or null if not available.
+
+
+Source: [getCapturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/getCapturer.js)
+
 <a name="tapspacecomponentsinteractivegetinteraction"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[getInteraction](#tapspacecomponentsinteractivegetinteraction)(name)
 
@@ -1606,6 +2161,39 @@ Get an interaction. Might be null.
 
 
 Source: [getInteraction.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/getInteraction.js)
+
+<a name="tapspacecomponentsinteractivehascapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[hasCapturer](#tapspacecomponentsinteractivehascapturer)(capturerName)
+
+Test if the component has an active capturer.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *capturerName*
+  - a string, for example 'wheel'
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [hasCapturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/hasCapturer.js)
+
+<a name="tapspacecomponentsinteractiveremoveallinteractions"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[removeAllInteractions](#tapspacecomponentsinteractiveremoveallinteractions)()
+
+Unregister all interactions.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [removeAllInteractions.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/removeAllInteractions.js)
 
 <a name="tapspacecomponentsinteractiveremoveinteraction"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[removeInteraction](#tapspacecomponentsinteractiveremoveinteraction)(name)
@@ -1628,6 +2216,90 @@ does nothing.
 
 Source: [removeInteraction.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/removeInteraction.js)
 
+<a name="tapspacecomponentsinteractivesetcontentinput"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[setContentInput](#tapspacecomponentsinteractivesetcontentinput)([device0, device1, ...])
+
+Enable interactions with the content inside item instead of the item.
+Select which devices (event sources) become dedicated for the content.
+Devices that were not selected, become dedicated for the affine item
+and its affine ancestors. Set `false` to disable all interaction with
+the content.
+
+**Example 1:** [Item](#tapspacecomponentsitem) has scrollable content that should scroll instead
+of the viewport zooming in or out.
+```
+item.setContentInput('wheel')
+```
+**Example 2:** [Item](#tapspacecomponentsitem) contains selectable text, forms, or links that should
+be interactive instead of the viewport panning.
+```
+item.setContentInput('pointer')
+```
+**Example 3:** [Item](#tapspacecomponentsitem) content should not be interactive. All input should
+go to the item, for example if the item is draggable, or further to
+the viewport.
+```
+item.setContentInput(false)
+```
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *device0*
+  - a string, a device name. Available device names: `wheel`, `pointer`.
+- *device1*
+  - optional string. Another device name.
+
+
+<p style="margin-bottom: 0">Alternative parameters:</p>
+
+
+- *enabled*
+  - a boolean. Set true to enable all interaction with the content. Set false to disable all interaction with the content. True will enable all devices on content and false does the opposite.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining.
+
+
+Source: [setContentInput.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/setContentInput.js)
+
+<a name="tapspacecomponentsinteractivestartcapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[startCapturer](#tapspacecomponentsinteractivestartcapturer)(capturerName, opts)
+
+Alias of [tapspace.components.Interactive:capturer](#tapspacecomponentsinteractivecapturer)
+
+Source: [capturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/capturer.js)
+
+<a name="tapspacecomponentsinteractivestopcapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[stopCapturer](#tapspacecomponentsinteractivestopcapturer)(capturerName)
+
+Remove element listeners and the capturer.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *capturerName*
+  - a string, for example 'wheel'
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [stopCapturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/stopCapturer.js)
+
+<a name="tapspacecomponentsinteractiveupdatecapturer"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Interactive](#tapspacecomponentsinteractive):[updateCapturer](#tapspacecomponentsinteractiveupdatecapturer)(capturerName, opts)
+
+Alias of [tapspace.components.Interactive:capturer](#tapspacecomponentsinteractivecapturer)
+
+Source: [capturer.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Interactive/capturer.js)
+
 <a name="tapspacecomponentsitem"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem)(element)
 
@@ -1647,8 +2319,11 @@ The items can have abilities like slidable, tappable, or draggable.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.components.Item:approachable](#tapspacecomponentsitemapproachable)
 - [tapspace.components.Item:dilatable](#tapspacecomponentsitemdilatable)
+- [tapspace.components.Item:disable](#tapspacecomponentsitemdisable)
 - [tapspace.components.Item:draggable](#tapspacecomponentsitemdraggable)
+- [tapspace.components.Item:focus](#tapspacecomponentsitemfocus)
 - [tapspace.components.Item:holdable](#tapspacecomponentsitemholdable)
 - [tapspace.components.Item:html](#tapspacecomponentsitemhtml)
 - [tapspace.components.Item:pannable](#tapspacecomponentsitempannable)
@@ -1663,12 +2338,65 @@ The items can have abilities like slidable, tappable, or draggable.
 
 Source: [Item/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/index.js)
 
+<a name="tapspacecomponentsitemapproachable"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[approachable](#tapspacecomponentsitemapproachable)(options)
+
+Make the item reactive to camera proximity.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - optional object with properties:
+    - *threshold*
+      - optional number in viewport pixels. Default is 1000. The radial distance between the item anchor and the camera. Within this distance, the item is being approached.
+
+
+<p style="margin-bottom: 0">Alternative parameters:</p>
+
+
+- *options*
+  - a boolean. Set false to disable the ability.
+
+
+<p style="margin-bottom: 0">Makes the item emit:</p>
+
+
+- *approachstart*
+  - when camera enters the threshold distance.
+- *approachend*
+  - when camera exits the threshold distance.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [approachable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/approachable.js)
+
 <a name="tapspacecomponentsitemdilatable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[dilatable](#tapspacecomponentsitemdilatable)
 
 Alias of [tapspace.components.Item:scalable](#tapspacecomponentsitemscalable)
 
 Source: [scalable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/scalable.js)
+
+<a name="tapspacecomponentsitemdisable"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[disable](#tapspacecomponentsitemdisable)()
+
+Makes the item non-operational, a kind of anti-interaction.
+In addition to removing all ongoing interactions, it prevents
+the default actions of its parents and ancestors.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [disable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/disable.js)
 
 <a name="tapspacecomponentsitemdraggable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[draggable](#tapspacecomponentsitemdraggable)(options)
@@ -1693,6 +2421,32 @@ The item maintains the size and the angle.
 Aliases: [tapspace.components.Item:pannable](#tapspacecomponentsitempannable), [tapspace.components.Item:translatable](#tapspacecomponentsitemtranslatable)
 
 Source: [draggable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/draggable.js)
+
+<a name="tapspacecomponentsitemfocus"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[focus](#tapspacecomponentsitemfocus)(options)
+
+Give focus to the item and optionally move viewport to look at it.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - optional object with properties:
+    - *aperture*
+      - TODO optional number
+    - *focusVisible*
+      - optional boolean. Default false. Passed to element.focus. Set true to ensure a focus outline, for example a blue border, is applied to the element by the browser. Set false for automatic behavior. [Control](#tapspacecomponentscontrol) the appearance via CSS *focus-visible* pseudo-class.
+    - *preventScroll*
+      - optional boolean. Default false. False to move the viewport to ensure the item is visible. True to prevent viewport being moved. The item might stay outside viewport and cannot be seen by the user.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [focus.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Item/focus.js)
 
 <a name="tapspacecomponentsitemholdable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[holdable](#tapspacecomponentsitemholdable)(options)
@@ -1828,13 +2582,19 @@ Source: [slidable.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[tappable](#tapspacecomponentsitemtappable)(options)
 
 Make item tappable i.e. make it emit tap events.
+See [tapspace.interaction.Tap](#tapspaceinteractiontap) for details.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
 - *options*
-  - optional object with properties
-    - *TODO*
+  - optional object with properties:
+    - *maxTravel*
+      - optional number in viewport pixels. default 20.
+    - *preventDefault*
+      - a boolean
+        - true to prevent further action after tap.
+        - false to let ancestors consume the events.
 
 
 <p style="margin-bottom: 0">Makes the component emit events:</p>
@@ -1881,6 +2641,7 @@ Abstract class for affine components that behave like a transformable
 
 
 - [tapspace.components.Plane:animate](#tapspacecomponentsplaneanimate)
+- [tapspace.components.Plane:animateOnce](#tapspacecomponentsplaneanimateonce)
 - [tapspace.components.Plane:at](#tapspacecomponentsplaneat)
 - [tapspace.components.Plane:atAnchor](#tapspacecomponentsplaneatanchor)
 - [tapspace.components.Plane:getDirection](#tapspacecomponentsplanegetdirection)
@@ -1933,6 +2694,27 @@ Update CSS transition animation properties of the component.
 
 
 Source: [animate.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/animate.js)
+
+<a name="tapspacecomponentsplaneanimateonce"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[animateOnce](#tapspacecomponentsplaneanimateonce)
+
+Animate the next plane move.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - an object with properties:
+    - TODO doc
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [animateOnce.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Plane/animateOnce.js)
 
 <a name="tapspacecomponentsplaneat"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[at](#tapspacecomponentsplaneat)(x, y, z)
@@ -2621,12 +3403,18 @@ creates an illusion of a viewport into space.
 
 
 - [tapspace.components.Viewport:addControl](#tapspacecomponentsviewportaddcontrol)
+- [tapspace.components.Viewport:animate](#tapspacecomponentsviewportanimate)
+- [tapspace.components.Viewport:animateOnce](#tapspacecomponentsviewportanimateonce)
 - [tapspace.components.Viewport:approach](#tapspacecomponentsviewportapproach)
 - [tapspace.components.Viewport:atCamera](#tapspacecomponentsviewportatcamera)
 - [tapspace.components.Viewport:atNorm](#tapspacecomponentsviewportatnorm)
 - [tapspace.components.Viewport:atPage](#tapspacecomponentsviewportatpage)
 - [tapspace.components.Viewport:atPageFn](#tapspacecomponentsviewportatpagefn)
 - [tapspace.components.Viewport:findMostDistant](#tapspacecomponentsviewportfindmostdistant)
+- [tapspace.components.Viewport:findWithinDistance](#tapspacecomponentsviewportfindwithindistance)
+- [tapspace.components.Viewport:focus](#tapspacecomponentsviewportfocus)
+- [tapspace.components.Viewport:focusTo](#tapspacecomponentsviewportfocusto)
+- [tapspace.components.Viewport:getCameraDistance](#tapspacecomponentsviewportgetcameradistance)
 - [tapspace.components.Viewport:getControls](#tapspacecomponentsviewportgetcontrols)
 - [tapspace.components.Viewport:getHeight](#tapspacecomponentsviewportgetheight)
 - [tapspace.components.Viewport:getItemAt](#tapspacecomponentsviewportgetitemat)
@@ -2634,6 +3422,8 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:getSpace](#tapspacecomponentsviewportgetspace)
 - [tapspace.components.Viewport:getWidth](#tapspacecomponentsviewportgetwidth)
 - [tapspace.components.Viewport:isPerspective](#tapspacecomponentsviewportisperspective)
+- [tapspace.components.Viewport:measurePlanes](#tapspacecomponentsviewportmeasureplanes)
+- [tapspace.components.Viewport:moveTo](#tapspacecomponentsviewportmoveto)
 - [tapspace.components.Viewport:orthogonal](#tapspacecomponentsviewportorthogonal)
 - [tapspace.components.Viewport:pannable](#tapspacecomponentsviewportpannable)
 - [tapspace.components.Viewport:perspective](#tapspacecomponentsviewportperspective)
@@ -2642,10 +3432,12 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:rotatable](#tapspacecomponentsviewportrotatable)
 - [tapspace.components.Viewport:rotateBy](#tapspacecomponentsviewportrotateby)
 - [tapspace.components.Viewport:scaleBy](#tapspacecomponentsviewportscaleby)
+- [tapspace.components.Viewport:setMeasureMode](#tapspacecomponentsviewportsetmeasuremode)
 - [tapspace.components.Viewport:snapPixels](#tapspacecomponentsviewportsnappixels)
 - [tapspace.components.Viewport:toPage](#tapspacecomponentsviewporttopage)
 - [tapspace.components.Viewport:transformBy](#tapspacecomponentsviewporttransformby)
 - [tapspace.components.Viewport:translateBy](#tapspacecomponentsviewporttranslateby)
+- [tapspace.components.Viewport:translateTo](#tapspacecomponentsviewporttranslateto)
 - [tapspace.components.Viewport:zoomable](#tapspacecomponentsviewportzoomable)
 
 
@@ -2673,6 +3465,20 @@ Add new control to the viewport.
 
 
 Source: [addControl.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/addControl.js)
+
+<a name="tapspacecomponentsviewportanimate"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[animate](#tapspacecomponentsviewportanimate)(options)
+
+TODO doc
+
+Source: [animate.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/animate.js)
+
+<a name="tapspacecomponentsviewportanimateonce"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[animateOnce](#tapspacecomponentsviewportanimateonce)(options)
+
+TODO doc
+
+Source: [animateOnce.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/animateOnce.js)
 
 <a name="tapspacecomponentsviewportapproach"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[approach](#tapspacecomponentsviewportapproach)(factor, target)
@@ -2706,8 +3512,8 @@ Source: [approach.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[atCamera](#tapspacecomponentsviewportatcamera)()
 
 Get camera position relative to the viewport.
-If the viewport is not perspective, returns the anchor position
-on the viewport.
+If the viewport is not perspective, returns the middle point
+of the viewport.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -2810,6 +3616,91 @@ The distance here is directed, and computed along positive z dimension.
 
 Source: [findMostDistant.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/findMostDistant.js)
 
+<a name="tapspacecomponentsviewportfindwithindistance"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[findWithinDistance](#tapspacecomponentsviewportfindwithindistance)(maxDistance)
+
+Find all nearby planes within a distance measured from
+the viewport camera to plane anchor.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *maxDistance*
+  - a [Distance](#tapspacegeometrydistance) or a number in viewport pixels. The radius from camera.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- an array of [Plane](#tapspacecomponentsplane). Will be empty array if space is empty or no planes within the radius.
+
+
+Source: [findWithinDistance.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/findWithinDistance.js)
+
+<a name="tapspacecomponentsviewportfocus"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[focus](#tapspacecomponentsviewportfocus)(options)
+
+Give focus to viewport. This enables keyboard navigation.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - optional object with properties:
+    - *focusVisible*
+      - optional boolean. Default false. Set true to outline the viewport in the page to communicate it has the focus. Set false for automatic behavior. [Control](#tapspacecomponentscontrol) the appearance via CSS *focus-visible* pseudo-class.
+    - *preventScroll*
+      - optional boolean. Default false. False to scroll the page to ensure the viewport is visible. True to prevent the page being scrolled.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [focus.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/focus.js)
+
+<a name="tapspacecomponentsviewportfocusto"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[focusTo](#tapspacecomponentsviewportfocusto)(frame[, options])
+
+Translate, rotate, and scale the viewport to display the given frame.
+You may specify margin to control how much room to leave around the frame.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *frame*
+  - a [Frame](#tapspacecomponentsframe)
+- *options*
+  - *margin*
+    - optional string. Default is '20%', maximum is '50%'. Determines how much room to leave between viewport borders and frame borders. Measured on the viewport. For example if margin is '10%' then focusTo leaves at least 10% of the viewport width to left and right sides of the frame and at least 10% of the viewport height to top and bottom sides.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [focusTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/focusTo.js)
+
+<a name="tapspacecomponentsviewportgetcameradistance"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getCameraDistance](#tapspacecomponentsviewportgetcameradistance)()
+
+Get distance between camera and the viewport center.
+The distance is measured along z-axis.
+In simplified human eye, the distance is analogous to the distance
+from pupil to the fovea.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Source: [getCameraDistance.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/getCameraDistance.js)
+
 <a name="tapspacecomponentsviewportgetcontrols"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getControls](#tapspacecomponentsviewportgetcontrols)()
 
@@ -2910,6 +3801,41 @@ Check if the viewport projection mode is perspective.
 
 Source: [isPerspective.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/isPerspective.js)
 
+<a name="tapspacecomponentsviewportmeasureplanes"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measurePlanes](#tapspacecomponentsviewportmeasureplanes)()
+
+Find distances to all planes that belong to the viewport.
+
+**Example:**
+```
+const measures = view.measurePlanes()
+```
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- an array of Measure. Each measure is { plane, distance, vector } where:
+  - plane is a [Plane](#tapspacecomponentsplane)
+  - distance is a [Distance](#tapspacegeometrydistance) between viewport anchor and the plane anchor.
+  - distancePx is the distance represented in viewport pixels.
+  - vector is a [Vector](#tapspacegeometryvector) from the viewport anchor to the plane anchor.
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a>:</p>
+
+
+- O(n) where n is the number of nodes in the space.
+
+
+Source: [measurePlanes.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/measurePlanes.js)
+
+<a name="tapspacecomponentsviewportmoveto"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[moveTo](#tapspacecomponentsviewportmoveto)(point)
+
+Alias of [tapspace.components.Viewport:translateTo](#tapspacecomponentsviewporttranslateto)
+
+Source: [translateTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/translateTo.js)
+
 <a name="tapspacecomponentsviewportorthogonal"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[orthogonal](#tapspacecomponentsviewportorthogonal)()
 
@@ -2938,7 +3864,16 @@ The view maintains the size and the angle.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 
-- options, various types:
+- *options*
+  - optional object with properties:
+    - *step*
+      - a [Distance](#tapspacegeometrydistance). Default is 100 in viewport pixels.
+
+
+<p style="margin-bottom: 0">Alternative parameters:</p>
+
+
+- *options*
   - a boolean. Set false to disable.
 
 
@@ -3088,6 +4023,36 @@ Source: [rotateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/compon
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/scaleBy.js)
 
+<a name="tapspacecomponentsviewportsetmeasuremode"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[setMeasureMode](#tapspacecomponentsviewportsetmeasuremode)(measureMode)
+
+A measure mode makes the viewport actively measure plane distances and
+areas. The act of measuring is necessary for interactions
+that use [CameraCapturer](#tapspacecapturerscameracapturer), such as the Approach interaction.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *measureMode*
+  - an enum string, one of `none`, `lazy`, `busy`.
+
+
+<p style="margin-bottom: 0">Measure modes:</p>
+
+
+- `none`: viewport does no measuring. Interactions that depend on camera distance will not receive measure data.
+- `lazy`: viewport measures when idle, after the gestures. This is the preferred mode for its lightness.
+- `busy`: viewport measures after each move (~30 fps). This mode can be computationally heavy and thus make navigation sluggish.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Source: [setMeasureMode.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/setMeasureMode.js)
+
 <a name="tapspacecomponentsviewportsnappixels"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[snapPixels](#tapspacecomponentsviewportsnappixels)([pivot])
 
@@ -3168,7 +4133,7 @@ Translate the viewport in space along x, y, and z axis.
 
 
 - *translation*
-  - a [Vector](#tapspacegeometryvector) or [vec2](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec2) or [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3)
+  - a [Vector](#tapspacegeometryvector) or [vec2](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec2) or [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3) on the viewport.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3178,6 +4143,31 @@ Translate the viewport in space along x, y, and z axis.
 
 
 Source: [translateBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/translateBy.js)
+
+<a name="tapspacecomponentsviewporttranslateto"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[translateTo](#tapspacecomponentsviewporttranslateto)(point)
+
+Translate the viewport along x-, y-, and z-axis so that its anchor
+matches the given point. Translation does not rotate or rescale the view.
+Translation along z-axis can change the perceived size of space items
+depending on the viewport projection mode.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *point*
+  - a [Point](#tapspacegeometrypoint)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- this, for chaining
+
+
+Aliases: [tapspace.components.Viewport:moveTo](#tapspacecomponentsviewportmoveto)
+
+Source: [translateTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Viewport/translateTo.js)
 
 <a name="tapspacecomponentsviewportzoomable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[zoomable](#tapspacecomponentsviewportzoomable)(options)
@@ -3230,23 +4220,17 @@ This control provides basic +/- buttons to zoom the viewport in and out.
 
 Source: [ZoomControl/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/ZoomControl/index.js)
 
+<a name="tapspacecreatearc"></a>
+## [tapspace](#tapspace).[createArc](#tapspacecreatearc)
+
+Alias of [tapspace.components.Arc.create](#tapspacecomponentsarccreate)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Arc/create.js)
+
 <a name="tapspacecreatebasis"></a>
 ## [tapspace](#tapspace).[createBasis](#tapspacecreatebasis)()
 
-Create a group for further content.
-[Group](#tapspacecomponentsgroup)s can be used for root planes.
-Root planes are immediate children of the space.
-Each root plane spans a coordinate system, unlike the space.
-
-[Group](#tapspacecomponentsgroup) has zero width and height.
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-
-- a [Group](#tapspacecomponentsgroup)
-
-
-Aliases: [tapspace.components.Group.create](#tapspacecomponentsgroupcreate)
+Alias of [tapspace.createGroup](#tapspacecreategroup)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/create.js)
 
@@ -3261,7 +4245,8 @@ Make a circle-shaped element.
 - *radius*
   - a number
 - *color*
-  - a CSS color string
+  - optional CSS color string.
+  - Leave empty if you want to control the color via CSS classes.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -3289,6 +4274,26 @@ two points. Set points after adding the edge to basis.
 Aliases: [tapspace.components.Edge.create](#tapspacecomponentsedgecreate)
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Edge/create.js)
+
+<a name="tapspacecreategroup"></a>
+## [tapspace](#tapspace).[createGroup](#tapspacecreategroup)()
+
+Create a group for further content.
+[Group](#tapspacecomponentsgroup)s can be used for root planes.
+Root planes are immediate children of the space.
+Each root plane spans a coordinate system, unlike the space.
+
+[Group](#tapspacecomponentsgroup) has zero width and height.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Group](#tapspacecomponentsgroup)
+
+
+Aliases: [tapspace.createBasis](#tapspacecreatebasis), [tapspace.components.Group.create](#tapspacecomponentsgroupcreate)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/components/Group/create.js)
 
 <a name="tapspacecreateitem"></a>
 ## [tapspace](#tapspace).[createItem](#tapspacecreateitem)(content)
@@ -3601,7 +4606,11 @@ not affect the distance. Only the scale does.
 - [tapspace.geometry.Distance:getNumber](#tapspacegeometrydistancegetnumber)
 - [tapspace.geometry.Distance:getRaw](#tapspacegeometrydistancegetraw)
 - [tapspace.geometry.Distance:getVector](#tapspacegeometrydistancegetvector)
+- [tapspace.geometry.Distance:isAlmostEqual](#tapspacegeometrydistanceisalmostequal)
+- [tapspace.geometry.Distance:isGreaterThan](#tapspacegeometrydistanceisgreaterthan)
+- [tapspace.geometry.Distance:isLessThan](#tapspacegeometrydistanceislessthan)
 - [tapspace.geometry.Distance:multiply](#tapspacegeometrydistancemultiply)
+- [tapspace.geometry.Distance:projectTo](#tapspacegeometrydistanceprojectto)
 - [tapspace.geometry.Distance:scaleBy](#tapspacegeometrydistancescaleby)
 - [tapspace.geometry.Distance:transitRaw](#tapspacegeometrydistancetransitraw)
 
@@ -3668,12 +4677,102 @@ Source: [getRaw.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry
 
 Source: [getVector.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/getVector.js)
 
+<a name="tapspacegeometrydistanceisalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[isAlmostEqual](#tapspacegeometrydistanceisalmostequal)(distance[, tolerance])
+
+Test if two distances are equal within tolerance.
+[Basis](#tapspacecomponentsbasis) changes often cause small rounding errors
+due to floating point arithmetics and those
+can break strict equality checks.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *distance*
+  - a [Distance](#tapspacegeometrydistance) to compare with this.
+- *tolerance*
+  - optional number on this basis. Defaults to affineplane.epsilon
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a boolean
+
+
+Source: [isAlmostEqual.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/isAlmostEqual.js)
+
+<a name="tapspacegeometrydistanceisgreaterthan"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[isGreaterThan](#tapspacegeometrydistanceisgreaterthan)(distance)
+
+Test if this is greater than the given distance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *distance*
+  - a [Distance](#tapspacegeometrydistance)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a boolean
+
+
+Source: [isGreaterThan.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/isGreaterThan.js)
+
+<a name="tapspacegeometrydistanceislessthan"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[isLessThan](#tapspacegeometrydistanceislessthan)(distance)
+
+Test if this is less than the given distance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *distance*
+  - a [Distance](#tapspacegeometrydistance)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a boolean
+
+
+Source: [isLessThan.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/isLessThan.js)
+
 <a name="tapspacegeometrydistancemultiply"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[multiply](#tapspacegeometrydistancemultiply)
 
 Alias of [tapspace.geometry.Distance:scaleBy](#tapspacegeometrydistancescaleby)
 
 Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/scaleBy.js)
+
+<a name="tapspacegeometrydistanceprojectto"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[projectTo](#tapspacegeometrydistanceprojectto)(plane, camera)
+
+Project the distance onto a plane.
+The projection tells how long the distance is when viewed from the camera.
+We assume the distance to be orthogonal with respect to its basis.
+Both the scale difference and z difference affect the result.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *plane*
+  - a [Plane](#tapspacecomponentsplane), the target plane.
+- *camera*
+  - a [Point](#tapspacegeometrypoint), relative to the reference basis.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+
+- a [Point](#tapspacegeometrypoint), represented on the target basis.
+
+
+Source: [projectTo.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/geometry/Distance/projectTo.js)
 
 <a name="tapspacegeometrydistancescaleby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[scaleBy](#tapspacegeometrydistancescaleby)(multiplier)
@@ -4971,14 +6070,26 @@ Source: [fromSpherical.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/g
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction)
 
 Interactions define how gestures affect components.
+Interactions are set up via ability methods such as [Item:tappable](#tapspacecomponentsitemtappable).
+The easiest way to use interactions is via the ability methods.
 
-Interactions do not share a common interface.
-Interactions are not emitters. They make the components emit.
+<p style="margin-bottom: 0"><strong>Under the hood:</strong></p>
+
+
+- Interactions do not share a common interface yet they often consists of methods for binding and unbinding listeners and updating options.
+- Interactions are not emitters. They make the components such as [Item](#tapspacecomponentsitem)
+- emit iteraction events.
+
+
+**Dependency chart:**
+
+![Tapspace interaction dependency chart](tapspace_interaction_chart.png)
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.interaction.Approach](#tapspaceinteractionapproach)
 - [tapspace.interaction.Hold](#tapspaceinteractionhold)
 - [tapspace.interaction.Pinch](#tapspaceinteractionpinch)
 - [tapspace.interaction.RealignView](#tapspaceinteractionrealignview)
@@ -4986,9 +6097,68 @@ Interactions are not emitters. They make the components emit.
 - [tapspace.interaction.Tap](#tapspaceinteractiontap)
 - [tapspace.interaction.WheelRotate](#tapspaceinteractionwheelrotate)
 - [tapspace.interaction.WheelZoom](#tapspaceinteractionwheelzoom)
+- [tapspace.interactions.KeyboardPan](#tapspaceinteractionskeyboardpan)
+- [tapspace.interactions.KeyboardZoom](#tapspaceinteractionskeyboardzoom)
 
 
 Source: [interaction/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/index.js)
+
+<a name="tapspaceinteractionapproach"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Approach](#tapspaceinteractionapproach)(source, target, options)
+
+Makes the source emit approach events when the camera enters or
+leaves a threshold distance radius.
+Toggles 'active-approach' class on target.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *options*
+  - *threshold*
+    - a number, distance in viewport pixels
+  - maxDistance or maxScale or maxCover
+    - TODO. no emissions if farther than this
+  - minDistance or minScale or minCover
+    - TODO. no emissions if closer than this
+
+
+<p style="margin-bottom: 0">Makes source emit:</p>
+
+
+- *approachstart*
+- *approachend*
+
+
+<p style="margin-bottom: 0">TODO Alternative names:</p>
+
+
+- proximityenter, proximityin, approachin, proximitystart
+- proximityleave, proximityout, approachout, proximityend
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.interaction.Approach:bind](#tapspaceinteractionapproachbind)
+- [tapspace.interaction.Approach:unbind](#tapspaceinteractionapproachunbind)
+
+
+Source: [Approach/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Approach/index.js)
+
+<a name="tapspaceinteractionapproachbind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Approach](#tapspaceinteractionapproach):[bind](#tapspaceinteractionapproachbind)()
+
+Bind event listeners.
+
+Source: [Approach/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Approach/index.js)
+
+<a name="tapspaceinteractionapproachunbind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Approach](#tapspaceinteractionapproach):[unbind](#tapspaceinteractionapproachunbind)()
+
+Unbind capturer and listeners.
+
+Source: [Approach/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Approach/index.js)
 
 <a name="tapspaceinteractionhold"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Hold](#tapspaceinteractionhold)(source, target, options)
@@ -5069,6 +6239,34 @@ Source: [Hold/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/inte
 Unbind capturer.
 
 Source: [Hold/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/Hold/index.js)
+
+<a name="tapspaceinteractionkeyboardpanbind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardPan](#tapspaceinteractionkeyboardpan):[bind](#tapspaceinteractionkeyboardpanbind)()
+
+Bind event listeners.
+
+Source: [KeyboardPan/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardPan/index.js)
+
+<a name="tapspaceinteractionkeyboardpanunbind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardPan](#tapspaceinteractionkeyboardpan):[unbind](#tapspaceinteractionkeyboardpanunbind)()
+
+Unbind listeners.
+
+Source: [KeyboardPan/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardPan/index.js)
+
+<a name="tapspaceinteractionkeyboardzoombind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardZoom](#tapspaceinteractionkeyboardzoom):[bind](#tapspaceinteractionkeyboardzoombind)()
+
+Bind event listeners.
+
+Source: [KeyboardZoom/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardZoom/index.js)
+
+<a name="tapspaceinteractionkeyboardzoomunbind"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardZoom](#tapspaceinteractionkeyboardzoom):[unbind](#tapspaceinteractionkeyboardzoomunbind)()
+
+Unbind listeners.
+
+Source: [KeyboardZoom/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardZoom/index.js)
 
 <a name="tapspaceinteractionpinch"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[Pinch](#tapspaceinteractionpinch)(source, target, options)
@@ -5395,6 +6593,8 @@ Tap interaction.
     - TODO string, one of 'shrink', 'shake', 'down'.
   - *maxTravel*
     - optional number in viewport pixels. default 20.
+  - *preventDefault*
+    - optional boolean. Think as 'final'. True to mark the events as handled and prevent further interaction in bubbling. False to let the ancestors interact too. Default is true.
 
 
 <p style="margin-bottom: 0">Makes the source emit:</p>
@@ -5514,6 +6714,56 @@ Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib
 Unbind listeners
 
 Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/WheelZoom/index.js)
+
+<a name="tapspaceinteractionskeyboardpan"></a>
+## [tapspace](#tapspace).[interactions](#tapspaceinteractions).[KeyboardPan](#tapspaceinteractionskeyboardpan)(source, target, options)
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *source*
+  - an [Interactive](#tapspacecomponentsinteractive). The keyboard input source.
+- *target*
+  - a [Plane](#tapspacecomponentsplane). The target to apply the panning.
+- *options*
+  - optional object with properties:
+    - *step*
+      - a [Distance](#tapspacegeometrydistance) or a number represented in pixels on target. Default is 100. The travelling distance per key press.
+
+
+<p style="margin-bottom: 0">Makes the source emit:</p>
+
+
+- *keypan*
+
+
+Source: [KeyboardPan/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardPan/index.js)
+
+<a name="tapspaceinteractionskeyboardzoom"></a>
+## [tapspace](#tapspace).[interactions](#tapspaceinteractions).[KeyboardZoom](#tapspaceinteractionskeyboardzoom)(source, target, options)
+
+Make the viewport zoom in and out, relative to the target.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+
+- *source*
+  - an [Interactive](#tapspacecomponentsinteractive). The keyboard input source.
+- *target*
+  - a [Plane](#tapspacecomponentsplane). The target to zoom towards.
+- *options*
+  - optional object with properties:
+    - *step*
+      - a [Distance](#tapspacegeometrydistance) or a number represented in pixels on target. Default is 100. The travelling distance per key press.
+
+
+<p style="margin-bottom: 0">Makes the source emit:</p>
+
+
+- *keyzoom*
+
+
+Source: [KeyboardZoom/index.js](https://github.com/taataa/tapspace/blob/2.0-dev/lib/interaction/KeyboardZoom/index.js)
 
 <a name="tapspaceloaders"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders)
