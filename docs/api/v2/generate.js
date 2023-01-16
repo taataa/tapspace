@@ -21,6 +21,7 @@ yamdog.generate({
     'ResizeCapturer': 'tapspace.capturers.ResizeCapturer',
     'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
+    'Arc': 'tapspace.components.Arc',
     'Basis': 'tapspace.components.Basis',
     'Block': 'tapspace.components.Block',
     'Circle': 'tapspace.components.Circle',
