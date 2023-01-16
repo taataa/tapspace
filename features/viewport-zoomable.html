@@ -36,7 +36,7 @@
 <body>
   <!-- Content to test zoomability when viewport has some offset -->
   <h1>Zoomable Viewport – Tapspace Features</h1>
-  <p>You can interact with the viewport by mouse wheel or multitouch pinch.</p>
+  <p>You can interact with the viewport by mouse wheel, multitouch pinch, and keyboard "+" and "-".</p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -48,7 +48,7 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport()
+    const viewport = space.getViewport().perspective()
     const layer = space.addBasis()
 
     // Create a few components
@@ -61,7 +61,10 @@
     layer.addChild(blockB, blockA.atBottomRight())
 
     // Make the viewport pannable and zoomable
-    viewport.zoomable()
+    viewport.zoomable().focusable()
+    viewport.on('pinchstart', () => {
+      viewport.focus()
+    })
 
     // Center viewport to blocks
     viewport.match({
