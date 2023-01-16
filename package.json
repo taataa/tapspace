@@ -78,7 +78,7 @@
     "test:browser:open": "open -a \"Google Chrome\" test/browser.html",
     "test:browser:build": "webpack --config test/webpack.browser.config.js",
     "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
-    "release": "npm run lint && npm run gv && npm run build:production && npm publish",
+    "release": "npm run lint && npm run gv && npm run build:production && npm publish --tag alpha",
     "gv": "genversion lib/version.js"
   }
 }
