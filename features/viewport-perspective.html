@@ -47,7 +47,7 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const space = tapspace.createSpace('#tapspace')
-    const view = space.getView().pannable().perspective()
+    const view = space.getViewport().pannable().perspective()
     const plane = space.addBasis()
 
     // Content template for blocks. Blocks give us visual reference.
