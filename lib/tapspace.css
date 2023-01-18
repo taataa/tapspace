@@ -7,9 +7,21 @@ Architectural guidelines for tapspace classes:
    This is against DRY but for a reason.
 */
 
+.affine-hyperspace {
+  /* The space contains the layers and is a child of viewport.
+     It must fill the viewport behind controls. */
+  width: 100%;
+  height: 100%;
+  /* Ensure default transform origin. */
+  transform-origin: 0 0;
+  /* Span the same 3D space all over the affine elements. */
+  transform-style: preserve-3d;
+}
+
 .affine-layer,
 .affine-group,
-.affine-plane {
+.affine-plane,
+.affine-space {
   /* Space elements are absolutely positioned */
   position: absolute;
   top: 0;
@@ -28,12 +40,6 @@ Architectural guidelines for tapspace classes:
 }
 
 .affine-space {
-  /* The space contains the layers and is a child of viewport.
-     It must fill the viewport behind controls. */
-  width: 100%;
-  height: 100%;
-  /* Ensure default transform origin. */
-  transform-origin: 0 0;
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
