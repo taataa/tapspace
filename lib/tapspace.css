@@ -35,13 +35,18 @@ Architectural guidelines for tapspace classes:
   /* Ensure default transform origin.
     Planes with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
+}
+
+.affine-group,
+.affine-space {
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
 
-.affine-space {
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
+.affine-plane {
+  /* Force plane and its contents to 2D.
+     This supposedly gives computational benefits. */
+  transform-style: flat;
 }
 
 .affine-frame {
