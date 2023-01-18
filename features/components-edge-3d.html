@@ -37,7 +37,7 @@
   <script>
     const view = tapspace.createView('#tapspace').zoomable().perspective()
     const network = tapspace.createSpace()
-    view.addSpace(network)
+    view.addChild(network, view.atMiddle())
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.

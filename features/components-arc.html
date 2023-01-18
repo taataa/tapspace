@@ -33,9 +33,9 @@
     const view = tapspace.createView('#tapspace').zoomable()
 
     const edgelayer = tapspace.createPlane()
-    view.addPlane(edgelayer)
     const nodelayer = tapspace.createPlane()
-    view.addPlane(nodelayer)
+    view.addChild(edgelayer)
+    view.addChild(nodelayer)
 
     // Create nodes
     const m0 = tapspace.createCircle(20, 'red')
