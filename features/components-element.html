@@ -33,9 +33,9 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getViewport().pannable()
-    const basis = space.addBasis()
+    const view = tapspace.createView('#tapspace').pannable()
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
     // Content
     const hello = tapspace.createItem('Hello')
     hello.addClass('hello')
