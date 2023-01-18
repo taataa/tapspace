@@ -42,9 +42,9 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default basis for content.
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport().zoomable().perspective()
-    const circleGroup = space.addBasis()
+    const viewport = tapspace.createView('#tapspace').zoomable().perspective()
+    const space = viewport.createSpace()
+    const circleGroup = space.createSpace()
 
     viewport.setMeasureMode('lazy')
     viewport.setAnchor(viewport.atMiddle())

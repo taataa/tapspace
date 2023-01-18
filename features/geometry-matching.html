@@ -49,9 +49,9 @@
   <script>
   const container = document.querySelector('#tapspace')
 
-  const space = tapspace.createSpace(container)
-  const view = space.getViewport()
-  const layer = space.addBasis()
+  const view = tapspace.createView(container)
+  const space = view.createSpace()
+  const layer = space.createPlane()
 
   const par = (t) => '<p>' + t + '</p>'
   const originComp = tapspace.createItem(par('Beginning'))
