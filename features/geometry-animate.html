@@ -47,14 +47,15 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport().pannable()
-    const layer = space.addBasis()
+    const viewport = tapspace.createView('#tapspace')
+    const space = viewport.createSpace()
+    const layer = space.createPlane()
 
     // Create a rotateable component at the middle of the viewport.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const block = tapspace.createItem(template('Tap me'))
     block.addClass('mycomponent')
+    block.setContentInput(false)
     layer.addChild(block, viewport.atMid().offset(0, -10))
 
     // A static reference block

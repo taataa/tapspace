@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Perspective 3D - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -67,9 +65,9 @@
   <!-- Your code -->
   <script>
     // Init tapspace
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getViewport().zoomable().perspective()
-    const layer = space.addBasis()
+    const view = tapspace.createView('#tapspace').zoomable().perspective()
+    const space = view.createSpace()
+    const layer = space.createSpace()
 
     // Create html card element with image and text
     const createCardElement = function (url, txt) {
@@ -147,7 +145,7 @@
     infoCard.element.style.fontSize = '0.62em'
 
     // Nodes
-    const nodes = space.addBasis()
+    const nodes = space.createSpace()
 
     nodes.addChild(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
     nodes.addChild(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
