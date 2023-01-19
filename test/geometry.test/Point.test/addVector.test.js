@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Point:addVector', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create a Point
     const p = basis.at(10, 6)
     // Create a Vector

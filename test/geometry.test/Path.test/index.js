@@ -5,8 +5,9 @@ module.exports = function (test, container, tapspace) {
   test('Path:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
+
     // Create a Path
     const path = [
       { x: 1, y: 2, z: 3 },

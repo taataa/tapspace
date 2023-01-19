@@ -5,9 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Item:rotateBy', (t) => {
     // Setting
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const view = space.getViewport()
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
 
     const item = tapspace.createItem('<h1>Hello</h1>')
     item.setSize(400, 200)

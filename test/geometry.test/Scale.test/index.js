@@ -5,10 +5,10 @@ module.exports = function (test, container, tapspace) {
   test('Scale :changeBasis :getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
+    const view = tapspace.createView('#testspace')
     // Create two bases
-    const ba = space.addBasis()
-    const bb = space.addBasis()
+    const ba = view.createSpace()
+    const bb = view.createSpace()
     // Scale another
     bb.scaleBy(4)
     const scale = bb.getScale()

@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Plane:at', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
 
     // Take a point
     const p = basis.at(1, 2)
