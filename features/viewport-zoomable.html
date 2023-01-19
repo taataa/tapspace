@@ -4,11 +4,6 @@
   <meta charset="utf-8">
   <title>Zoomable Viewport - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
-  <!-- Disable user scalability to override native touch gestures. -->
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
   <!-- your custom styles -->
   <style>
     body {
@@ -47,9 +42,8 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport().perspective()
-    const layer = space.addBasis()
+    const viewport = tapspace.createView('#tapspace').perspective()
+    const layer = viewport.createPlane()
 
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'

@@ -46,20 +46,19 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getViewport().pannable().perspective()
-    const plane = space.addBasis()
+    const view = tapspace.createView('#tapspace').pannable().perspective()
+    const space = view.createSpace()
 
     // Content template for blocks. Blocks give us visual reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
 
     const blocka = tapspace.createItem(template('Far away'))
     blocka.addClass('mycomponent')
-    plane.addChild(blocka, view.atNorm(0.4, 0.5, 2))
+    space.addChild(blocka, view.atNorm(0.4, 0.5, 2))
 
     const blockb = tapspace.createItem(template('Up close'))
     blockb.addClass('mycomponent')
-    plane.addChild(blockb, view.atNorm(0.6, 0.5, 0))
+    space.addChild(blockb, view.atNorm(0.6, 0.5, 0))
   </script>
 </body>
 </html>
