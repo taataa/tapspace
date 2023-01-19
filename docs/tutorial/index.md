@@ -4,6 +4,8 @@ Ready to build your first Tapspace app? You have come to the right place. Here w
 
 In this tutorial we assume you have basic knowledge on web programming concepts such as HTML, CSS, DOM, and JavaScript.
 
+This tutorial is for Tapspace.js version v2.0.0-alpha.3
+
 ## Step 1: Prepare a web page for the app
 
 Create a directory named `tapspace-hello` and in it a file `index.html` with the following content:
@@ -23,7 +25,7 @@ Adjust the title to your liking.
 Import Tapspace script by adding the following line before the ending head tag:
 
     ...
-      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.1/dist/tapspace.min.js"></script>
+      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.3/dist/tapspace.min.js"></script>
     </head>
     ...
 
@@ -169,6 +171,8 @@ To allow users to move the element around:
     })
 
 There are also ability methods for resizing, linear sliding, rotation, and more.
+
+To prevent interaction with the HTML content of the space element, like form input or text selection, use `world.setContentInput(false)`. In a similar fashion, if you want to dedicate pointer input to content but keep mouse wheel input for zooming, use `world.setContentInput('pointer')`
 
 ## What next?
 
