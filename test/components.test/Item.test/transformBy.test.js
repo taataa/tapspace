@@ -5,9 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Item:transformBy', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const view = space.getViewport()
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
 
     const tr = tapspace.geometry.Transform.fromFeatures({
       basis: view,

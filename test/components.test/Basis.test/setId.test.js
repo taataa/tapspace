@@ -5,8 +5,8 @@ module.exports = (test, container, tapspace) => {
   test('Basis:setId', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
 
     // Set basis id
     basis.setId('hero')

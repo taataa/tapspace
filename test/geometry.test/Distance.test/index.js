@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Distance:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create two Points
     const pa = basis.at(10, 6)
     const pb = basis.at(14, 9)
@@ -25,9 +25,9 @@ module.exports = function (test, container, tapspace) {
   test('Distance :isAlmostEqual :isGreaterThan :isLessThan', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const ba = space.addBasis()
-    const bb = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const ba = view.createSpace()
+    const bb = view.createSpace()
     bb.scaleBy(2)
 
     const da = new tapspace.geometry.Distance(ba, 10)

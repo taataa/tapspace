@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Vector:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create two Points
     const pa = basis.at(10, 6)
     const pb = basis.at(20, 16)

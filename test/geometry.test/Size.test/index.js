@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Size:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create an element
     const hel = tapspace.createItem('hello')
     hel.setSize({ w: 200, h: 200 })
@@ -26,8 +26,8 @@ module.exports = function (test, container, tapspace) {
   test('Size:scaleBy', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create an element
     const hel = tapspace.createItem('hello')
     hel.setSize(200, 200)

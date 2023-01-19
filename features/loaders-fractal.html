@@ -53,14 +53,13 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport()
-    viewport.responsive()
-    viewport.zoomable()
-    const basis = space.addBasis()
+    const viewport = tapspace.createView('#tapspace')
+    const space = viewport.createSpace()
+    viewport.responsive().zoomable()
+    const nodes = space.createSpace()
 
     const n0 = tapspace.createCircle(5, 'black')
-    basis.addChild(n0)
+    nodes.addChild(n0)
 
     viewport.matchPoints(viewport.atMid(), n0.atMid())
 

@@ -4,11 +4,6 @@
   <meta charset="utf-8">
   <title>Responsive Viewport - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
-  <!-- Disable user scalability to override native touch gestures. -->
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
   <!-- your custom styles -->
   <style>
     body {
@@ -52,11 +47,8 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport()
-    viewport.responsive()
-    viewport.pannable()
-    const layer = space.addBasis()
+    const viewport = tapspace.createView('#tapspace').pannable().responsive()
+    const plane = viewport.createPlane()
 
     // Create a component for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
@@ -66,7 +58,7 @@
     block.addClass('mycomponent')
     block.setAnchor(block.atMid())
 
-    layer.addChild(block, viewport.atMid())
+    plane.addChild(block, viewport.atMid())
   </script>
 </body>
 </html>

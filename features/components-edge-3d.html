@@ -35,20 +35,22 @@
 
   <!-- Your code -->
   <script>
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getViewport().zoomable().perspective()
+    const view = tapspace.createView('#tapspace').zoomable().perspective()
+    const network = tapspace.createSpace()
+    view.addChild(network, view.atMiddle())
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.
-    const edgelayer = space.addBasis()
-    const nodelayer = space.addBasis()
+    const edgelayer = tapspace.createSpace()
+    const nodelayer = tapspace.createSpace()
+    network.addChild(edgelayer)
+    network.addChild(nodelayer)
 
     // Create nodes
     const m0 = tapspace.createCircle(20, 'red')
     const m1 = tapspace.createCircle(20, 'blue')
     const m2 = tapspace.createCircle(20, 'green')
     const m3 = tapspace.createCircle(20, 'orange')
-
     nodelayer.addChild(m0, view.atNorm(0.38, 0.3, 0))
     nodelayer.addChild(m1, view.atNorm(0.62, 0.6, 1))
     nodelayer.addChild(m2, view.atNorm(0.38, 0.3, 2))
@@ -58,7 +60,6 @@
     const edge01 = tapspace.createEdge('0.6em dotted black')
     const edge12 = tapspace.createEdge('0.6em solid black')
     const edge13 = tapspace.createEdge('0.6em dashed #333')
-
     edgelayer.addChild(edge01)
     edgelayer.addChild(edge12)
     edgelayer.addChild(edge13)

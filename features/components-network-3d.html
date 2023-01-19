@@ -45,13 +45,16 @@
 
   <!-- Your code -->
   <script>
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getViewport().zoomable().perspective()
+    const view = tapspace.createView('#tapspace').zoomable().perspective()
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // Layer creation order determines drawing order.
     // Last created, top drawn.
-    const edgelayer = space.addBasis()
-    const nodelayer = space.addBasis()
+    const edgelayer = tapspace.createSpace()
+    const nodelayer = tapspace.createSpace()
+    space.addChild(edgelayer)
+    space.addChild(nodelayer)
 
     let totalNodes = 0
 

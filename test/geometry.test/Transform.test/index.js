@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Transform:getRaw', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create a Transformation
     const helm = { a: 1, b: 2, x: 3, y: 4, z: 5 }
     const tr = new tapspace.geometry.Transform(basis, helm)

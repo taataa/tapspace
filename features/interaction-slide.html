@@ -41,9 +41,9 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default basis for content.
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport()
-    const basis = space.addBasis()
+    const viewport = tapspace.createView('#tapspace')
+    const space = viewport.createSpace()
+    const basis = space.createPlane()
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'

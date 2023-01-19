@@ -29,6 +29,7 @@ yamdog.generate({
     'Edge': 'tapspace.components.Edge',
     'Frame': 'tapspace.components.Frame',
     'Group': 'tapspace.components.Group',
+    'Hyperspace': 'tapspace.components.Hyperspace',
     'Interactive': 'tapspace.components.Interactive',
     'Item': 'tapspace.components.Item',
     'Pixel': 'tapspace.components.Pixel',

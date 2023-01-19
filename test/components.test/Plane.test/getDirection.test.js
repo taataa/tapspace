@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Plane:getDirection', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
 
     // Take a direction
     const dir = basis.getDirection(Math.PI, Math.PI / 2)

@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Basis Component - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
   <!-- your custom styles -->
   <style>
     body {
@@ -44,15 +42,16 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getView().zoomable()
+    const space = tapspace.createSpace()
+    const view = tapspace.createView('#tapspace').zoomable()
+    view.addChild(space, view.atCenter())
 
     // Create a basis container.
-    const basisa = tapspace.createBasis()
+    const basisa = tapspace.createSpace()
     space.addChild(basisa, view.atNorm(0.382, 0.382))
     basisa.scaleBy(0.382)
     // Create another basis. Even smaller and rotated.
-    const basisb = tapspace.createBasis()
+    const basisb = tapspace.createSpace()
     space.addChild(basisb, basisa.at(400, 200))
     basisb.setScale(basisa.getScale().scaleBy(0.618))
     basisb.rotateBy(Math.PI / 5)
@@ -65,6 +64,7 @@
       )
       img.setSize(800, 800)
       img.setAnchor(100, 100)
+      img.setContentInput(false)
       // Match origins
       bas.addChild(img, bas.atAnchor())
       // Show basis origin

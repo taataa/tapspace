@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Viewport Controls - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
   <!-- your custom styles -->
   <style>
     body {
@@ -51,9 +49,9 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const viewport = space.getViewport().pannable().zoomable().perspective()
-    const layer = space.addBasis()
+    const viewport = tapspace.createView('#tapspace')
+    viewport.pannable().zoomable().perspective()
+    const layer = viewport.createSpace()
 
     // Create a component for reference. A group of hellos
     const template = (t) => '<p class="mylabel">' + t + '</p>'

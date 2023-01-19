@@ -5,8 +5,8 @@ module.exports = function (test, container, tapspace) {
   test('Vector.fromPolar', (t) => {
     // Setup
     container.innerHTML = template()
-    const space = tapspace.createSpace('#testspace')
-    const basis = space.addBasis()
+    const view = tapspace.createView('#testspace')
+    const basis = view.createSpace()
     // Create a vector
     const radius = 2
     const d90 = Math.PI / 2

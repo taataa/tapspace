@@ -35,9 +35,11 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const space = tapspace.createSpace('#tapspace')
-    const view = space.getView().pannable()
-    const plane = space.addBasis()
+    const view = tapspace.createView('#tapspace').pannable()
+    const space = tapspace.createSpace()
+    const plane = tapspace.createPlane()
+    view.addChild(space)
+    space.addChild(plane)
 
     const createPixelElement = (color) => {
       const div = document.createElement('div')
