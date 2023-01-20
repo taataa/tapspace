@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scale-free Background - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+      cursor: grab;
+    }
+    .myspaceapp .active-pinch {
+      cursor: grabbing;
+    }
+    .myitem {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .bgitem {
+      background-image: url(assets/grid_size400.png);
+    }
+  </style>
+</head>
+<body>
+  <h1>Scale-free Background – Tapspace Features</h1>
+  <p>Zoom in and out to observe how the grid behaves.
+    The grid background image is just 400 px in width and height and set to
+    repeat horizontally and vertically. When you zoom in, the code adjusts
+    the CSS background-size rule to give an illusion of deeply detailed
+    grid. The illusion breaks when you zoom deep enough because
+    the CSS rule cannot handle large number of decimals.
+  </p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace').zoomable().perspective()
+    const space = viewport.createSpace()
+
+    const bgitem = tapspace.createItem()
+    bgitem.addClass('bgitem')
+    bgitem.setSize(800, 800)
+    space.addChild(bgitem)
+
+    viewport.focusTo(bgitem)
+
+    viewport.on('idle', () => {
+      // Measure distance from camera to the image.
+      const delta = bgitem.atAnchor().getVectorTo(viewport.atCamera())
+      const deltaOnViewport = delta.transitRaw(viewport)
+      const dz = deltaOnViewport.z
+      // Calculate how many zoom levels the apprarent scale amounts to.
+      const scale = viewport.cameraDistance / Math.abs(dz)
+      const level = Math.floor(Math.log2(scale))
+      const poslevel = Math.max(0, level)
+      // Convert discrete zoom level back to scale and apply to bg size.
+      const percentage = 100 / Math.pow(2, poslevel)
+      const percentStr = percentage.toFixed(8) + '%'
+      bgitem.getElement().style.backgroundSize = percentStr
+    })
+  </script>
+</body>
+</html>
