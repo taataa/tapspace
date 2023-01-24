@@ -64,7 +64,7 @@
     "yamdog": "^2.0.0"
   },
   "scripts": {
-    "audit": "npm audit --production",
+    "audit": "npm audit --omit=dev",
     "start": "node docs/examples/server.js",
     "build": "webpack",
     "build:production": "webpack --mode production",
