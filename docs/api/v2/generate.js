@@ -38,6 +38,7 @@ yamdog.generate({
     'Pixel': 'tapspace.components.Pixel',
     'Plane': 'tapspace.components.Plane',
     'Space': 'tapspace.components.Space',
+    'Transformer': 'tapspace.components.Transformer',
     'Viewport': 'tapspace.components.Viewport',
     'ZoomControl': 'tapspace.components.ZoomControl',
     // Geometry
