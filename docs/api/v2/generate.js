@@ -12,7 +12,9 @@ yamdog.generate({
   // Where to generate
   output: path.resolve(__dirname, 'index.md'),
   // Earmark; include blocks that begin with this name.
-  earmark: {
+  earmark: '@',
+  // Names; include these names
+  names: {
     'tapspace': 'tapspace',
     // Capturers
     'Capturer': 'tapspace.capturers.Capturer',
