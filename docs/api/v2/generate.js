@@ -20,6 +20,7 @@ yamdog.generate({
     'Capturer': 'tapspace.capturers.Capturer',
     'CameraCapturer': 'tapspace.capturers.CameraCapturer',
     'GestureCapturer': 'tapspace.capturers.GestureCapturer',
+    'KeyboardCapturer': 'tapspace.capturers.KeyboardCapturer',
     'ResizeCapturer': 'tapspace.capturers.ResizeCapturer',
     'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
