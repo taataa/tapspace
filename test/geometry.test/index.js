@@ -1,4 +1,5 @@
 const units = {
+  Box: require('./Box.test'),
   Direction: require('./Direction.test'),
   Distance: require('./Distance.test'),
   Path: require('./Path.test'),
