@@ -1,5 +1,6 @@
 const units = {
-  at: require('./at.test')
+  at: require('./at.test'),
+  atNorm: require('./atNorm.test')
 }
 
 module.exports = (test, container, tapspace) => {
