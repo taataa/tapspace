@@ -1,7 +1,8 @@
 const units = {
   at: require('./at.test'),
   atNorm: require('./atNorm.test'),
-  changeBasis: require('./changeBasis.test')
+  changeBasis: require('./changeBasis.test'),
+  transitRaw: require('./transitRaw.test')
 }
 
 module.exports = (test, container, tapspace) => {
