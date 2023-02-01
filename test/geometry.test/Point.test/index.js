@@ -1,7 +1,8 @@
 const units = {
   addVector: require('./addVector.test'),
   getDistanceTo: require('./getDistanceTo.test'),
-  getRaw: require('./getRaw.test')
+  getRaw: require('./getRaw.test'),
+  transitRawOuter: require('./transitRawOuter.test')
 }
 
 module.exports = (test, container, tapspace) => {
