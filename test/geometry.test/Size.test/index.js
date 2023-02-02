@@ -1,46 +1,10 @@
-const template = require('./template.ejs')
+const units = {
+  getRaw: require('./getRaw.test'),
+  scaleBy: require('./scaleBy.test')
+}
 
-module.exports = function (test, container, tapspace) {
-  //
-  test('Size:getRaw', (t) => {
-    // Setup
-    container.innerHTML = template()
-    const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
-    // Create an element
-    const hel = tapspace.createItem('hello')
-    hel.setSize({ w: 200, h: 200 })
-    basis.addChild(hel)
-    // Get its size
-    const size = hel.getSize()
-
-    t.deepEqual(
-      size.getRaw(),
-      { w: 200, h: 200 },
-      'should convert size to object'
-    )
-
-    t.end()
-  })
-
-  test('Size:scaleBy', (t) => {
-    // Setup
-    container.innerHTML = template()
-    const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
-    // Create an element
-    const hel = tapspace.createItem('hello')
-    hel.setSize(200, 200)
-    basis.addChild(hel)
-    // Get its size
-    const size = hel.getSize()
-
-    t.deepEqual(
-      size.scaleBy(2).getRaw(),
-      { w: 400, h: 400 },
-      'should double the width and height'
-    )
-
-    t.end()
+module.exports = (test, container, tapspace) => {
+  Object.keys(units).forEach((unitName) => {
+    units[unitName](test, container, tapspace)
   })
 }
