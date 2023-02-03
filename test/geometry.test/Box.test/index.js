@@ -3,6 +3,7 @@ const units = {
   atNorm: require('./atNorm.test'),
   atToNorm: require('./atToNorm.test'),
   changeBasis: require('./changeBasis.test'),
+  fromPoints: require('./fromPoints.test'),
   getBoundingBox: require('./getBoundingBox.test'),
   rotateBy: require('./rotateBy.test'),
   scaleBy: require('./scaleBy.test'),
