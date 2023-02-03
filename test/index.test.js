@@ -11,6 +11,7 @@ const units = {
 }
 
 // Custom assertations
+test.Test.prototype.almostEqual = require('./utils/almostEqual')
 test.Test.prototype.almostEqualPoint = require('./utils/almostEqualPoint')
 test.Test.prototype.almostEqualVector = require('./utils/almostEqualVector')
 
