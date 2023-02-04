@@ -11,7 +11,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item, space.at(0, 0))
 
     // Get a box. Size is { w: 20, h: 20, d: 0 }
-    const box = item.getBox()
+    const box = item.getBoundingBox()
 
     t.deepEqual(
       box.atToNorm(0, 0, 0),

@@ -11,7 +11,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item, space.at(10, 10, 30))
 
     // Get a box
-    const box = item.getBox()
+    const box = item.getBoundingBox()
     const deg45 = Math.PI / 4
     const rotatedBox = box.rotateBy(deg45, box.atNorm(0.5, 0.5))
 

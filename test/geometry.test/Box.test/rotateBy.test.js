@@ -13,7 +13,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item, space.at(10, 10, 30))
 
     // Get a box
-    const box = item.getBox()
+    const box = item.getBoundingBox()
 
     // Flip around corner
     const rotated = box.rotateBy(Math.PI, item.atBottomRight())

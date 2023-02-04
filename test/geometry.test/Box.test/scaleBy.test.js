@@ -11,7 +11,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item, space.at(10, 10, 30))
 
     // Get a box
-    const box = item.getBox()
+    const box = item.getBoundingBox()
     const scaledBox = box.scaleBy(2, item.atAnchor())
 
     t.equal(

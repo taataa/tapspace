@@ -11,7 +11,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item, space.at(10, 20, 30))
 
     // Get a box
-    const boxOnItem = item.getBox()
+    const boxOnItem = item.getBoundingBox()
     const plainBoxOnSpace = boxOnItem.transitRaw(space)
 
     t.deepEqual(

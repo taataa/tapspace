@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
     items.push(tapspace.createCircle(1, 'black'))
     space.addChild(items[1], space.at(2, 2, 2))
 
-    const boxes = items.map(item => item.getBox())
+    const boxes = items.map(item => item.getBoundingBox())
 
     // Get the box, represent on item
     const bounds = tapspace.geometry.Box.fromBoxes(view, boxes)

@@ -11,7 +11,7 @@ module.exports = function (test, container, tapspace) {
     space.addChild(item)
 
     // Get a box
-    const box = item.getBox()
+    const box = item.getBoundingBox()
 
     t.almostEqualPoint(
       box.at(10, 10),
