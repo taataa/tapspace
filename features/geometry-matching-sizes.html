@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Matching Geometry by Sizes - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    html, body, .container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      background: gray;
+      color: black;
+    }
+    .container {
+      background: darkgray;
+    }
+    .myspaceapp {
+      background: white;
+      width: 100%;
+      height: 100%;
+    }
+    .mycomponent {
+      background: lightblue;
+      font-size: 2rem;
+    }
+    .mycomponent p {
+      margin: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+  const container = document.querySelector('#tapspace')
+
+  const view = tapspace.createView(container).zoomable()
+  const space = view.createSpace()
+
+  // Template for item content
+  const par = (t) => '<p>' + t + '</p>'
+
+  const createItem = (text, color, width, height, position) => {
+    const item = tapspace.createItem(par(text))
+    item.addClass('mycomponent')
+    item.getElement().style.background = color
+    item.setSize(width, height)
+    item.setAnchor(item.atMid())
+    item.setContentInput(false)
+    space.addChild(item, position)
+    return item
+  }
+
+  // Exhibit 1: scale to match height
+  const book = createItem('Book', 'lightgray', 200, 150, space.at(200, 200))
+  const bookhs = createItem('Tap to match the to book height by <em>scaling</em>',
+    'lightblue', 150, 300, space.at(450, 200))
+  bookhs.tappable()
+  bookhs.once('tap', () => {
+    bookhs.scaleToMatchHeight(book, bookhs.atMidLeft())
+    bookhs.html(par('Scaled to match the book height'))
+  })
+
+  // Exhibit 2: resize to match height
+  const bookhr = createItem('Tap to match to the book height by <em>resizing</em>',
+    'lightblue', 150, 300, space.at(650, 200))
+  bookhr.tappable()
+  bookhr.once('tap', () => {
+    bookhr.resizeToMatchHeight(book, bookhr.atMidLeft())
+    bookhr.html(par('Resized to book height'))
+  })
+
+  // Exhibit 3: resize to match width
+  const bookwr = createItem('Tap to match to the book width by <em>resizing</em>',
+    'lightblue', 300, 150, space.at(250, 450))
+  bookwr.tappable()
+  bookwr.once('tap', () => {
+    bookwr.resizeToMatchWidth(book, bookwr.atMidLeft())
+    bookwr.html(par('Resized to match the book width'))
+  })
+
+  // Exhibit 4: scale to match space width
+  const spacews = createItem('Tap to match to the <strong>space</strong> width by <em>scaling</em>',
+    'lightblue', 300, 150, space.at(250, 650))
+  spacews.tappable()
+  spacews.once('tap', () => {
+    spacews.scaleToMatchWidth(space.getBoundingBox(), spacews.atTopLeft())
+    spacews.html(par('Scaled to match the space width'))
+  })
+
+  // Exhibit 5: rotate to match orientation
+  const bookor = createItem('Tap to match to the book orientation',
+    'lightblue', 200, 150, space.at(600, 500))
+  bookor.rotateByDegrees(40)
+  bookor.tappable()
+  bookor.once('tap', () => {
+    bookor.matchOrientation(book, bookor.atBottomMid())
+    bookor.html(par('Rotated to match the orientation'))
+  })
+
+  </script>
+</body>
+</html>
