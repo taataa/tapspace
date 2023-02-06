@@ -69,7 +69,7 @@
     'lightblue', 150, 300, space.at(450, 200))
   bookhs.tappable()
   bookhs.once('tap', () => {
-    bookhs.scaleToMatchHeight(book, bookhs.atMidLeft())
+    bookhs.scaleToHeight(book.getHeight(), bookhs.atMidLeft())
     bookhs.html(par('Scaled to match the book height'))
   })
 
@@ -96,7 +96,7 @@
     'lightblue', 300, 150, space.at(250, 650))
   spacews.tappable()
   spacews.once('tap', () => {
-    spacews.scaleToMatchWidth(space.getBoundingBox(), spacews.atTopLeft())
+    spacews.scaleToWidth(space.getBoundingBox().getWidth(), spacews.atTopLeft())
     spacews.html(par('Scaled to match the space width'))
   })
 
