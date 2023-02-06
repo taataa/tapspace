@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Item:matchScale', (t) => {
+  test('Item:setScale', (t) => {
     // Setting
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -19,7 +19,7 @@ module.exports = function (test, container, tapspace) {
     item.setAnchor(0, 0)
     space.addChild(item)
 
-    item.matchScale(ref, item.atBottomRight())
+    item.setScale(ref.getScale(), item.atBottomRight())
 
     t.almostEqualPoint(
       item.at(0, 0).changeBasis(space),
