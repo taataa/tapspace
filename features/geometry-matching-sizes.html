@@ -78,7 +78,7 @@
     'lightblue', 150, 300, space.at(650, 200))
   bookhr.tappable()
   bookhr.once('tap', () => {
-    bookhr.resizeToMatchHeight(book, bookhr.atMidLeft())
+    bookhr.setHeight(book.getHeight(), bookhr.atMidLeft())
     bookhr.html(par('Resized to book height'))
   })
 
@@ -87,7 +87,7 @@
     'lightblue', 300, 150, space.at(250, 450))
   bookwr.tappable()
   bookwr.once('tap', () => {
-    bookwr.resizeToMatchWidth(book, bookwr.atMidLeft())
+    bookwr.setWidth(book.getWidth(), bookwr.atMidLeft())
     bookwr.html(par('Resized to match the book width'))
   })
 
