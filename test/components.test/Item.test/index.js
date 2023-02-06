@@ -4,6 +4,7 @@ const units = {
   at: require('./at.test'),
   matchScale: require('./matchScale.test'),
   rotateBy: require('./rotateBy.test'),
+  setOrientation: require('./setOrientation.test'),
   transformBy: require('./transformBy.test')
 }
 
