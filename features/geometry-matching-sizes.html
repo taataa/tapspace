@@ -112,7 +112,7 @@
   bookor.rotateByDegrees(40)
   bookor.tappable()
   bookor.once('tap', () => {
-    bookor.matchOrientation(book, bookor.atTopLeft())
+    bookor.setOrientation(book.getOrientation(), bookor.atTopLeft())
     bookor.html(par('Rotated to match the orientation'))
   })
 
