@@ -31,6 +31,9 @@
     .mycomponent p {
       margin: 1rem;
     }
+    .book {
+      border-left: 4px ridge lightgray;
+    }
   </style>
 </head>
 <body>
@@ -63,9 +66,12 @@
     return item
   }
 
-  // Exhibit 1: scale to match height
+  // Create reference
   const book = createItem('Book', 'lightgray', 200, 150, space.at(200, 200))
-  const bookhs = createItem('Tap to match the to book height by <em>scaling</em>',
+  book.addClass('book')
+
+  // Exhibit 1: scale to match height
+  const bookhs = createItem('Tap to match the book height by <em>scaling</em>',
     'lightblue', 150, 300, space.at(450, 200))
   bookhs.tappable()
   bookhs.once('tap', () => {
@@ -74,7 +80,7 @@
   })
 
   // Exhibit 2: resize to match height
-  const bookhr = createItem('Tap to match to the book height by <em>resizing</em>',
+  const bookhr = createItem('Tap to match the book height by <em>resizing</em>',
     'lightblue', 150, 300, space.at(650, 200))
   bookhr.tappable()
   bookhr.once('tap', () => {
@@ -83,7 +89,7 @@
   })
 
   // Exhibit 3: resize to match width
-  const bookwr = createItem('Tap to match to the book width by <em>resizing</em>',
+  const bookwr = createItem('Tap to match the book width by <em>resizing</em>',
     'lightblue', 300, 150, space.at(250, 450))
   bookwr.tappable()
   bookwr.once('tap', () => {
@@ -92,7 +98,7 @@
   })
 
   // Exhibit 4: scale to match space width
-  const spacews = createItem('Tap to match to the <strong>space</strong> width by <em>scaling</em>',
+  const spacews = createItem('Tap to match the <strong>space</strong> width by <em>scaling</em>',
     'lightblue', 300, 150, space.at(250, 650))
   spacews.tappable()
   spacews.once('tap', () => {
@@ -101,13 +107,22 @@
   })
 
   // Exhibit 5: rotate to match orientation
-  const bookor = createItem('Tap to match to the book orientation',
-    'lightblue', 200, 150, space.at(600, 500))
+  const bookor = createItem('Tap to match the book orientation',
+    'lightblue', 220, 140, space.at(600, 500))
   bookor.rotateByDegrees(40)
   bookor.tappable()
   bookor.once('tap', () => {
-    bookor.matchOrientation(book, bookor.atBottomMid())
+    bookor.matchOrientation(book, bookor.atTopLeft())
     bookor.html(par('Rotated to match the orientation'))
+  })
+
+  // Exhibit 6: resize to match size
+  const booksz = createItem('Tap to match the book size',
+    'lightblue', 100, 300, space.at(800, 200))
+  booksz.tappable()
+  booksz.once('tap', () => {
+    booksz.resize(book.getSize(), booksz.atBottomLeft())
+    booksz.html(par('Resized to match the book size'))
   })
 
   </script>
