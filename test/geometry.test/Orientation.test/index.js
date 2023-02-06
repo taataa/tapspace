@@ -1,5 +1,5 @@
 const units = {
-  getRaw: require('./getRaw.test'),
+  getRaw: require('./getRaw.test')
 }
 
 module.exports = (test, container, tapspace) => {
