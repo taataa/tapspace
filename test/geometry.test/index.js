@@ -2,6 +2,7 @@ const units = {
   Box: require('./Box.test'),
   Direction: require('./Direction.test'),
   Distance: require('./Distance.test'),
+  Orientation: require('./Orientation.test'),
   Path: require('./Path.test'),
   Point: require('./Point.test'),
   Scale: require('./Scale.test'),
