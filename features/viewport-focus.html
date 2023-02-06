@@ -55,11 +55,12 @@
     item.rotateByDegrees(25).scaleBy(1.2).translateTo(plane.at(300, 200))
 
     // Tap the item to focus the viewport to it.
-    item.tappable()
+    item.setContentInput(false)
+    item.tappable({ preventDefault: false })
     item.on('tap', () => {
       console.log('focus')
       viewport.animateOnce()
-      viewport.focusTo(item, { margin: '30%' })
+      viewport.fit(item, { margin: '30%' })
     })
   </script>
 </body>
