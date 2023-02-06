@@ -1,5 +1,6 @@
 const units = {
   at: require('./at.test'),
+  getBoundingBox: require('./getBoundingBox.test'),
   getDirection: require('./getDirection.test')
 }
 
