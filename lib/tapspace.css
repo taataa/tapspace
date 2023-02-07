@@ -114,6 +114,10 @@ Architectural guidelines for tapspace classes:
   transform-style: flat;
 }
 
+.affine-arc {
+  overflow: hidden;
+}
+
 .affine-proxy-pointer {
   /* Contents of a proxy act as passive part of the proxy element.
      The proxy itself acts as an interactive part of its ancestors. */
