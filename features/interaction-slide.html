@@ -89,7 +89,7 @@
     ref.addClass('mycomponent')
     ref.setParent(basis)
     ref.scaleBy(0.618)
-    ref.matchPoints(ref.atBottomRight(), block.atBottomLeft())
+    ref.matchPoint(ref.atBottomRight(), block.atBottomLeft())
     const measure = ref.getWidth().scaleBy(0.618)
     const offset = measure.getVector(ref.getDirection(Math.PI))
     ref.translateBy(offset)

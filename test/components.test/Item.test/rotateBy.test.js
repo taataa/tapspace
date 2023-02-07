@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
 
     item.rotateBy(Math.PI / 2, item.atTopLeft())
     // Bring back to visible area
-    item.matchPoints(item.atBottomLeft(), view.at(0, 0))
+    item.matchPoint(item.atBottomLeft(), view.at(0, 0))
 
     setTimeout(() => {
       t.notEqual(document.elementFromPoint(300, 100),
