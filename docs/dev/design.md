@@ -34,6 +34,13 @@ Minimal state versus minimal options:
 - Minimal state has great benefit: less unexpected behavior because of smaller
   state space. This comes with a price: options need to be given.
 
+Orthogonal language design:
+- If a method M can be replaced by the use of two simpler methods P and Q
+  then the method M probably has too high abstraction for the language.
+- Remember, we are building a toolbox to build features to applications,
+  not the features themselves.
+- Maximal expressiveness with minimal set of building blocks.
+
 ## Construction
 
 The init code style is important. It is the first thing the user learns.
