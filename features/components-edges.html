@@ -107,6 +107,23 @@
     view.scaleToFill(spaceBounds.getSize())
     view.matchPoint(view.atCenter(), spaceBounds.atCenter())
     view.scaleBy(1.2, view.atCenter())
+
+    // DEBUG Visualization tools.
+    // const drawPoint = (p) => {
+    //   const c = tapspace.createCircle(7, 'red')
+    //   space.addChild(c, p)
+    // }
+    //
+    // const drawBox = (box) => {
+    //   drawPoint(box.atNorm(0, 0, 0))
+    //   drawPoint(box.atNorm(0, 0, 1))
+    //   drawPoint(box.atNorm(0, 1, 0))
+    //   drawPoint(box.atNorm(0, 1, 1))
+    //   drawPoint(box.atNorm(1, 0, 0))
+    //   drawPoint(box.atNorm(1, 0, 1))
+    //   drawPoint(box.atNorm(1, 1, 0))
+    //   drawPoint(box.atNorm(1, 1, 1))
+    // }
   </script>
 </body>
 </html>
