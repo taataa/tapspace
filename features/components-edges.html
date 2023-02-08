@@ -82,7 +82,27 @@
     arc01.setPoints(na0.atAnchor(), na1.atAnchor())
     arc02.setPoints(na0.atAnchor(), na2.atAnchor())
 
-    // Position view to content.
+    // Exhibit 3: Edges in 3D
+    const deepEdges = space.createSpace(curvedEdges.at(300, 0))
+    // Create nodes
+    const dn0 = tapspace.createCircle(20, 'magenta')
+    const dn1 = tapspace.createCircle(20, 'aqua')
+    const dn2 = tapspace.createCircle(20, 'teal')
+    // Set node positions
+    deepEdges.addChild(dn0, deepEdges.at(0, 0, 50))
+    deepEdges.addChild(dn1, deepEdges.at(200, 0, 20))
+    deepEdges.addChild(dn2, deepEdges.at(0, 0).polarOffset(200, Math.PI / 3))
+    // Create edges
+    const de01 = tapspace.createEdge('0.6em dotted black')
+    const de12 = tapspace.createEdge('0.6em solid gray')
+    deepEdges.prependChild(de01)
+    deepEdges.prependChild(de12)
+    // Set edge positions
+    const trim = dn0.getRadius()
+    de01.trimPoints(dn0.atAnchor(), dn1.atAnchor(), trim)
+    de12.trimPoints(dn1.atAnchor(), dn2.atAnchor(), trim)
+
+    // Position view to display all content.
     const spaceBounds = space.getBoundingBox()
     view.scaleToFill(spaceBounds.getSize()).scaleBy(1.1)
     view.matchPoint(view.atCenter(), spaceBounds.atCenter())
