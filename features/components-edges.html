@@ -93,19 +93,20 @@
     deepEdges.addChild(dn1, deepEdges.at(200, 0, 20))
     deepEdges.addChild(dn2, deepEdges.at(0, 0).polarOffset(200, Math.PI / 3))
     // Create edges
-    const de01 = tapspace.createEdge('0.6em dotted black')
+    const de01 = tapspace.createEdge('0.6em dashed gray')
     const de12 = tapspace.createEdge('0.6em solid gray')
     deepEdges.prependChild(de01)
     deepEdges.prependChild(de12)
     // Set edge positions
-    const trim = dn0.getRadius()
+    const trim = dn0.getRadius().scaleBy(0.8)
     de01.trimPoints(dn0.atAnchor(), dn1.atAnchor(), trim)
     de12.trimPoints(dn1.atAnchor(), dn2.atAnchor(), trim)
 
     // Position view to display all content.
     const spaceBounds = space.getBoundingBox()
-    view.scaleToFill(spaceBounds.getSize()).scaleBy(1.1)
+    view.scaleToFill(spaceBounds.getSize())
     view.matchPoint(view.atCenter(), spaceBounds.atCenter())
+    view.scaleBy(1.2, view.atCenter())
   </script>
 </body>
 </html>
