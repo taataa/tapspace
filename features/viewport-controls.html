@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Viewport Controls - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 600px;
+    }
+    .myterms {
+      color: white;
+      text-align: right;
+    }
+    .myterms a {
+      color: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Viewport Controls – Tapspace Features</h1>
+  <p>Viewport can have controls for navigation and custom content such as search forms and copyright information.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.zoomable().perspective()
+    const space = viewport.createSpace()
+
+    // Create some content for reference.
+    const pivot = viewport.atCenter()
+    for (let i = 0; i < 30; i += 1) {
+      const dot = tapspace.createCircle(10, 'orange')
+      const angle = i * Math.PI / 5
+      const depth = i * 20
+      const position = pivot.polarOffset(100, angle).offset(0, 0, depth)
+      space.addChild(dot, position)
+    }
+
+    // Add a control for navigation
+    const zoomControl = new tapspace.components.ZoomControl({
+      scaleStep: 1.5
+    })
+    viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(10, -10)
+    })
+
+    // Add a custom control for terms and copyright
+    const terms = '© <a href="https://example.com">Example Corporation</a> 2000-2049'
+    const infoControl = tapspace.createCustomControl(terms)
+    infoControl.setSize(250, 20)
+    infoControl.addClass('myterms')
+    viewport.addControl(infoControl)
+    infoControl.match({
+      source: infoControl.atBottomRight(),
+      target: viewport.atBottomRight().offset(-10, -10)
+    })
+  </script>
+</body>
+</html>
