@@ -29,6 +29,7 @@ yamdog.generate({
     'Block': 'tapspace.components.Block',
     'Circle': 'tapspace.components.Circle',
     'Control': 'tapspace.components.Control',
+    'CustomControl': 'tapspace.components.CustomControl',
     'Edge': 'tapspace.components.Edge',
     'Frame': 'tapspace.components.Frame',
     'Group': 'tapspace.components.Group',
