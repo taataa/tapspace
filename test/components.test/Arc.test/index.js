@@ -1,9 +1,5 @@
 const units = {
-  Arc: require('./Arc.test'),
-  Basis: require('./Basis.test'),
-  Frame: require('./Frame.test'),
-  Plane: require('./Plane.test'),
-  Item: require('./Item.test')
+  getLength: require('./getLength.test')
 }
 
 module.exports = (test, container, tapspace) => {
