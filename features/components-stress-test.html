@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>3D Stress Test - Tapspace Features</title>
+  <title>Stress Test - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
+  <!-- This demo has lots of HTML elements in 3D space. How much before meltdown? -->
 
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -45,31 +45,43 @@
 
   <!-- Your code -->
   <script>
+    const NODE_RADIUS = 50
+    const MAX_LEVELS = 6
+    const OPENING_PROBABILITY = 0.75 // [0..1]
+    const SCALE_STEP = 0.3
+    const DEPTH = 10
+
+    // Setup
     const view = tapspace.createView('#tapspace').zoomable().perspective()
     const space = tapspace.createSpace()
     view.addChild(space)
 
-    // Layer creation order determines drawing order.
-    // Last created, top drawn.
-    const edgelayer = tapspace.createSpace()
-    const nodelayer = tapspace.createSpace()
-    space.addChild(edgelayer)
-    space.addChild(nodelayer)
+    // Layer for each
+    const layers = []
+    for (let j = 0; j < MAX_LEVELS; j += 1) {
+      const plane = tapspace.createPlane()
+      // Sum of geometric series.
+      const z = DEPTH * (1 - Math.pow(SCALE_STEP, j)) / (1 - SCALE_STEP)
+      space.addChild(plane, space.at(0, 0, z))
+      layers.push(plane)
+    }
 
+    // Set a counter on the first node.
     let totalNodes = 0
-
     const firstNode = tapspace.createCircle(20, 'black')
     firstNode.element.style.color = 'white'
     firstNode.element.style.textAlign = 'center'
     firstNode.element.style.paddingTop = '10px'
-    nodelayer.addChild(firstNode, view.atMid().offset(0, 0, -200))
+    layers[0].addChild(firstNode, view.atMid().offset(0, 0, -200))
     totalNodes += 1
-
+    // Each created node will update the count.
     const updateNodeCount = () => {
       firstNode.element.innerHTML = totalNodes
     }
 
     const openNode = (node, j, depthLimit) => {
+      // Recursive function. j is the layer index.
+      //
       const origin = node.atAnchor()
       // Generate six nodes
       const kids = []
@@ -79,23 +91,15 @@
       // Iterate some
       for (let i = 0; i < 5; i += 1) {
         // Drop some frames for more organic vibe
-        if (Math.random() > 0.5) continue;
+        if (Math.random() > OPENING_PROBABILITY) continue;
         // Create node
         const angle = 2 * Math.PI * (i - 0.25) / 5
-        const radius = 50
-        const dz = 20 * Math.pow(0.3, j) // but is uniform scaling?
-        const point = origin.polarOffset(radius, angle).offset(0, 0, dz)
+        const point = origin.polarOffset(NODE_RADIUS, angle)
         const circle = tapspace.createCircle(20, colors[j])
         kids.push(circle)
-        nodelayer.addChild(circle, point)
-        circle.scaleBy(Math.pow(0.3, j + 1), circle.atMid())
+        layers[j].addChild(circle, point)
+        circle.scaleBy(Math.pow(SCALE_STEP, j + 1), circle.atMid())
         totalNodes += 1
-        // Create edge
-        // const edge = tapspace.edge('5px solid black')
-        // edgelayer.addChild(edge, origin)
-        // edge.scaleBy(Math.pow(0.3, j + 1))
-        // edge.setPoints(origin, circle.atAnchor())
-        // edge.renderTransform()
       }
 
       // Update node count meter
@@ -112,7 +116,7 @@
       }
     }
 
-    openNode(firstNode, 0, 4)
+    openNode(firstNode, 0, MAX_LEVELS)
   </script>
 </body>
 </html>
