@@ -4,7 +4,7 @@ Ready to build your first Tapspace app? You have come to the right place. Here w
 
 In this tutorial we assume you have basic knowledge on web programming concepts such as HTML, CSS, DOM, and JavaScript.
 
-This tutorial is for Tapspace.js version v2.0.0-alpha.3
+This tutorial is for Tapspace.js version v2.0.0-alpha.4
 
 ## Step 1: Prepare a web page for the app
 
@@ -25,7 +25,7 @@ Adjust the title to your liking.
 Import Tapspace script by adding the following line before the ending head tag:
 
     ...
-      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.3/dist/tapspace.min.js"></script>
+      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.4/dist/tapspace.min.js"></script>
     </head>
     ...
 
@@ -48,24 +48,25 @@ We listen for the [DOMContentLoaded](https://developer.mozilla.org/en-US/docs/We
 
 ## Step 2: Create a space with content
 
-Inside the body tag, create an empty container element for our space. This element will contain all the space elements and also act as a viewport to the space.
+Inside the body tag, create an empty container element for the *viewport* of our space. This element will contain all the space elements, content, and navigation controls.
 
     <div id="mytapspace"></div>
 
-In the script, add the following to register the container as a space.
+In the script, add the following to register the container element as a viewport.
 
     ...
     // My first tapspace app
-    const space = tapspace.createSpace('#mytapspace')
+    const viewport = tapspace.createView('#mytapspace')
     ...
 
-Limits of floating point arithmetics are quickly faced in zoomable applications. Therefore, in order to achieve limitless space, the space itself cannot specify a fixed world coordinate system. Instead, we need to create at least one *basis* that provides us a *frame of reference* onto which we can place our content.
+Then create a *space* and connect it to the viewport. The space provides us a coordinate system, also called a *basis* or the *frame of reference*, onto which we can place our content.
 
-    const basis = space.addBasis()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
 
-With a basis we can construct *Point* objects:
+With a space we can construct *Point* objects:
 
-    const p = basis.at(200, 100)
+    const p = space.at(200, 100)
 
 Let us create our first content item. The item wraps HTML content and provides various methods for interaction and moving it in the space.
 
@@ -73,9 +74,9 @@ Let us create our first content item. The item wraps HTML content and provides v
 
 The item is not yet added to the space nor DOM. Let us do that.
 
-    basis.addChild(hello, p)
+    space.addChild(hello, p)
 
-This will add the hello item at the coordinates { x: 200 y: 100 } relative to the origin of the basis.
+This will add the hello item at the `p` coordinates { x: 200 y: 100 } relative to the origin of the space.
 
 Now you can open your `index.html` in your web browser. The result should look something like this:
 
@@ -89,7 +90,7 @@ Tapspace follows right-handed coordinate system. The three axes are perpendicula
 
 <p><img src="coordinates_directions_512.png" width="300" height="300" title="Right handed coordinate system"></p>
 
-Unlike normal web pages, the space is infinite. Web browsers like to stretch HTML elements to the width of their container but in infinite space this does not make sense. Therefore, each space element has a fixed size. The default size is 256x256 pixels and resizing is easy:
+Unlike normal web pages, the space is infinite. Web browsers like to stretch HTML elements to the width of their container but in infinite space this does not make sense. Therefore, each space item has a fixed size. The default size is 256x256 pixels and resizing is easy:
 
     hello.setSize({ w: 400, h: 200 })
 
@@ -97,7 +98,7 @@ Fortunately, the inner contents of space elements do not need fixed size. The br
 
 Each space element has also an *anchor*. The anchor gives the otherwise rectangular element a single point-like location in space. This simplifies element placement, for example:
 
-    hello.moveTo(basis.at(50, 20))
+    hello.moveTo(view.atCenter())
 
 Set the anchor with `setAnchor` method:
 
@@ -112,11 +113,11 @@ Also, such transformation methods usually allow a custom pivot point to be used 
 
     hello.rotateBy(deg45, hello.atTopRight())
 
-You can move the element around with the [translateBy(vec)](../api#tapspacecomponentsabstractplanetranslateby) method.
+You can move the element around with the [translateBy(vec)](../api#tapspacecomponentstransformertranslateby) method.
 
     hello.translateBy({ x: 10, y: -20, z: 5 })
 
-Each move updates the CSS3 transform property of your hello element. You can animate the move with the [animate(...)](../api#tapspacecomponentsabstractplaneanimate) method.
+Each move updates the CSS3 transform property of your hello element. You can animate the move with the [animate(...)](../api#tapspacecomponentstransformeranimate) and `animateOnce` methods.
 
     hello.animate({
       duration: '200ms',
@@ -128,7 +129,6 @@ Each move updates the CSS3 transform property of your hello element. You can ani
 
 Our zoomable app still lacks the zoomability! Let us make the viewport zoomable. We access the viewport through the space.
 
-    const viewport = space.getViewport()
     viewport.zoomable()
 
 If you need only panning without zooming:
@@ -148,31 +148,32 @@ In most parts the viewport behaves as any other space element. Thus it can be mo
     viewport.translateTo(hello.atCenter())
 
 The viewport also provides a basis. Initially, when the space is empty, the viewport it is the only basis we have.
-We can use it to position the origin of content bases.
+We can use it to position spaces with respect to the current viewport position.
 
-    space.addBasis(viewport.atCenter())
+    const anotherSpace = tapspace.createSpace()
+    viewport.addChild(anotherSpace, viewport.atCenter())
 
 See [Viewport](../api#tapspacecomponentsviewport) for all available viewport methods.
 
 ## Step 5: Make elements interactive
 
-Let us allow the world element to be interactive. Like with the viewport we give the space element interactive abilities by calling one or more ability methods.
+Let us allow the hello element to be interactive. Like with the viewport we give the space element interactive abilities by calling one or more ability methods.
 
-    world.tappable()
-    world.on('tap', function () {
-      world.html('<em>WORLD!</em>')
+    hello.tappable()
+    hello.on('tap', function () {
+      hello.html('<em>HELLO!</em>')
     })
 
 To allow users to move the element around:
 
-    world.draggable()
-    world.on('gestureend', function () {
-      world.html('You dragged me!')
+    hello.draggable()
+    hello.on('gestureend', function () {
+      hello.html('You dragged me!')
     })
 
 There are also ability methods for resizing, linear sliding, rotation, and more.
 
-To prevent interaction with the HTML content of the space element, like form input or text selection, use `world.setContentInput(false)`. In a similar fashion, if you want to dedicate pointer input to content but keep mouse wheel input for zooming, use `world.setContentInput('pointer')`
+To prevent interaction with the HTML content of the space element, like form input or text selection, use `hello.setContentInput(false)`. In a similar fashion, if you want to dedicate pointer input to content but keep mouse wheel input for zooming, use `hello.setContentInput('pointer')`
 
 ## What next?
 
