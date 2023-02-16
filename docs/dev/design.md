@@ -26,7 +26,17 @@ DOT - Do one thing
 - Bad example: addChild(comp, position) where position can be many things.
 
 Premature optimization is the root of all evil
+- optimization often increases need for consistency, making the program fragile
+- optimization makes difficult things even more difficult
+
+There are only two hard things in Computer Science:
+cache invalidation and naming things.
+- simple optimization can lead to hard cache invalidation problems.
+
 YAGNI - You ain't gonna need it
+- do you spend your time on hard but rarely beneficial features?
+- If a feature feels complex, it will be even more so in the future.
+- A complex feature is hard to understand, thus nobody will use it.
 
 Minimal state versus minimal options:
 - minimal state variables requires verbose API with lots of options.
@@ -80,6 +90,36 @@ more clear.
     space = tapspace.createSpace(querystring or element)
     view = space.getViewport()
     basis = space.addBasis()
+
+We tried out methods like space.addBasis or space.createPlane that do two
+things at once: they create the basis component, and then add it to
+the method context. As a result, the API felt convoluted as there was multiple
+equivalent ways to add children. Also, it was unclear does view.addPlane
+require a constructed plane or not. Also, the return value became inconsistent
+because methods usually return 'this' for chaining but with the creation
+methods, they suddenly return the created object. Just confusing.
+
+There was a design idea about an inheritable Factory class that would grant
+the component all create-and-add methods, like .createItem and .createSpace.
+It might have worked but the confusion would still be there. Maybe even more so
+because tapspace.createItem does not deal with positioning but space.createItem
+might.
+
+Therefore, soon after tapspace v2.0.0-alpha.4 we dropped all the create-and-add
+methods and rely solely on tapspace.createXXX and basis.addChild,
+basis.prependChild, and basis.setParent. In order to maintain global placement
+we introduced methods basis.replaceChild and basis.replaceParent. In order to
+create a component and add it to a parent at specific position, the app dev
+now must call at least two methods:
+  const item = tapspace.createItem('hello').setParent(space, position)
+Alternatively, even more DOT-respecting way:
+  const item = tapspace.createItem('hello').setParent(space).translateTo(pos)
+Much better than confusing:
+  BAD: const item = space.createItem('hello', position)
+  BAD: const node = space.createCircle(50, 'black', position)
+Because the chaining convention would lead to:
+  BUG: space.createItem('hello').createItem('world')
+
 
 ## Affine Element
 
@@ -169,6 +209,7 @@ Approach 1 is probably enough. CSS can handle nested 3D with perspective. Theref
 [1] Zakas. High Performance JavaScript. Book.
 [2] Difference between ways of event handling https://stackoverflow.com/q/6570523/638546
 
+
 ## Affine Layers
 
 Layer position is controlled by its parent.
@@ -197,6 +238,7 @@ We might do well with only orthogonal projection when between planes.
 Projection to viewport might produce perspective projection.
 Maybe planes could be connected so we can compute orthogonal projections
 regardless of perspective?
+
 
 ## Element positioning
 
@@ -470,6 +512,26 @@ Trackers could have memory unlike listeners.
 They could track cumulative path length for example.
 On the other hand, a dilation listener might be equivalent to
 scale tracker.
+
+## Optimization
+
+"Premature optimization is the root of all evil"
+"There are only two hard things in Computer Science:
+cache invalidation and naming things."
+
+We have faced these wisdoms multiple times. A notable example is
+the idea of caching a reference to the viewport or root space in each component.
+It is very tempting: just set component.viewport consistently and use it
+without the need to iteratively travel the DOM to the viewport each time
+the components needs rendering. Very tempting as we save iteration in a very
+busy section of code. However, it is so wrong in reality. Traveling a few
+nodes up in DOM is nothing when compared to updating CSS rules or bubbling
+and handling of input events. Instead, storing the viewport or space references
+requires strong consistency that makes the code fragile. All the situations
+where elements are reparented would need to bust and recompute these caches.
+The host app dev cannot anymore move things in DOM without relying on Tapspace
+methods because any such attempt might cause bugs. Also, if we have one cached
+reference, why not have two, or even more? It is a slippery slope.
 
 ## Viewport
 
