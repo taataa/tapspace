@@ -6,7 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const plane = view.createPlane()
+    const plane = tapspace.createPlane()
+    view.addChild(plane)
 
     // Create items for boundary
     const foo = tapspace.createItem('<p>Foo</p>')

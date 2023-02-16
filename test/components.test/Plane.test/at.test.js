@@ -6,7 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
 
     // Take a point
     const p = basis.at(1, 2)

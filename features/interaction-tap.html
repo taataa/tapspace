@@ -45,8 +45,10 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace')
-    const space = viewport.createSpace()
-    const layer = space.createPlane()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const layer = tapspace.createPlane()
+    space.addChild(layer)
 
     // Create an affine element
     const template = (t) => '<p class="mylabel">' + t + '</p>'

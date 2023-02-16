@@ -33,11 +33,13 @@
 
   <!-- Your code -->
   <script>
+    const space = tapspace.createSpace()
     const view = tapspace.createView('#tapspace').zoomable().perspective()
-    const space = view.createSpace()
+    view.addChild(space)
 
     // Exhibit 1: Triangle with flat edges
-    const flatEdges = space.createPlane()
+    const flatEdges = tapspace.createPlane()
+    space.addChild(flatEdges)
     // Create nodes
     const m0 = tapspace.createCircle(20, 'red')
     const m1 = tapspace.createCircle(20, 'blue')
@@ -63,7 +65,8 @@
     edge20.element.title = 'Edge from m2 to m0'
 
     // Exhibit 2: Two curved arcs
-    const curvedEdges = space.createPlane(flatEdges.at(300, 0))
+    const curvedEdges = tapspace.createPlane()
+    space.addChild(curvedEdges, flatEdges.at(300, 0))
     // Create nodes
     const na0 = tapspace.createCircle(20, 'orange')
     const na1 = tapspace.createCircle(20, 'purple')
@@ -83,7 +86,8 @@
     arc02.setPoints(na0.atAnchor(), na2.atAnchor())
 
     // Exhibit 3: Edges in 3D
-    const deepEdges = space.createSpace(curvedEdges.at(300, 0))
+    const deepEdges = tapspace.createSpace()
+    space.addChild(deepEdges, curvedEdges.at(300, 0))
     // Create nodes
     const dn0 = tapspace.createCircle(20, 'magenta')
     const dn1 = tapspace.createCircle(20, 'aqua')

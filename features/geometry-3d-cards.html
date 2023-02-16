@@ -66,8 +66,10 @@
   <script>
     // Init tapspace
     const view = tapspace.createView('#tapspace').zoomable().perspective()
-    const space = view.createSpace()
-    const layer = space.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const layer = tapspace.createSpace()
+    space.addChild(layer)
 
     // Create html card element with image and text
     const createCardElement = function (url, txt) {
@@ -145,7 +147,8 @@
     infoCard.element.style.fontSize = '0.62em'
 
     // Nodes
-    const nodes = space.createSpace()
+    const nodes = tapspace.createSpace()
+    space.addChild(nodes)
 
     nodes.addChild(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
     nodes.addChild(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))

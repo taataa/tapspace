@@ -51,7 +51,8 @@
   const container = document.querySelector('#tapspace')
 
   const view = tapspace.createView(container).zoomable().perspective()
-  const space = view.createSpace()
+  const space = tapspace.createSpace()
+  view.addChild(space)
   const outlines = tapspace.createSpace()
   space.addChild(outlines)
   const words = tapspace.createSpace()

@@ -6,7 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const space = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     const foo = tapspace.createItem('<p>Foo</p>')
     foo.setSize(400, 200)

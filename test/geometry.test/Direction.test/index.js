@@ -6,10 +6,11 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
     // Create two Points
-    const pa = basis.at(10, 6)
-    const pb = basis.at(14, 9)
+    const pa = space.at(10, 6)
+    const pb = space.at(14, 9)
     // Get a Direction from a to b
     const d = pa.getDirectionTo(pb)
 

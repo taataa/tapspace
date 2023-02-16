@@ -6,7 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
     // Create a Transformation
     const helm = { a: 1, b: 2, x: 3, y: 4, z: 5 }
     const tr = new tapspace.geometry.Transform(basis, helm)

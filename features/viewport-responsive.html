@@ -48,7 +48,8 @@
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace').pannable().responsive()
-    const plane = viewport.createPlane()
+    const plane = tapspace.createPlane()
+    viewport.addChild(plane)
 
     // Create a component for reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'

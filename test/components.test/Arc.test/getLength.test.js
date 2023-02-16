@@ -6,7 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const space = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // Create an arc, radius 50
     const arc = tapspace.createArc(Math.PI, '1px solid black')

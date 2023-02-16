@@ -52,7 +52,8 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace').zoomable().perspective()
-    const space = viewport.createSpace()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
 
     const bgitem = tapspace.createItem()
     bgitem.addClass('bgitem')

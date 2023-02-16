@@ -50,7 +50,8 @@
   const container = document.querySelector('#tapspace')
 
   const view = tapspace.createView(container).zoomable()
-  const space = view.createSpace()
+  const space = tapspace.createSpace()
+  view.addChild(space)
 
   // Template for item content
   const par = (t) => '<p>' + t + '</p>'

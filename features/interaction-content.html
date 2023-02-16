@@ -70,8 +70,10 @@
   <script>
     // Setup the tapspace viewport and the default basis for content.
     const viewport = tapspace.createView('#tapspace').zoomable().focusable()
-    const space = viewport.createSpace()
-    const layer = space.createPlane()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const layer = tapspace.createPlane()
+    space.addChild(layer)
 
     // Steal focus to viewport when panning.
     viewport.on('pinchstart', () => {

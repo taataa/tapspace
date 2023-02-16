@@ -54,9 +54,11 @@
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
-    const space = viewport.createSpace()
     viewport.responsive().zoomable()
-    const nodes = space.createSpace()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const nodes = tapspace.createSpace()
+    space.addChild(nodes)
 
     const n0 = tapspace.createCircle(5, 'black')
     nodes.addChild(n0)

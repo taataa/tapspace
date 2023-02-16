@@ -48,8 +48,10 @@
   const container = document.querySelector('#tapspace')
 
   const view = tapspace.createView(container)
-  const space = view.createSpace()
-  const layer = space.createPlane()
+  const space = tapspace.createSpace()
+  view.addChild(space)
+  const layer = tapspace.createPlane()
+  space.addChild(layer)
 
   const par = (t) => '<p>' + t + '</p>'
   const originComp = tapspace.createItem(par('Beginning'))

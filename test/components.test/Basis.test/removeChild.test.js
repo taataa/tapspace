@@ -9,7 +9,8 @@ module.exports = (test, container, tapspace) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const space = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // HACK Construct a hierarchy of nodes
     space.element.innerHTML = hierarchy()

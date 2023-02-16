@@ -6,10 +6,11 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const basis = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
     // Create two Points
-    const pa = basis.at(10, 6)
-    const pb = basis.at(14, 9)
+    const pa = space.at(10, 6)
+    const pb = space.at(14, 9)
     // Get a Distance between them
     const d = pa.getDistanceTo(pb)
 
@@ -26,8 +27,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const ba = view.createSpace()
-    const bb = view.createSpace()
+    const ba = tapspace.createSpace().setParent(view)
+    const bb = tapspace.createSpace().setParent(view)
     bb.scaleBy(2)
 
     const da = new tapspace.geometry.Distance(ba, 10)

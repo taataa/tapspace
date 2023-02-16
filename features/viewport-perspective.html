@@ -47,7 +47,8 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const view = tapspace.createView('#tapspace').pannable().perspective()
-    const space = view.createSpace()
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // Content template for blocks. Blocks give us visual reference.
     const template = (t) => '<p class="mylabel">' + t + '</p>'
