@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Perspective Viewport - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
   <!-- Disable user scalability to override native touch gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -35,7 +33,8 @@
 </head>
 <body>
   <h1>Perspective Viewport – Tapspace Features</h1>
-  <p>Pan the viewport to reveal depth of the components</p>
+  <p>The components in this demo are placed with 3D coordinates.
+    Pan the viewport to reveal the depth of the components.</p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -46,7 +45,7 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    const view = tapspace.createView('#tapspace').pannable().perspective()
+    const view = tapspace.createView('#tapspace').pannable()
     const space = tapspace.createSpace()
     view.addChild(space)
 

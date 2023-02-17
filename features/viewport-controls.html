@@ -37,7 +37,7 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace')
-    viewport.pannable().zoomable().perspective().focusable()
+    viewport.pannable().zoomable().focusable()
     viewport.on('pinchstart', () => { viewport.focus() })
     // const space = tapspace.createSpace()
     // viewport.addChild(space)
