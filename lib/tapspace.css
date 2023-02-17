@@ -82,8 +82,8 @@ Architectural guidelines for tapspace classes:
   overflow: hidden;
   /* Mobile browsers have touch actions that cancel our gestures */
   touch-action: none;
-  /* Use orthogonal projection by default */
-  perspective: none;
+  /* Camera distance from the image plane in viewport pixels */
+  perspective: 300;
   /* Host app must give viewport height for it to be visible.
     However, that requirement could be annoying to learn if
     the viewport is not visible at all (default zero height).
@@ -105,7 +105,7 @@ Architectural guidelines for tapspace classes:
   transform-origin: 0 0;
   /* Controls are 2D only. */
   transform-style: flat;
-  /* Ensure orthogonal projection regardless of viewport. */
+  /* Ensure orthogonal projection. */
   perspective: none;
 }
 
