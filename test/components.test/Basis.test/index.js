@@ -4,7 +4,8 @@ const units = {
   removeChild: require('./removeChild.test'),
   replaceChild: require('./replaceChild.test'),
   replaceParent: require('./replaceParent.test'),
-  setId: require('./setId.test')
+  setId: require('./setId.test'),
+  setParent: require('./setParent.test')
 }
 
 module.exports = (test, container, tapspace) => {
