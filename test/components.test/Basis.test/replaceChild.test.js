@@ -38,7 +38,7 @@ module.exports = function (test, container, tapspace) {
     // Ensure item size was not carried to the rival.
     t.deepEqual(
       rival.atBottomRight().transitRaw(view),
-      { x: 1000, y: 500, z: 0},
+      { x: 1000, y: 500, z: 0 },
       'should have correctly size-offset corner'
     )
 
