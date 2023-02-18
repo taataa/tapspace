@@ -83,7 +83,7 @@ Architectural guidelines for tapspace classes:
   /* Mobile browsers have touch actions that cancel our gestures */
   touch-action: none;
   /* Camera distance from the image plane in viewport pixels */
-  perspective: 300;
+  perspective: 300px;
   /* Host app must give viewport height for it to be visible.
     However, that requirement could be annoying to learn if
     the viewport is not visible at all (default zero height).
