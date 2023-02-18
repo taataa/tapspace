@@ -92,9 +92,9 @@ Architectural guidelines for tapspace classes:
 }
 
 .affine-controls {
-  /* Controls must be visible on top of layers but their container
-     must not have size so that the container area does not steal
-     input events from space. */
+  /* ViewportControls must be visible on top of layers but their
+     container must not have size so that the container area does
+     not steal input events from space. */
   position: absolute;
   top: 0;
   left: 0;
