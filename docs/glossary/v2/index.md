@@ -17,3 +17,5 @@ An animation property that can be applied to HTML elements via CSS rules.
 ## normalized coordinates
 
 Geometric objects, that have a size, span a normalized coordinate space. The normalized coordinates are defined as ratios relative to the geometry size. For example, the point (100, 50) on a rectangle of the size (200, 100) can be represented by the normalized coordinates (0.5, 0.5).
+
+Alternative names: ratio coordinates, unit coordinates, relative coordinates, norm coordinates

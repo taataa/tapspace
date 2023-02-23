@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Box:atToNorm', (t) => {
+  test('Box:normAt', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -15,12 +15,12 @@ module.exports = function (test, container, tapspace) {
     const box = item.getBoundingBox()
 
     t.deepEqual(
-      box.atToNorm(0, 0, 0),
+      box.normAt(0, 0, 0),
       { rx: 0, ry: 0, rz: 0 },
       'trivial'
     )
     t.deepEqual(
-      box.atToNorm(20, 20, 20),
+      box.normAt(20, 20, 20),
       { rx: 1, ry: 1, rz: 0 },
       'should handle zero depth'
     )
