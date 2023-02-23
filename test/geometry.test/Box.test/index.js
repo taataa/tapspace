@@ -8,7 +8,8 @@ const units = {
   normAt: require('./normAt.test'),
   rotateBy: require('./rotateBy.test'),
   scaleBy: require('./scaleBy.test'),
-  transitRaw: require('./transitRaw.test')
+  transitRaw: require('./transitRaw.test'),
+  translateBy: require('./translateBy.test')
 }
 
 module.exports = (test, container, tapspace) => {
