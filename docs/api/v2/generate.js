@@ -43,8 +43,11 @@ yamdog.generate({
     'Viewport': 'tapspace.components.Viewport',
     'ZoomControl': 'tapspace.components.ZoomControl',
     // Geometry
+    'Area': 'tapspace.geometry.Area',
+    'Box': 'tapspace.geometry.Box',
     'Direction': 'tapspace.geometry.Direction',
     'Distance': 'tapspace.geometry.Distance',
+    'Orientation': 'tapspace.geometry.Orientation',
     'Path': 'tapspace.geometry.Path',
     'Point': 'tapspace.geometry.Point',
     'Scale': 'tapspace.geometry.Scale',
@@ -72,6 +75,8 @@ yamdog.generate({
       // Terminology
       'Complexity': 'https://en.wikipedia.org/wiki/Computational_complexity',
       // Affineplane geometries
+      'box2': affineplaneDocs + '#affineplanebox2',
+      'box3': affineplaneDocs + '#affineplanebox3',
       'dir2': affineplaneDocs + '#affineplanedir2',
       'dir3': affineplaneDocs + '#affineplanedir3',
       'dist2': affineplaneDocs + '#affineplanedist2',
@@ -84,7 +89,11 @@ yamdog.generate({
       'plane3': affineplaneDocs + '#affineplaneplane3',
       'point2': affineplaneDocs + '#affineplanepoint2',
       'point3': affineplaneDocs + '#affineplanepoint3',
+      'scalar1': affineplaneDocs + '#affineplanescalar1',
+      'scalar2': affineplaneDocs + '#affineplanescalar2',
+      'scalar3': affineplaneDocs + '#affineplanescalar3',
       'size2': affineplaneDocs + '#affineplanesize2',
+      'size3': affineplaneDocs + '#affineplanesize3',
       'vec2': affineplaneDocs + '#affineplanevec2',
       'vec3': affineplaneDocs + '#affineplanevec3'
     }),
