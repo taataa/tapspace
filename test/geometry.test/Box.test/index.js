@@ -4,6 +4,7 @@ const units = {
   changeBasis: require('./changeBasis.test'),
   fromBoxes: require('./fromBoxes.test'),
   fromPoints: require('./fromPoints.test'),
+  getArea: require('./getArea.test'),
   getBoundingBox: require('./getBoundingBox.test'),
   normAt: require('./normAt.test'),
   resizeTo: require('./resizeTo.test'),
