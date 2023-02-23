@@ -6,6 +6,7 @@ const units = {
   fromPoints: require('./fromPoints.test'),
   getBoundingBox: require('./getBoundingBox.test'),
   normAt: require('./normAt.test'),
+  resizeTo: require('./resizeTo.test'),
   rotateBy: require('./rotateBy.test'),
   scaleBy: require('./scaleBy.test'),
   transitRaw: require('./transitRaw.test'),
