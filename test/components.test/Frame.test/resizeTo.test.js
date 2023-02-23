@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Frame:resize', (t) => {
+  test('Frame:resizeTo', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -22,7 +22,7 @@ module.exports = function (test, container, tapspace) {
     )
 
     // Resize operation
-    item.resize({ w: 300, h: 100 }, item.atBottomRight())
+    item.resizeTo({ w: 300, h: 100 }, item.atBottomRight())
 
     t.almostEqualPoint(
       item.at(0, 0).changeBasis(view),

@@ -122,7 +122,7 @@
     'lightblue', 100, 300, space.at(800, 200))
   booksz.tappable()
   booksz.once('tap', () => {
-    booksz.resize(book.getSize(), booksz.atBottomLeft())
+    booksz.resizeTo(book.getSize(), booksz.atBottomLeft())
     booksz.html(par('Resized to match the book size'))
   })
 

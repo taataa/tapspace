@@ -1,5 +1,5 @@
 const units = {
-  resize: require('./resize.test')
+  resizeTo: require('./resizeTo.test')
 }
 
 module.exports = (test, container, tapspace) => {
