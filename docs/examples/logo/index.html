@@ -22,6 +22,9 @@
       height: 100%;
       background: black;
     }
+    .pixel {
+      border: 10px solid black;
+    }
     .description {
       color: white;
       font-size: 285px;
@@ -65,9 +68,9 @@
       const item = tapspace.createItem()
       item.setAnchor(item.atTopLeft())
       item.setSize(size)
+      item.addClass('pixel')
       const elem = item.getElement()
       elem.style.background = color
-      elem.style.border = '2px solid black'
       heading.addChild(item, position)
       return item
     }
