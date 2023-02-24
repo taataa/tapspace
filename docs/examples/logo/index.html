@@ -80,6 +80,16 @@
       const px = rect(color, position, { w: 200, h: 200 })
       const scale = phipow(order)
       px.scaleBy(scale, position)
+
+      // Make interactive: click to drop
+      px.tappable()
+      px.on('tap', () => {
+        px.animateOnce({ easing: 'ease-in', duration: '500ms' })
+        const v = px.atNorm(0.5, 0.5).getVectorTo(heading.at(0, 1100))
+        const vv = v.transitRaw(heading)
+        px.translateBy({ x: 0, y: vv.y * 2, z: 0 })
+      })
+
       return px
     }
 
