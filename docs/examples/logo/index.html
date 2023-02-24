@@ -27,11 +27,21 @@
       font-size: 285px;
       text-align: center;
     }
+    .description a { color: white; text-decoration: none; }
+    .description a:hover { color: lightgray; text-decoration: underline; }
   </style>
 </head>
 <body>
   <!-- Container element for viewing space -->
-  <div id="viewport" class="viewport">
+  <div id="viewport" class="viewport"></div>
+
+  <!-- Content to place into space -->
+  <div id="description" class="description">
+    <a href="https://en.wikipedia.org/wiki/Tensor">Tensor</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">Document Object Model</a>
+    for
+    <a href="https://en.wikipedia.org/wiki/Zooming_user_interface">Zoomable</a>
+    <a href="https://en.wikipedia.org/wiki/Web_application">Web Applications</a>
   </div>
 
   <!-- Import tapspace. -->
@@ -185,8 +195,8 @@
     const headingBounds = heading.getBoundingBox()
 
     // Intro
-    const msg = 'Tensor Document Object Model for Zoomable Web Applications'
-    const desc = tapspace.createItem(msg)
+    const descElement = document.getElementById('description')
+    const desc = tapspace.createItem(descElement)
     desc.addClass('description')
     space.addChild(desc, space.at(0, 800 + 200 * phipow(-1)))
     desc.setWidth(headingBounds.getWidth())
