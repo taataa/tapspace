@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Fractal Loader - Tapspace Features</title>
 
-  <!-- TODO simplify for release -->
-
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -17,7 +15,7 @@
       color: grey;
     }
     .myspaceapp {
-      background: gray;
+      background: white;
       height: 500px;
     }
     .mycomponent {
@@ -54,17 +52,79 @@
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
-    viewport.responsive().zoomable()
+    viewport.responsive().zoomable().setMeasureMode('lazy')
     const space = tapspace.createSpace()
     viewport.addChild(space)
-    const nodes = tapspace.createSpace()
-    space.addChild(nodes)
 
-    const n0 = tapspace.createCircle(5, 'black')
-    nodes.addChild(n0)
+    const root = tapspace.createCircle(50, 'black')
+    space.addChild(root, viewport.atAnchor())
 
-    viewport.matchPoint(viewport.atMid(), n0.atMid())
+    const open = (parent, basis, depth) => {
+      // OR fractalTemplate OR openFractalKernel
 
+      const size = 50
+      const scale = parent.getScale().scaleBy(0.32)
+      const origin = parent.atCenter()
+      const unit = size * 2
+      const zunit = unit / 2
+
+      const plane = tapspace.createPlane()
+      basis.addChild(plane, origin.offset(0, 0, zunit))
+
+      const red = depth * 40
+      const color = 'rgb(' + red + ', 0, 0)'
+
+      const n0 = tapspace.createCircle(size, color)
+      plane.addChild(n0, origin.offset(unit, unit))
+      n0.setScale(scale)
+
+      const n1 = tapspace.createCircle(size, color)
+      plane.addChild(n1, origin.offset(1.2 * unit, 0))
+      n1.setScale(scale)
+
+      const n2 = tapspace.createCircle(size, color)
+      plane.addChild(n2, origin.offset(unit, -unit))
+      n2.setScale(scale)
+
+      const n3 = tapspace.createCircle(size, color)
+      plane.addChild(n3, origin.offset(-unit, 0))
+      n3.setScale(scale)
+
+      // Mark the parent as opened
+      parent.isOpen = true
+
+      return [n0, n1, n2, n3]
+    }
+
+    let allNodes = []
+    let successors = [root]
+    for (let i = 0; i < 5; i += 1) {
+      // Capture nodes
+      allNodes = allNodes.concat(successors)
+      // Open the nodes
+      const opened = successors.map((succ) => {
+        return open(succ, space, i)
+      }).reduce((acc, succs) => {
+        return acc.concat(succs)
+      }, [])
+      // Reinsert
+      successors = opened
+    }
+
+    viewport.translateTo(space.atNorm(0.5, 0.5, 0))
+
+    // TODO
+    // viewport.on('idle', () => {
+    //   const measures = viewport.measurePlanes()
+    //   measures.forEach(measure => {
+    //     if (plane.isOpen && measure.depthPx > 1000) {
+    //       // Close the plane
+    //     }
+    //   })
+    // })
+
+    // DEBUG
+    console.log('nodes:', allNodes.length)
   </script>
 </body>
 </html>
