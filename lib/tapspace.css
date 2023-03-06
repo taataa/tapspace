@@ -51,9 +51,8 @@ Architectural guidelines for tapspace classes:
 
 .affine-frame {
   display: block;
-  /* Ensure zero margin and zero padding */
+  /* Ensure zero margin for correct positioning */
   margin: 0;
-  padding: 0;
   /* Ensure that user-defined padding does not affect size. */
   box-sizing: border-box;
   /* Space elements are positioned by using transform matrices.
