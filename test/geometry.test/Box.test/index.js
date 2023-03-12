@@ -6,6 +6,7 @@ const units = {
   fromPoints: require('./fromPoints.test'),
   getArea: require('./getArea.test'),
   getBoundingBox: require('./getBoundingBox.test'),
+  getBoundingSphere: require('./getBoundingSphere.test'),
   getVolume: require('./getVolume.test'),
   normAt: require('./normAt.test'),
   resizeTo: require('./resizeTo.test'),
