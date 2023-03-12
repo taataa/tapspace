@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Sphere:changeBasis', (t) => {
+  test('Sphere :changeBasis :transitRaw', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -34,6 +34,12 @@ module.exports = function (test, container, tapspace) {
       sphereOnItem.atCenter().getRaw(),
       { x: -9, y: -9, z: -19 },
       'should be relative to item'
+    )
+
+    t.deepEqual(
+      sphere.transitRaw(item),
+      { x: -9, y: -9, z: -19, r: 1 },
+      'should transit to item'
     )
 
     t.end()
