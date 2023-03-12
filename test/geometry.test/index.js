@@ -8,6 +8,7 @@ const units = {
   Point: require('./Point.test'),
   Scale: require('./Scale.test'),
   Size: require('./Size.test'),
+  Sphere: require('./Sphere.test'),
   Transform: require('./Transform.test'),
   Vector: require('./Vector.test')
 }
