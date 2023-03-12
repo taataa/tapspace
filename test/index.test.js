@@ -15,6 +15,7 @@ test.Test.prototype.almostEqual = require('./utils/almostEqual')
 test.Test.prototype.almostEqualOrientation =
   require('./utils/almostEqualOrientation')
 test.Test.prototype.almostEqualPoint = require('./utils/almostEqualPoint')
+test.Test.prototype.almostEqualSphere = require('./utils/almostEqualSphere')
 test.Test.prototype.almostEqualVector = require('./utils/almostEqualVector')
 
 // Reusable container element. Each test is allowed to clear innerHTML.
