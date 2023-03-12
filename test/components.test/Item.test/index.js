@@ -2,6 +2,7 @@ const units = {
   meta: require('./meta.test'),
   //
   at: require('./at.test'),
+  boundaries: require('./boundaries.test'),
   rotateBy: require('./rotateBy.test'),
   setOrientation: require('./setOrientation.test'),
   setScale: require('./setScale.test'),
