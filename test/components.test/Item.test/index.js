@@ -3,6 +3,7 @@ const units = {
   //
   at: require('./at.test'),
   boundaries: require('./boundaries.test'),
+  getVector: require('./getVector.test'),
   rotateBy: require('./rotateBy.test'),
   setOrientation: require('./setOrientation.test'),
   setScale: require('./setScale.test'),
