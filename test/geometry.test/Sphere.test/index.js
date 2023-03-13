@@ -1,7 +1,7 @@
 const units = {
   boundaries: require('./boundaries.test'),
+  collisions: require('./collisions.test'),
   dimensions: require('./dimensions.test'),
-  // getBoundingBox: require('./getBoundingBox.test'),
   measures: require('./measures.test'),
   points: require('./points.test'),
   // TODO rotateAroundLine: require('./rotateAroundLine.test'),
