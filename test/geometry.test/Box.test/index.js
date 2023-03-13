@@ -2,6 +2,7 @@ const units = {
   at: require('./at.test'),
   atNorm: require('./atNorm.test'),
   changeBasis: require('./changeBasis.test'),
+  collisions: require('./collisions.test'),
   fromBoxes: require('./fromBoxes.test'),
   fromPoints: require('./fromPoints.test'),
   getArea: require('./getArea.test'),
