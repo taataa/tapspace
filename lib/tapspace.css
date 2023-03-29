@@ -67,13 +67,16 @@ Architectural guidelines for tapspace classes:
   /* Ensure default transform origin.
     Planes with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
   /* Init 3D transform. Maybe unnecessary. */
   transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   /* Show only the front face. This helps Gecko-based browsers
     to render 3D elements. */
-  backface-visibility: hidden;
+  /* backface-visibility: hidden; */
+}
+
+.affine-item {
+  /* Items are always flat */
+  transform-style: flat;
 }
 
 .affine-viewport {
@@ -91,6 +94,8 @@ Architectural guidelines for tapspace classes:
     the viewport is not visible at all (default zero height).
     Therefore set a minimum height to avoid the annoyance. */
   min-height: 200px;
+  /* Ensure viewport contents do not take part to external 3D space */
+  transform-style: flat;
 }
 
 .affine-controls {
