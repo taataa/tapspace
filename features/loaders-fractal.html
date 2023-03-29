@@ -52,58 +52,127 @@
     // Setup the tapspace viewport and the default layer for content.
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
-    viewport.responsive().zoomable().setMeasureMode('lazy')
+    viewport.responsive().zoomable().setMeasureMode('none')
     const space = tapspace.createSpace()
     viewport.addChild(space)
 
-    const root = tapspace.createCircle(50, 'black')
-    space.addChild(root, viewport.atAnchor())
+    const create = (basis, depth, position, scale, size, color) => {
+      // Create a closed fractal node.
 
-    const open = (parent, basis, depth) => {
+      const node = tapspace.createCircle(size, color)
+      basis.addChild(node, position)
+      node.setScale(scale)
+      node.isFractal = true
+      node.isAlive = true
+      node.isOpen = false
+      node.fractalDepth = depth
+
+      return node
+    }
+
+    const open = (node, basis) => {
       // OR fractalTemplate OR openFractalKernel
+      console.log('open')
+
+      // Mark the node as opening/opened
+      node.isOpen = true
 
       const size = 50
-      const scale = parent.getScale().scaleBy(0.32)
-      const origin = parent.atCenter()
+      const scale = node.getScale().scaleBy(0.32)
+      const origin = node.atCenter()
       const unit = size * 2
       const zunit = unit / 2
+      const childDepth = node.fractalDepth + 1
 
+      // Plane for children
       const plane = tapspace.createPlane()
       basis.addChild(plane, origin.offset(0, 0, zunit))
 
-      const red = depth * 40
+      const red = childDepth * 40
       const color = 'rgb(' + red + ', 0, 0)'
 
-      const n0 = tapspace.createCircle(size, color)
-      plane.addChild(n0, origin.offset(unit, unit))
-      n0.setScale(scale)
+      const p0 = origin.offset(unit, unit)
+      const n0 = create(plane, childDepth, p0, scale, size, color)
 
-      const n1 = tapspace.createCircle(size, color)
-      plane.addChild(n1, origin.offset(1.2 * unit, 0))
-      n1.setScale(scale)
+      const p1 = origin.offset(1.2 * unit, 0)
+      const n1 = create(plane, childDepth, p1, scale, size, color)
 
-      const n2 = tapspace.createCircle(size, color)
-      plane.addChild(n2, origin.offset(unit, -unit))
-      n2.setScale(scale)
+      const p2 = origin.offset(unit, -unit)
+      const n2 = create(plane, childDepth, p2, scale, size, color)
 
-      const n3 = tapspace.createCircle(size, color)
-      plane.addChild(n3, origin.offset(-unit, 0))
-      n3.setScale(scale)
+      const p3 = origin.offset(-unit, 0)
+      const n3 = create(plane, childDepth, p3, scale, size, color)
 
-      // Mark the parent as opened
-      parent.isOpen = true
+      const fractalChildren = [n0, n1, n2, n3]
+      node.fractalChildren = fractalChildren
+      node.fractalPlane = plane
 
-      return [n0, n1, n2, n3]
+      return fractalChildren
     }
 
+    const close = (node) => {
+      if (!node.fractalChildren || node.fractalChildren.length === 0) {
+        // Unopenable or already closed
+        return
+      }
+
+      // Close and remove children recursively
+      const kids = node.fractalChildren
+      for (let i = 0; i < kids.length; i += 1) {
+        remove(kids[i])
+      }
+
+      // Remove the plane for children after the children have closed,
+      // but do not remove the node itself.
+      node.fractalChildren = []
+      node.fractalPlane.remove()
+
+      node.isOpen = false
+    }
+
+    const retire = (node) => {
+      // Remove a fractal node but keep its children.
+
+      // Remove from dom
+      fractalNode.remove()
+      // Cut references to children
+      fractalNode.fractalChildren = []
+      fractalNode.fractalPlane = null // the plane remains in dom
+      // Mark as dead
+      fractalNode.isAlive = false
+    }
+
+    const remove = (node) => {
+      // Remove a fractal node and all its children.
+
+      // Skip removed
+      if (!node.isAlive) {
+        return
+      }
+
+      // Ensure closed
+      if (node.isOpen) {
+        close(node)
+      }
+
+      // Remove from dom
+      node.remove()
+
+      // Mark as dead
+      node.isAlive = false
+    }
+
+    const root = create(space, 0, viewport.atAnchor(), 1, 50, 'black')
+
+    // Initially open two levels of nodes
     let allNodes = []
     let successors = [root]
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 2; i += 1) {
       // Capture nodes
       allNodes = allNodes.concat(successors)
       // Open the nodes
       const opened = successors.map((succ) => {
-        return open(succ, space, i)
+        return open(succ, space)
       }).reduce((acc, succs) => {
         return acc.concat(succs)
       }, [])
@@ -111,17 +180,71 @@
       successors = opened
     }
 
+    // Center viewport to content
     viewport.translateTo(space.atNorm(0.5, 0.5, 0))
 
-    // TODO
-    // viewport.on('idle', () => {
-    //   const measures = viewport.measurePlanes()
-    //   measures.forEach(measure => {
-    //     if (plane.isOpen && measure.depthPx > 1000) {
-    //       // Close the plane
-    //     }
-    //   })
-    // })
+    // Hiding and opening logic
+    const HORIZON_DEPTH = 800
+    const CLOSING_DEPTH = 500
+    const OPENING_DEPTH = 200
+    const CUTTING_DEPTH = -400
+    viewport.on('idle', () => {
+      console.log('idle')
+
+      // TODO allow measurePlanes to take a filter.
+      const measures = viewport.measurePlanes().filter((measure) => {
+        return measure.plane.isFractal
+      })
+
+      measures.forEach(measure => {
+        const fractalNode = measure.plane
+
+        if (!fractalNode.isAlive) {
+          // Already removed during this iteration
+          return
+        }
+
+        const depthPx = measure.depthPx
+
+        if (fractalNode.isOpen) {
+          if (measure.visible) {
+            // Node is open and within viewport
+            if (depthPx > CLOSING_DEPTH) {
+              // Too far away, close the node
+              close(fractalNode)
+            } else if (depthPx < CUTTING_DEPTH) {
+              // Too large, remove but keep the children and their plane.
+              retire(fractalNode)
+            }
+          } else {
+            // Node is open but outside viewport.
+            close(fractalNode)
+          }
+        } else {
+          // Is closed, no children.
+          if (measure.visible) {
+            // Node is closed and within viewport
+            if (depthPx < CUTTING_DEPTH) {
+              // Too large.
+              remove(fractalNode)
+            } else if (depthPx > HORIZON_DEPTH) {
+              // Too far away
+              remove(fractalNode)
+            } else if (depthPx > OPENING_DEPTH && depthPx < CLOSING_DEPTH) {
+              // Suitable for opening
+              open(fractalNode, space)
+            }
+          } else {
+            // Node is closed and outside viewport.
+            if (depthPx < CUTTING_DEPTH) {
+              remove(fractalNode)
+            } else if (depthPx > HORIZON_DEPTH) {
+              remove(fractalNode)
+            }
+          }
+        }
+      })
+    })
 
     // DEBUG
     console.log('nodes:', allNodes.length)
