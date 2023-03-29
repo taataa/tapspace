@@ -71,8 +71,8 @@
     }
 
     const open = (node, basis) => {
-      // OR fractalTemplate OR openFractalKernel
-      console.log('open')
+      // Aka fractalTemplate OR openFractalKernel
+      console.log('open', node)
 
       // Mark the node as opening/opened
       node.isOpen = true
@@ -111,6 +111,9 @@
     }
 
     const close = (node) => {
+      // Remove children recursively
+      console.log('close', node)
+
       if (!node.fractalChildren || node.fractalChildren.length === 0) {
         // Unopenable or already closed
         return
@@ -132,18 +135,20 @@
 
     const retire = (node) => {
       // Remove a fractal node but keep its children.
+      console.log('retire', node)
 
       // Remove from dom
-      fractalNode.remove()
+      node.remove()
       // Cut references to children
-      fractalNode.fractalChildren = []
-      fractalNode.fractalPlane = null // the plane remains in dom
+      node.fractalChildren = []
+      node.fractalPlane = null // the plane remains in dom
       // Mark as dead
-      fractalNode.isAlive = false
+      node.isAlive = false
     }
 
     const remove = (node) => {
       // Remove a fractal node and all its children.
+      console.log('remove', node)
 
       // Skip removed
       if (!node.isAlive) {
@@ -184,10 +189,13 @@
     viewport.translateTo(space.atNorm(0.5, 0.5, 0))
 
     // Hiding and opening logic
-    const HORIZON_DEPTH = 800
-    const CLOSING_DEPTH = 500
-    const OPENING_DEPTH = 200
-    const CUTTING_DEPTH = -400
+    const MIN_AREA = 0.001 // smallest item
+    const MIN_OPEN_AREA = 0.01 // closed items smaller than this
+    const MAX_OPEN_AREA = 1 // closed items larger than this
+    const MAX_AREA = 2 // largest item
+    const MAX_OPEN_DISTANCE = 200
+    const MAX_DISTANCE = 500
+
     viewport.on('idle', () => {
       console.log('idle')
 
@@ -204,41 +212,71 @@
           return
         }
 
-        const depthPx = measure.depthPx
+        const area = measure.areaRatio // Normalized area per viewport area
+        const dist = measure.distancePx // Normlzd dist per viewport diagonal
 
         if (fractalNode.isOpen) {
           if (measure.visible) {
             // Node is open and within viewport
-            if (depthPx > CLOSING_DEPTH) {
-              // Too far away, close the node
+            if (area < MIN_AREA) {
+              console.log('area', area)
+              // Too far away, remove it and its children.
+              remove(fractalNode)
+            } else if (area < MIN_OPEN_AREA) {
+              console.log('area', area)
+              // Far away, close the node
               close(fractalNode)
-            } else if (depthPx < CUTTING_DEPTH) {
-              // Too large, remove but keep the children and their plane.
+            } else if (area < MAX_OPEN_AREA) {
+              // Keep open
+            } else if (area < MAX_AREA) {
+              console.log('area', area)
+              // Large. Keep open.
+              retire(fractalNode)
+            } else {
+              console.log('area', area)
+              // Too large. Remove but keep children.
               retire(fractalNode)
             }
           } else {
             // Node is open but outside viewport.
-            close(fractalNode)
+            if (dist < MAX_OPEN_DISTANCE) {
+              // Keep open
+            } else if (dist < MAX_DISTANCE) {
+              console.log('area', area)
+              close(fractalNode)
+            } else {
+              console.log('area', area)
+              remove(fractalNode)
+            }
           }
         } else {
           // Is closed, no children.
           if (measure.visible) {
             // Node is closed and within viewport
-            if (depthPx < CUTTING_DEPTH) {
-              // Too large.
+            if (area < MIN_AREA) {
+              console.log('area', area)
+              // Too small, remove it and children
               remove(fractalNode)
-            } else if (depthPx > HORIZON_DEPTH) {
-              // Too far away
-              remove(fractalNode)
-            } else if (depthPx > OPENING_DEPTH && depthPx < CLOSING_DEPTH) {
-              // Suitable for opening
+            } else if (area < MIN_OPEN_AREA) {
+              // Keep closed
+            } else if (area < MAX_OPEN_AREA) {
+              console.log('area', area)
               open(fractalNode, space)
+            } else if (area < MAX_AREA) {
+              // Keep closed
+            } else {
+              console.log('area', area)
+              // Too large. Remove but keep children.
+              retire(fractalNode)
             }
           } else {
             // Node is closed and outside viewport.
-            if (depthPx < CUTTING_DEPTH) {
-              remove(fractalNode)
-            } else if (depthPx > HORIZON_DEPTH) {
+            if (dist < MAX_OPEN_DISTANCE) {
+              // Keep closed
+            } else if (dist < MAX_DISTANCE) {
+              // Keep closed
+            } else {
+              console.log('area', area)
               remove(fractalNode)
             }
           }
