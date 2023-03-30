@@ -225,8 +225,8 @@
     viewport.on('idle', () => {
       console.log('idle')
 
-      // TODO allow measurePlanes to take a filter.
-      const measures = viewport.measurePlanes().filter((measure) => {
+      // TODO allow measureAll to take a filter.
+      const measures = viewport.measureAll().filter((measure) => {
         return measure.plane.isFractal
       })
 

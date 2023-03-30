@@ -84,7 +84,7 @@
   view.matchPoint(view.atCenter(), space.getBoundingBox().atCenter())
 
   const updateMeasurements = () => {
-    const measurements = view.measurePlanes().filter(m => m.plane.isInfoBox)
+    const measurements = view.measureAll().filter(m => m.plane.isInfoBox)
     measurements.forEach(mea => {
       if (mea.plane.html) {
         mea.plane.html(measureToHtml(mea))

@@ -115,7 +115,7 @@
     viewport.translateBy({ x: offx, y: offx, z: -2 * D })
 
     viewport.on('idle', () => {
-      const measures = viewport.measurePlanes()
+      const measures = viewport.measureAll()
       measures.forEach(measure => {
         if (measure.plane.isBall) {
           const ball = measure.plane
