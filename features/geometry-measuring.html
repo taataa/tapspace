@@ -56,7 +56,8 @@
       distance: mea.distancePx,
       depth: mea.depthPx,
       area: mea.areaPx,
-      areaRatio: mea.areaRatio
+      areaRatio: mea.areaRatio,
+      visible: mea.visible
     }
     const text = JSON.stringify(cleaned, null, 2)
     return '<pre>' + text + '</pre>'
