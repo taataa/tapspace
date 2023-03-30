@@ -28,6 +28,10 @@
       text-align: center;
       font-size: 2rem;
     }
+    .fractal-node {
+      padding: 20px;
+      color: white;
+    }
     .mycomponent.active {
       background: #EEE;
     }
@@ -56,23 +60,26 @@
     const space = tapspace.createSpace()
     viewport.addChild(space)
 
-    const create = (basis, depth, position, scale, size, color) => {
+    const create = (basis, depth, position, scale, size, color, label) => {
       // Create a closed fractal node.
 
       const node = tapspace.createCircle(size, color)
+      node.html(label)
+      node.addClass('fractal-node')
       basis.addChild(node, position)
       node.setScale(scale)
       node.isFractal = true
       node.isAlive = true
       node.isOpen = false
       node.fractalDepth = depth
+      node.fractalLabel = label
 
       return node
     }
 
     const open = (node, basis) => {
       // Aka fractalTemplate OR openFractalKernel
-      console.log('open', node)
+      console.log('open', node.fractalLabel)
 
       // Mark the node as opening/opened
       node.isOpen = true
@@ -83,6 +90,7 @@
       const unit = size * 2
       const zunit = unit / 2
       const childDepth = node.fractalDepth + 1
+      const labelPrefix = node.fractalLabel
 
       // Plane for children
       const plane = tapspace.createPlane()
@@ -92,27 +100,36 @@
       const color = 'rgb(' + red + ', 0, 0)'
 
       const p0 = origin.offset(unit, unit)
-      const n0 = create(plane, childDepth, p0, scale, size, color)
+      const l0 = labelPrefix + '0'
+      const n0 = create(plane, childDepth, p0, scale, size, color, l0)
 
-      const p1 = origin.offset(1.2 * unit, 0)
-      const n1 = create(plane, childDepth, p1, scale, size, color)
+      // const p1 = origin.offset(1.2 * unit, 0)
+      // const l1 = labelPrefix + '1'
+      // const n1 = create(plane, childDepth, p1, scale, size, color, l1)
+      //
+      // const p2 = origin.offset(unit, -unit)
+      // const l2 = labelPrefix + '2'
+      // const n2 = create(plane, childDepth, p2, scale, size, color, l2)
+      //
+      // const p3 = origin.offset(-unit, 0)
+      // const l3= labelPrefix + '3'
+      // const n3 = create(plane, childDepth, p3, scale, size, color, l3)
 
-      const p2 = origin.offset(unit, -unit)
-      const n2 = create(plane, childDepth, p2, scale, size, color)
-
-      const p3 = origin.offset(-unit, 0)
-      const n3 = create(plane, childDepth, p3, scale, size, color)
-
-      const fractalChildren = [n0, n1, n2, n3]
+      const fractalChildren = [n0] // , n1, n2, n3]
       node.fractalChildren = fractalChildren
       node.fractalPlane = plane
 
       return fractalChildren
     }
 
+    const reunion = (node) => {
+      // Recreate parent for the node.
+      console.log('reunion', node.fractalLabel)
+    }
+
     const close = (node) => {
       // Remove children recursively
-      console.log('close', node)
+      console.log('close', node.fractalLabel)
 
       if (!node.fractalChildren || node.fractalChildren.length === 0) {
         // Unopenable or already closed
@@ -135,7 +152,7 @@
 
     const retire = (node) => {
       // Remove a fractal node but keep its children.
-      console.log('retire', node)
+      console.log('retire', node.fractalLabel)
 
       // Remove from dom
       node.remove()
@@ -148,7 +165,7 @@
 
     const remove = (node) => {
       // Remove a fractal node and all its children.
-      console.log('remove', node)
+      console.log('remove', node.fractalLabel)
 
       // Skip removed
       if (!node.isAlive) {
@@ -167,7 +184,7 @@
       node.isAlive = false
     }
 
-    const root = create(space, 0, viewport.atAnchor(), 1, 50, 'black')
+    const root = create(space, 0, viewport.atAnchor(), 1, 50, 'black', '0')
 
     // Initially open two levels of nodes
     let allNodes = []
@@ -188,6 +205,15 @@
     // Center viewport to content
     viewport.translateTo(space.atNorm(0.5, 0.5, 0))
 
+    // Debug helper
+    const logMeasure = (measure) => {
+      const node = measure.plane
+      console.log(node.fractalLabel + ':',
+        'area', measure.areaRatio.toFixed(5),
+        'dist', measure.distancePx.toFixed(2)
+      )
+    }
+
     // Hiding and opening logic
     const MIN_AREA = 0.001 // smallest item
     const MIN_OPEN_AREA = 0.01 // closed items smaller than this
@@ -204,11 +230,14 @@
         return measure.plane.isFractal
       })
 
+      console.log('measured', measures.length, 'fractal nodes')
+
       measures.forEach(measure => {
         const fractalNode = measure.plane
 
         if (!fractalNode.isAlive) {
           // Already removed during this iteration
+          console.log('dead measure', fractalNode.fractalLabel)
           return
         }
 
@@ -219,21 +248,20 @@
           if (measure.visible) {
             // Node is open and within viewport
             if (area < MIN_AREA) {
-              console.log('area', area)
+              logMeasure(measure)
               // Too far away, remove it and its children.
               remove(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
-              console.log('area', area)
+              logMeasure(measure)
               // Far away, close the node
               close(fractalNode)
             } else if (area < MAX_OPEN_AREA) {
               // Keep open
             } else if (area < MAX_AREA) {
-              console.log('area', area)
+              logMeasure(measure)
               // Large. Keep open.
-              retire(fractalNode)
             } else {
-              console.log('area', area)
+              logMeasure(measure)
               // Too large. Remove but keep children.
               retire(fractalNode)
             }
@@ -242,10 +270,10 @@
             if (dist < MAX_OPEN_DISTANCE) {
               // Keep open
             } else if (dist < MAX_DISTANCE) {
-              console.log('area', area)
-              close(fractalNode)
+              logMeasure(measure)
+              retire(fractalNode)
             } else {
-              console.log('area', area)
+              logMeasure(measure)
               remove(fractalNode)
             }
           }
@@ -254,18 +282,20 @@
           if (measure.visible) {
             // Node is closed and within viewport
             if (area < MIN_AREA) {
-              console.log('area', area)
+              logMeasure(measure)
               // Too small, remove it and children
               remove(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
               // Keep closed
             } else if (area < MAX_OPEN_AREA) {
-              console.log('area', area)
+              logMeasure(measure)
               open(fractalNode, space)
             } else if (area < MAX_AREA) {
-              // Keep closed
+              // Keep open
+              logMeasure(measure)
+              open(fractalNode, space)
             } else {
-              console.log('area', area)
+              logMeasure(measure)
               // Too large. Remove but keep children.
               retire(fractalNode)
             }
@@ -276,7 +306,7 @@
             } else if (dist < MAX_DISTANCE) {
               // Keep closed
             } else {
-              console.log('area', area)
+              logMeasure(measure)
               remove(fractalNode)
             }
           }
