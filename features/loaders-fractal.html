@@ -62,6 +62,7 @@
 
     const create = (basis, depth, position, scale, size, color, label) => {
       // Create a closed fractal node.
+      console.log('create', label)
 
       const node = tapspace.createCircle(size, color)
       node.html(label)
@@ -74,12 +75,25 @@
       node.fractalDepth = depth
       node.fractalLabel = label
 
+      node.setContentInput(false)
+      node.tappable({ preventDefault: false })
+      node.on('tap', () => {
+        console.log('node', node.fractalLabel, node)
+        const measurement = viewport.measureOne(node)
+        console.log('measurement', measurement)
+      })
+
       return node
     }
 
     const open = (node, basis) => {
       // Aka fractalTemplate OR openFractalKernel
       console.log('open', node.fractalLabel)
+
+      // Skip if already open
+      if (node.isOpen) {
+        return []
+      }
 
       // Mark the node as opening/opened
       node.isOpen = true
@@ -241,6 +255,8 @@
           return
         }
 
+        logMeasure(measure)
+
         const area = measure.areaRatio // Normalized area per viewport area
         const dist = measure.distancePx // Normlzd dist per viewport diagonal
 
@@ -248,20 +264,16 @@
           if (measure.visible) {
             // Node is open and within viewport
             if (area < MIN_AREA) {
-              logMeasure(measure)
               // Too far away, remove it and its children.
               remove(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
-              logMeasure(measure)
               // Far away, close the node
               close(fractalNode)
             } else if (area < MAX_OPEN_AREA) {
               // Keep open
             } else if (area < MAX_AREA) {
-              logMeasure(measure)
               // Large. Keep open.
             } else {
-              logMeasure(measure)
               // Too large. Remove but keep children.
               retire(fractalNode)
             }
@@ -270,10 +282,8 @@
             if (dist < MAX_OPEN_DISTANCE) {
               // Keep open
             } else if (dist < MAX_DISTANCE) {
-              logMeasure(measure)
               retire(fractalNode)
             } else {
-              logMeasure(measure)
               remove(fractalNode)
             }
           }
@@ -282,20 +292,16 @@
           if (measure.visible) {
             // Node is closed and within viewport
             if (area < MIN_AREA) {
-              logMeasure(measure)
               // Too small, remove it and children
               remove(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
               // Keep closed
             } else if (area < MAX_OPEN_AREA) {
-              logMeasure(measure)
               open(fractalNode, space)
             } else if (area < MAX_AREA) {
               // Keep open
-              logMeasure(measure)
               open(fractalNode, space)
             } else {
-              logMeasure(measure)
               // Too large. Remove but keep children.
               retire(fractalNode)
             }
@@ -306,7 +312,6 @@
             } else if (dist < MAX_DISTANCE) {
               // Keep closed
             } else {
-              logMeasure(measure)
               remove(fractalNode)
             }
           }
