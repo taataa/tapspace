@@ -57,18 +57,16 @@
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
     viewport.responsive().zoomable().setMeasureMode('none')
-    const space = tapspace.createSpace()
-    viewport.addChild(space)
+    const hyperspace = viewport.getHyperspace()
 
-    const create = (basis, depth, position, scale, size, color, label) => {
+    const create = (group, depth, position, size, color, label) => {
       // Create a closed fractal node.
       console.log('create', label)
 
       const node = tapspace.createCircle(size, color)
       node.html(label)
       node.addClass('fractal-node')
-      basis.addChild(node, position)
-      node.setScale(scale)
+      group.addChild(node, position)
       node.isFractal = true
       node.isAlive = true
       node.isOpen = false
@@ -86,7 +84,7 @@
       return node
     }
 
-    const open = (node, basis) => {
+    const open = (node) => {
       // Aka fractalTemplate OR openFractalKernel
       console.log('open', node.fractalLabel)
 
@@ -99,7 +97,6 @@
       node.isOpen = true
 
       const size = 50
-      const scale = node.getScale().scaleBy(0.32)
       const origin = node.atCenter()
       const unit = size * 2
       const zunit = unit / 2
@@ -107,31 +104,33 @@
       const labelPrefix = node.fractalLabel
 
       // Plane for children
-      const plane = tapspace.createPlane()
-      basis.addChild(plane, origin.offset(0, 0, zunit))
+      const contextScale = node.getScale().scaleBy(0.32)
+      const group = tapspace.createPlane()
+      hyperspace.addChild(group, origin.offset(0, 0, zunit))
+      group.setScale(contextScale)
 
       const red = childDepth * 40
       const color = 'rgb(' + red + ', 0, 0)'
 
       const p0 = origin.offset(unit, unit)
       const l0 = labelPrefix + '0'
-      const n0 = create(plane, childDepth, p0, scale, size, color, l0)
+      const n0 = create(group, childDepth, p0, size, color, l0)
 
-      // const p1 = origin.offset(1.2 * unit, 0)
-      // const l1 = labelPrefix + '1'
-      // const n1 = create(plane, childDepth, p1, scale, size, color, l1)
-      //
+      const p1 = origin.offset(1.2 * unit, 0)
+      const l1 = labelPrefix + '1'
+      const n1 = create(group, childDepth, p1, size, color, l1)
+
       // const p2 = origin.offset(unit, -unit)
       // const l2 = labelPrefix + '2'
-      // const n2 = create(plane, childDepth, p2, scale, size, color, l2)
+      // const n2 = create(group, childDepth, p2, size, color, l2)
       //
       // const p3 = origin.offset(-unit, 0)
       // const l3= labelPrefix + '3'
-      // const n3 = create(plane, childDepth, p3, scale, size, color, l3)
+      // const n3 = create(group, childDepth, p3, size, color, l3)
 
-      const fractalChildren = [n0] // , n1, n2, n3]
+      const fractalChildren = [n0, n1] // , n2, n3]
       node.fractalChildren = fractalChildren
-      node.fractalPlane = plane
+      node.fractalGroup = group
 
       return fractalChildren
     }
@@ -159,7 +158,7 @@
       // Remove the plane for children after the children have closed,
       // but do not remove the node itself.
       node.fractalChildren = []
-      node.fractalPlane.remove()
+      node.fractalGroup.remove()
 
       node.isOpen = false
     }
@@ -172,7 +171,7 @@
       node.remove()
       // Cut references to children
       node.fractalChildren = []
-      node.fractalPlane = null // the plane remains in dom
+      node.fractalGroup = null // the plane remains in dom
       // Mark as dead
       node.isAlive = false
     }
@@ -198,7 +197,9 @@
       node.isAlive = false
     }
 
-    const root = create(space, 0, viewport.atAnchor(), 1, 50, 'black', '0')
+    const rootPlane = tapspace.createPlane()
+    hyperspace.addChild(rootPlane)
+    const root = create(rootPlane, 0, viewport.atAnchor(), 50, 'black', '0')
 
     // Initially open two levels of nodes
     let allNodes = []
@@ -208,7 +209,7 @@
       allNodes = allNodes.concat(successors)
       // Open the nodes
       const opened = successors.map((succ) => {
-        return open(succ, space)
+        return open(succ)
       }).reduce((acc, succs) => {
         return acc.concat(succs)
       }, [])
@@ -217,7 +218,7 @@
     }
 
     // Center viewport to content
-    viewport.translateTo(space.atNorm(0.5, 0.5, 0))
+    viewport.translateTo(hyperspace.atNorm(0.5, 0.5, 0))
 
     // Debug helper
     const logMeasure = (measure) => {
@@ -238,6 +239,12 @@
 
     viewport.on('idle', () => {
       console.log('idle')
+
+      const spaces = hyperspace.getChildren()
+      spaces.map((space) => {
+        console.log(space.tran)
+      })
+      hyperspace.rescale()
 
       // TODO allow measureAll to take a filter.
       const measures = viewport.measureAll().filter((measure) => {
@@ -297,10 +304,10 @@
             } else if (area < MIN_OPEN_AREA) {
               // Keep closed
             } else if (area < MAX_OPEN_AREA) {
-              open(fractalNode, space)
+              open(fractalNode)
             } else if (area < MAX_AREA) {
               // Keep open
-              open(fractalNode, space)
+              open(fractalNode)
             } else {
               // Too large. Remove but keep children.
               retire(fractalNode)
