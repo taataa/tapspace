@@ -196,6 +196,11 @@
 
     const retire = (node) => {
       // Remove a fractal node but keep its children.
+
+      // Skip if has parents
+      if (node.fractalParent) {
+        return
+      }
       console.log('retire', node.fractalLabel)
 
       // Remove from dom
