@@ -205,22 +205,6 @@
     hyperspace.addChild(rootPlane)
     const root = create(rootPlane, 0, viewport.atAnchor(), 50, 'black', '0')
 
-    // Initially open two levels of nodes
-    let allNodes = []
-    let successors = [root]
-    for (let i = 0; i < 2; i += 1) {
-      // Capture nodes
-      allNodes = allNodes.concat(successors)
-      // Open the nodes
-      const opened = successors.map((succ) => {
-        return open(succ)
-      }).reduce((acc, succs) => {
-        return acc.concat(succs)
-      }, [])
-      // Reinsert
-      successors = opened
-    }
-
     // Center viewport to content
     viewport.translateTo(hyperspace.atNorm(0.5, 0.5, 0))
 
@@ -329,9 +313,6 @@
         }
       })
     })
-
-    // DEBUG
-    console.log('nodes:', allNodes.length)
   </script>
 </body>
 </html>
