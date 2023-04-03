@@ -126,7 +126,7 @@
 
       // Skip if already open
       if (node.isOpen) {
-        return []
+        return
       }
       console.log('open', node.fractalLabel)
 
@@ -163,8 +163,6 @@
       const fractalChildren = [n0, n1] // , n2, n3]
       node.fractalChildren = fractalChildren
       node.fractalSubgroup = subgroup
-
-      return fractalChildren
     }
 
     const reunion = (node) => {
