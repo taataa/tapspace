@@ -138,25 +138,25 @@
       const labelPrefix = node.fractalLabel
 
       // Plane for children
-      const contextScale = node.getScale().scaleBy(0.32)
+      const contextScale = node.getScale().scaleBy(scaleStep)
       const subgroup = tapspace.createPlane()
-      const subgroupOrigin = origin.offset(0, 0, zunit)
-      hyperspace.addChild(subgroup, subgroupOrigin)
+      const subgroupOrigin = origin.addVector(groupOffset)
+      viewport.addChild(subgroup, subgroupOrigin)
       subgroup.setScale(contextScale, subgroupOrigin)
 
-      const p0 = subgroupOrigin.addVector(offsets[0])
+      const p0 = origin.addVector(offsets[0])
       const l0 = labelPrefix + '0'
       const n0 = create(node, subgroup, childDepth, 0, p0, size, l0)
 
-      const p1 = subgroupOrigin.addVector(offsets[1])
+      const p1 = origin.addVector(offsets[1])
       const l1 = labelPrefix + '1'
       const n1 = create(node, subgroup, childDepth, 1, p1, size, l1)
 
-      // const p2 = subgroupOrigin.offset(unit, -unit)
+      // const p2 = origin.offset(offsets[2])
       // const l2 = labelPrefix + '2'
       // const n2 = create(node, subgroup, childDepth, 2, p2, size, l2)
       //
-      // const p3 = subgroupOrigin.offset(-unit, 0)
+      // const p3 = origin.offset(offsets[3])
       // const l3= labelPrefix + '3'
       // const n3 = create(node, subgroup, childDepth, 3, p3, size, l3)
 
