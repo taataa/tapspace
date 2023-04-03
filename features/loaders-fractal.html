@@ -60,8 +60,36 @@
     viewport.responsive().zoomable().setMeasureMode('none')
     const hyperspace = viewport.getHyperspace()
 
-    const create = (group, depth, position, size, color, label) => {
+    const size = 50
+    const unit = size * 2
+    const zunit = unit / 2
+    const offsets = [
+      { x: unit, y: unit, z: 0 },
+      { x: 1.2 * unit, y: 0, z: 0 }
+    ]
+
+    const create = (parent, group, depth, role, position, size, color, label) => {
       // Create a closed fractal node.
+      //
+      // Parameters:
+      //   parent
+      //     a fractal parent, not the parent in dom
+      //   group
+      //     the affine parent of the node to create, its space.
+      //   depth
+      //     an integer, to track depth
+      //   role
+      //     an integer, which children is this.
+      //   position
+      //     a Point, location in space
+      //   size
+      //     a number, circle radius represented on the group.
+      //   color
+      //     a string, CSS color
+      //   label
+      //     a string, text label
+      //
+      //
       console.log('create', label)
 
       const node = tapspace.createCircle(size, color)
@@ -71,9 +99,11 @@
       node.isFractal = true
       node.isAlive = true
       node.isOpen = false
-      node.fractalGroup = group
       node.fractalDepth = depth
+      node.fractalGroup = group
       node.fractalLabel = label
+      node.fractalParent = parent
+      node.fractalRole = role
 
       node.setContentInput(false)
       node.tappable({ preventDefault: false })
@@ -98,10 +128,7 @@
       // Mark the node as opening/opened
       node.isOpen = true
 
-      const size = 50
       const origin = node.atCenter()
-      const unit = size * 2
-      const zunit = unit / 2
       const childDepth = node.fractalDepth + 1
       const labelPrefix = node.fractalLabel
 
@@ -115,21 +142,21 @@
       const red = childDepth * 40
       const color = 'rgb(' + red + ', 0, 0)'
 
-      const p0 = origin.offset(unit, unit)
+      const p0 = subgroupOrigin.addVector(offsets[0])
       const l0 = labelPrefix + '0'
-      const n0 = create(subgroup, childDepth, p0, size, color, l0)
+      const n0 = create(node, subgroup, childDepth, 0, p0, size, color, l0)
 
-      const p1 = origin.offset(1.2 * unit, 0)
+      const p1 = subgroupOrigin.addVector(offsets[1])
       const l1 = labelPrefix + '1'
-      const n1 = create(subgroup, childDepth, p1, size, color, l1)
+      const n1 = create(node, subgroup, childDepth, 1, p1, size, color, l1)
 
-      // const p2 = origin.offset(unit, -unit)
+      // const p2 = subgroupOrigin.offset(unit, -unit)
       // const l2 = labelPrefix + '2'
-      // const n2 = create(subgroup, childDepth, p2, size, color, l2)
+      // const n2 = create(node, subgroup, childDepth, 2, p2, size, color, l2)
       //
-      // const p3 = origin.offset(-unit, 0)
+      // const p3 = subgroupOrigin.offset(-unit, 0)
       // const l3= labelPrefix + '3'
-      // const n3 = create(subgroup, childDepth, p3, size, color, l3)
+      // const n3 = create(node, subgroup, childDepth, 3, p3, size, color, l3)
 
       const fractalChildren = [n0, n1] // , n2, n3]
       node.fractalChildren = fractalChildren
@@ -173,6 +200,10 @@
 
       // Remove from dom
       node.remove()
+      // Cut references from children
+      node.fractalChildren.forEach(child => {
+        child.fractalParent = null
+      })
       // Cut references to children
       node.fractalChildren = []
       node.fractalSubgroup = null // the subgroup remains in dom
@@ -210,9 +241,19 @@
       node.isAlive = false
     }
 
-    const rootPlane = tapspace.createPlane()
-    hyperspace.addChild(rootPlane)
-    const root = create(rootPlane, 0, viewport.atAnchor(), 50, 'black', '0')
+    const rootParent = null
+    const rootGroup = tapspace.createPlane()
+    viewport.addChild(rootGroup)
+    const rootDepth = 0
+    const rootRole = 0
+    const rootOrigin = viewport.atAnchor()
+    const rootSize = size
+    const rootColor = 'black'
+    const rootLabel = '0'
+    const root = create(
+      rootParent, rootGroup, rootDepth, rootRole,
+      rootOrigin, rootSize, rootColor, rootLabel
+    )
 
     // Center viewport to content
     viewport.translateTo(hyperspace.atNorm(0.5, 0.5, 0))
