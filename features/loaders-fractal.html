@@ -176,6 +176,10 @@
       // Cut references to children
       node.fractalChildren = []
       node.fractalSubgroup = null // the subgroup remains in dom
+      // Remove possibly empty group of the node.
+      if (node.fractalGroup.isLeaf()) {
+        node.fractalGroup.remove()
+      }
       // Mark as dead
       node.isAlive = false
     }
@@ -196,6 +200,11 @@
 
       // Remove from dom
       node.remove()
+
+      // Remove the group from dom if empty.
+      if (node.fractalGroup.isLeaf()) {
+        node.fractalGroup.remove()
+      }
 
       // Mark as dead
       node.isAlive = false
@@ -279,7 +288,7 @@
             } else if (dist < MAX_DISTANCE) {
               retire(fractalNode)
             } else {
-              remove(fractalNode)
+              retire(fractalNode)
             }
           }
         } else {
