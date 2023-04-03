@@ -294,7 +294,8 @@
       console.log('layers:')
       const spaces = hyperspace.getChildren()
       spaces.map((space) => {
-        console.log(space.tran)
+        const numNodes = space.getChildren().length
+        console.log(space.tran, 'with', numNodes, 'children')
       })
       viewport.rescale()
 
