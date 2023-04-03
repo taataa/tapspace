@@ -71,6 +71,7 @@
       node.isFractal = true
       node.isAlive = true
       node.isOpen = false
+      node.fractalGroup = group
       node.fractalDepth = depth
       node.fractalLabel = label
 
@@ -106,32 +107,33 @@
 
       // Plane for children
       const contextScale = node.getScale().scaleBy(0.32)
-      const group = tapspace.createPlane()
-      hyperspace.addChild(group, origin.offset(0, 0, zunit))
-      group.setScale(contextScale)
+      const subgroup = tapspace.createPlane()
+      const subgroupOrigin = origin.offset(0, 0, zunit)
+      hyperspace.addChild(subgroup, subgroupOrigin)
+      subgroup.setScale(contextScale, subgroupOrigin)
 
       const red = childDepth * 40
       const color = 'rgb(' + red + ', 0, 0)'
 
       const p0 = origin.offset(unit, unit)
       const l0 = labelPrefix + '0'
-      const n0 = create(group, childDepth, p0, size, color, l0)
+      const n0 = create(subgroup, childDepth, p0, size, color, l0)
 
       const p1 = origin.offset(1.2 * unit, 0)
       const l1 = labelPrefix + '1'
-      const n1 = create(group, childDepth, p1, size, color, l1)
+      const n1 = create(subgroup, childDepth, p1, size, color, l1)
 
       // const p2 = origin.offset(unit, -unit)
       // const l2 = labelPrefix + '2'
-      // const n2 = create(group, childDepth, p2, size, color, l2)
+      // const n2 = create(subgroup, childDepth, p2, size, color, l2)
       //
       // const p3 = origin.offset(-unit, 0)
       // const l3= labelPrefix + '3'
-      // const n3 = create(group, childDepth, p3, size, color, l3)
+      // const n3 = create(subgroup, childDepth, p3, size, color, l3)
 
       const fractalChildren = [n0, n1] // , n2, n3]
       node.fractalChildren = fractalChildren
-      node.fractalGroup = group
+      node.fractalSubgroup = subgroup
 
       return fractalChildren
     }
@@ -159,7 +161,8 @@
       // Remove the plane for children after the children have closed,
       // but do not remove the node itself.
       node.fractalChildren = []
-      node.fractalGroup.remove()
+      node.fractalSubgroup.remove()
+      node.fractalSubgroup = null
 
       node.isOpen = false
     }
@@ -172,7 +175,7 @@
       node.remove()
       // Cut references to children
       node.fractalChildren = []
-      node.fractalGroup = null // the plane remains in dom
+      node.fractalSubgroup = null // the subgroup remains in dom
       // Mark as dead
       node.isAlive = false
     }
