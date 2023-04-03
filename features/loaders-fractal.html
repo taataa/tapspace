@@ -124,7 +124,10 @@
     const open = (node) => {
       // Aka fractalTemplate OR openFractalKernel
 
-      // Skip if already open
+      // Skip if removed or already open
+      if (!node.isAlive) {
+        return
+      }
       if (node.isOpen) {
         return
       }
@@ -165,7 +168,7 @@
       node.fractalSubgroup = subgroup
     }
 
-    const reunion = (node) => {
+    const reunite = (node) => {
       // Recreate parent for the node.
       console.log('reunion', node.fractalLabel)
     }
@@ -173,6 +176,9 @@
     const close = (node) => {
       // Remove children recursively
 
+      if (!node.isAlive) {
+        return
+      }
       if (!node.fractalChildren || node.fractalChildren.length === 0) {
         // Unopenable or already closed
         return
@@ -197,7 +203,10 @@
     const retire = (node) => {
       // Remove a fractal node but keep its children.
 
-      // Skip if has parents
+      // Skip if removed or has parents
+      if (!node.isAlive) {
+        return
+      }
       if (node.fractalParent) {
         return
       }
@@ -296,6 +305,12 @@
 
       console.log('measured', measures.length, 'fractal nodes')
 
+      const nodesToOpen = []
+      const nodesToClose = []
+      const nodesToRetire = []
+      const nodesToRemove = []
+      const nodesToReunite = []
+
       measures.forEach(measure => {
         const fractalNode = measure.plane
 
@@ -315,26 +330,29 @@
             // Node is open and within viewport
             if (area < MIN_AREA) {
               // Too far away, remove it and its children.
-              remove(fractalNode)
+              nodesToRemove.push(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
               // Far away, close the node
-              close(fractalNode)
+              nodesToClose.push(fractalNode)
+              // Ensure parent exists
+              nodesToReunite.push(fractalNode)
             } else if (area < MAX_OPEN_AREA) {
-              // Keep open
+              // Keep open. Ensure parent exists.
+              nodesToReunite.push(fractalNode)
             } else if (area < MAX_AREA) {
               // Large. Keep open.
             } else {
               // Too large. Remove but keep children.
-              retire(fractalNode)
+              nodesToRetire.push(fractalNode)
             }
           } else {
             // Node is open but outside viewport.
             if (dist < MAX_OPEN_DISTANCE) {
               // Keep open
             } else if (dist < MAX_DISTANCE) {
-              retire(fractalNode)
+              nodesToRetire.push(fractalNode)
             } else {
-              retire(fractalNode)
+              nodesToRetire.push(fractalNode)
             }
           }
         } else {
@@ -343,17 +361,20 @@
             // Node is closed and within viewport
             if (area < MIN_AREA) {
               // Too small, remove it and children
-              remove(fractalNode)
+              nodesToRemove.push(fractalNode)
             } else if (area < MIN_OPEN_AREA) {
-              // Keep closed
+              // Keep closed, ensure parent exists
+              nodesToReunite.push(fractalNode)
             } else if (area < MAX_OPEN_AREA) {
-              open(fractalNode)
+              // Ensure parent exists
+              nodesToOpen.push(fractalNode)
+              nodesToReunite.push(fractalNode)
             } else if (area < MAX_AREA) {
               // Keep open
-              open(fractalNode)
+              nodesToOpen.push(fractalNode)
             } else {
               // Too large. Remove but keep children.
-              retire(fractalNode)
+              nodesToRetire.push(fractalNode)
             }
           } else {
             // Node is closed and outside viewport.
@@ -362,11 +383,17 @@
             } else if (dist < MAX_DISTANCE) {
               // Keep closed
             } else {
-              remove(fractalNode)
+              nodesToRemove.push(fractalNode)
             }
           }
         }
       })
+
+      nodesToRemove.forEach(remove)
+      nodesToClose.forEach(close)
+      nodesToRetire.forEach(retire)
+      nodesToOpen.forEach(open)
+      nodesToReunite.forEach(reunite)
     })
   </script>
 </body>
