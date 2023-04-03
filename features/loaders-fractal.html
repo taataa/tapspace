@@ -63,9 +63,13 @@
     const size = 50
     const unit = size * 2
     const zunit = unit / 2
+    const scaleStep = 0.32
+    const groupOffset = { x: 0, y: 0, z: zunit }
     const offsets = [
-      { x: unit, y: unit, z: 0 },
-      { x: 1.2 * unit, y: 0, z: 0 }
+      { x: unit, y: unit, z: zunit },
+      { x: 1.2 * unit, y: 0, z: zunit }
+      // { x: unit, y: -unit, z: zunit },
+      // { x: -unit, y: 0, z: zunit }
     ]
 
     const create = (parent, group, depth, role, position, size, label) => {
@@ -119,12 +123,12 @@
 
     const open = (node) => {
       // Aka fractalTemplate OR openFractalKernel
-      console.log('open', node.fractalLabel)
 
       // Skip if already open
       if (node.isOpen) {
         return []
       }
+      console.log('open', node.fractalLabel)
 
       // Mark the node as opening/opened
       node.isOpen = true
@@ -170,12 +174,12 @@
 
     const close = (node) => {
       // Remove children recursively
-      console.log('close', node.fractalLabel)
 
       if (!node.fractalChildren || node.fractalChildren.length === 0) {
         // Unopenable or already closed
         return
       }
+      console.log('close', node.fractalLabel)
 
       // Close and remove children recursively
       const kids = node.fractalChildren
@@ -215,12 +219,12 @@
 
     const remove = (node) => {
       // Remove a fractal node and all its children.
-      console.log('remove', node.fractalLabel)
 
       // Skip removed
       if (!node.isAlive) {
         return
       }
+      console.log('remove', node.fractalLabel)
 
       // Ensure closed
       if (node.isOpen) {
@@ -258,7 +262,7 @@
     // Debug helper
     const logMeasure = (measure) => {
       const node = measure.plane
-      console.log(node.fractalLabel + ':',
+      console.log('measure ' + node.fractalLabel + ':',
         'area', measure.areaRatio.toFixed(5),
         'dist', measure.distancePx.toFixed(2)
       )
@@ -275,6 +279,7 @@
     viewport.on('idle', () => {
       console.log('idle')
 
+      console.log('layers:')
       const spaces = hyperspace.getChildren()
       spaces.map((space) => {
         console.log(space.tran)
