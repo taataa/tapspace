@@ -68,7 +68,7 @@
       { x: 1.2 * unit, y: 0, z: 0 }
     ]
 
-    const create = (parent, group, depth, role, position, size, color, label) => {
+    const create = (parent, group, depth, role, position, size, label) => {
       // Create a closed fractal node.
       //
       // Parameters:
@@ -84,13 +84,14 @@
       //     a Point, location in space
       //   size
       //     a number, circle radius represented on the group.
-      //   color
-      //     a string, CSS color
       //   label
       //     a string, text label
       //
       //
       console.log('create', label)
+
+      const redness = depth * 40
+      const color = 'rgb(' + redness + ', 0, 0)'
 
       const node = tapspace.createCircle(size, color)
       node.html(label)
@@ -139,24 +140,21 @@
       hyperspace.addChild(subgroup, subgroupOrigin)
       subgroup.setScale(contextScale, subgroupOrigin)
 
-      const red = childDepth * 40
-      const color = 'rgb(' + red + ', 0, 0)'
-
       const p0 = subgroupOrigin.addVector(offsets[0])
       const l0 = labelPrefix + '0'
-      const n0 = create(node, subgroup, childDepth, 0, p0, size, color, l0)
+      const n0 = create(node, subgroup, childDepth, 0, p0, size, l0)
 
       const p1 = subgroupOrigin.addVector(offsets[1])
       const l1 = labelPrefix + '1'
-      const n1 = create(node, subgroup, childDepth, 1, p1, size, color, l1)
+      const n1 = create(node, subgroup, childDepth, 1, p1, size, l1)
 
       // const p2 = subgroupOrigin.offset(unit, -unit)
       // const l2 = labelPrefix + '2'
-      // const n2 = create(node, subgroup, childDepth, 2, p2, size, color, l2)
+      // const n2 = create(node, subgroup, childDepth, 2, p2, size, l2)
       //
       // const p3 = subgroupOrigin.offset(-unit, 0)
       // const l3= labelPrefix + '3'
-      // const n3 = create(node, subgroup, childDepth, 3, p3, size, color, l3)
+      // const n3 = create(node, subgroup, childDepth, 3, p3, size, l3)
 
       const fractalChildren = [n0, n1] // , n2, n3]
       node.fractalChildren = fractalChildren
@@ -248,11 +246,10 @@
     const rootRole = 0
     const rootOrigin = viewport.atAnchor()
     const rootSize = size
-    const rootColor = 'black'
     const rootLabel = '0'
     const root = create(
       rootParent, rootGroup, rootDepth, rootRole,
-      rootOrigin, rootSize, rootColor, rootLabel
+      rootOrigin, rootSize, rootLabel
     )
 
     // Center viewport to content
