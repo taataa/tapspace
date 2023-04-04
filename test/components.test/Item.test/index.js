@@ -5,6 +5,7 @@ const units = {
   boundaries: require('./boundaries.test'),
   getVector: require('./getVector.test'),
   rotateBy: require('./rotateBy.test'),
+  setBasis: require('./setBasis.test'),
   setOrientation: require('./setOrientation.test'),
   setScale: require('./setScale.test'),
   transformBy: require('./transformBy.test')
