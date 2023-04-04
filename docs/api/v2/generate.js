@@ -25,9 +25,9 @@ yamdog.generate({
     'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
     'Arc': 'tapspace.components.Arc',
-    'Basis': 'tapspace.components.Basis',
+    'BasisElement': 'tapspace.components.BasisElement',
     'Block': 'tapspace.components.Block',
-    'Circle': 'tapspace.components.Circle',
+    'CircleElement': 'tapspace.components.CircleElement',
     'Control': 'tapspace.components.Control',
     'CustomControl': 'tapspace.components.CustomControl',
     'Edge': 'tapspace.components.Edge',
@@ -44,6 +44,7 @@ yamdog.generate({
     'ZoomControl': 'tapspace.components.ZoomControl',
     // Geometry
     'Area': 'tapspace.geometry.Area',
+    'Basis': 'tapspace.geometry.Basis',
     'Box': 'tapspace.geometry.Box',
     'Direction': 'tapspace.geometry.Direction',
     'Distance': 'tapspace.geometry.Distance',
