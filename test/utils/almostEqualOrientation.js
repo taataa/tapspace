@@ -1,12 +1,6 @@
 const fine = require('affineplane')
-// TODO const almostEqual = fine.orient2.almostEqual
+const almostEqual = fine.orient2.almostEqual
 const validate = fine.orient2.validate
-
-const almostEqual = (ora, orb) => {
-  const da = Math.abs(ora.a - orb.a)
-  const db = Math.abs(ora.b - orb.b)
-  return (da + db <= fine.epsilon)
-}
 
 module.exports = function (actual, expected, message) {
   // Custom tape.js assertion.
