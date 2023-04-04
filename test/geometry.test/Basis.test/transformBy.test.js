@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
 
     const tr = tapspace.geometry.Transform.fromFeatures({
       basis: space,
-      scale: 2, // TODO dilation
+      scale: 2 // TODO dilation
     })
     const basis = item.getBasis().transformBy(tr, item.atCenter())
 
