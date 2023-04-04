@@ -1,5 +1,6 @@
 const units = {
   Area: require('./Area.test'),
+  Basis: require('./Basis.test'),
   Box: require('./Box.test'),
   Direction: require('./Direction.test'),
   Distance: require('./Distance.test'),
