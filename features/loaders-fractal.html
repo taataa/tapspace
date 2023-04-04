@@ -58,407 +58,60 @@
     // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
     viewport.responsive().zoomable().setMeasureMode('none')
-    const hyperspace = viewport.getHyperspace()
 
-    const size = 50
-    const unit = size * 2
-    const zunit = unit / 2
-    const scaleStep = 0.32
-    const subunit = unit / scaleStep
-    const groupOffset = { a: 1, b: 0, x: 0, y: 0, z: zunit }
-    const offsets = [
-      { a: 1, b: 0, x: subunit, y: subunit, z: 0 },
-      { a: 1, b: 0, x: 1.2 * subunit, y: 0, z: 0 }
-      // { a: 1, b: 0, x: subunit, y: -subunit, z: 0 },
-      // { a: 1, b: 0, x: -subunit, y: 0, z: 0 }
-    ]
+    const getParentIds = (id) => {
+      if (id.length <= 1) {
+        return null
+      }
+      const pid = id.substring(0, id.length - 1)
+      return pid
+    }
 
-    const create = (parent, group, depth, role, position, size, label) => {
-      // Create a closed fractal node.
-      //
-      // Parameters:
-      //   parent
-      //     a fractal parent, not the parent in dom
-      //   group
-      //     the affine parent of the node to create, its space.
-      //   depth
-      //     an integer, to track depth
-      //   role
-      //     an integer, which children is this.
-      //   position
-      //     a Point, location in space
-      //   size
-      //     a number, circle radius represented on the group.
-      //   label
-      //     a string, text label
-      //
-      //
-      console.log('create', label)
+    const kernel = (id) => {
+      return {
+        plane: {
+          id: id,
+          transform: { a: 0.32, b: 0, x: 0, y: 0, z: 50 }
+        },
+        children: [
+          {
+            id: id + '0',
+            transform: { a: 1, b: 0, x: 100, y: 100, z: 0 }
+          },
+          {
+            id: id + '1',
+            transform: { a: 1, b: 0, x: 120, y: 0, z: 0 }
+          }
+        ]
+      }
+    }
 
-      const redness = depth * 40
+    const getDepth = (id) => {
+      return id.length - 1
+    }
+
+    const getColor = (id) => {
+      const d = getDepth(id)
+      const redness = d * 40
       const color = 'rgb(' + redness + ', 0, 0)'
+      return color
+    }
 
+    const createNode = (id) => {
+      const size = 50
+      const color = getColor(id)
       const node = tapspace.createCircle(size, color)
-      node.html(label)
+      node.html('' + id)
       node.addClass('fractal-node')
-      node.isFractal = true
-      node.isAlive = true
-      node.isOpen = false
-      node.fractalChildren = []
-      node.fractalDepth = depth
-      node.fractalGroup = group
-      node.fractalLabel = label
-      node.fractalParent = parent
-      node.fractalRole = role
-      node.fractalSubgroup = null // basis for children
-
-      group.addChild(node, position)
-
-      node.setContentInput(false)
-      node.tappable({ preventDefault: false })
-      node.on('tap', () => {
-        console.log('node', node.fractalLabel, node)
-        const measurement = viewport.measureOne(node)
-        console.log('measurement', measurement)
-      })
-
       return node
     }
 
-    const open = (node) => {
-      // Aka fractalTemplate OR openFractalKernel
-
-      // Skip if removed or already open
-      if (!node.isAlive) {
-        return
-      }
-      if (node.isOpen) {
-        return
-      }
-      console.log('open', node.fractalLabel)
-
-      // Mark the node as opening/opened
-      node.isOpen = true
-
-      const origin = node.atCenter()
-      const childDepth = node.fractalDepth + 1
-      const labelPrefix = node.fractalLabel
-
-      // Plane for children
-      const subgroup = tapspace.createPlane()
-      const subgroupOrigin = origin.addVector(groupOffset)
-      viewport.addChild(subgroup, subgroupOrigin)
-      const contextScale = node.getScale().scaleBy(scaleStep)
-      subgroup.setScale(contextScale, subgroupOrigin)
-
-      const subnodes = offsets.map((vec, i) => {
-        const point = subgroupOrigin.changeBasis(subgroup).addVector(vec)
-        const label = '' + labelPrefix + i
-        const subnode = create(
-          node, subgroup, childDepth, i,
-          point, size, label
-        )
-        return subnode
-      })
-
-      node.fractalChildren = subnodes
-      node.fractalSubgroup = subgroup
-    }
-
-    // const openParent = (node) => {}
-    // const openSiblings = (node) => {}
-
-    const getGroupOrigin = (point, role) => {
-      // Get a group origin point from a node origin point and its role.
-      const pointBasis = offsets[role]
-      const originBasis = tapspace.math.helm3.invert(pointBasis)
-      const origin = point.transformBy(originBasis, point)
-      console.log('origin', origin.transitRaw(viewport))
-      return origin
-    }
-
-    const getParentLabel = (label) => {
-      return label.substring(0, label.length - 1)
-    }
-
-    const getRole = (label) => {
-      const last = label.substring(label.length - 1)
-      return parseInt(last)
-    }
-
-    const reunite = (node) => {
-      // Recreate parent for the node.
-
-      // Skip removed
-      if (!node.isAlive) {
-        return
-      }
-      // Skip ones that already have a parent.
-      if (node.fractalParent) {
-        return
-      }
-      // Skip the topmost
-      if (node.fractalLabel.length <= 1) {
-        return
-      }
-      console.log('reunite', node.fractalLabel)
-
-      // const parentOrigin = node.fractalGroup.at(0, 0, -zunit)
-      // const dot = tapspace.createCircle(50, 'blue')
-      // viewport.addChild(dot, parentOrigin)
-
-      const parentLabel = getParentLabel(node.fractalLabel)
-      const parentRole = getRole(parentLabel)
-      const parentOrigin = node.fractalGroup.at(0, 0, -zunit)
-      const parentGroupOrigin = getGroupOrigin(parentOrigin, parentRole)
-      const parentGroup = tapspace.createPlane()
-      viewport.addChild(parentGroup, parentGroupOrigin)
-      const contextScale = node.getScale().scaleBy(1 / scaleStep)
-      parentGroup.setScale(contextScale, parentGroupOrigin)
-
-      const parentDepth = node.fractalDepth - 1
-      const parentNode = create(
-        null, parentGroup, parentDepth, parentRole,
-        parentOrigin, size, parentLabel
-      )
-
-      parentNode.fractalChildren = [node]
-      parentNode.fractalSubgroup = node.fractalGroup
-      parentNode.isOpen = true
-
-      node.fractalParent = parentNode
-    }
-
-    const close = (node) => {
-      // Remove children recursively
-
-      if (!node.isAlive) {
-        return
-      }
-      if (!node.fractalChildren || node.fractalChildren.length === 0) {
-        // Unopenable or already closed
-        return
-      }
-      console.log('close', node.fractalLabel)
-
-      // Close and remove children recursively
-      const kids = node.fractalChildren
-      for (let i = 0; i < kids.length; i += 1) {
-        remove(kids[i])
-      }
-
-      // Remove the plane for children after the children have closed,
-      // but do not remove the node itself.
-      node.fractalChildren = []
-      if (node.fractalSubgroup) {
-        node.fractalSubgroup.remove()
-        node.fractalSubgroup = null
-      }
-
-      node.isOpen = false
-    }
-
-    const retire = (node) => {
-      // Remove a fractal node but keep its children.
-
-      // Skip if removed or has parents
-      if (!node.isAlive) {
-        return
-      }
-      if (node.fractalParent) {
-        return
-      }
-      console.log('retire', node.fractalLabel)
-
-      // Remove from dom
-      node.remove()
-      // Cut references from children
-      node.fractalChildren.forEach(child => {
-        child.fractalParent = null
-      })
-      // Cut references to children
-      node.fractalChildren = []
-      node.fractalSubgroup = null // the subgroup remains in dom
-      // Remove possibly empty group of the node.
-      if (node.fractalGroup.isLeaf()) {
-        node.fractalGroup.remove()
-      }
-      // Mark as dead
-      node.isAlive = false
-    }
-
-    const remove = (node) => {
-      // Remove a fractal node and all its children.
-
-      // Skip removed
-      if (!node.isAlive) {
-        return
-      }
-      console.log('remove', node.fractalLabel)
-
-      // Ensure closed
-      if (node.isOpen) {
-        close(node)
-      }
-
-      // Remove from dom
-      node.remove()
-
-      // Remove the group from dom if empty.
-      if (node.fractalGroup.isLeaf()) {
-        node.fractalGroup.remove()
-      }
-
-      // Mark as dead
-      node.isAlive = false
-
-      // Close the parent if any
-      const parent = node.fractalParent
-      if (parent) {
-        close(parent)
-      }
-    }
-
-    const rootParent = null
-    const rootGroup = tapspace.createPlane()
-    viewport.addChild(rootGroup)
-    const rootDepth = 0
-    const rootRole = 0
-    const rootOrigin = viewport.atAnchor()
-    const rootSize = size
-    const rootLabel = '0'
-    const root = create(
-      rootParent, rootGroup, rootDepth, rootRole,
-      rootOrigin, rootSize, rootLabel
-    )
-
-    // Center viewport to content
-    viewport.translateTo(hyperspace.atNorm(0.5, 0.5, 0))
-
-    // Debug helper
-    const logMeasure = (measure) => {
-      const node = measure.plane
-      console.log('measure ' + node.fractalLabel + ':',
-        'area', measure.areaRatio.toFixed(5),
-        'dist', measure.distancePx.toFixed(2)
-      )
-    }
-
-    // Hiding and opening logic
-    const MIN_AREA = 0.001 // smallest item
-    const MIN_OPEN_AREA = 0.01 // closed items smaller than this
-    const MAX_OPEN_AREA = 1 // closed items larger than this
-    const MAX_AREA = 2 // largest item
-    const MAX_OPEN_DISTANCE = 1000
-    const MAX_DISTANCE = 1600
-
-    viewport.on('idle', () => {
-      console.log('idle')
-
-      // console.log('layers:')
-      // const spaces = hyperspace.getChildren()
-      // spaces.map((space) => {
-      //   const numNodes = space.getChildren().length
-      //   console.log(space.tran, 'with', numNodes, 'children')
-      // })
-      viewport.rescale()
-
-      // TODO allow measureAll to take a filter.
-      const measures = viewport.measureAll().filter((measure) => {
-        return measure.plane.isFractal
-      })
-
-      console.log('measured', measures.length, 'fractal nodes')
-
-      const nodesToOpen = []
-      const nodesToClose = []
-      const nodesToRetire = []
-      const nodesToRemove = []
-      const nodesToReunite = []
-
-      measures.forEach(measure => {
-        const fractalNode = measure.plane
-
-        if (!fractalNode.isAlive) {
-          // Already removed during this iteration
-          console.log('dead measure', fractalNode.fractalLabel)
-          return
-        }
-
-        // logMeasure(measure)
-
-        const area = measure.areaRatio // Normalized area per viewport area
-        const dist = measure.distancePx // Normlzd dist per viewport diagonal
-
-        if (fractalNode.isOpen) {
-          if (measure.visible) {
-            // Node is open and within viewport
-            if (area < MIN_AREA) {
-              // Too far away, remove it and its children.
-              nodesToRemove.push(fractalNode)
-            } else if (area < MIN_OPEN_AREA) {
-              // Far away, close the node
-              nodesToClose.push(fractalNode)
-              // Ensure parent exists
-              nodesToReunite.push(fractalNode)
-            } else if (area < MAX_OPEN_AREA) {
-              // Keep open. Ensure parent exists.
-              nodesToReunite.push(fractalNode)
-            } else if (area < MAX_AREA) {
-              // Large. Keep open.
-            } else {
-              // Too large. Remove but keep children.
-              // nodesToRetire.push(fractalNode)
-            }
-          } else {
-            // Node is open but outside viewport.
-            if (dist < MAX_OPEN_DISTANCE) {
-              // Keep open
-            } else if (dist < MAX_DISTANCE) {
-              // Keep open
-            } else {
-              nodesToRetire.push(fractalNode)
-            }
-          }
-        } else {
-          // Is closed, no children.
-          if (measure.visible) {
-            // Node is closed and within viewport
-            if (area < MIN_AREA) {
-              // Too small, remove it and children
-              nodesToRemove.push(fractalNode)
-            } else if (area < MIN_OPEN_AREA) {
-              // Keep closed, ensure parent exists
-              nodesToReunite.push(fractalNode)
-            } else if (area < MAX_OPEN_AREA) {
-              // Ensure parent exists
-              nodesToOpen.push(fractalNode)
-              nodesToReunite.push(fractalNode)
-            } else if (area < MAX_AREA) {
-              // Keep open
-              nodesToOpen.push(fractalNode)
-            } else {
-              // Too large. Remove but keep children.
-              // nodesToRetire.push(fractalNode)
-            }
-          } else {
-            // Node is closed and outside viewport.
-            if (dist < MAX_OPEN_DISTANCE) {
-              // Keep closed
-            } else if (dist < MAX_DISTANCE) {
-              // Keep closed
-            } else {
-              nodesToRetire.push(fractalNode)
-            }
-          }
-        }
-      })
-
-      nodesToRemove.forEach(remove)
-      nodesToClose.forEach(close)
-      nodesToRetire.forEach(retire)
-      nodesToOpen.forEach(open)
-      nodesToReunite.forEach(reunite)
+    const loader = new tapspace.loaders.FractalLoader({
+      viewport: viewport,
+      kernel: kernel,
+      backtracker: getParentIds,
+      generator: createNode,
+      initial: '0'
     })
   </script>
 </body>
