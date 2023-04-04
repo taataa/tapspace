@@ -1,6 +1,6 @@
 const units = {
   Arc: require('./Arc.test'),
-  Basis: require('./Basis.test'),
+  BasisElement: require('./BasisElement.test'),
   Frame: require('./Frame.test'),
   Plane: require('./Plane.test'),
   Item: require('./Item.test')
