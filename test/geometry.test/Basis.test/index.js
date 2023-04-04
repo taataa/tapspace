@@ -5,6 +5,7 @@ const units = {
   scaleBy: require('./scaleBy.test'),
   transformBy: require('./transformBy.test'),
   transitRaw: require('./transitRaw.test'),
+  transitRawOuter: require('./transitRawOuter.test'),
   translateBy: require('./translateBy.test')
 }
 
