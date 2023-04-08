@@ -59,35 +59,100 @@
     const viewport = tapspace.createView('#tapspace')
     viewport.responsive().zoomable().setMeasureMode('none')
 
-    const getParentIds = (id) => {
-      if (id.length <= 1) {
-        return null
+    const tracker = (parents) => {
+      // Find bases and IDs of the children of the given parents.
+      //
+      // Parameters:
+      //   parents
+      //     an array of track, where each track is { id, basis }
+      //
+      // Return
+      //   an array of track, the tracks of children
+      //
+
+      // Debug
+      if (parents.length < 1) {
+        const err = new Error('Tracker called with empty parent tracks.')
+        return callback(null, [])
       }
-      const pid = id.substring(0, id.length - 1)
-      return pid
+
+      // Single-parent tracker.
+      const id = parents[0].id
+      const basis = parents[0].basis
+
+      // Children
+      const tracks = [
+        {
+          id: id + '0',
+          basis: basis.scaleBy(0.333).translateBy({ x: 200, y: 200, z: 50 })
+        },
+        {
+          id: id + '1',
+          basis: basis.scaleBy(0.333).translateBy({ x: 250, y: 0, z: 50 })
+        },
+        {
+          id: id + '2',
+          basis: basis.scaleBy(0.333).translateBy({ x: 200, y: -200, z: 50 })
+        }
+      ]
+
+      return tracks
     }
 
-    const kernel = (id) => {
-      return {
-        plane: {
-          id: id,
-          transform: { a: 0.32, b: 0, x: 50, y: 50, z: 50 }
-        },
-        children: [
-          {
-            id: id + '0',
-            transform: { a: 1, b: 0, x: 200, y: 200, z: 0 }
-          },
-          {
-            id: id + '1',
-            transform: { a: 1, b: 0, x: 250, y: 0, z: 0 }
-          },
-          {
-            id: id + '2',
-            transform: { a: 1, b: 0, x: 200, y: -200, z: 0 }
-          }
-        ]
+    const backtracker = (children) => {
+      // Find bases and IDs of parents of the given children.
+      //
+      // Parameters:
+      //   children
+      //     an array of track, where each track is { id, basis }
+      //
+      // Return
+      //   an array of track, the parent tracks. Can be empty if no parents.
+      //
+
+      // Debug
+      if (children.length < 1) {
+        const err = new Error('Backtracker called without child tracks.')
+        return callback(null, [])
       }
+
+      // Single-parent backtracker
+      const firstbornId = children[0].id
+      const parentId = firstbornId.substring(0, firstbornId.length - 1)
+
+      // Limit to root id
+      if (parentId.length < 1) {
+        return []
+      }
+
+      let parentBasis = null
+      for (let i = 0; i < children.length; i += 1) {
+        const id = children[i].id
+        const basis = children[i].basis
+
+        if (id === parentId + '0') {
+          const vector = { x: -200, y: -200, z: -50 }
+          parentBasis = basis.translateBy(vector).scaleBy(3)
+          break
+        }
+        if (id === parentId + '1') {
+          const vector = { x: -250, y: 0, z: -50 }
+          parentBasis = basis.translateBy(vector).scaleBy(3)
+          break
+        }
+        if (id === parentId + '2') {
+          const vector = { x: -200, y: 200, z: -50 }
+          parentBasis = basis.translateBy(vector).scaleBy(3)
+          break
+        }
+      }
+
+      const parentTrack = {
+        id: parentId,
+        basis: parentBasis
+      }
+
+      return [parentTrack]
     }
 
     const getDepth = (id) => {
@@ -101,21 +166,34 @@
       return color
     }
 
-    const createNode = (id) => {
-      const size = 50
-      const color = getColor(id)
-      const node = tapspace.createCircle(size, color)
-      node.html('' + id)
-      node.addClass('fractal-node')
-      return node
+    const generator = (ids, callback) => {
+      // Create node components for IDs.
+      // This can include asynchronic fetching of node data from backend.
+      //
+      const nodes = ids.map(id => {
+        const size = 50
+        const color = getColor(id)
+        const node = tapspace.createCircle(size, color)
+        node.html('' + id)
+        node.addClass('fractal-node')
+
+        return node
+      })
+
+      callback(null, nodes)
     }
+
+    const initial = [{
+      id: '0',
+      basis: viewport.getBasis()
+    }]
 
     const loader = new tapspace.loaders.FractalLoader({
       viewport: viewport,
-      kernel: kernel,
-      backtracker: getParentIds,
-      generator: createNode,
-      initial: '0'
+      tracker: tracker,
+      backtracker: backtracker,
+      generator: generator,
+      initial: initial
     })
   </script>
 </body>
