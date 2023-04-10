@@ -1,7 +1,7 @@
 const units = {
   at: require('./at.test'),
   changeBasis: require('./changeBasis.test'),
-  polarOffset: require('./polarOffset.test'),
+  offsets: require('./offsets.test'),
   rotateBy: require('./rotateBy.test'),
   scaleBy: require('./scaleBy.test'),
   transformBy: require('./transformBy.test'),
