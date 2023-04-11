@@ -63,11 +63,13 @@
     const frontierRadius = 300
     const depthStep = 20
     const scaleStep = 1 / 3
+    const angleStep = Math.PI / 6
     // Short alias
     const R = circleRadius
     const FR = frontierRadius
     const DD = depthStep
     const M = scaleStep
+    const ROT = angleStep
 
     const tracker = (parents) => {
       // Find bases and IDs of the children of the given parents.
@@ -100,17 +102,22 @@
       const tracks = [
         {
           id: parentId + '0',
-          basis: innerAnchorBasis.polarOffset(radius, -Math.PI / 6)
+          basis: innerAnchorBasis
+            .polarOffset(radius, -ROT)
+            .rotateBy(-ROT)
             .offset(-R, -R)
         },
         {
           id: parentId + '1',
-          basis: innerAnchorBasis.polarOffset(radius, 0)
+          basis: innerAnchorBasis
+            .polarOffset(radius, 0)
             .offset(-R, -R)
         },
         {
           id: parentId + '2',
-          basis: innerAnchorBasis.polarOffset(radius, Math.PI / 6)
+          basis: innerAnchorBasis
+            .polarOffset(radius, ROT)
+            .rotateBy(ROT)
             .offset(-R, -R)
         }
       ]
@@ -151,7 +158,8 @@
       if (primusId === (parentId + '0')) {
         parentBasis = primusBasis.offset(R, R)
         parentBasis = parentBasis.scaleBy(1 / M)
-        parentBasis = parentBasis.polarOffset(radius, 5 * Math.PI / 6)
+        parentBasis = parentBasis.rotateBy(ROT)
+        parentBasis = parentBasis.polarOffset(radius, 5 * ROT)
         parentBasis = parentBasis.offset(-R, -R, -DD)
       } else
       if (primusId === (parentId + '1')) {
@@ -163,7 +171,8 @@
       if (primusId === (parentId + '2')) {
         parentBasis = primusBasis.offset(R, R)
         parentBasis = parentBasis.scaleBy(1 / M)
-        parentBasis = parentBasis.polarOffset(radius, -5 * Math.PI / 6)
+        parentBasis = parentBasis.rotateBy(-ROT)
+        parentBasis = parentBasis.polarOffset(radius, -5 * ROT)
         parentBasis = parentBasis.offset(-R, -R, -DD)
       }
 
