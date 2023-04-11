@@ -90,10 +90,9 @@
       const parentId = parents[0].id
       const parentBasis = parents[0].basis
 
-      const parentAnchorBasis = parentBasis.innerOffset(R, R)
-      const anchor = parentBasis.at(R, R)
-      const innerAnchorBasis = parentAnchorBasis.scaleBy(M, anchor)
-        .innerOffset(0, 0, DD)
+      const innerAnchorBasis = parentBasis
+        .offset(R, R, DD)
+        .scaleBy(M)
 
       const radius = innerAnchorBasis.createDistance(FR)
 
@@ -102,17 +101,17 @@
         {
           id: parentId + '0',
           basis: innerAnchorBasis.polarOffset(radius, -Math.PI / 6)
-            .innerOffset(-R, -R)
+            .offset(-R, -R)
         },
         {
           id: parentId + '1',
           basis: innerAnchorBasis.polarOffset(radius, 0)
-            .innerOffset(-R, -R)
+            .offset(-R, -R)
         },
         {
           id: parentId + '2',
           basis: innerAnchorBasis.polarOffset(radius, Math.PI / 6)
-            .innerOffset(-R, -R)
+            .offset(-R, -R)
         }
       ]
 
@@ -150,22 +149,22 @@
 
       let parentBasis = null
       if (primusId === (parentId + '0')) {
-        parentBasis = primusBasis.innerOffset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M, primusBasis.at(R, R))
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
         parentBasis = parentBasis.polarOffset(radius, 5 * Math.PI / 6)
-        parentBasis = parentBasis.innerOffset(-R, -R, -DD)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
       } else
       if (primusId === (parentId + '1')) {
-        parentBasis = primusBasis.innerOffset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M, primusBasis.at(R, R))
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
         parentBasis = parentBasis.polarOffset(radius, Math.PI)
-        parentBasis = parentBasis.innerOffset(-R, -R, -DD)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
       } else
       if (primusId === (parentId + '2')) {
-        parentBasis = primusBasis.innerOffset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M, primusBasis.at(R, R))
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
         parentBasis = parentBasis.polarOffset(radius, -5 * Math.PI / 6)
-        parentBasis = parentBasis.innerOffset(-R, -R, -DD)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
       }
 
       if (!parentBasis) {
