@@ -195,8 +195,9 @@
 
     const getColor = (id) => {
       const d = getDepth(id)
-      const redness = d * 40
-      const color = 'rgb(' + redness + ', 0, 0)'
+      const hue = 5 * d
+      const light = Math.min(10 * d, 40)
+      const color = 'hsl(' + hue + 'deg 90% ' + light + '%)'
       return color
     }
 
