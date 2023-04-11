@@ -212,13 +212,13 @@
         node.html('' + id)
         node.addClass('fractal-node')
 
-        // DEBUG
-        // node.tappable()
-        // node.on('tap', () => {
-        //   loader.openParent(id)
-        //   loader.openSiblings(id)
-        //   loader.openChildren(id)
-        // })
+        // Tap to match orientation.
+        node.tappable({ preventDefault: false })
+        node.on('tap', () => {
+          const orient = node.getOrientation()
+          viewport.animateOnce()
+          viewport.setOrientation(orient, viewport.atCenter())
+        })
 
         return node
       })
@@ -244,6 +244,12 @@
       const fractalCenter = contentBounds.atCenter()
       viewport.translateTo(fractalCenter)
     })
+
+    // Uncomment for automatic viewport orientation.
+    // viewport.on('idle', () => {
+    //   viewport.animateOnce()
+    //   viewport.reorient()
+    // })
   </script>
 </body>
 </html>
