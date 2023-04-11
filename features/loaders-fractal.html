@@ -228,6 +228,12 @@
       generator: generator,
       initial: initial
     })
+
+    loader.on('initiated', () => {
+      const contentBounds = viewport.getHyperspace().getBoundingSphere()
+      const fractalCenter = contentBounds.atCenter()
+      viewport.translateTo(fractalCenter)
+    })
   </script>
 </body>
 </html>
