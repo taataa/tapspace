@@ -48,12 +48,18 @@ module.exports = function (test, container, tapspace) {
     const geo = tapspace.geometry
     const distance = new geo.Distance(space, 20)
     const direction = new geo.Direction(space, { x: 0, y: 1, z: 0 })
-    const basis = itemBasis.polarOffset(distance, direction)
+    const polarBasis = scarotBasis.polarOffset(distance, direction)
+    const rawBasis = scarotBasis.polarOffset(10, 0)
 
     t.almostEqualPoint(
-      basis.at(0, 0).changeBasis(space),
+      polarBasis.at(0, 0).changeBasis(space),
       space.at(10, 30),
       'should do polar offset'
+    )
+    t.almostEqualPoint(
+      rawBasis.at(0, 0).changeBasis(space),
+      polarBasis.at(0, 0).changeBasis(space),
+      'should match raw'
     )
 
     t.end()
