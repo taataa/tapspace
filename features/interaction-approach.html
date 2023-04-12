@@ -118,7 +118,7 @@
       const measures = viewport.measureAll()
       measures.forEach(measure => {
         if (measure.plane.isBall) {
-          const ball = measure.plane
+          const ball = measure.target
           const distOnViewport = measure.distancePx
 
           // Simulate depth of field: blur circles based on distance.
@@ -127,7 +127,7 @@
           const b0 = viewport.getCameraDistance().getNumber() // retina dist
           const z0 = b0 // fixation point / focus distance from camera
           const f = 1 / (1 / b0 + 1 / z0) // focal length
-          const z = distOnViewport + b0 // viewing distance, dist to camera
+          const z = distOnViewport // viewing distance, dist to camera
           const b = 1 / (1 / f - 1 / z)
           const D = 10 // pupil size in px ~ aperature
           const P = 0.9 // pupil factor
