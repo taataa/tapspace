@@ -1,7 +1,7 @@
 const units = {
   Arc: require('./Arc.test'),
   BasisComponent: require('./BasisComponent.test'),
-  Frame: require('./Frame.test'),
+  FrameComponent: require('./FrameComponent.test'),
   Plane: require('./Plane.test'),
   Item: require('./Item.test')
 }

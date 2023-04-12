@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Frame:resizeTo', (t) => {
+  test('FrameComponent:resizeTo', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
