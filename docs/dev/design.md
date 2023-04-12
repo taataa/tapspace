@@ -275,7 +275,7 @@ Very tedious. On the other hand { basis { transform, element } } too complex.
 { element, a, b, x, y } is probably the simplest for the programmer.
 Alternatively alias for element: el, elem, base, basel, basis
 
-In Oct 2022, we saw that trouping the basis element (vec.basis) and
+In Oct 2022, we saw that trouping the element basis (vec.basis) and
 the geometry properties (vec.x, vec.y) in the same namespace leads to
 hard-to-detect bugs because raw geometry objects e.g {x,y,z} and the geometry
 class instances e.g. Vector { basis, x, y, z } could be used identically in
