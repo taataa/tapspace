@@ -103,7 +103,9 @@
     'lightblue', 300, 150, space.at(250, 650))
   spacews.tappable()
   spacews.once('tap', () => {
-    spacews.scaleToWidth(space.getBoundingBox().getWidth(), spacews.atTopLeft())
+    const bbox = space.getBoundingBox()
+    const pivot = spacews.atTopLeft()
+    spacews.scaleToWidth(bbox.getWidth(), pivot)
     spacews.html(par('Scaled to match the space width'))
   })
 
