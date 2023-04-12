@@ -52,6 +52,8 @@
     const blockB = tapspace.createItem(template('Able'))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
+    blockA.setContentInput(false)
+    blockB.setContentInput(false)
     layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
     layer.addChild(blockB, blockA.atBottomRight())
 
