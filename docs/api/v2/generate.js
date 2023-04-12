@@ -53,6 +53,7 @@ yamdog.generate({
     'Point': 'tapspace.geometry.Point',
     'Scale': 'tapspace.geometry.Scale',
     'Size': 'tapspace.geometry.Size',
+    'Sphere': 'tapspace.geometry.Sphere',
     'Transform': 'tapspace.geometry.Transform',
     'Vector': 'tapspace.geometry.Vector',
     'Volume': 'tapspace.geometry.Volume'
