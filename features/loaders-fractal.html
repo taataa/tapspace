@@ -243,9 +243,10 @@
         node.tappable({ preventDefault: false })
         node.on('tap', () => {
           const orient = node.getOrientation()
-          viewport.animateOnce()
-          viewport.setOrientation(orient, viewport.atCenter())
+          viewport.animateOnce({ duration: '500ms' })
+          viewport.setOrientation(orient, node.atCenter())
         })
+        node.setContentInput('false')
 
         return node
       })
