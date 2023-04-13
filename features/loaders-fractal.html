@@ -201,6 +201,33 @@
       return color
     }
 
+    const squareText = (str, containerWidthPx) => {
+      const len = str.length
+      // const lenpx = len * 16 // TODO 1em, square character
+      // const lineheight = 16 // TODO 1em
+
+      // Best square layout near square root of the number of characters.
+      const ratio = 2 // ratio width / height
+      const width = Math.ceil(Math.sqrt(ratio * len))
+      const height = Math.ceil(width / ratio)
+
+      const lines = []
+      for (let i = 0; i < height; i += 1) {
+        const candidate = str.substring(i * width, (i + 1) * width)
+        // TODO adjust white space
+        if (candidate.length > 0) [
+          lines.push(candidate)
+        ]
+      }
+
+      const fontSize = (containerWidthPx / width).toFixed(1)
+      const style = 'padding: 0; margin: 0; line-height: 1em;' +
+        'font-size: ' + fontSize + 'px;'
+      return '<p style="' + style + '">' +
+        lines.join('<br>') +
+        '</p>'
+    }
+
     const generator = (ids, callback) => {
       // Create node components for IDs.
       // This can include asynchronic fetching of node data from backend.
@@ -209,7 +236,7 @@
         const size = R
         const color = getColor(id)
         const node = tapspace.createCircle(size, color)
-        node.html('' + id)
+        node.html('' + squareText(id, 2 * R))
         node.addClass('fractal-node')
 
         // Tap to match orientation.
