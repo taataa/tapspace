@@ -215,9 +215,9 @@
       for (let i = 0; i < height; i += 1) {
         const candidate = str.substring(i * width, (i + 1) * width)
         // TODO adjust white space
-        if (candidate.length > 0) [
+        if (candidate.length > 0) {
           lines.push(candidate)
-        ]
+        }
       }
 
       const fontSize = (containerWidthPx / width).toFixed(1)
