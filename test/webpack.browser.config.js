@@ -16,15 +16,15 @@ module.exports = {
   mode: 'development',
   target: 'web',
 
-  // Provide some Nodejs libs for tape to work.
   resolve: {
     modules: ['node_modules'],
     extensions: ['*', '.js'],
     fallback: {
-      fs: false,
-      buffer: false,
-      path: require.resolve('path-browserify'),
-      stream: require.resolve('stream-browserify')
+      fs: false, // for tape
+      buffer: false, // for tape
+      path: require.resolve('path-browserify'), // for tape
+      stream: require.resolve('stream-browserify'), // for tape
+      util: false // for semver v7.5
     }
   },
 
