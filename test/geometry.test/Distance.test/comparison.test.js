@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Distance :isAlmostEqual :isGreaterThan :isLessThan', (t) => {
+  test('Distance :isAlmostEqual :isGreaterThan :isLessThan :min :max', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -19,6 +19,13 @@ module.exports = function (test, container, tapspace) {
     t.true(da.isAlmostEqual(da), 'is equal with self')
     t.false(da.isAlmostEqual(db), 'not almost equal')
     t.true(da.isAlmostEqual(db, 11), 'equal within tolerance')
+
+    t.almostEqualDistance(da, da, 'test utility should work')
+
+    t.equal(da.max(da), da, 'should equal self')
+    t.equal(da.min(da), da, 'should equal self')
+    t.equal(da.max(db), db, 'should be same max distance')
+    t.equal(da.min(db), da, 'should be same min distance')
 
     t.end()
   })

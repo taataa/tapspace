@@ -13,6 +13,7 @@ const units = {
 // Custom assertations
 test.Test.prototype.almostEqual = require('./utils/almostEqual')
 test.Test.prototype.almostEqualBasis = require('./utils/almostEqualBasis')
+test.Test.prototype.almostEqualDistance = require('./utils/almostEqualDistance')
 test.Test.prototype.almostEqualOrientation =
   require('./utils/almostEqualOrientation')
 test.Test.prototype.almostEqualPoint = require('./utils/almostEqualPoint')
