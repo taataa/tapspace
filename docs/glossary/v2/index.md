@@ -6,9 +6,13 @@ Here we list some common terminology used in Tapspace.js v2.x documentation and 
 
 An active geometric transformation changes the geometry but does not change its basis. For example, moving a box one meter left is an active transformation and viewing the box from other angle is a passive transformation.
 
+## affine element
+
+An enhanced HTML element in space, a Tapspace.js component.
+
 ## basis
 
-A basis defines the coordinate space of coordinates. A known basis allows us to represent the geometry in other bases.
+A basis defines the coordinate space of coordinates. A known basis allows us to represent the geometry in other bases. Each affine element provides a basis.
 
 Alternative names: coordinate system, coordinate space, frame of reference, reference frame
 
@@ -36,6 +40,14 @@ The HTML document, the web page as a whole.
 ## DOM
 
 Document Object Model. A tree-like structure that exposes the HTML document for JavaScript.
+
+## element basis
+
+The basis i.e. the coordinate system spanned by a HTMLElement.
+
+See also: basis
+
+Alternative names: reference element
 
 ## normalized coordinates
 
