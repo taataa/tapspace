@@ -90,7 +90,7 @@
     space.addChild(deepEdges, curvedEdges.at(300, 0))
     // Create nodes
     const dn0 = tapspace.createCircle(20, 'magenta')
-    const dn1 = tapspace.createCircle(20, 'aqua')
+    const dn1 = tapspace.createCircle(25, 'aqua')
     const dn2 = tapspace.createCircle(20, 'teal')
     // Set node positions
     deepEdges.addChild(dn0, deepEdges.at(0, 0, 50))
@@ -101,10 +101,12 @@
     const de12 = tapspace.createEdge('0.6em solid gray')
     deepEdges.prependChild(de01)
     deepEdges.prependChild(de12)
-    // Set edge positions
+    // Set edge positions. Trim edge ends for more ball-like joint.
     const trim = dn0.getRadius().scaleBy(0.8)
     de01.trimPoints(dn0.atAnchor(), dn1.atAnchor(), trim)
-    de12.trimPoints(dn1.atAnchor(), dn2.atAnchor(), trim)
+    // Asymmetric trim; trim ends separately.
+    const trimBig = dn1.getRadius().scaleBy(0.8)
+    de12.trimPoints(dn1.atAnchor(), dn2.atAnchor(), trimBig, trim)
 
     // Position view to display all content.
     const spaceBounds = space.getBoundingBox()
