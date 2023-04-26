@@ -39,8 +39,8 @@
 </head>
 <body>
   <h1>Pannable Viewport – Tapspace Features</h1>
-  <p>Drag the the viewport to pan it.
-    The block elements move with the space</p>
+  <p>Drag the viewport to pan. Alternatively, use the arrow keys to pan
+    when the viewport has focus.</p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -58,7 +58,11 @@
     // Create a few components
     const template = (t) => '<p class="mylabel">' + t + '</p>'
     const blockA = tapspace.createItem(template('Block A'))
-    const blockB = tapspace.createItem(template('Block B'))
+    // Test that keyboard input does not escape to panning
+    // by including a text input field.
+    const inputPlaceholder = 'placeholder="input shouldn\'t pan"'
+    const inputHtml = '<br><input type="text" ' + inputPlaceholder + '>'
+    const blockB = tapspace.createItem(template('Block B' + inputHtml))
     blockA.addClass('mycomponent')
     blockB.addClass('mycomponent')
     layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
