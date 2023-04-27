@@ -5,6 +5,7 @@ const units = {
   createVector: require('./createVector.test'),
   offsets: require('./offsets.test'),
   rotateBy: require('./rotateBy.test'),
+  rotateByDegrees: require('./rotateByDegrees.test'),
   scaleBy: require('./scaleBy.test'),
   transformBy: require('./transformBy.test'),
   transitRaw: require('./transitRaw.test'),
