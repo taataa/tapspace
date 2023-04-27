@@ -14,7 +14,7 @@ An enhanced HTML element in space, a Tapspace.js component.
 
 A basis defines the coordinate space of coordinates. A known basis allows us to represent the geometry in other bases. Each affine element provides a basis.
 
-Alternative names: coordinate system, coordinate space, frame of reference, reference frame
+Alternative names: coordinate system, coordinate space, coordinate basis, frame of reference, reference frame
 
 ## coordinate transition
 
@@ -69,11 +69,21 @@ A passive transformation is a transformation that does not change the geometry b
 A rule that is used to determine rotation directions and order and positive direction of the three axis.
 For example, if you have an axis vector, imagine grabbing the vector with your right hand thumb up so that the thumb and the vector point to the same direction. The direction your other fingers curl around the vector reveal the positive rotation direction.
 
+## tensor geometry
+
+A tensor is a geometric entity independent of the choice of coordinate basis. It consists of a numeric representation on a known basis and a set of known rules how to convert the representation to other bases without changing the geometry.
+
+See also: coordinate transition, passive transformation, basis
+
 ## transformation
 
 An operation that moves object in space. For example dilation or rotation.
 
 See also: dilation, translation, active transformation, passive transformation
+
+## transition
+
+See either *CSS transition* or *coordinate transition*.
 
 ## translation
 
