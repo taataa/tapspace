@@ -1,6 +1,7 @@
 const units = {
   at: require('./at.test'),
   changeBasis: require('./changeBasis.test'),
+  createDirection: require('./createDirection.test'),
   createVector: require('./createVector.test'),
   offsets: require('./offsets.test'),
   rotateBy: require('./rotateBy.test'),
