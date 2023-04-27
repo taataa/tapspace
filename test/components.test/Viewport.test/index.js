@@ -1,5 +1,6 @@
 const units = {
-  getAspectRatio: require('./getAspectRatio.test')
+  getAspectRatio: require('./getAspectRatio.test'),
+  measureGroup: require('./measureGroup.test')
 }
 
 module.exports = (test, container, tapspace) => {
