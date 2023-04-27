@@ -56,7 +56,9 @@ yamdog.generate({
     'Sphere': 'tapspace.geometry.Sphere',
     'Transform': 'tapspace.geometry.Transform',
     'Vector': 'tapspace.geometry.Vector',
-    'Volume': 'tapspace.geometry.Volume'
+    'Volume': 'tapspace.geometry.Volume',
+    // Metrics
+    'Measurement': 'tapspace.metrics.Measurement'
   },
   // Main title of the document
   title: 'Tapspace API Documentation v' + version,
