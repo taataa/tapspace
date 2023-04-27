@@ -11,14 +11,15 @@ const units = {
 }
 
 // Custom assertations
-test.Test.prototype.almostEqual = require('./utils/almostEqual')
-test.Test.prototype.almostEqualBasis = require('./utils/almostEqualBasis')
-test.Test.prototype.almostEqualDistance = require('./utils/almostEqualDistance')
-test.Test.prototype.almostEqualOrientation =
-  require('./utils/almostEqualOrientation')
-test.Test.prototype.almostEqualPoint = require('./utils/almostEqualPoint')
-test.Test.prototype.almostEqualSphere = require('./utils/almostEqualSphere')
-test.Test.prototype.almostEqualVector = require('./utils/almostEqualVector')
+const proto = test.Test.prototype
+proto.almostEqual = require('./utils/almostEqual')
+proto.almostEqualBasis = require('./utils/almostEqualBasis')
+proto.almostEqualDirection = require('./utils/almostEqualDirection')
+proto.almostEqualDistance = require('./utils/almostEqualDistance')
+proto.almostEqualOrientation = require('./utils/almostEqualOrientation')
+proto.almostEqualPoint = require('./utils/almostEqualPoint')
+proto.almostEqualSphere = require('./utils/almostEqualSphere')
+proto.almostEqualVector = require('./utils/almostEqualVector')
 
 // Reusable container element. Each test is allowed to clear innerHTML.
 const container = document.querySelector('#container')
