@@ -71,6 +71,8 @@
       const hello = tapspace.createItem(html)
       hello.addClass('hello')
       hello.setSize(helloSize)
+      hello.setSolidity(true)
+      hello.setContentInput(false)
       layer.addChild(hello)
       hello.scaleBy(Math.pow(0.618, i))
       let position
@@ -91,6 +93,8 @@
       const world = tapspace.createItem(html)
       world.addClass('world')
       world.setSize(worldSize)
+      world.setSolidity(false)
+      world.setContentInput(false)
       const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
       layer.addChild(world, position)
       world.rotateBy(0.05 * i, world.atCenter())
