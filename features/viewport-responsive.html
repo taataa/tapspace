@@ -46,8 +46,8 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    // Make the viewport responsive
-    const viewport = tapspace.createView('#tapspace').pannable().responsive()
+    // You can disable the responsivity with view.responsive(false)
+    const viewport = tapspace.createView('#tapspace').pannable()
     const plane = tapspace.createPlane()
     viewport.addChild(plane)
 

@@ -55,9 +55,8 @@
   <!-- Your code -->
   <script>
     // Setup the tapspace viewport and the default layer for content.
-    // Make the viewport responsive
     const viewport = tapspace.createView('#tapspace')
-    viewport.responsive().zoomable().setMeasureMode('none')
+    viewport.zoomable().setMeasureMode('none')
 
     const circleRadius = 50
     const frontierRadius = 300
