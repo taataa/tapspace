@@ -1,5 +1,6 @@
 const units = {
   getAspectRatio: require('./getAspectRatio.test'),
+  getFieldOfView: require('./getFieldOfView.test'),
   measureGroup: require('./measureGroup.test')
 }
 
