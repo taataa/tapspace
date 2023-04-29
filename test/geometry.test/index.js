@@ -7,6 +7,7 @@ const units = {
   Orientation: require('./Orientation.test'),
   Path: require('./Path.test'),
   Point: require('./Point.test'),
+  Ray: require('./Ray.test'),
   Scale: require('./Scale.test'),
   Size: require('./Size.test'),
   Sphere: require('./Sphere.test'),
