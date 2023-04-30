@@ -119,7 +119,7 @@
       measures.forEach(measure => {
         if (measure.plane.isBall) {
           const ball = measure.target
-          const distOnViewport = measure.distancePx
+          const distOnViewport = measure.distanceToCamera
 
           // Simulate depth of field: blur circles based on distance.
           // Blur radius formula is adapted from Vishwanath & Blaser 2010.

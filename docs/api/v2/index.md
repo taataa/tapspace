@@ -9164,8 +9164,8 @@ the given viewport properties.
 - depthPx, is the target depth to camera represented in viewport pixels.
 - dilation, a number, the scaling factor, pxOnView per pxOnLocal.
 - distancePx, a distance to camera represented in viewport pixels.
-- distanceToViewportPlanePx, a number, in viewport pixels.
-- distanceToViewportCenterPx, a number, in viewport pixels.
+- depthOnViewport, a number, in viewport pixels.
+- distanceToViewport, a number, in viewport pixels.
 - visible, boolean and true if the element or parts of it are visibly within the viewport or approximately close of being visible.
 
 

@@ -53,10 +53,13 @@
   // Template for item content
   const measureToHtml = (mea) => {
     const cleaned = {
-      distance: mea.distancePx,
-      depth: mea.depthPx,
-      area: mea.areaPx,
+      areaPx: mea.areaPx,
       areaRatio: mea.areaRatio,
+      depthOnCamera: mea.depthOnCamera,
+      depthOnViewport: Math.round(mea.depthOnViewport),
+      dilation: mea.dilation,
+      distanceToCamera: mea.distanceToCamera,
+      distanceToViewport: Math.round(mea.distanceToViewport),
       visible: mea.visible
     }
     const text = JSON.stringify(cleaned, null, 2)
@@ -85,10 +88,11 @@
   view.matchPoint(view.atCenter(), space.getBoundingBox().atCenter())
 
   const updateMeasurements = () => {
-    const measurements = view.measureAll().filter(m => m.plane.isInfoBox)
+    const measureFilter = target => target.isInfoBox
+    const measurements = view.measureAll(measureFilter)
     measurements.forEach(mea => {
-      if (mea.plane.html) {
-        mea.plane.html(measureToHtml(mea))
+      if (mea.target.html) {
+        mea.target.html(measureToHtml(mea))
       }
     })
   }
