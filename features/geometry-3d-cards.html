@@ -105,6 +105,7 @@
       const card = tapspace.createItem(elem)
       card.setSize(cardSize)
       card.setAnchor(card.atCenter())
+      card.setContentInput('pointer')
       return card
     })
 
@@ -143,6 +144,7 @@
     const infoCard = tapspace.createItem(createInfoElement(infoText))
     infoCard.setSize(162, 100)
     infoCard.setAnchor(infoCard.atMid())
+    infoCard.setContentInput('pointer')
     layer.addChild(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
     infoCard.element.style.fontSize = '0.62em'
 
