@@ -26,37 +26,41 @@ yamdog.generate({
     // Components
     'Arc': 'tapspace.components.Arc',
     'BasisComponent': 'tapspace.components.BasisComponent',
-    'Block': 'tapspace.components.Block',
-    'CircleElement': 'tapspace.components.CircleElement',
-    'Control': 'tapspace.components.Control',
+    'BlockComponent': 'tapspace.components.BlockComponent',
+    'CircleItem': 'tapspace.components.CircleItem',
+    'ControlComponent': 'tapspace.components.ControlComponent',
     'CustomControl': 'tapspace.components.CustomControl',
     'Edge': 'tapspace.components.Edge',
-    'Frame': 'tapspace.components.Frame',
+    'FrameComponent': 'tapspace.components.FrameComponent',
     'Group': 'tapspace.components.Group',
     'Hyperspace': 'tapspace.components.Hyperspace',
-    'Interactive': 'tapspace.components.Interactive',
+    'InteractiveComponent': 'tapspace.components.InteractiveComponent',
     'Item': 'tapspace.components.Item',
-    'Pixel': 'tapspace.components.Pixel',
     'Plane': 'tapspace.components.Plane',
     'Space': 'tapspace.components.Space',
-    'Transformer': 'tapspace.components.Transformer',
+    'TransformerComponent': 'tapspace.components.TransformerComponent',
     'Viewport': 'tapspace.components.Viewport',
     'ZoomControl': 'tapspace.components.ZoomControl',
     // Geometry
     'Area': 'tapspace.geometry.Area',
     'Basis': 'tapspace.geometry.Basis',
     'Box': 'tapspace.geometry.Box',
+    'Circle': 'tapspace.geometry.Circle',
     'Direction': 'tapspace.geometry.Direction',
     'Distance': 'tapspace.geometry.Distance',
+    'Line': 'tapspace.geometry.Line',
     'Orientation': 'tapspace.geometry.Orientation',
     'Path': 'tapspace.geometry.Path',
     'Point': 'tapspace.geometry.Point',
+    'Ray': 'tapspace.geometry.Ray',
     'Scale': 'tapspace.geometry.Scale',
     'Size': 'tapspace.geometry.Size',
     'Sphere': 'tapspace.geometry.Sphere',
     'Transform': 'tapspace.geometry.Transform',
     'Vector': 'tapspace.geometry.Vector',
     'Volume': 'tapspace.geometry.Volume',
+    // Loaders
+    'FractalLoader': 'tapspace.loaders.FractalLoader',
     // Metrics
     'Measurement': 'tapspace.metrics.Measurement'
   },
@@ -82,6 +86,8 @@ yamdog.generate({
       // Affineplane geometries
       'box2': affineplaneDocs + '#affineplanebox2',
       'box3': affineplaneDocs + '#affineplanebox3',
+      'circle2': affineplaneDocs + '#affineplanecircle2',
+      'circle3': affineplaneDocs + '#affineplanecircle3',
       'dir2': affineplaneDocs + '#affineplanedir2',
       'dir3': affineplaneDocs + '#affineplanedir3',
       'dist2': affineplaneDocs + '#affineplanedist2',
@@ -97,8 +103,13 @@ yamdog.generate({
       'scalar1': affineplaneDocs + '#affineplanescalar1',
       'scalar2': affineplaneDocs + '#affineplanescalar2',
       'scalar3': affineplaneDocs + '#affineplanescalar3',
+      'segment2': affineplaneDocs + '#affineplanesegment2',
+      'segment3': affineplaneDocs + '#affineplanesegment3',
       'size2': affineplaneDocs + '#affineplanesize2',
       'size3': affineplaneDocs + '#affineplanesize3',
+      'sphere2': affineplaneDocs + '#affineplanesphere2',
+      'sphere3': affineplaneDocs + '#affineplanesphere3',
+      'ray3': affineplaneDocs + '#affineplaneray3',
       'vec2': affineplaneDocs + '#affineplanevec2',
       'vec3': affineplaneDocs + '#affineplanevec3'
     }),
@@ -107,6 +118,11 @@ yamdog.generate({
         // Normalize parameters title
         pattern: /^param(?:eter)?s?:?/i,
         replacement: '**Parameters:**'
+      },
+      {
+        // Normalize alt parameters title
+        pattern: /^alt(?:ernative) param(?:eter)?s?:?/i,
+        replacement: '**Parameters (alternative):**'
       },
       {
         // Normalize return title
