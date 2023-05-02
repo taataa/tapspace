@@ -23,6 +23,18 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [API Reference](https://taataa.github.io/tapspace/api/v2/)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
+## Supporters
+
+We have developed Tapspace.js in collaboration with the following organizations.
+
+<a href="https://www.uoguelph.ca/" target="_blank"><img src="docs/collaborators/university_of_guelph_logo.png?raw=true" alt="University of Guelph" style="width: 45%;"></a>
+
+<a href="https://codhr.dh.tamu.edu/" target="_blank"><img src="docs/collaborators/CoDHR_logo.png?raw=true" alt="Center of Digital Humanities Research" style="width: 45%;"></a>
+
+<a href="https://www.tamu.edu/" target="_blank"><img src="docs/collaborators/texas_am_university_logo.png" alt="Texas A+M University" style="width: 45%;"></a>
+
+<a href="https://www.tuni.fi/en" target="_blank"><img src="docs/collaborators/tampere_university_logo.png" alt="Tampere University" style="width: 45%;"></a>
+
 
 ## Contribute
 
