@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Approach Interaction - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .ball {
+      background: white;
+      color: white;
+    }
+    .ball .label {
+      text-align: center;
+      padding-top: 0.38em;
+      font-size: 20px;
+    }
+    .ball.active-approach {
+      background: black;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Approach Interaction – Tapspace Features</h1>
+  <p>Semantic zoom is a click-free way to interact with space content. Navigate close to the circles to activate them by proximity. Use mouse wheel or pinch to navigate the space.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default basis for content.
+    const viewport = tapspace.createView('#tapspace').zoomable()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const circleGroup = tapspace.createSpace()
+    space.addChild(circleGroup)
+
+    viewport.setMeasureMode('lazy')
+    viewport.setAnchor(viewport.atMiddle())
+
+    const createApproachableCircle = (label) => {
+      // Create a component
+      const circle = tapspace.createCircle(20)
+      circle.addClass('ball')
+      // Make it easy to determine this is a ball
+      circle.isBall = true
+
+      circle.tappable({ preventDefault: false })
+      circle.on('tap', (ev) => {
+        viewport.animateOnce({ duration: '1000ms' })
+        viewport.translateTo(circle.atCenter())
+
+        // TODO animate and animateOnce should make viewport emit
+        // idle when animation ends.
+        setTimeout(() => {
+          viewport.emit('idle')
+        }, 1050)
+      })
+
+      // Disable content
+      circle.setContentInput(false)
+
+      // Will begin to mark near circles with 'active-approach'
+      circle.approachable({ threshold: 600 })
+
+      if (label) {
+        circle.element.innerHTML = '<div class="label">' + label + '</div>'
+      }
+
+      return circle
+    }
+
+    // Label circles with letters.
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase()
+    const pickCharacter = (i) => {
+      const modIndex = i % alphabet.length
+      return alphabet[modIndex]
+    }
+
+    // Generate circles
+    const origin = viewport.atMid()
+    const W = 6
+    const D = 200
+    for (let i = 0; i < W; i += 1) {
+      for (let j = 0; j < W; j += 1) {
+        for (let k = 0; k < W; k += 1) {
+          const x = (i + Math.random() / 3) * D
+          const y = (j + Math.random() / 3) * D
+          const z = (k + Math.random() / 3) * D
+          const position = origin.offset(x, y, z)
+          const index = i * W * W + j * W + k // unique; in [0, W^3[
+          const letter = pickCharacter(index)
+          const circle = createApproachableCircle(letter)
+          circleGroup.addChild(circle, position)
+        }
+      }
+    }
+
+    // Move view to show all the circles.
+    // TODO use fitting method.
+    const offx = D * (W - 1) / 2
+    viewport.translateBy({ x: offx, y: offx, z: -2 * D })
+
+    viewport.on('idle', () => {
+      const measures = viewport.measureAll()
+      measures.forEach(measure => {
+        if (measure.plane.isBall) {
+          const ball = measure.target
+          const distOnViewport = measure.distanceToCamera
+
+          // Simulate depth of field: blur circles based on distance.
+          // Blur radius formula is adapted from Vishwanath & Blaser 2010.
+          // See also https://en.wikipedia.org/wiki/Depth_of_field#DOF_formulae
+          const b0 = viewport.getCameraDistance().getNumber() // retina dist
+          const z0 = b0 // fixation point / focus distance from camera
+          const f = 1 / (1 / b0 + 1 / z0) // focal length
+          const z = distOnViewport // viewing distance, dist to camera
+          const b = 1 / (1 / f - 1 / z)
+          const D = 10 // pupil size in px ~ aperature
+          const P = 0.9 // pupil factor
+          const blurDiameter = D * Math.abs(b0 - b) / (b + (P - 1) * f)
+          const blurRadius = Math.floor(blurDiameter / 2)
+          ball.element.style.filter = 'blur(' + blurRadius + 'px)'
+        }
+      })
+    })
+  </script>
+</body>
+</html>

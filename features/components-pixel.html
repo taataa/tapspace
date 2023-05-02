@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pixel Component - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: gray;
+      color: white;
+    }
+    .myspaceapp {
+      background: black;
+      height: 300px;
+    }
+    .mypixel {}
+  </style>
+</head>
+<body>
+  <h1>Pixel Component – Tapspace Features</h1>
+  <p>Nine pixels: red, green, and blue. You can pan the viewport by dragging. Note how the pixels become blurry during pan and sharpen again afterwards. Ensure your browser zoom is at 100% to perceive the effect. We sharpen the pixels by snapping the viewport to the screen pixel grid by calling view.snapPixels() on every pinchend event.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const view = tapspace.createView('#tapspace').pannable()
+    const space = tapspace.createSpace()
+    const plane = tapspace.createPlane()
+    view.addChild(space)
+    space.addChild(plane)
+
+    const createPixelElement = (color) => {
+      const div = document.createElement('div')
+      div.style.width = '1px'
+      div.style.height = '1px'
+      div.style.background = color
+      div.className = 'mypixel'
+      return div
+    }
+
+    const createPixel = (color) => {
+      const elem = createPixelElement(color)
+      const pixel = tapspace.createItem(elem)
+      pixel.setSize(1, 1)
+      return pixel
+    }
+
+    const colors = ['#ff0000', '#00ff00', '#2222ff']
+
+    colors.forEach((color, i) => {
+      for (let j = 0; j < 3; j += 1) {
+        const position = view.atMid().offset(10 * i - 10, 10 * j - 20)
+        const pixel = createPixel(color)
+        plane.addChild(pixel, position)
+      }
+    })
+
+    // Snap to pixel grid for pixel-perfect gesture.
+    view.on('idle', () => {
+      view.snapPixels(view.atMid())
+    })
+  </script>
+</body>
+</html>

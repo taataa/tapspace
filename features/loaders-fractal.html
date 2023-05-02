@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fractal Loader - Tapspace Features</title>
+
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: white;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 1rem;
+      padding: 1rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .fractal-node {
+      padding: 20px;
+      color: white;
+      word-break: break-all;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fractal loader – Tapspace Features</h1>
+  <p>
+    Recursive loading and unloading of content is necessary in order
+    to explore huge masses of data. Otherwise web browsers would slow down
+    to tar under the load of thousands of elements.
+  </p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.zoomable().setMeasureMode('none')
+
+    const circleRadius = 50
+    const frontierRadius = 300
+    const depthStep = 20
+    const scaleStep = 1 / 3
+    const angleStep = Math.PI / 6
+    // Short alias
+    const R = circleRadius
+    const FR = frontierRadius
+    const DD = depthStep
+    const M = scaleStep
+    const ROT = angleStep
+
+    const tracker = (parents) => {
+      // Find bases and IDs of the children of the given parents.
+      //
+      // Parameters:
+      //   parents
+      //     an array of track, where each track is { id, basis }
+      //
+      // Return
+      //   an array of track, the tracks of children
+      //
+
+      // Debug
+      if (parents.length < 1) {
+        const err = new Error('Tracker called with empty parent tracks.')
+        return callback(null, [])
+      }
+
+      // Single-parent tracker.
+      const parentId = parents[0].id
+      const parentBasis = parents[0].basis
+
+      const innerAnchorBasis = parentBasis
+        .offset(R, R, DD)
+        .scaleBy(M)
+
+      const radius = innerAnchorBasis.createDistance(FR)
+
+      // Children
+      const tracks = [
+        {
+          id: parentId + '0',
+          basis: innerAnchorBasis
+            .polarOffset(radius, -ROT)
+            .rotateBy(-ROT)
+            .offset(-R, -R)
+        },
+        {
+          id: parentId + '1',
+          basis: innerAnchorBasis
+            .polarOffset(radius, 0)
+            .offset(-R, -R)
+        },
+        {
+          id: parentId + '2',
+          basis: innerAnchorBasis
+            .polarOffset(radius, ROT)
+            .rotateBy(ROT)
+            .offset(-R, -R)
+        }
+      ]
+
+      return tracks
+    }
+
+    const backtracker = (children) => {
+      // Find bases and IDs of parents of the given children.
+      //
+      // Parameters:
+      //   children
+      //     an array of track, where each track is { id, basis }
+      //
+      // Return
+      //   an array of track, the parent tracks. Can be empty if no parents.
+      //
+
+      // Debug
+      if (children.length < 1) {
+        const err = new Error('Backtracker called without child tracks.')
+        return callback(null, [])
+      }
+
+      // Single-parent backtracker
+      const primusId = children[0].id
+      const primusBasis = children[0].basis
+      const parentId = primusId.substring(0, primusId.length - 1)
+
+      // Limit to root id
+      if (parentId.length < 1) {
+        return []
+      }
+
+      const radius = primusBasis.createDistance(FR)
+
+      let parentBasis = null
+      if (primusId === (parentId + '0')) {
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
+        parentBasis = parentBasis.rotateBy(ROT)
+        parentBasis = parentBasis.polarOffset(radius, 5 * ROT)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
+      } else
+      if (primusId === (parentId + '1')) {
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
+        parentBasis = parentBasis.polarOffset(radius, Math.PI)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
+      } else
+      if (primusId === (parentId + '2')) {
+        parentBasis = primusBasis.offset(R, R)
+        parentBasis = parentBasis.scaleBy(1 / M)
+        parentBasis = parentBasis.rotateBy(-ROT)
+        parentBasis = parentBasis.polarOffset(radius, -5 * ROT)
+        parentBasis = parentBasis.offset(-R, -R, -DD)
+      }
+
+      if (!parentBasis) {
+        console.warn('Unexpected id: ' + primusId + ' OR ' + parentId)
+        return
+      }
+
+      const parentTrack = {
+        id: parentId,
+        basis: parentBasis
+      }
+
+      return [parentTrack]
+    }
+
+    const getDepth = (id) => {
+      return id.length - 1
+    }
+
+    const getColor = (id) => {
+      const d = getDepth(id)
+      const hue = 5 * d
+      const light = Math.min(10 * d, 40)
+      const color = 'hsl(' + hue + 'deg 90% ' + light + '%)'
+      return color
+    }
+
+    const squareText = (str, containerWidthPx) => {
+      const len = str.length
+      // const lenpx = len * 16 // TODO 1em, square character
+      // const lineheight = 16 // TODO 1em
+
+      // Best square layout near square root of the number of characters.
+      const ratio = 2 // ratio width / height
+      const width = Math.ceil(Math.sqrt(ratio * len))
+      const height = Math.ceil(width / ratio)
+
+      const lines = []
+      for (let i = 0; i < height; i += 1) {
+        const candidate = str.substring(i * width, (i + 1) * width)
+        // TODO adjust white space
+        if (candidate.length > 0) {
+          lines.push(candidate)
+        }
+      }
+
+      const fontSize = (containerWidthPx / width).toFixed(1)
+      const style = 'padding: 0; margin: 0; line-height: 1em;' +
+        'font-size: ' + fontSize + 'px;'
+      return '<p style="' + style + '">' +
+        lines.join('<br>') +
+        '</p>'
+    }
+
+    const generator = (ids, callback) => {
+      // Create node components for IDs.
+      // This can include asynchronic fetching of node data from backend.
+      //
+      const nodes = ids.map(id => {
+        const size = R
+        const color = getColor(id)
+        const node = tapspace.createCircle(size, color)
+        node.html('' + squareText(id, 2 * R))
+        node.addClass('fractal-node')
+
+        // Tap to match orientation.
+        node.tappable({ preventDefault: false })
+        node.on('tap', () => {
+          const orient = node.getOrientation()
+          viewport.animateOnce({ duration: '500ms' })
+          viewport.setOrientation(orient, node.atCenter())
+        })
+        node.setContentInput('false')
+
+        return node
+      })
+
+      callback(null, nodes)
+    }
+
+    const initial = [{
+      id: '001',
+      basis: viewport.getBasis()
+    }]
+
+    const loader = new tapspace.loaders.FractalLoader({
+      viewport: viewport,
+      tracker: tracker,
+      backtracker: backtracker,
+      generator: generator,
+      initial: initial
+    })
+
+    loader.on('initiated', () => {
+      const contentBounds = viewport.getHyperspace().getBoundingSphere()
+      const fractalCenter = contentBounds.atCenter()
+      viewport.translateTo(fractalCenter)
+    })
+
+    // Uncomment for automatic viewport orientation.
+    // viewport.on('idle', () => {
+    //   viewport.animateOnce()
+    //   viewport.balanceOrientation()
+    // })
+  </script>
+</body>
+</html>

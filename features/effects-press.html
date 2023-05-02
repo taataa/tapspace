@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Press Effect - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const layer = tapspace.createSpace()
+    const viewport = tapspace.createView('#tapspace')
+    viewport.addChild(layer)
+
+    // Create a component
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const tapel = tapspace.createItem(template('Tap me for a tiny effect'))
+    tapel.setSize(256, 256)
+    tapel.setAnchor(tapel.atCenter())
+    tapel.addClass('mycomponent')
+    layer.addChild(tapel, viewport.atCenter())
+
+    // Make the component emit tap events
+    tapel.tappable()
+
+    // React to tap events
+    tapel.on('tapstart', (ev) => {
+      const label = tapel.element.querySelector('p')
+      label.innerHTML = 'Did you see, I moved!'
+      tapspace.effects.press(tapel)
+    })
+  </script>
+</body>
+</html>

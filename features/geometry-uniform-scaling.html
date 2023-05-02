@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Uniform Scaling - Tapspace Features</title>
+
+  <!-- This demo is for ensuring that geometry is scaled uniformly
+       in each dimension -->
+
+  <!-- your custom styles -->
+  <style>
+    html, body, .container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      background: gray;
+      color: black;
+    }
+    .myspaceapp {
+      background: white;
+      width: 100%;
+      height: 100%;
+    }
+    .myword {
+      background: lightblue;
+      font-size: 2rem;
+    }
+    .myword p {
+      margin: 0.38rem;
+    }
+    .myoutline {
+      outline: 1px solid gray;
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+  const container = document.querySelector('#tapspace')
+
+  const view = tapspace.createView(container).zoomable()
+  const space = tapspace.createSpace()
+  view.addChild(space)
+  const outlines = tapspace.createSpace()
+  space.addChild(outlines)
+  const words = tapspace.createSpace()
+  space.addChild(words)
+
+  // Template for item content
+  const par = (t) => '<p>' + t + '</p>'
+
+  const createWord = (text, position) => {
+    const item = tapspace.createItem(par(text))
+    item.addClass('myword')
+    item.setSize(100, 50)
+    item.setAnchor(item.atTopLeft())
+    item.setContentInput(false)
+    words.addChild(item, position)
+    return item
+  }
+
+  const outlineItem = (item) => {
+    const frame = tapspace.createItem('')
+    frame.addClass('myoutline')
+    frame.setSize(item.getSize().getRaw())
+    frame.setAnchor(frame.atTopLeft())
+    frame.setContentInput(false)
+    outlines.addChild(frame, item.at(0, 0, 0))
+  }
+
+  // Exhibit 1: scale three words and outline their original position
+  const word0 = createWord('Cat', space.at(0, 0, 0))
+  const word1 = createWord('Dog', space.at(100, 0, 50))
+  const word2 = createWord('Bird', space.at(200, 0, 100))
+  // View outlines
+  outlineItem(word0)
+  outlineItem(word1)
+  outlineItem(word2)
+  // Scale the word container
+  words.scaleBy(0.6, word1.atCenter())
+
+  // Center the viewport
+  view.matchPoint(view.atCenter(), space.getBoundingBox().atCenter())
+  </script>
+</body>
+</html>

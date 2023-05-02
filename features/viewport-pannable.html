@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pannable Viewport - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+      cursor: grab;
+    }
+    .myspaceapp .active-pinch {
+      cursor: grabbing;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pannable Viewport – Tapspace Features</h1>
+  <p>Drag the viewport to pan. Alternatively, use the arrow keys to pan
+    when the viewport has focus.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace').pannable()
+    const layer = tapspace.createPlane()
+    viewport.addChild(layer)
+
+    // Create a few components
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const blockA = tapspace.createItem(template('Block A'))
+    // Test that keyboard input does not escape to panning
+    // by including a text input field.
+    const inputPlaceholder = 'placeholder="input shouldn\'t pan"'
+    const inputHtml = '<br><input type="text" ' + inputPlaceholder + '>'
+    const blockB = tapspace.createItem(template('Block B' + inputHtml))
+    blockA.addClass('mycomponent')
+    blockB.addClass('mycomponent')
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockB, blockA.atBottomRight())
+
+    // Make the viewport pannable
+    // TODO set limits
+    viewport.pannable({ step: 50 }).focusable()
+    viewport.on('pinchstart', () => {
+      viewport.focus()
+    })
+
+    // Center to blocks
+    viewport.match({
+      source: viewport.atMid(),
+      target: blockA.atBottomRight()
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tap Interaction - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+      cursor: pointer;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tap Gesture – Tapspace Features</h1>
+  <p>Tap the element to trigger a tap event.</p>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const layer = tapspace.createPlane()
+    space.addChild(layer)
+
+    // Create an affine element
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const component = tapspace.createItem(template('Tap me!'))
+    component.setAnchor(component.atMid())
+    component.addClass('mycomponent')
+    layer.addChild(component, viewport.atMid())
+
+    // Make the component emit tap events
+    component.tappable()
+
+    // React to tap events
+    component.on('tapstart', (ev) => {
+      component.element.classList.add('active')
+      console.log('tapstart', ev)
+    })
+    component.on('tapend', (ev) => {
+      component.element.classList.remove('active')
+      console.log('tapend', ev)
+    })
+    component.on('tapcancel', (ev) => {
+      component.element.classList.remove('active')
+      console.log('tapcancel', ev)
+    })
+    component.on('tap', (ev) => {
+      component.element.classList.remove('active')
+      const label = component.element.querySelector('p')
+      label.innerHTML = 'I was tapped :)'
+      console.log('tap', ev)
+    })
+  </script>
+</body>
+</html>

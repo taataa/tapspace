@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scale-free Navigation - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin: 0;
+      text-align: center;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scale-Free Navigation – Tapspace Features</h1>
+  <p>The components in this demo appear in various scales at various depths.
+    Zoom in to explore how to navigate in various scales.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const view = tapspace.createView('#tapspace').zoomable()
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Content template for blocks. Blocks give us visual reference.
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+
+    const items = []
+    const W = 8
+    const H = 3
+    const D = 5
+    let xi, yi, zi, item
+    for (xi = 0; xi < W; xi += 1) {
+      for (yi = 0; yi < H; yi += 1) {
+        for (zi = 0; zi < D; zi += 1) {
+          const scale = 1 / ((1 + xi) * (1 + xi))
+          const label = scale.toFixed(2)
+          const item = tapspace.createItem(template(label))
+          item.addClass('mycomponent')
+          item.setSize(50, 20)
+          space.addChild(item, space.at(
+            xi * 80,
+            yi * 50,
+            zi * 80
+          ))
+          item.setScale(scale, item.atAnchor())
+          item.setContentInput(false)
+        }
+      }
+    }
+  </script>
+</body>
+</html>

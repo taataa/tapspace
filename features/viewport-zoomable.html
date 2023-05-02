@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Zoomable Viewport - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <!-- Content to test zoomability when viewport has some offset -->
+  <h1>Zoomable Viewport – Tapspace Features</h1>
+  <p>You can interact with the viewport by mouse wheel, multitouch pinch, and keyboard "+" and "-".</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    const layer = tapspace.createPlane()
+    viewport.addChild(layer)
+
+    // Create a few components
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const blockA = tapspace.createItem(template('Zoom'))
+    const blockB = tapspace.createItem(template('Able'))
+    blockA.addClass('mycomponent')
+    blockB.addClass('mycomponent')
+    blockA.setContentInput(false)
+    blockB.setContentInput(false)
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockB, blockA.atBottomRight())
+
+    // Make the viewport pannable and zoomable
+    viewport.zoomable().focusable()
+    viewport.on('pinchstart', () => {
+      viewport.focus()
+    })
+
+    // Center viewport to blocks
+    viewport.match({
+      source: viewport.atMid(),
+      target: blockA.atBottomRight()
+    })
+  </script>
+</body>
+</html>

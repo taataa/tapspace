@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rotatable Viewport - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      cursor: grab;
+      height: 500px;
+    }
+    .myspaceapp .active-pinch {
+      cursor: grabbing;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rotatable Viewport – Tapspace Features</h1>
+  <p>You can rotate the viewport by mouse and touch. Drag with the mouse or press the mouse wheel left or right to rotate. On touch device, use one or more fingers to rotate.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    const layer = tapspace.createPlane()
+    viewport.addChild(layer)
+
+    // Create a few components
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const blockA = tapspace.createItem(template('Rotatable<br>viewport'))
+    const blockB = tapspace.createItem(template(''))
+    const blockC = tapspace.createItem(template(''))
+    blockA.addClass('mycomponent')
+    blockB.addClass('mycomponent')
+    blockC.addClass('mycomponent')
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+    layer.addChild(blockB, blockA.atBottomRight())
+    layer.addChild(blockC, blockA.atTopRight())
+    blockC.scaleBy(0.5, blockC.atTopRight())
+
+    // Make the viewport pannable and rotateable.
+    // However, free panning is prevented by the fixed pivot.
+    viewport.pannable().rotatable({
+      pivot: blockA.atBottomRight()
+    })
+
+    // Center viewport to blocks
+    viewport.moveCenterTo(blockA.atBottomRight())
+  </script>
+</body>
+</html>

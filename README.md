@@ -1,29 +1,43 @@
-# ![tapspace](docs/banner.png?raw=true)
+# ![tapspace](docs/tapspace-banner-2022.png?raw=true)
 
-[![NPM Version](https://img.shields.io/npm/v/tapspace/stable?color=7fcd0f)](https://www.npmjs.com/package/tapspace)
+[![NPM Version](https://img.shields.io/npm/v/tapspace/alpha?color=7FCD0F)](https://www.npmjs.com/package/tapspace)
 [![Build Status](https://img.shields.io/travis/com/taataa/tapspace)](https://travis-ci.com/github/taataa/tapspace)
 
-We believe **zoomable touch user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Tapspace**, a **JavaScript** library dedicated for building such **dynamic front-ends**. It implements a **scene graph** that provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
+We believe **zoomable user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Tapspace**, a **JavaScript** library dedicated for building such **dynamic front-ends**. It provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
 
 ## Install
 
 With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com/en/package/tapspace):
 
-    $ npm install tapspace
-    $ yarn add tapspace
+    $ npm install tapspace@alpha
+    $ yarn add tapspace@alpha
 
-This will install Tapspace 1.x. For upcoming Tapspace 2.x, see [2.0-dev](https://github.com/taataa/tapspace/tree/2.0-dev) branch.
+This installs an alpha version of Tapspace 2.x. For the earlier and stable Tapspace 1.x, see [1.6-stable](https://github.com/taataa/tapspace/tree/1.6-stable) branch.
 
 ## Documentation
 
-See [taataa.github.io/tapspace](https://taataa.github.io/tapspace) for:
-- [Features](https://taataa.github.io/tapspace#features)
-- [Example applications](https://taataa.github.io/tapspace#examples)
-- [Tutorial](https://taataa.github.io/tapspace/tutorial)
-- [API Reference](https://taataa.github.io/tapspace/api/v1)
-- [Developer's Cheat Sheet](https://taataa.github.io/tapspace/dev)
+See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
+- [Tutorial](http://taataa.github.io/tapspace/tutorial)
+- [Features](http://taataa.github.io/tapspace#features)
+- [Example applications](http://taataa.github.io/tapspace#examples)
+- [API Reference](https://github.com/taataa/tapspace/blob/2.0-dev/docs/api/v2/index.md)
+- [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
+
+## Contribute
+
+Pull requests and [bug reports](https://github.com/taataa/tapspace/issues) are highly appreciated. Please test your contribution with the following scripts:
+
+Run test suite:
+
+    $ npm run test
+
+Run only linter:
+
+    $ npm run lint
+
+See [testing docs](https://taataa.github.io/tapspace/dev/#testing) for details.
 
 ## License
 

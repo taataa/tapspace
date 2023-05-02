@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Matching Geometry by Points - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: gray;
+      color: black;
+    }
+    .container {
+      background: darkgray;
+    }
+    .myspaceapp {
+      background: white;
+      width: 600px;
+      height: 500px;
+    }
+    .mycomponent {
+      background: lightblue;
+      padding: 1rem 1rem;
+      font-size: 2rem;
+    }
+    .mycomponent p {
+      margin-top: 0;
+    }
+    .crosshair {
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+  const container = document.querySelector('#tapspace')
+
+  const view = tapspace.createView(container)
+  const space = tapspace.createSpace()
+  view.addChild(space)
+  const layer = tapspace.createPlane()
+  space.addChild(layer)
+
+  const par = (t) => '<p>' + t + '</p>'
+  const originComp = tapspace.createItem(par('Beginning'))
+  originComp.addClass('mycomponent')
+  originComp.setSize(300, 300)
+  originComp.setAnchor(originComp.atMid())
+
+  const iteration = (prev, i) => {
+    const label = par('Component ' + i)
+    const comp = tapspace.createItem(label)
+    comp.addClass('mycomponent')
+    comp.setSize(300, 300)
+    comp.setAnchor(comp.atMid())
+    layer.addChild(comp)
+
+    comp.rotateBy(-1.9 - 0.5 * i)
+    comp.scaleBy(Math.pow(0.62, i))
+    comp.match({
+      source: comp.atTopLeft(),
+      target: prev.atTopRight()
+    })
+
+    return comp
+  }
+
+  const iterate = (prev, n, i) => {
+    if (!i) i = 1
+    if (i > n) return
+    const next = iteration(prev, i)
+    iterate(next, n, i + 1)
+  }
+
+  // Insert components to space.
+  layer.addChild(originComp, view.atMid())
+
+  // Recursively insert the same component n times
+  iterate(originComp, 9)
+
+  view.scaleBy(1.6, view.atNorm(0.5, 0.9))
+  </script>
+</body>
+</html>

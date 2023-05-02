@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edge Component - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: white;
+      color: black;
+    }
+    .container {
+      background: #BBB;
+    }
+    .myspaceapp {
+      background: #DDD;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const space = tapspace.createSpace()
+    const view = tapspace.createView('#tapspace').zoomable()
+    view.addChild(space)
+
+    // Exhibit 1: Triangle with flat edges
+    const flatEdges = tapspace.createPlane()
+    space.addChild(flatEdges)
+    // Create nodes
+    const m0 = tapspace.createCircle(20, 'red')
+    const m1 = tapspace.createCircle(20, 'blue')
+    const m2 = tapspace.createCircle(20, 'green')
+    // Set node positions
+    flatEdges.addChild(m0, flatEdges.at(0, 0))
+    flatEdges.addChild(m1, flatEdges.at(200, 0))
+    flatEdges.addChild(m2, flatEdges.at(0, 0).polarOffset(200, Math.PI / 3))
+    // Create edges
+    const edge01 = tapspace.createEdge('0.6em dotted black')
+    const edge12 = tapspace.createEdge('0.6em solid gray')
+    const edge20 = tapspace.createEdge('0.6em dashed black')
+    flatEdges.prependChild(edge01)
+    flatEdges.prependChild(edge12)
+    flatEdges.prependChild(edge20)
+    // Set edge positions
+    edge01.setPoints(m0.atAnchor(), m1.atAnchor())
+    edge12.setPoints(m1.atAnchor(), m2.atAnchor())
+    edge20.setPoints(m2.atAnchor(), m0.atAnchor())
+    // Attach titles for inspection
+    edge01.element.title = 'Edge from m0 to m1'
+    edge12.element.title = 'Edge from m1 to m2'
+    edge20.element.title = 'Edge from m2 to m0'
+
+    // Exhibit 2: Two curved arcs
+    const curvedEdges = tapspace.createPlane()
+    space.addChild(curvedEdges, flatEdges.at(300, 0))
+    // Create nodes
+    const na0 = tapspace.createCircle(20, 'orange')
+    const na1 = tapspace.createCircle(20, 'purple')
+    const na2 = tapspace.createCircle(20, 'yellow')
+    // Set node positions
+    curvedEdges.addChild(na0, curvedEdges.at(0, 0))
+    curvedEdges.addChild(na1, curvedEdges.at(200, 0))
+    curvedEdges.addChild(na2, curvedEdges.at(0, 0).polarOffset(200, Math.PI / 3))
+    // Create arcs
+    const curvature = -Math.PI / 2
+    const arc01 = tapspace.createArc(curvature, '0.6em dotted black')
+    const arc02 = tapspace.createArc(curvature, '0.6em solid gray')
+    curvedEdges.prependChild(arc01)
+    curvedEdges.prependChild(arc02)
+    // Set arc positions
+    arc01.setPoints(na0.atAnchor(), na1.atAnchor())
+    arc02.setPoints(na0.atAnchor(), na2.atAnchor())
+
+    // Exhibit 3: Edges in 3D
+    const deepEdges = tapspace.createSpace()
+    space.addChild(deepEdges, curvedEdges.at(300, 0))
+    // Create nodes
+    const dn0 = tapspace.createCircle(20, 'magenta')
+    const dn1 = tapspace.createCircle(25, 'aqua')
+    const dn2 = tapspace.createCircle(20, 'teal')
+    // Set node positions
+    deepEdges.addChild(dn0, deepEdges.at(0, 0, 50))
+    deepEdges.addChild(dn1, deepEdges.at(200, 0, 20))
+    deepEdges.addChild(dn2, deepEdges.at(0, 0).polarOffset(200, Math.PI / 3))
+    // Create edges
+    const de01 = tapspace.createEdge('0.6em dashed gray')
+    const de12 = tapspace.createEdge('0.6em solid gray')
+    deepEdges.prependChild(de01)
+    deepEdges.prependChild(de12)
+    // Set edge positions. Trim edge ends for more ball-like joint.
+    const trim = dn0.getRadius().scaleBy(0.8)
+    de01.trimPoints(dn0.atAnchor(), dn1.atAnchor(), trim)
+    // Asymmetric trim; trim ends separately.
+    const trimBig = dn1.getRadius().scaleBy(0.8)
+    de12.trimPoints(dn1.atAnchor(), dn2.atAnchor(), trimBig, trim)
+
+    // Position view to display all content.
+    const spaceBounds = space.getBoundingBox()
+    view.scaleToFill(spaceBounds.getSize())
+    view.matchPoint(view.atCenter(), spaceBounds.atCenter())
+    view.scaleBy(1.2, view.atCenter())
+
+    // DEBUG Visualization tools.
+    // const drawPoint = (p) => {
+    //   const c = tapspace.createCircle(7, 'red')
+    //   space.addChild(c, p)
+    // }
+    //
+    // const drawBox = (box) => {
+    //   drawPoint(box.atNorm(0, 0, 0))
+    //   drawPoint(box.atNorm(0, 0, 1))
+    //   drawPoint(box.atNorm(0, 1, 0))
+    //   drawPoint(box.atNorm(0, 1, 1))
+    //   drawPoint(box.atNorm(1, 0, 0))
+    //   drawPoint(box.atNorm(1, 0, 1))
+    //   drawPoint(box.atNorm(1, 1, 0))
+    //   drawPoint(box.atNorm(1, 1, 1))
+    // }
+  </script>
+</body>
+</html>

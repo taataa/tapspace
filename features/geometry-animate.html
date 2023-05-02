@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Animate Geometry - Tapspace Features</title>
+
+  <!-- TODO simplify for release -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      cursor: grab;
+      height: 500px;
+    }
+    .myspaceapp.active-pinch {
+      cursor: grabbing;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Animate Geometry – Tapspace Features</h1>
+  <p>Tap the component to rotate it. Pan the viewport by dragging.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const layer = tapspace.createPlane()
+    space.addChild(layer)
+
+    // Create a rotateable component at the middle of the viewport.
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+    const block = tapspace.createItem(template('Tap me'))
+    block.addClass('mycomponent')
+    block.setContentInput(false)
+    layer.addChild(block, viewport.atMid().offset(0, -10))
+
+    // A static reference block
+    const refblock = tapspace.createItem(template('Reference'))
+    refblock.addClass('mycomponent')
+    layer.addChild(refblock, viewport.atTopLeft())
+
+    // Anchor at block middle
+    block.setAnchor(block.atMid())
+
+    // Create markers
+    const m0 = tapspace.createCircle(5, '#ff0000')
+    const m1 = tapspace.createCircle(5, '#00ff00')
+    const m2 = tapspace.createCircle(5, '#3333ff')
+    // Mark block anchor
+    layer.addChild(m0, block.atAnchor())
+    // Mark block corner
+    layer.addChild(m1, block.atTopLeft())
+    // Mark layer anchor
+    layer.addChild(m2, layer.atAnchor())
+
+    // Setup transition animation
+    block.animate({
+      duration: '1000ms',
+      easing: 'ease'
+    })
+
+    block.tappable().on('tap', (ev) => {
+      block.rotateBy(Math.PI / 4, block.atMid())
+      // Ensure exact rotation.
+      block.snapPixels(block.atMid())
+      // Update corner marker
+      m1.moveTo(block.atTopLeft())
+    })
+  </script>
+</body>
+</html>

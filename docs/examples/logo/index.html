@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tapspace Logo - Tapspace Example</title>
+
+  <!-- If you aim to use tapspace for full-page, uncomment the following
+       to disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background: gray;
+    }
+    .viewport {
+      width: 100%;
+      height: 100%;
+      background: black;
+    }
+    .pixel {
+      border: 10px solid black;
+    }
+    .description {
+      color: white;
+      font-size: 285px;
+      text-align: center;
+    }
+    .description a { color: white; text-decoration: none; }
+    .description a:hover { color: lightgray; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div id="viewport" class="viewport"></div>
+
+  <!-- Content to place into space -->
+  <div id="description" class="description">
+    <a href="https://en.wikipedia.org/wiki/Tensor">Tensor</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">Document Object Model</a>
+    for
+    <a href="https://en.wikipedia.org/wiki/Zooming_user_interface">Zoomable</a>
+    <a href="https://en.wikipedia.org/wiki/Web_application">Web Applications</a>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../../../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Space setup
+    const viewportElement = document.querySelector('#viewport')
+    const viewport = tapspace.createViewport(viewportElement)
+    viewport.setAnchor(viewport.atCenter())
+    viewport.zoomable().responsive()
+
+    const space = tapspace.createSpace()
+    viewport.addChild(space, viewport.atCenter())
+
+    const heading = tapspace.createSpace()
+    space.addChild(heading, space.at(0, 0))
+
+    const rect = (color, position, size) => {
+      const item = tapspace.createItem()
+      item.setAnchor(item.atTopLeft())
+      item.setSize(size)
+      item.addClass('pixel')
+      const elem = item.getElement()
+      elem.style.background = color
+      heading.addChild(item, position)
+      return item
+    }
+
+    const phipow = (order) => {
+      const phi = (1 + Math.sqrt(5)) / 2
+      return Math.pow(phi, order)
+    }
+    const pixel = (color, position, order = 0) => {
+      const px = rect(color, position, { w: 200, h: 200 })
+      const scale = phipow(order)
+      px.scaleBy(scale, position)
+
+      // Make interactive: click to drop
+      px.tappable()
+      px.on('tap', () => {
+        px.animateOnce({ easing: 'ease-in', duration: '500ms' })
+        const v = px.atNorm(0.5, 0.5).getVectorTo(heading.at(0, 1100))
+        const vv = v.transitRaw(heading)
+        px.translateBy({ x: 0, y: vv.y * 2, z: 0 })
+      })
+
+      return px
+    }
+
+    const colors = [
+      'magenta', // t
+      'magenta', // a
+      'magenta', // p
+      'cyan', // s
+      'cyan', // p
+      'cyan', // a
+      'cyan', // c
+      'cyan', // e
+      'white', // .
+      'lightgray', // j
+      'lightgray' // s
+    ]
+    const origin = space.at(0, 0)
+    const kerning = [
+      600 + 200 * phipow(-1), // t
+      600 + 200 * phipow(-1), // a
+      600 + 200 * phipow(-1), // p
+      600 + 200 * phipow(-1), // s
+      600 + 200 * phipow(-1), // p
+      600 + 200 * phipow(-1), // a
+      600 + 200 * phipow(-1), // c
+      600 + 200 * phipow(-1), // e
+      200 + 200 * phipow(-1), // .
+      600 + 200 * phipow(-1), // j
+      600 + 200 * phipow(-1), // s
+    ]
+
+    const origins = kerning.reduce((acc, kern, i) => {
+      const prev = acc[acc.length - 1]
+      const nextOrigin = prev.offset(kern, 0)
+      acc.push(nextOrigin)
+      return acc
+    }, [origin])
+
+    const draw = (i, x, y, z = 0) => {
+      return pixel(colors[i], origins[i].offset(x * 200, y * 200, z * 200))
+    }
+
+    // TEMPLATE
+    // draw(i, 0, 0); draw(i, 1, 0); draw(i, 2, 0);
+    // draw(i, 0, 1); draw(i, 1, 1); draw(i, 2, 1);
+    // draw(i, 0, 2); draw(i, 1, 2); draw(i, 2, 2);
+    // draw(i, 0, 3); draw(i, 1, 3); draw(i, 2, 3);
+
+    // T
+    draw(0, 1, 0);
+    draw(0, 0, 1); draw(0, 1, 1); draw(0, 2, 1);
+    draw(0, 1, 2);
+    draw(0, 1, 3); draw(0, 2, 3);
+
+    // A
+    draw(1, 1, 0); draw(1, 2, 0);
+    draw(1, 0, 1); draw(1, 2, 1); draw(1, 0, 2);
+    draw(1, 1, 2); draw(1, 2, 2);
+    draw(1, 0, 3); draw(1, 2, 3);
+
+    // P
+    draw(2, 1, 0); draw(2, 2, 0);
+    draw(2, 0, 1); draw(2, 2, 1);
+    draw(2, 0, 2); draw(2, 1, 2); draw(2, 2, 2);
+    draw(2, 0, 3);
+
+    // S
+    draw(3, 1, 0); draw(3, 2, 0);
+    draw(3, 0, 1); draw(3, 1, 1)
+    draw(3, 1, 2); draw(3, 2, 2)
+    draw(3, 0, 3); draw(3, 1, 3); draw(3, 2, 3);
+
+    // P
+    draw(4, 1, 0); draw(4, 2, 0);
+    draw(4, 0, 1); draw(4, 2, 1);
+    draw(4, 0, 2); draw(4, 1, 2); draw(4, 2, 2);
+    draw(4, 0, 3);
+
+    // A
+    draw(5, 1, 0); draw(5, 2, 0);
+    draw(5, 0, 1); draw(5, 2, 1); draw(5, 0, 2);
+    draw(5, 1, 2); draw(5, 2, 2);
+    draw(5, 0, 3); draw(5, 2, 3);
+
+    // C
+    draw(6, 1, 0); draw(6, 2, 0);
+    draw(6, 0, 1);
+    draw(6, 0, 2);
+    draw(6, 0, 3); draw(6, 1, 3); draw(6, 2, 3);
+
+    // E
+    draw(7, 1, 0); draw(7, 2, 0);
+    draw(7, 0, 1); draw(7, 2, 1);
+    draw(7, 0, 2);
+    draw(7, 0, 3); draw(7, 1, 3); draw(7, 2, 3);
+
+    // .
+    const zOff = 1
+    const zOffPx = zOff * 200
+    draw(8, 0, 3, zOff);
+
+    // J
+    draw(9, 2, 0, zOff);
+    draw(9, 2, 1, zOff);
+    draw(9, 0, 2, zOff); draw(9, 2, 2, zOff);
+    draw(9, 0, 3, zOff); draw(9, 1, 3, zOff); draw(9, 2, 3, zOff);
+
+    // S
+    draw(10, 1, 0, zOff); draw(10, 2, 0, zOff);
+    draw(10, 0, 1, zOff); draw(10, 1, 1, zOff);
+    draw(10, 1, 2, zOff); draw(10, 2, 2, zOff);
+    draw(10, 0, 3, zOff); draw(10, 1, 3, zOff); draw(10, 2, 3, zOff);
+
+    // Heading bounds
+    const headingBounds = heading.getBoundingBox()
+
+    // Intro
+    const descElement = document.getElementById('description')
+    const desc = tapspace.createItem(descElement)
+    desc.addClass('description')
+    space.addChild(desc, space.at(0, 800 + 200 * phipow(-1), zOffPx))
+    desc.setWidth(headingBounds.getWidth())
+    desc.setContentInput('handle')
+
+    // Recenter viewport
+    const bounds = space.getBoundingBox()
+    viewport.translateTo(bounds.atCenter().offset(0, 0, -3000))
+  </script>
+</body>
+</html>

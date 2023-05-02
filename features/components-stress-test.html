@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Stress Test - Tapspace Features</title>
+
+  <!-- This demo has lots of HTML elements in 3D space. How much before meltdown? -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: black;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #BBB;
+      width: 100%;
+      height: 100%;
+    }
+    .myspaceapp {
+      background: #DDD;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    const NODE_RADIUS = 50
+    const MAX_LEVELS = 6
+    const OPENING_PROBABILITY = 0.75 // [0..1]
+    const SCALE_STEP = 0.3
+    const DEPTH = 10
+
+    // Setup
+    const view = tapspace.createView('#tapspace').zoomable()
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Layer for each
+    const layers = []
+    for (let j = 0; j < MAX_LEVELS; j += 1) {
+      const plane = tapspace.createPlane()
+      // Sum of geometric series.
+      const z = DEPTH * (1 - Math.pow(SCALE_STEP, j)) / (1 - SCALE_STEP)
+      space.addChild(plane, space.at(0, 0, z))
+      layers.push(plane)
+    }
+
+    // Set a counter on the first node.
+    let totalNodes = 0
+    const firstNode = tapspace.createCircle(20, 'black')
+    firstNode.element.style.color = 'white'
+    firstNode.element.style.textAlign = 'center'
+    firstNode.element.style.paddingTop = '10px'
+    layers[0].addChild(firstNode, view.atMid())
+    totalNodes += 1
+    // Each created node will update the count.
+    const updateNodeCount = () => {
+      firstNode.element.innerHTML = totalNodes
+    }
+
+    const openNode = (node, j, depthLimit) => {
+      // Recursive function. j is the layer index.
+      //
+      const origin = node.atAnchor()
+      // Generate six nodes
+      const kids = []
+      // Available colors. Maybe customize per node?
+      // const colors = ['red', 'green', 'blue', 'orange', 'pink', 'gray']
+      const colors = ['#000', '#222', '#444', '#666', '#888', '#AAA']
+      // Iterate some
+      for (let i = 0; i < 5; i += 1) {
+        // Drop some frames for more organic vibe
+        if (Math.random() > OPENING_PROBABILITY) continue;
+        // Create node
+        const angle = 2 * Math.PI * (i - 0.25) / 5
+        const point = origin.polarOffset(NODE_RADIUS, angle)
+        const circle = tapspace.createCircle(20, colors[j])
+        kids.push(circle)
+        layers[j].addChild(circle, point)
+        circle.scaleBy(Math.pow(SCALE_STEP, j + 1), circle.atMid())
+        totalNodes += 1
+      }
+
+      // Update node count meter
+      updateNodeCount()
+
+      // Open kid nodes after delay
+      if (j + 1 < depthLimit) {
+        const delay = 240;
+        setTimeout(() => {
+          kids.forEach((kid) => {
+            openNode(kid, j + 1, depthLimit)
+          })
+        }, delay)
+      }
+    }
+
+    openNode(firstNode, 0, MAX_LEVELS)
+
+    // Bring camera closer
+    view.matchPoint(view.atMid(), firstNode.atMid().offset(0, 20, 200))
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Content Interaction - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+      cursor: grab;
+    }
+    .myspaceapp:focus-visible {
+      outline: 1px solid blue;
+    }
+    .active-pinch {
+      cursor: grabbing;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin: 0;
+      padding-top: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      box-sizing: border-box;
+      height: 100%;
+    }
+    .mycomponent.active-tap {
+      background: #EEE;
+    }
+    .mycomponent.disabled {
+      cursor: not-allowed;
+    }
+    .active-pinch .mycomponent {
+      cursor: grabbing;
+    }
+    .mycomponent.active-content {
+      cursor: initial;
+    }
+    .mycomponent.active-content .affine-proxy-pointer {
+      cursor: grab;
+    }
+    .active-pinch.active-content .affine-proxy-pointer {
+      cursor: grabbing;
+    }
+    .scroller {
+      overflow: scroll;
+    }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default basis for content.
+    const viewport = tapspace.createView('#tapspace').zoomable().focusable()
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+    const layer = tapspace.createPlane()
+    space.addChild(layer)
+
+    // Steal focus to viewport when panning.
+    viewport.on('pinchstart', () => {
+      viewport.focus({ focusVisible: false })
+    })
+
+    // Create three affine elements - one for each mode
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+
+    const noinput = tapspace.createItem(template('Disabled'))
+    noinput.setAnchor(noinput.atMid())
+    noinput.setSize(100, 100)
+    noinput.addClass('mycomponent', 'disabled')
+    noinput.disable()
+    noinput.setContentInput(false)
+    layer.addChild(noinput, viewport.at(200, 200))
+
+    const handle = tapspace.createItem(template(
+      'Handle for viewport with passive content.'))
+    handle.setAnchor(handle.atMid())
+    handle.setSize(100, 100)
+    handle.addClass('mycomponent')
+    handle.setContentInput(false)
+    layer.addChild(handle, viewport.at(400, 200))
+
+    const frame = tapspace.createItem(template(
+      'Active content with <a href="#">links</a> and ' +
+      '<input value="fields" style="width: 80px"/>'))
+    frame.setAnchor(frame.atMid())
+    frame.setSize(100, 100)
+    frame.addClass('mycomponent', 'active-content')
+    frame.setContentInput('pointer')
+    layer.addChild(frame, viewport.at(600, 200))
+
+    const scroller = tapspace.createItem(template(
+      'Scrollable text but otherwise passive content. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text. ' +
+      'Scrollable text. Scrollable text. Scrollable text. Scrollable text.'
+    ))
+    scroller.setAnchor(scroller.atMid())
+    scroller.setSize(100, 100)
+    scroller.addClass('mycomponent', 'scroller')
+    scroller.setContentInput('wheel')
+    layer.addChild(scroller, viewport.at(800, 200))
+
+    const movable = tapspace.createItem(template('Draggable item'))
+    movable.setAnchor(movable.atMid())
+    movable.setSize(100, 100)
+    movable.addClass('mycomponent')
+    movable.draggable().focusable()
+    movable.setContentInput(false)
+    movable.on('pinchstart', () => {
+      movable.focus({ preventScroll: true, focusVisible: true })
+    })
+    layer.addChild(movable, viewport.at(200, 400))
+
+    const tappable = tapspace.createItem(template(
+      'Tappable handle for viewport'))
+    tappable.setAnchor(tappable.atMid())
+    tappable.setSize(100, 100)
+    tappable.addClass('mycomponent')
+    tappable.tappable({ preventDefault: false })
+    tappable.setContentInput(false)
+    tappable.on('tap', () => tappable.rotateByDegrees(45, tappable.atMid()))
+    layer.addChild(tappable, viewport.at(400, 400))
+
+    const inhandle = tapspace.createItem(template(
+      'Movable item with active content and a handle. ' +
+      '<button class="affine-proxy-pointer">&hellip;</button>'))
+    inhandle.setAnchor(inhandle.atMid())
+    inhandle.setSize(100, 100)
+    inhandle.addClass('mycomponent', 'active-content')
+    inhandle.draggable()
+    layer.addChild(inhandle, viewport.at(600, 400))
+  </script>
+</body>
+</html>

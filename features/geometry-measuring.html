@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Measuring Geometry - Tapspace Features</title>
+
+  <!-- This demo is for inspecting measurements from the viewport -->
+
+  <!-- your custom styles -->
+  <style>
+    html, body, .container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      background: gray;
+      color: black;
+    }
+    .myspaceapp {
+      background: white;
+      width: 100%;
+      height: 100%;
+    }
+    .measurements {
+      background: lightgray;
+      color: black;
+      padding: 16px;
+    }
+    .measurements pre {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+  const container = document.querySelector('#tapspace')
+
+  const view = tapspace.createView(container).zoomable()
+  const space = tapspace.createSpace()
+  view.addChild(space)
+
+  // Template for item content
+  const measureToHtml = (mea) => {
+    const cleaned = {
+      areaPx: mea.areaPx,
+      areaRatio: mea.areaRatio,
+      depthOnCamera: mea.depthOnCamera,
+      depthOnViewport: Math.round(mea.depthOnViewport),
+      dilation: mea.dilation,
+      distanceToCamera: mea.distanceToCamera,
+      distanceToViewport: Math.round(mea.distanceToViewport),
+      visible: mea.visible
+    }
+    const text = JSON.stringify(cleaned, null, 2)
+    return '<pre>' + text + '</pre>'
+  }
+
+  const createBox = (position) => {
+    const item = tapspace.createItem('')
+    item.addClass('measurements')
+    item.setSize(300, 300)
+    item.setAnchor(item.atCenter())
+    item.setContentInput(false)
+    item.isInfoBox = true
+    space.addChild(item, position)
+    return item
+  }
+
+  // Exhibit 1: three info boxes that show measurement data
+  const infoBoxes = [
+    createBox(space.at(0, 0, 0)),
+    createBox(space.at(300, 0, 100)),
+    createBox(space.at(600, 0, 200))
+  ]
+
+  // Center the viewport
+  view.matchPoint(view.atCenter(), space.getBoundingBox().atCenter())
+
+  const updateMeasurements = () => {
+    const measureFilter = target => target.isInfoBox
+    const measurements = view.measureAll(measureFilter)
+    measurements.forEach(mea => {
+      if (mea.target.html) {
+        mea.target.html(measureToHtml(mea))
+      }
+    })
+  }
+
+  // Update measurement info
+  view.on('idle', updateMeasurements)
+  // Init measurements
+  updateMeasurements()
+  </script>
+</body>
+</html>

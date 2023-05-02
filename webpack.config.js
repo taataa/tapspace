@@ -11,7 +11,17 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
-  devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ]
+      }
+    ]
+  },
 
-  mode: 'production'
+  mode: 'development'
 }

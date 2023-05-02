@@ -1,139 +1,180 @@
-
 # Tutorial
 
-Quick tutorial into Tapspace 1.6 basics. Inspect also the [example apps](../#examples) for tutoring comments. See also [Tapspace 2.0.0-alpha tutorial](https://github.com/taataa/tapspace/blob/2.0-dev/docs/tutorial/index.md).
+Ready to build your first Tapspace app? You have come to the right place. Here we go through the basics from setting up a *space* to hold your content, a *viewport* to navigate your content, and how to place elements into the space.
 
-## Installation
+In this tutorial we assume you have basic knowledge on web programming concepts such as HTML, CSS, DOM, and JavaScript.
 
-To use tapspace in your JavaScript project, install via npm:
+This tutorial is for Tapspace.js version v2.0.0-alpha.4
 
-    $ npm install tapspace
+## Step 1: Prepare a web page for the app
 
-and require in your app:
+Create a directory named `tapspace-hello` and in it a file `index.html` with the following content:
 
-    const tapspace = require('tapspace')
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Hello Tapspace</title>
+    </head>
+    <body>
+    </body>
+    </html>
 
-Another way is to copy one of the standalone bundles:
+Adjust the title to your liking.
 
-- https://unpkg.com/tapspace@1.6.0/dist/tapspace.min.js
-- https://unpkg.com/tapspace@2.0.0-alpha.1/dist/tapspace.min.js
+Import Tapspace script by adding the following line before the ending head tag:
 
-The standalone bundle can be imported by adding a script tag before your app script:
+    ...
+      <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.4/dist/tapspace.min.js"></script>
+    </head>
+    ...
 
-    <script src="https://unpkg.com/tapspace@1.6.0/dist/tapspace.min.js"></script>
-    <script src="my-app-in-a-file.js"></script>
-    <script>
-      // My app in literal code
-      console.log('hello')
-    </script>
+The bundle hosted by unpkg.com delivery network is okay for development and toy apps. If you need production-grade performance and reliability, it is best to host the bundle along your other assets or even bundle it with your app code.
 
-You can bring tapspace in your app like this:
+Note the [defer](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) keyword. It ensures the script download does not block the browser from loading the rest of the page.
 
-    var space = new tapspace.Space()
+Let us also add a script tag into which we begin to write the app.
 
-The space contains items. To see the items, we need a view:
+    ...
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // My first tapspace app
+        })
+      </script>
+    </head>
+    ...
 
-    var view = new tapspace.SpaceView(space)
+We listen for the [DOMContentLoaded](https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event) event to ensure the page and its assets are fully loaded before running our app.
 
-We connect the view to a HTML element on the page of your app:
+## Step 2: Create a space with content
 
-    var spaceEl = document.getElementById('space')
-    view.mount(spaceEl)
+Inside the body tag, create an empty container element for the *viewport* of our space. This element will contain all the space elements, content, and navigation controls.
 
-Then just add some content to the space and they show up in the view:
+    <div id="mytapspace"></div>
 
-    var hello = new tapspace.SpaceHTML(space, '<h1>Hello</h1>')
+In the script, add the following to register the container element as a viewport.
 
-In addition to SpaceHTML, there are also SpaceImage, and SpacePixel.
+    ...
+    // My first tapspace app
+    const viewport = tapspace.createView('#mytapspace')
+    ...
 
-You can position the content items freely by moving, scaling, and rotating them. The following moves the middle of our hello to the middle of the view.
+Then create a *space* and connect it to the viewport. The space provides us a coordinate system, also called a *basis* or the *frame of reference*, onto which we can place our content.
 
-    var source = hello.atMid()
-    var target = view.atMid()
-    hello.translate(source, target)
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
 
-There are various positioning methods like `translateRotate` and `scale`. See [API docs](https://taataa.github.io/tapspace/api/#tapspaceabstractplane) for more.
+With a space we can construct *Point* objects:
 
-## Navigation
+    const p = space.at(200, 100)
 
-Basic navigation is easy, we setup interaction for the view.
+Let us create our first content item. The item wraps HTML content and provides various methods for interaction and moving it in the space.
 
-    // Setup the view interaction
-    var viewtouch = new tapspace.Touchable(view, view)
-    var viewwheel = new tapspace.Wheelable(view, view)
+    const hello = tapspace.createItem('<strong>Hello</strong>')
 
-Now the viewtouch object listens to view for touch events, recognizes a move gesture, and applies it the the view. Also, mouse wheel events are listened and applied to view.
+The item is not yet added to the space nor DOM. Let us do that.
 
-Before anything moves, we must define what kind of movement we allow and start the gesture recognition.
+    space.addChild(hello, p)
 
-    // Pinch zoom and mouse wheel
-    viewtouch.start({ translate: true, scale: true, rotate: true, tap: true })
-    viewwheel.start({ scale: true })
+This will add the hello item at the `p` coordinates { x: 200 y: 100 } relative to the origin of the space.
 
-Now the viewport reacts to touch and mouse.
+Now you can open your `index.html` in your web browser. The result should look something like this:
 
-Zooming by tapping is a bit more technical. First we want to listen to our touch recognizer for tap events:
+    TODO insert screenshot here
 
-    viewtouch.on('tap', function (ev) {
-      // handler code here
-      view.scale(view.atMid(), 0.618)
+Great!
+
+## Step 3: Positioning and sizing space elements
+
+Tapspace follows right-handed coordinate system. The three axes are perpendicular to each other. The default orientation is x-axis right, y-axis down, and z-axis away from the viewer.
+
+<p><img src="coordinates_directions_512.png" width="300" height="300" title="Right handed coordinate system"></p>
+
+Unlike normal web pages, the space is infinite. Web browsers like to stretch HTML elements to the width of their container but in infinite space this does not make sense. Therefore, each space item has a fixed size. The default size is 256x256 pixels and resizing is easy:
+
+    hello.setSize({ w: 400, h: 200 })
+
+Fortunately, the inner contents of space elements do not need fixed size. The browsers lay out the contents as usual, treating the space element as the container.
+
+Each space element has also an *anchor*. The anchor gives the otherwise rectangular element a single point-like location in space. This simplifies element placement, for example:
+
+    hello.moveTo(view.atCenter())
+
+Set the anchor with `setAnchor` method:
+
+    hello.setAnchor({ x: 200, y: 100 })
+
+In addition to positioning, the anchor acts as the default pivot point when you scale or rotate the element:
+
+    const deg45 = Math.PI / 4
+    hello.rotateBy(deg45)
+
+Also, such transformation methods usually allow a custom pivot point to be used instead of the anchor:
+
+    hello.rotateBy(deg45, hello.atTopRight())
+
+You can move the element around with the [translateBy(vec)](../api#tapspacecomponentstransformertranslateby) method.
+
+    hello.translateBy({ x: 10, y: -20, z: 5 })
+
+Each move updates the CSS3 transform property of your hello element. You can animate the move with the [animate(...)](../api#tapspacecomponentstransformeranimate) and `animateOnce` methods.
+
+    hello.animate({
+      duration: '200ms',
+      easing: 'linear'
+    })
+    hello.scaleBy(2)
+
+## Step 4: Navigating the space
+
+Our zoomable app still lacks the zoomability! Let us make the viewport zoomable. We access the viewport through the space.
+
+    viewport.zoomable()
+
+If you need only panning without zooming:
+
+    viewport.pannable()
+
+By default the viewport uses orthogonal "flat" projection. To make things feel more 3D, enable the perspective projection:
+
+    viewport.perspective()
+
+You can also chain the ability methods for a bit more compact code:
+
+    viewport.zoomable().perspective()
+
+In most parts the viewport behaves as any other space element. Thus it can be moved around, scaled, and rotated.
+
+    viewport.translateTo(hello.atCenter())
+
+The viewport also provides a basis. Initially, when the space is empty, the viewport it is the only basis we have.
+We can use it to position spaces with respect to the current viewport position.
+
+    const anotherSpace = tapspace.createSpace()
+    viewport.addChild(anotherSpace, viewport.atCenter())
+
+See [Viewport](../api#tapspacecomponentsviewport) for all available viewport methods.
+
+## Step 5: Make elements interactive
+
+Let us allow the hello element to be interactive. Like with the viewport we give the space element interactive abilities by calling one or more ability methods.
+
+    hello.tappable()
+    hello.on('tap', function () {
+      hello.html('<em>HELLO!</em>')
     })
 
-That would zoom the viewport toward the middle. Would it be more natural if zooming is done towards the tap position?
+To allow users to move the element around:
 
-    viewtouch.on('tap', function (ev) {
-      // handler code here
-      view.scale(ev.points[0], 0.618)
+    hello.draggable()
+    hello.on('gestureend', function () {
+      hello.html('You dragged me!')
     })
 
-Better yet, if user produced the tap with multiple fingers, we want to zoom to their average, not just on the first.
+There are also ability methods for resizing, linear sliding, rotation, and more.
 
-    // Tap to zoom in at the middle of the gesture
-    viewtouch.on('tap', function (ev) {
-      var mean = tapspace.geom.IVector.mean(ev.points), 0.618)
-      view.scale(mean, 0.618)
-    })
+To prevent interaction with the HTML content of the space element, like form input or text selection, use `hello.setContentInput(false)`. In a similar fashion, if you want to dedicate pointer input to content but keep mouse wheel input for zooming, use `hello.setContentInput('pointer')`
 
-## Interaction
+## What next?
 
-Let us begin with a simple Tapspace application:
-
-    > var space = new tapspace.Space()
-    > var view = new tapspace.SpaceView(space)
-    > view.mount(document.getElementById('space'))
-    > var hello = new tapspace.SpaceHTML(space, '<h1>Hello</h1>')
-
-Our goal is to make `hello` movable and rotatable. For that we create a touch manager:
-
-    > var tou = new tapspace.Touchable(view, hello)
-
-The manager does two things. First, it recognizes the gestures made on the HTML representation of `hello`. Second, it manipulates `hello` according to the gesture. Note that only the gestures on the given `view` are recognized. This allows unique interface behavior within each view. On the other hand, the consequences are visible also on other views of the same space.
-
-The manager does not recognize anything yet. We need to activate it first by calling `start`. Also, we specify *the mode* of interaction which means the type of interaction we would like to allow.
-
-    > tou.start({
-        translate: true,
-        rotate: true
-      })
-
-The main properties of the mode are `translate`, `rotate`, `scale`, and `tap`. They all are `false` by default. There is also a `pivot` property which is a bit special. The `pivot` takes in an `IVector` and restricts the rotation and scaling to happen only around it.
-
-The mode can be changed even during an ongoing gesture with `restart` method. The following disables the translation and rotation but instead allows scaling around the middle of the `hello`.
-
-    > tou.restart({
-        scale: true,
-        pivot: hello.atMid()
-      })
-
-The workings of the manager can be deactivated by calling `stop` method. An inactive manager does not recognize gestures or modify `hello`. After `stop`, you can activate the manager by calling `start` or `restart` with a mode, or just reuse the stopped mode by calling `resume`.
-
-    > tou.stop()
-    > tou.resume()
-
-An active manager emits events about the recognized gestures. You can bind to these events in your code. One of such events is `tap` which is fired after short click-like gestures if `tap: true`. Each event is accompanied with an event object and can be listened in the following manner:
-
-    > tou.on('gestureend', function (ev) {
-        console.log(ev.duration)
-      })
-
-This tutorial covered the most about Touchable's API. The details about the methods and events can be found in the [API Reference](../api/v1/).
+See the [example apps](../#examples) and [API documentation](../api). The source code of each example is filled with tutoring comments and useful techniques.

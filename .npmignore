@@ -3,6 +3,7 @@
 /dist/.gitkeep
 /docs
 /test
+/features
 
 .DS_Store
 .gitignore

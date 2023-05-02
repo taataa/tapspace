@@ -1,37 +1,29 @@
-// Combines test suites and runs them as single tape.
-//
-var harness = require('./lib/harness')
+const test = require('tape')
+const tapspace = require('../index')
 
-var UNITS = {
-  meta: require('./meta.test'),
-  preload: require('./preload.test'),
+const units = {
+  // General
   version: require('./version.test'),
-
-  Grid: require('./geom.test/Grid.test'),
-  IGrid: require('./geom.test/IGrid.test'),
-  Path: require('./geom.test/Path.test'),
-  IScalar: require('./geom.test/IScalar.test'),
-  Size: require('./geom.test/Size.test'),
-  ISize: require('./geom.test/ISize.test'),
-  ITransform: require('./geom.test/ITransform.test'),
-  Vector: require('./geom.test/Vector.test'),
-  IVector: require('./geom.test/IVector.test'),
-
-  AbstractNode: require('./item.test/AbstractNode.test'),
-  AbstractPlane: require('./item.test/AbstractPlane.test'),
-  AbstractRectangle: require('./item.test/AbstractRectangle.test'),
-  Space: require('./item.test/Space.test'),
-  SpaceGroup: require('./item.test/SpaceGroup.test'),
-  SpaceHTML: require('./item.test/SpaceHTML.test'),
-  SpaceImage: require('./item.test/SpaceImage.test'),
-  SpacePixel: require('./item.test/SpacePixel.test'),
-  SpaceView: require('./item.test/SpaceView.test'),
-
-  Touchable: require('./interaction.test/Touchable.test')
+  // Geometry
+  geometry: require('./geometry.test'),
+  // Components
+  components: require('./components.test')
 }
 
-for (var unit in UNITS) {
-  if (Object.prototype.hasOwnProperty.call(UNITS, unit)) {
-    UNITS[unit](harness(unit))
-  }
-}
+// Custom assertations
+const proto = test.Test.prototype
+proto.almostEqual = require('./utils/almostEqual')
+proto.almostEqualBasis = require('./utils/almostEqualBasis')
+proto.almostEqualDirection = require('./utils/almostEqualDirection')
+proto.almostEqualDistance = require('./utils/almostEqualDistance')
+proto.almostEqualOrientation = require('./utils/almostEqualOrientation')
+proto.almostEqualPoint = require('./utils/almostEqualPoint')
+proto.almostEqualSphere = require('./utils/almostEqualSphere')
+proto.almostEqualVector = require('./utils/almostEqualVector')
+
+// Reusable container element. Each test is allowed to clear innerHTML.
+const container = document.querySelector('#container')
+
+Object.keys(units).forEach((unitName) => {
+  units[unitName](test, container, tapspace)
+})
