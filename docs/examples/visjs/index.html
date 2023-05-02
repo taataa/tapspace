@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vis.js Integration - Tapspace Example</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://unpkg.com/vis-network@9.1.2/styles/vis-network.min.css">
+
+  <style>
+    html, body, #space {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-size: 16px;
+      color: black;
+      background: white;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="space"></div>
+
+  <!-- Heading -->
+  <div style="position: absolute; top: 0px; padding-left: 1em">
+    <h2 style="margin-bottom: 0.38em">Vis.js Integration – a <a style="color: dodgerblue" href="https://taataa.github.io/tapspace">Tapspace</a> example</h2>
+    <p>Here, we set up a <a style="color: dodgerblue" href="https://visjs.github.io/vis-network/examples/">Vis.js network</a> with Tapspace to recursively <strong>open network nodes by clicking or tapping</strong>. Every time a node is opened, a new small <a href="https://visjs.github.io/vis-network/docs/network/">vis-network</a> is generated along with its canvas element as shown with the gray background. <strong>Scroll or pinch to zoom!</strong></p>
+  </div>
+
+  <script src="../assets/ghoulog.js"></script>
+  <script src="https://unpkg.com/tapspace@1.6.0/dist/tapspace.min.js"></script>
+  <script>
+    (function tapspaceApp () {
+      // Tapspace setup
+      var space = new tapspace.Space()
+      var viewElement = document.getElementById('space')
+      var view = new tapspace.SpaceView(space)
+      view.mount(viewElement)
+
+      // Make the view transformable
+      var touchy = new tapspace.Touchable(view, view)
+      touchy.start({
+        translate: true,
+        scale: true
+      })
+      var scrolly = new tapspace.Wheelable(view, view)
+      scrolly.start({
+        scale: true
+      })
+
+      var createVisNetworkAt = function (point, depth, prefix) {
+        // Parameters:
+        //   point
+        //     an IVector, the insertion point for the subgraph.
+        //   depth
+        //     a number, the larger the smaller.
+        //   prefix
+        //     a string, a path-like label prefix to append at each iteration.
+        //
+
+        // A container for a vis.js network
+        var networkItem = new tapspace.SpaceHTML('<div class="vis-network"></div>', space)
+        var networkElement = view.getElementBySpaceItem(networkItem)
+
+        // Uncomment to make canvas areas visible:
+        networkElement.style.background = 'rgba(200,200,200,0.2)'
+
+        // Position the canvas container.
+        // Make the canvas large so that zooming in tapspace
+        // does not blur it so quickly.
+        networkItem.setSize(1000, 1000)
+        networkItem.translate(networkItem.atMid(), point)
+        networkItem.scale(networkItem.atMid(), 1 / Math.pow(2, depth))
+
+        // Create nodes
+        var nodes = new vis.DataSet([
+          {
+            // The local root node
+            id: 1,
+            label: prefix,
+            x: 0, y: 0,
+            value: 20
+          },
+          { id: 2, label: prefix + '.1', value: 10 },
+          { id: 3, label: prefix + '.2', value: 10 },
+          { id: 4, label: prefix + '.3', value: 10 },
+          { id: 5, label: prefix + '.4', value: 10 },
+          { id: 6, label: prefix + '.5', value: 10 }
+        ])
+
+        // Create edges
+        var edges = new vis.DataSet([
+          { from: 1, to: 3 },
+          { from: 1, to: 2 },
+          { from: 1, to: 4 },
+          { from: 1, to: 5 },
+          { from: 1, to: 6 },
+        ])
+
+        // Create the network
+        var data = {
+          nodes: nodes,
+          edges: edges
+        }
+
+        var options = {
+          // Disable vis.js internal navigation to prevent event capture
+          // so we can rely on tapspace navigation.
+          interaction: {
+            dragNodes: false,
+            dragView: false,
+            keyboard: false,
+            zoomView: false,
+            selectable: false,
+            selectConnectedEdges: false
+          },
+          // Predictable layout that keeps the middle node at {x:0,y:0}
+          layout: {
+            randomSeed: '0.7985338123976358:1650403904927'
+          },
+          // Node styling
+          nodes: {
+            shape: 'dot',
+            scaling: {
+              min: 0,
+              max: 30,
+              customScalingFunction: function (min, max, total, value) {
+                return value / max
+              }
+            }
+          },
+          // Prevent refitting nodes to the canvas after stabilization,
+          // to ensure that the middle node is always at the canvas center.
+          physics: {
+            stabilization: {
+              fit: true
+            }
+          }
+        }
+        var network = new vis.Network(networkElement, data, options);
+        network.on('stabilized', function () {
+          network.moveTo({
+            position: { x: 0, y: 0 },
+            scale: 2
+          })
+        })
+
+        // Vis.js uses Hammer.js for gestures and their coordinates
+        // are not compatible with Tapspace's way to position elements.
+        // Fortunately we can use Tapspace's coordinates to command Viz.
+        var tapy = new tapspace.Touchable(view, networkItem)
+        tapy.start({
+          tap: true,
+          preventDefault: false
+        })
+        tapy.on('tap', function (ev) {
+          // Convert viewport coordinates on the canvas.
+          var pointOnView = ev.points[0] // an IVector
+          var pointOnCanvas = pointOnView.to(networkItem)
+          // Select node at tap position. Node ID is null if not found.
+          var clickedNodeId = network.getNodeAt(pointOnCanvas)
+          if (clickedNodeId && clickedNodeId !== 1) {
+            // Emphasize node by selecting it
+            // network.selectNodes([clickedNodeId])
+            // Create a subgraph at the node center.
+            // Get node center position. It is in Vis's "canvas coordinates"
+            var nodePoint = network.getPosition(clickedNodeId)
+            // Convert to coordinates on the canvas element.
+            var domPoint = network.canvasToDOM(nodePoint)
+            // Convert to plane-invariant coordinates.
+            var nodePointV = new tapspace.geom.Vector(domPoint.x, domPoint.y)
+            var nodePointIV = new tapspace.geom.IVector(nodePointV, networkItem)
+            // Insert the new network.
+            var insertAt = nodePointIV
+            var nextDepth = depth + 1
+            var nextPrefix = nodes.get(clickedNodeId).label
+            createVisNetworkAt(insertAt, nextDepth, nextPrefix)
+            // Hide the old big label.
+            nodes.update({ id: clickedNodeId, label: null })
+            // Uncomment to debug coordinates:
+            // console.log('nodePoint', nodePoint)
+            // console.log('domPoint', domPoint)
+          } else {
+            // Uncomment to inspect the root node position:
+            // if (clickedNodeId === 1) {
+            //   var nodePoint = network.getPosition(clickedNodeId)
+            //   console.log('nodePoint', nodePoint)
+            // }
+          }
+        })
+
+        // Uncomment to find alternative layout seeds:
+        // setTimeout(function () {
+        //   console.log('layoutSeed', network.getSeed())
+        // }, 500)
+      }
+
+      // Init root network
+      createVisNetworkAt(view.atMid(), 1, 'Node 1')
+    })() // run the app
+  </script>
+</body>
+</html>

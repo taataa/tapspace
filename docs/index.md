@@ -32,7 +32,7 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 ## Examples
 
-Whether you dream about a *Google Maps* clone, a *Prezi* flavored home page, or a real-time strategy game, these example apps give you a major head start in implementing your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
+Whether you dream about a vast data visualization, a deep map-like home page, or a big online game, these example apps give you a major head start in building your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
 
 <div style="clear: both">
 <img src="examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">
@@ -140,6 +140,13 @@ Modes of direct manipulation allowed by `Touchable`<br>
 </div>
 
 <div style="clear: both">
+<img src="examples/visjs/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>Vis.js Network</h3>
+Interactive and recursive <a href="https://visjs.github.io/vis-network/docs/network/">Vis.js networks</a> on Tapspace<br>
+<a href="examples/visjs/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/visjs/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/hammerjs/preview.jpg" style="float: left; margin: 0 1em 0 0">
 <h3>HammerJS</h3>
 What if touch interaction is implemented with <a href="https://hammerjs.github.io/">HammerJS</a> instead of `Touchable`?<br>
@@ -150,9 +157,9 @@ What if touch interaction is implemented with <a href="https://hammerjs.github.i
 ## Thanks to
 
 Members of the Tapspace v0 code inspection group on 2013-Nov-18
-- Johanna Issakainen
+- Mikko Nurminen
 - Mika Kunnas
 - Elina Lukkarinen
-- Mikko Nurminen
+- Johanna Issakainen
 - Timo Ruostila
 - Mikko Teuho
