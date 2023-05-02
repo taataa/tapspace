@@ -10,6 +10,7 @@ const units = {
   getBoundingSphere: require('./getBoundingSphere.test'),
   getVolume: require('./getVolume.test'),
   normAt: require('./normAt.test'),
+  projectTo: require('./projectTo.test'),
   resizeTo: require('./resizeTo.test'),
   rotateBy: require('./rotateBy.test'),
   scaleBy: require('./scaleBy.test'),
