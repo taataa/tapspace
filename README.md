@@ -21,7 +21,7 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [Tutorial](http://taataa.github.io/tapspace/tutorial)
 - [Features](http://taataa.github.io/tapspace#features)
 - [Example applications](http://taataa.github.io/tapspace#examples)
-- [API Reference](https://github.com/taataa/tapspace/blob/2.0-dev/docs/api/v2/index.md)
+- [API Reference](https://taataa.github.io/tapspace/api/v2/)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
 
