@@ -32,7 +32,7 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 ## Examples
 
-Whether you dream about a vast data visualization, a deep map-like home page, or a big online game, these example apps give you a major head start in building your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments!
+Whether you dream about a vast data visualization, a deep map-like home page, or a big online game, these example apps give you a major head start in building your zoomable user interface and touch integration. To get the most out of the example apps, use a touch device. See the source code for tutoring comments! See also [examples for Tapspace v2.0.0-alpha](https://demos.akselipalen.com/tapspace-demos/) that are going to be merged here at some point.
 
 <div style="clear: both">
 <img src="examples/minimal/preview.jpg" style="float: left; margin: 0 1em 1em 0">

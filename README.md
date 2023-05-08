@@ -19,7 +19,7 @@ This installs an alpha version of Tapspace.js 2.x. For the earlier and stable Ta
 See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [Tutorial](http://taataa.github.io/tapspace/tutorial)
 - [Features](http://taataa.github.io/tapspace#features)
-- [Example applications](http://taataa.github.io/tapspace#examples)
+- [Examples (v1)](http://taataa.github.io/tapspace#examples) and [Examples (v2)](https://demos.akselipalen.com/tapspace-demos/)
 - [API Reference](https://taataa.github.io/tapspace/api/v2/)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
@@ -35,7 +35,7 @@ We have developed Tapspace.js in collaboration with the following organizations.
 
 ## Contribute
 
-Pull requests and [bug reports](https://github.com/taataa/tapspace/issues) are highly appreciated. Please test your contribution with the following scripts:
+Issues, pull requests and [bug reports](https://github.com/taataa/tapspace/issues) are highly appreciated. Please test your contribution with the following scripts:
 
 Run test suite:
 
