@@ -2,7 +2,7 @@
 
 We believe **zoomable touch user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built ***Tapspace***, a **JavaScript** library dedicated for building such **dynamic front-ends**. It implements a **scene graph** that provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
-[**Tutorial**](tutorial/) is a good place to start for newcomers.
+[**Tutorial**](tutorial/v2/) is a good place to start for newcomers.
 
 [**API Reference**](api/v2/) comes handy when coding.
 
