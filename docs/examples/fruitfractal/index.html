@@ -49,12 +49,15 @@
     const viewport = tapspace.createView('#tapspace')
     viewport.zoomable().setMeasureMode('none')
 
+    const N = 7
+    const subindices = Array.from(Array(N).keys())
     const circleRadius = 36
-    const frontierRadius = 200
+    const frontierRadius = 280
     const depthStep = 20
-    const scaleStep = 1 / 3
-    const angleStep = Math.PI / 7
+    const scaleStep = 1 / 3.3
+    const angleStep = 2 * Math.PI / N
     // Short alias
+    const SUBIDS = subindices
     const R = circleRadius
     const FR = frontierRadius
     const DD = depthStep
@@ -125,12 +128,11 @@
       const radius = innerAnchorBasis.createDistance(FR)
 
       // Children
-      const tracks = [0, 1, 2, 3, 4, 5].map(i => {
+      const tracks = SUBIDS.map(i => {
         return {
           id: '' + parentId + i,
           basis: innerAnchorBasis
-            .polarOffset(radius, (i - 1) * ROT)
-            .rotateBy((i - 1) * ROT)
+            .polarOffset(radius, i * ROT)
             .offset(-R, -R)
         }
       })
@@ -168,12 +170,11 @@
       const radius = primusBasis.createDistance(FR)
       const primusCenterBasis = primusBasis.offset(R, R)
 
-      const parentBasis = [0, 1, 2, 3, 4, 5].reduce((acc, i) => {
+      const parentBasis = SUBIDS.reduce((acc, i) => {
         if (primusId === ('' + parentId + i)) {
           let basis = primusCenterBasis
           basis = basis.scaleBy(1 / M)
-          basis = basis.polarOffset(radius, Math.PI)
-          basis = basis.rotateBy((1 - i) * ROT)
+          basis = basis.polarOffset(radius, Math.PI + i * ROT)
           basis = basis.offset(-R, -R)
           return basis
         }
@@ -207,7 +208,7 @@
 
     const content = {
       '0': 'Fractal loader –<br> Tapspace Features',
-      '01': 'Recursive loading and unloading of content is necessary in order to explore huge masses of data. Otherwise web browsers slow down to tar under the load of thousands of elements.'
+      '00': 'Recursive loading and unloading of content is necessary in order to explore huge masses of data. Otherwise web browsers slow down to tar under the load of thousands of elements.'
     }
 
     const generator = (ids, callback) => {
@@ -215,16 +216,19 @@
       // This can include asynchronic fetching of node data from backend.
       //
       const nodes = ids.map(id => {
-        let text = id
+        let text = ''
         if (content[id]) {
           text = content[id]
         }
         const size = R
         const color = getColor(id)
         const node = tapspace.createCircle(size, color)
-        const html = squaretext.fitParagraph(text, 40, 'sans-serif')
-        node.html(html)
+        if (text) {
+          const html = squaretext.fitParagraph(text, 40, 'sans-serif')
+          node.html(html)
+        }
         node.addClass('fractal-node')
+        node.element.title = id
         if (!content[id]) {
           const hexcode = hexcodes[id.length]
           node.addClass('openmoji')
@@ -234,9 +238,7 @@
         // Tap to match orientation.
         node.tappable({ preventDefault: false })
         node.on('tap', () => {
-          const orient = node.getOrientation()
-          // viewport.animateOnce({ duration: '500ms' })
-          viewport.setOrientation(orient, node.atCenter())
+          // TODO approach
         })
         node.setContentInput('false')
 
