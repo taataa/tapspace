@@ -60,7 +60,7 @@
     bgitem.setSize(800, 800)
     space.addChild(bgitem)
 
-    viewport.focusTo(bgitem)
+    viewport.zoomTo(bgitem)
 
     viewport.on('idle', () => {
       // Measure distance from camera to the image.
