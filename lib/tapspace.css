@@ -7,6 +7,25 @@ Architectural guidelines for tapspace classes:
    This is against DRY but for a reason.
 */
 
+.affine-viewport {
+  /* Space elements are absolutely positioned and therefore
+    the view must be either absolutely or relatively positioned. */
+  position: relative;
+  /* Viewport is a camera that looks to the space, thus crop */
+  overflow: hidden;
+  /* Mobile browsers have touch actions that cancel our gestures */
+  touch-action: none;
+  /* Camera distance from the image plane in viewport pixels */
+  perspective: 300px;
+  /* Host app must give viewport height for it to be visible.
+    However, that requirement could be annoying to learn if
+    the viewport is not visible at all (default zero height).
+    Therefore set a minimum height to avoid the annoyance. */
+  min-height: 200px;
+  /* Ensure viewport contents do not take part to external 3D space */
+  transform-style: flat;
+}
+
 .affine-hyperspace {
   /* The space contains the layers and is a child of viewport.
      It must fill the viewport behind controls. */
@@ -14,6 +33,11 @@ Architectural guidelines for tapspace classes:
   height: 100%;
   /* Ensure default transform origin. */
   transform-origin: 0 0;
+  /* Fast flat by default */
+  transform-style: flat;
+}
+
+.affine-viewport-3d .affine-hyperspace {
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
@@ -39,6 +63,11 @@ Architectural guidelines for tapspace classes:
 
 .affine-group,
 .affine-space {
+  /* Flat by default. */
+  transform-style: flat;
+}
+
+.affine-viewport-3d .affine-space {
   /* Span the same 3D space all over the affine elements. */
   transform-style: preserve-3d;
 }
@@ -76,25 +105,6 @@ Architectural guidelines for tapspace classes:
 
 .affine-item {
   /* Items are always flat */
-  transform-style: flat;
-}
-
-.affine-viewport {
-  /* Space elements are absolutely positioned and therefore
-    the view must be either absolutely or relatively positioned. */
-  position: relative;
-  /* Viewport is a camera that looks to the space, thus crop */
-  overflow: hidden;
-  /* Mobile browsers have touch actions that cancel our gestures */
-  touch-action: none;
-  /* Camera distance from the image plane in viewport pixels */
-  perspective: 300px;
-  /* Host app must give viewport height for it to be visible.
-    However, that requirement could be annoying to learn if
-    the viewport is not visible at all (default zero height).
-    Therefore set a minimum height to avoid the annoyance. */
-  min-height: 200px;
-  /* Ensure viewport contents do not take part to external 3D space */
   transform-style: flat;
 }
 
