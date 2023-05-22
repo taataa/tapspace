@@ -16,7 +16,7 @@ Architectural guidelines for tapspace classes:
   /* Mobile browsers have touch actions that cancel our gestures */
   touch-action: none;
   /* Camera distance from the image plane in viewport pixels */
-  perspective: 300px;
+  perspective: none;
   /* Host app must give viewport height for it to be visible.
     However, that requirement could be annoying to learn if
     the viewport is not visible at all (default zero height).
@@ -35,11 +35,6 @@ Architectural guidelines for tapspace classes:
   transform-origin: 0 0;
   /* Fast flat by default */
   transform-style: flat;
-}
-
-.affine-viewport-3d .affine-hyperspace {
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
 }
 
 .affine-layer,
@@ -62,19 +57,8 @@ Architectural guidelines for tapspace classes:
 }
 
 .affine-group,
-.affine-space {
-  /* Flat by default. */
-  transform-style: flat;
-}
-
-.affine-viewport-3d .affine-space {
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
-}
-
 .affine-plane {
-  /* Force plane and its contents to 2D.
-     This supposedly gives computational benefits. */
+  /* Flat by default. */
   transform-style: flat;
 }
 
@@ -96,8 +80,8 @@ Architectural guidelines for tapspace classes:
   /* Ensure default transform origin.
     Planes with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
-  /* Init 3D transform. Maybe unnecessary. */
-  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  /* Init transform. Maybe unnecessary. */
+  transform: matrix(1, 0, 0, 1, 0, 0);
   /* Show only the front face. This helps Gecko-based browsers
     to render 3D elements. */
   /* backface-visibility: hidden; */

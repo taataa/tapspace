@@ -110,11 +110,11 @@
     })
 
     // Position the cards into space, relative to each other.
-    layer.addChild(cards[0], view.atNorm(0.3, 0.4, 0))
-    layer.addChild(cards[1], cards[0].atTopRight().offset(0, -100, 100))
-    layer.addChild(cards[2], cards[1].atBottomRight().offset(0, 100, 100))
-    layer.addChild(cards[3], cards[1].atBottomMid().offset(150, 450, 50))
-    layer.addChild(cards[4], cards[1].atBottomMid().offset(-150, 550, -50))
+    layer.addChild(cards[0], view.atNorm(0.3, 0.4))
+    layer.addChild(cards[1], cards[0].atTopRight().offset(0, -100))
+    layer.addChild(cards[2], cards[1].atBottomRight().offset(0, 100))
+    layer.addChild(cards[3], cards[1].atBottomMid().offset(150, 450))
+    layer.addChild(cards[4], cards[1].atBottomMid().offset(-150, 550))
 
     // Adjust font size to fit square.
     cards[0].element.style.fontSize = '1.1em'
@@ -145,7 +145,7 @@
     infoCard.setSize(162, 100)
     infoCard.setAnchor(infoCard.atMid())
     infoCard.setContentInput('pointer')
-    layer.addChild(infoCard, cards[0].atBottomMid().offset(50, 200, 800))
+    layer.addChild(infoCard, cards[3].atTopLeft().offset(0, -100))
     infoCard.element.style.fontSize = '0.62em'
 
     // Nodes
