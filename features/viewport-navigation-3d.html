@@ -62,6 +62,9 @@
     blockA.setSolidity(true)
     layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
 
+    // Change perspective.
+    layer.setAnchor(blockA.atNorm(1.15, 0.75))
+
     // 2D Hellos
     const numHellos = 16
     const helloSize = { w: 80, h: 40 }
@@ -86,18 +89,18 @@
     }
 
     // 3D Worlds
-    const numWorlds = 128
+    const numWorlds = 16
     const worldSize = { w: 80, h: 40 }
-    for (let i = 0; i < numWorlds; i += 1) {
+    for (let i = numWorlds; i >= 0; i -= 1) {
       const html = template('World')
       const world = tapspace.createItem(html)
       world.addClass('world')
       world.setSize(worldSize)
       world.setSolidity(false)
       world.setContentInput(false)
-      const position = blockA.atNorm(1.38, 0.5, 0.3 * i)
+      const position = blockA.atNorm(1.38, 0.38, 1 * i)
       layer.addChild(world, position)
-      world.rotateBy(0.05 * i, world.atCenter())
+      // world.rotateBy(0.05 * i, world.atCenter())
     }
 
     // Center viewport to components
@@ -114,6 +117,10 @@
     zoomControl.match({
       source: zoomControl.atBottomLeft(),
       target: viewport.atBottomLeft().offset(10, -10)
+    })
+
+    viewport.on('idle', () => {
+      layer.refreshTransforms()
     })
   </script>
 </body>
