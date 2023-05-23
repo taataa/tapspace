@@ -25,7 +25,7 @@ yamdog.generate({
     'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
     'Arc': 'tapspace.components.Arc',
-    'BasisComponent': 'tapspace.components.BasisComponent',
+    'Component': 'tapspace.components.Component',
     'BlockComponent': 'tapspace.components.BlockComponent',
     'CircleItem': 'tapspace.components.CircleItem',
     'ControlComponent': 'tapspace.components.ControlComponent',
