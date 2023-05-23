@@ -18,24 +18,6 @@
       background: white;
       height: 500px;
     }
-    .mycomponent {
-      background: white;
-      color: black;
-    }
-    .mylabel {
-      margin-top: 1rem;
-      padding: 1rem;
-      text-align: center;
-      font-size: 2rem;
-    }
-    .fractal-node {
-      padding: 20px;
-      color: white;
-      word-break: break-all;
-    }
-    .mycomponent.active {
-      background: #EEE;
-    }
   </style>
 </head>
 <body>
@@ -63,49 +45,65 @@
 
       placeholder: function (id) {
         // Render placeholder
-        return tapspace.createCircle(10, 'black')
+        const plane = tapspace.createPlane()
+        const circle = tapspace.createCircle(10, 'black')
+        plane.addChild(circle, plane.at(15, 15))
+        return plane
       },
 
       generator: function (id, data) {
+        // Render content to replace the placeholder
         const item = tapspace.createCircle(15, data.color)
         item.element.title = 'id:' + id
+
+        item.tappable()
+        item.on('tap', () => {
+          loader.openChild(id, id + 'a')
+        })
+
         return item
       },
 
       fetcher: function (id, callback) {
+        // Async call to fetch data for the generator.
         setTimeout(() => {
           callback(null, { color: 'red' })
-        }, 1000)
+        }, 400)
       },
 
       tracker: function (parent, childId) {
-        return parent.atAnchor().offset(20, 0)
+        // Find basis for a child given a parent.
+        return parent.getBasis().offset(30, 0)
       },
 
       backer: function (childId) {
-        switch (childId) {
-          case 'b':
-            return 'a'
-          case 'a':
-            return null
-          default:
-            return null
+        // Find parent id.
+        if (childId.length <= 1) {
+          return null
         }
+        return childId.substring(0, childId.length - 1)
       },
 
       limiter: function (depth) {
+        // Limit recursion
         return depth < 3
       }
     })
 
-    loader.init('b', viewport.atCenter(), (err) => {
+    const firstBasis = tapspace.geometry.Basis.fromPoints(
+      viewport,
+      viewport.atCenter(),
+      viewport.atCenter().offset(1, 0)
+    )
+
+    loader.init('aa', firstBasis, (err) => {
       if (err) {
         console.error(err)
         return
       }
 
-      // loader.openChild('a', 'b')
-      loader.openParent('b', () => console.log('parent'))
+      // loader.openChild('a', 'aa')
+      loader.openParent('aa', () => console.log('parent'))
     })
 
   </script>
