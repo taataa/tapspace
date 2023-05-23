@@ -82,18 +82,30 @@
         return parent.atAnchor().offset(20, 0)
       },
 
+      backer: function (childId) {
+        switch (childId) {
+          case 'b':
+            return 'a'
+          case 'a':
+            return null
+          default:
+            return null
+        }
+      },
+
       limiter: function (depth) {
         return depth < 3
       }
     })
 
-    loader.init('a', viewport.atCenter(), (err) => {
+    loader.init('b', viewport.atCenter(), (err) => {
       if (err) {
         console.error(err)
         return
       }
-      
-      loader.openChild('a', 'b')
+
+      // loader.openChild('a', 'b')
+      loader.openParent('b', () => console.log('parent'))
     })
 
   </script>
