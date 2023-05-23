@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Viewport Navigation in 3D - Tapspace Features</title>
+  <title>Infinite Geometry - Tapspace Features</title>
 
   <!-- your custom styles -->
   <style>
@@ -37,8 +37,8 @@
   </style>
 </head>
 <body>
-  <h1>Viewport Navigation in 3D – Tapspace Features</h1>
-  <p>You can move in space and zoom to surfaces.</p>
+  <h1>Infinite Geometry – Tapspace Features</h1>
+  <p>You can zoom to surfaces indefinitely.</p>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -72,6 +72,7 @@
       const html = template('Hello')
       const hello = tapspace.createItem(html)
       hello.addClass('hello')
+      hello.isHello = true
       hello.setSize(helloSize)
       hello.setContentInput(false)
       layer.addChild(hello)
@@ -86,18 +87,43 @@
       prevHello = hello
     }
 
-    // 3D Worlds
+    // 2D Worlds
     const numWorlds = 16
     const worldSize = { w: 80, h: 40 }
-    for (let i = numWorlds; i >= 0; i -= 1) {
+
+    const createWorld = () => {
       const html = template('World')
       const world = tapspace.createItem(html)
       world.addClass('world')
+      world.isWorld = true
       world.setSize(worldSize)
       world.setContentInput(false)
-      const position = blockA.atNorm(1.38, 0.38, 1 * i)
-      layer.addChild(world, position)
-      // world.rotateBy(0.05 * i, world.atCenter())
+      return world
+    }
+
+    const positionWorld = (world, group, relative) => {
+      group.prependChild(world)
+      const targetScale = relative.getScale().scaleBy(0.618)
+      world.setScale(targetScale, world.at(0, 0))
+      const targetPosition = relative.atNorm(-0.3, 0.8)
+      world.translateTo(targetPosition)
+      // Link the world according to the position.
+      world.addLink('prev', prevWorld)
+      prevWorld.addLink('next', world)
+    }
+
+    let prevWorld = null
+    for (let i = 0; i < numWorlds; i += 1) {
+      const world = createWorld()
+
+      if (prevWorld) {
+        positionWorld(world, layer, prevWorld)
+      } else {
+        layer.prependChild(world)
+        world.translateTo(blockA.atNorm(1.38, 0.38))
+      }
+
+      prevWorld = world
     }
 
     // Center viewport to components
@@ -115,6 +141,28 @@
       source: zoomControl.atBottomLeft(),
       target: viewport.atBottomLeft().offset(10, -10)
     })
+
+    // Clean up the small elements
+    viewport.on('idle', () => {
+      const metrics = viewport.measureGroup(layer)
+      metrics.forEach(metric => {
+        if (!metric.target.isWorld) {
+          return
+        }
+
+        if (metric.dilation < 0.02) {
+          metric.target.removeLinks()
+          metric.target.remove()
+        } else if (metric.dilation > 0.05 && metric.distanceToViewport < 200) {
+          if (!metric.target.hasLink('next')) {
+            const world = createWorld()
+            positionWorld(world, layer, metric.target)
+          }
+          console.log('links', Object.keys(metric.target.links))
+        }
+      })
+    })
+
   </script>
 </body>
 </html>
