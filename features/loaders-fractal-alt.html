@@ -67,7 +67,9 @@
       },
 
       generator: function (id, data) {
-        return tapspace.createCircle(15, data.color)
+        const item = tapspace.createCircle(15, data.color)
+        item.element.title = 'id:' + id
+        return item
       },
 
       fetcher: function (id, callback) {
@@ -85,8 +87,14 @@
       }
     })
 
-    loader.init('a', viewport.atCenter())
-    // loader.openChild('a', 'b')
+    loader.init('a', viewport.atCenter(), (err) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      
+      loader.openChild('a', 'b')
+    })
 
   </script>
 </body>
