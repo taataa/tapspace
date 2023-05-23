@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fractal Loader Alt - Tapspace Features</title>
+
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: white;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mylabel {
+      margin-top: 1rem;
+      padding: 1rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .fractal-node {
+      padding: 20px;
+      color: white;
+      word-break: break-all;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alternative Fractal loader – Tapspace Features</h1>
+  <p>
+    Recursive loading and unloading of content is necessary in order
+    to explore huge masses of data. Otherwise web browsers would slow down
+    to tar under the load of thousands of elements.
+  </p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.zoomable()
+
+    const loader = new tapspace.loaders.FractalLoaderAlt({
+      viewport: viewport,
+
+      placeholder: function (id) {
+        // Render placeholder
+        return tapspace.createCircle(10, 'black')
+      },
+
+      generator: function (id, data) {
+        return tapspace.createCircle(15, data.color)
+      },
+
+      fetcher: function (id, callback) {
+        setTimeout(() => {
+          callback(null, { color: 'red' })
+        }, 1000)
+      },
+
+      tracker: function (parent, childId) {
+        return parent.atAnchor().offset(20, 0)
+      },
+
+      limiter: function (depth) {
+        return depth < 3
+      }
+    })
+
+    loader.init('a', viewport.atCenter())
+    // loader.openChild('a', 'b')
+
+  </script>
+</body>
+</html>
