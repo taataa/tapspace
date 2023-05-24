@@ -58,13 +58,15 @@
 
         item.data = data
 
+        let numTaps = 0
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
-          // item.data.nodes.forEach((node) => {
-          //   loader.openChild(node.id)
-          // })
-          // loader.openParent(id)
-          loader.openNeighbors(id, 4)
+          numTaps += 1
+          if (numTaps > 5) {
+            loader.closeNeighbors(id, 3)
+          } else {
+            loader.openNeighbors(id, 2)
+          }
         })
 
         return item
