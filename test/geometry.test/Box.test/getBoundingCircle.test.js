@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Box:getBoundingSphere', (t) => {
+  test('Box:getBoundingCircle', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -15,7 +15,7 @@ module.exports = function (test, container, tapspace) {
     const box = item.getBoundingBox()
 
     // Get spherical boundary
-    const sphere = box.getBoundingSphere()
+    const sphere = box.getBoundingCircle()
 
     t.almostEqualSphere(
       sphere.transitRaw(view),

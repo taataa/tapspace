@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Item :getBoundingBox :getBoundingSphere', (t) => {
+  test('Item :getBoundingBox :getBoundingCircle', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
@@ -28,7 +28,7 @@ module.exports = function (test, container, tapspace) {
       'should have correct props'
     )
 
-    const bsphere = item.getBoundingSphere()
+    const bsphere = item.getBoundingCircle()
 
     t.equal(
       bsphere.basis,
