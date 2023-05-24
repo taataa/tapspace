@@ -10,13 +10,25 @@
 
   <!-- your custom styles -->
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
     body {
-      background: black;
-      color: grey;
+      background: white;
+      color: black;
+    }
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      padding: 0em 1em;
     }
     .myspaceapp {
       background: white;
-      height: 500px;
+      height: 100%;
     }
     .current {
       border: 2px solid black;
@@ -24,12 +36,14 @@
   </style>
 </head>
 <body>
-  <h1>Tree Loader – Tapspace Features</h1>
-  <p>
-    Recursive loading and unloading of content is necessary in order
-    to explore huge masses of data. Otherwise web browsers would slow down
-    to tar under the load of thousands of elements.
-  </p>
+  <header>
+    <h1>Tree Loader – Tapspace Features</h1>
+    <p>
+      Recursive loading and unloading of content is necessary in order
+      to explore huge masses of data. Otherwise web browsers would slow down
+      to tar under the load of thousands of elements.
+    </p>
+  </header>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -49,7 +63,7 @@
       placeholder: function (id) {
         // Render placeholder
         const plane = tapspace.createPlane()
-        const circle = tapspace.createCircle(10, 'black')
+        const circle = tapspace.createCircle(10, 'gray')
         plane.addChild(circle, plane.at(15, 15))
         return plane
       },
@@ -82,8 +96,12 @@
             id: id,
             color: 'red',
             nodes: [
-              { id: id + 'a', x: 50, y: 0 },
-              { id: id + 'b', x: 30, y: 40 },
+              { id: id + 'a', x: 100, y: 0 },
+              { id: id + 'b', x: 60, y: 80 },
+              { id: id + 'c', x: 60, y: -80 },
+              { id: id + 'd', x: -60, y: -80 },
+              { id: id + 'e', x: -100, y: 0 },
+              { id: id + 'f', x: -60, y: 80 }
             ]
           }
           callback(null, responseData)
@@ -101,7 +119,7 @@
 
         if (data) {
           return parent.getBasis()
-            .scaleBy(0.5, parent.atAnchor())
+            .scaleBy(0.3, parent.atAnchor())
             .offset(data.x, data.y)
         }
 
@@ -163,7 +181,7 @@
       })
 
       const spaceId = currentSpace.data.id
-      loader.closeNeighbors(spaceId, 4)
+      loader.closeNeighbors(spaceId, 5)
       loader.openNeighbors(spaceId, 3)
     })
 
