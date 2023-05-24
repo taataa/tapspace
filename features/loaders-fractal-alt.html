@@ -56,9 +56,15 @@
         const item = tapspace.createCircle(15, data.color)
         item.element.title = 'id:' + id
 
-        item.tappable()
+        item.data = data
+
+        item.tappable({ preventDefault: false })
         item.on('tap', () => {
-          loader.openChild(id, id + 'a')
+          // item.data.nodes.forEach((node) => {
+          //   loader.openChild(node.id)
+          // })
+          // loader.openParent(id)
+          loader.openNeighbors(id, 4)
         })
 
         return item
@@ -67,13 +73,34 @@
       fetcher: function (id, callback) {
         // Async call to fetch data for the generator.
         setTimeout(() => {
-          callback(null, { color: 'red' })
+          const responseData = {
+            id: id,
+            color: 'red',
+            nodes: [
+              { id: id + 'a', x: 40, y: 0 },
+              { id: id + 'b', x: 10, y: 30 },
+            ]
+          }
+          callback(null, responseData)
         }, 400)
       },
 
-      tracker: function (parent, childId) {
-        // Find basis for a child given a parent.
-        return parent.getBasis().offset(30, 0)
+      tracker: function (parent) {
+        // Get IDs of the children of the parent component.
+        return parent.data.nodes.map(node => node.id)
+      },
+
+      mapper: function (parent, childId) {
+        // Find basis for a child with respect to the parent.
+        const data = parent.data.nodes.find(n => n.id === childId)
+
+        if (data) {
+          return parent.getBasis()
+            .scaleBy(0.62, parent.atAnchor())
+            .offset(data.x, data.y)
+        }
+
+        return null
       },
 
       backer: function (childId) {
@@ -96,14 +123,13 @@
       viewport.atCenter().offset(1, 0)
     )
 
-    loader.init('aa', firstBasis, (err) => {
+    loader.init('aabbabab', firstBasis, (err) => {
       if (err) {
         console.error(err)
         return
       }
 
-      // loader.openChild('a', 'aa')
-      loader.openParent('aa', () => console.log('parent'))
+      loader.openChild('aabbababa')
     })
 
   </script>
