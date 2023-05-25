@@ -149,20 +149,14 @@
     viewport.on('idle', () => {
       const hyperspace = viewport.getHyperspace()
       const spaces = hyperspace.getChildren().filter((comp) => {
-        return !comp.isPlaceholder
-      })
-
-      const metrics = viewport.measureMany(spaces).filter((measure) => {
-        // Filter out and remove too small.
-        if (measure.dilation * measure.dilation < tapspace.math.epsilon * 2) {
-          console.log('Too small')
-          const spaceId = measure.target.data.id
-          loader.removeSpace(spaceId)
-
-          return false
+        // Skip placeholders
+        if (comp.data && comp.data.id) {
+          return true
         }
-        return true
+        return false
       })
+
+      const metrics = viewport.measureMany(spaces)
 
       const best = metrics.reduce((acc, metric) => {
         if (metric.visualDistance < acc.minDistance) {
