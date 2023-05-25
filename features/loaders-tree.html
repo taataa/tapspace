@@ -30,8 +30,12 @@
       background: white;
       height: 100%;
     }
-    .current {
+    .tree-node {
+      background: DodgerBlue;
+    }
+    .tree-node.current {
       border: 2px solid black;
+      background: Crimson;
     }
   </style>
 </head>
@@ -70,20 +74,15 @@
 
       generator: function (id, data) {
         // Render content to replace the placeholder
-        const item = tapspace.createCircle(15, data.color)
+        const item = tapspace.createCircle(15)
+        item.addClass('tree-node')
         item.element.title = 'id:' + id
 
         item.data = data
 
-        let numTaps = 0
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
-          numTaps += 1
-          if (numTaps > 5) {
-            loader.closeNeighbors(id, 3)
-          } else {
-            loader.openNeighbors(id, 2)
-          }
+          loader.openNeighbors(id, 3)
         })
 
         return item
@@ -94,7 +93,6 @@
         setTimeout(() => {
           const responseData = {
             id: id,
-            color: 'red',
             nodes: [
               { id: id + 'a', x: 100, y: 0 },
               { id: id + 'b', x: 60, y: 80 },
@@ -141,13 +139,11 @@
       viewport.atCenter().offset(1, 0)
     )
 
-    loader.init('aabbabab', firstBasis, (err) => {
+    loader.init('aaa', firstBasis, (err) => {
       if (err) {
         console.error(err)
         return
       }
-
-      loader.openChild('aabbababa')
     })
 
     viewport.on('idle', () => {
@@ -156,33 +152,54 @@
         return !comp.isPlaceholder
       })
 
-      const metrics = viewport.measureMany(spaces)
+      const metrics = viewport.measureMany(spaces).filter((measure) => {
+        // Filter out and remove too small.
+        if (measure.dilation * measure.dilation < tapspace.math.epsilon * 2) {
+          console.log('Too small')
+          const spaceId = measure.target.data.id
+          loader.removeSpace(spaceId)
+
+          return false
+        }
+        return true
+      })
 
       const best = metrics.reduce((acc, metric) => {
         if (metric.visualDistance < acc.minDistance) {
           return {
             minDistance: metric.visualDistance,
-            bestTarget: metric.target
+            bestTarget: metric.target,
+            secondTarget: acc.bestTarget
           }
         }
         return acc
       }, {
         minDistance: Infinity,
-        bestTarget: null
+        bestTarget: null,
+        secondTarget: null
       })
 
       const currentSpace = best.bestTarget
+      const secondSpace = best.secondTarget
 
-      currentSpace.addClass('current')
       spaces.forEach(space => {
-        if (space !== currentSpace) {
+        if (space !== currentSpace && space !== secondSpace) {
           space.removeClass('current')
+        } else {
+          space.addClass('current')
         }
       })
 
-      const spaceId = currentSpace.data.id
-      loader.closeNeighbors(spaceId, 5)
-      loader.openNeighbors(spaceId, 3)
+      if (currentSpace) {
+        const currentId = currentSpace.data.id
+        loader.closeNeighbors(currentId, 5)
+        loader.openNeighbors(currentId, 3)
+      }
+      if (secondSpace) {
+        const secondId = secondSpace.data.id
+        loader.closeNeighbors(secondId, 5)
+        loader.openNeighbors(secondId, 3)
+      }
     })
 
   </script>
