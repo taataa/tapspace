@@ -192,13 +192,19 @@
 
       if (currentSpace) {
         const currentId = currentSpace.data.id
-        loader.closeNeighbors(currentId, 5)
+
+        if (secondSpace) {
+          const secondId = secondSpace.data.id
+          loader.closeNeighbors([currentId, secondId], 5)
+        } else {
+          loader.closeNeighbors(currentId, 5)
+        }
+
         loader.openNeighbors(currentId, 3)
-      }
-      if (secondSpace) {
-        const secondId = secondSpace.data.id
-        loader.closeNeighbors(secondId, 5)
-        loader.openNeighbors(secondId, 3)
+        if (secondSpace) {
+          const secondId = secondSpace.data.id
+          loader.openNeighbors(secondId, 3)
+        }
       }
     })
 
