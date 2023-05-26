@@ -42,6 +42,13 @@ Your first minimal Tapspace app<br>
 </div>
 
 <div style="clear: both">
+<img src="examples/treeloader/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>Tree Loader</h3>
+An infinite, zoomable fractal displaying capabilities of Tapspace.js TreeLoader<br>
+<a href="examples/treeloader/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/treeloader/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/tiles/preview.jpg" style="float: left;  margin: 0 1em 1em 0">
 <h3>Tiles</h3>
 Pinch-zoomable grid of 400 tile images<br>
