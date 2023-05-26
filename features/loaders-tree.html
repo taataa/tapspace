@@ -77,6 +77,7 @@
         // Render placeholder
         const plane = tapspace.createPlane()
         plane.addClass('tree-space')
+        plane.placeholderId = id
         const circle = tapspace.createCircle(100)
         circle.addClass('tree-placeholder')
         plane.addChild(circle, plane.at(0, 0))
@@ -224,15 +225,27 @@
     viewport.on('idle', () => {
       const hyperspace = viewport.getHyperspace()
       const spaces = hyperspace.getChildren()
-      const loadedSpaces = spaces.filter((comp) => {
+      const metrics = viewport.measureMany(spaces)
+
+      const loadedMetrics = metrics.filter((metric) => {
+        // Remove all too small spaces immediately.
+        // Do this to avoid singular inversions.
+        const determinant = metric.dilation * metric.dilation
+        if (determinant < tapspace.math.epsilon * 100) {
+          const target = metric.target
+          const spaceId = target.placeholderId || target.data.id
+          loader.removeSpace(spaceId)
+
+          return false
+        }
+
         // Skip placeholders
-        if (comp.data && comp.data.id) {
+        if (metric.target.data && metric.target.data.id) {
           return true
         }
+
         return false
       })
-
-      const metrics = viewport.measureMany(loadedSpaces)
 
       // DEBUG
       const metersEl = document.getElementById('meters')
@@ -247,7 +260,7 @@
       //   ].join('<br>'))
       // })
 
-      const best = metrics.reduce((acc, metric) => {
+      const best = loadedMetrics.reduce((acc, metric) => {
         if (metric.visualDistance < acc.bestDistance) {
           // Replace best
           return {
@@ -283,7 +296,8 @@
       const currentSpace = best.bestTarget
       const secondSpace = best.secondTarget
 
-      loadedSpaces.forEach(space => {
+      loadedMetrics.forEach(metric => {
+        const space = metric.target
         if (space !== currentSpace && space !== secondSpace) {
           space.removeClass('current')
           space.item.setContentInput(false)
