@@ -26,8 +26,8 @@ module.exports = function (test, container, tapspace) {
 
     t.deepEqual(
       bounds.getSize().getRaw(),
-      { w: 600, h: 400, d: 0 },
-      'should be flat'
+      { w: 600, h: 400, d: 20 },
+      'should have correct size'
     )
 
     t.end()

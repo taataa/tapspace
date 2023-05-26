@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cards in 3D - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: black;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #AAA;
+      width: 100%;
+      height: 100%;
+    }
+    .myspaceapp {
+      background: #BBB;
+      width: 100%;
+      height: 100%;
+    }
+    .card {
+      border: 2px solid #333;
+      background: white;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+    }
+    .card img {
+      float: left;
+      margin-right: 10px;
+      width: 200px;
+      height: 200px;
+    }
+    .card p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .card ul {
+      margin-top: 0;
+      padding-left: 26px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Init tapspace
+    const view = tapspace.createView('#tapspace').zoomable()
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const layer = tapspace.createSpace()
+    space.addChild(layer)
+
+    // Create html card element with image and text
+    const createCardElement = function (url, txt) {
+      const el = document.createElement('div')
+      el.className = 'card'
+      el.innerHTML = '<img src="' + url + '"> <p>' + txt + '</p>'
+      return el
+    }
+
+    // Placeholder text. From lotremipsum.com
+    const lorem = [
+      `Fundin creatures cooked question? Clothing great Dunharrow. Deputy so morning Valar tree rising born. Forging Sauron the White surrender! What's the Elvish word for 'friend'? Bain unprotected wiser. Rightfully risen Dî. Gibbets can't didn't fun.`,
+      `Giants damp startled tie. Hear my voice. Come back to the light. Named beside Isen 21 more hall merry. Laboring Osgiliath soldier filth anything forgive cracking information shade wearing risky. Dancing promise Freda summoned charm scattered remuneration possible view? Feel Witchking afraid stinky. Private twittering conjurer Bilbo Baggins summit surrounded tread spends broke under! Coast finds domain brandy rack Gamgee!`,
+      `Returns steal Durin river stare some woodlands safe. Tricks quiet safekeeping she's Agreed facing 10 edge dock gathered. Mordor's river-folk suffice. Pieces wipe steps Earendil last abyss. They case starve sigh isn't explain Rohan's! Before fruity journeys bound Goblin-town upset tipsy told restored. Shan't lessened attack caution troop marshland pass Angmar's. You are full of surprises, Master Baggins. Sky heavier hardship World laid pushes adventures weighing dealt. Dying least ancestor owed reins families Sméagol bother?`,
+      `Engages Osgiliath down honor. Weight knife try Freda stretching guard forgiven wall catch miss. Barley Sauron the White succumbed mushrooms tongs happening warriors doom massing dark sunup fellowship? Garrison mistake celebrate finest Mordor's. Fili smoke cloth things pantry others feast clever hesitate appreciation drums union. Elected Woodland plan's deem. All right, then. Keep your secrets. Pumpkin tried hazel Háma sea spoons.`,
+      `I gave you the chance of aiding me willingly, but you have elected the way of pain! Blowing cheese mightiest Kili thin herbs council piece jiffy. Cheekbones legion strayed Cirith. Raised exactly Elfs learn. Trusted hall Théodred's meant vest ride rope brave vagabond? Naysayer trimming shield Argonath criminal guarding pocket? Cracking invite whose friends shouldn't Westfarthing cur? Ponies only dwelt Gandalf language halflings might thousand too sing sight serious!`
+    ]
+
+    // Tapspace element settings
+    const cardSize = { w: 440, h: 220 }
+
+    // Create cards elements, each having and image and text.
+    const cardElements = [
+      createCardElement('assets/midjourney_creatures_cooking_question.jpg', lorem[0]),
+      createCardElement('assets/midjourney_damp_giants_came_back_to_light.jpg', lorem[1]),
+      createCardElement('assets/midjourney_steal_a_river_to_stare_some_woodland.jpg', lorem[2]),
+      createCardElement('assets/midjourney_stretching_honor_guard_try_catch_wall_warriors_doom.jpg', lorem[3]),
+      createCardElement('assets/midjourney_the_way_of_painful_cheese_and_thin_herbs.jpg', lorem[4])
+    ]
+
+    // Create affine cards
+    const cards = cardElements.map((elem) => {
+      const card = tapspace.createItem(elem)
+      card.setSize(cardSize)
+      card.setAnchor(card.atCenter())
+      card.setContentInput('pointer')
+      return card
+    })
+
+    // Position the cards into space, relative to each other.
+    layer.addChild(cards[0], view.atNorm(0.3, 0.4))
+    layer.addChild(cards[1], cards[0].atTopRight().offset(0, -100))
+    layer.addChild(cards[2], cards[1].atBottomRight().offset(0, 100))
+    layer.addChild(cards[3], cards[1].atBottomMid().offset(150, 450))
+    layer.addChild(cards[4], cards[1].atBottomMid().offset(-150, 550))
+
+    // Adjust font size to fit square.
+    cards[0].element.style.fontSize = '1.1em'
+    cards[1].element.style.fontSize = '0.8em'
+    cards[2].element.style.fontSize = '0.75em'
+    cards[3].element.style.fontSize = '0.85em'
+    cards[4].element.style.fontSize = '0.8em'
+
+    // Rotate a little bit.
+    cards[0].rotateBy(-0.1, cards[0].atBottomMid())
+    cards[1].rotateBy(0, cards[1].atBottomMid())
+    cards[2].rotateBy(0.1, cards[2].atBottomMid())
+
+    // Create info card for links
+    const createInfoElement = (txt) => {
+      const el = document.createElement('div')
+      el.className = 'card'
+      el.innerHTML = '<p>' + txt + '</p>'
+      return el
+    }
+    const infoText = `<p><strong>Tools:</strong></p>
+    <ul>
+      <li>Zoomability built with <a href="https://taataa.github.io/tapspace/">Tapspace</a></li>
+      <li>Text generated with <br><a href="https://lotremipsum.com/">LOTRem Ipsum</a></li>
+      <li>Images generated with <a href="https://www.midjourney.com/home/">Midjourney</a></li>
+    </ul>`
+    const infoCard = tapspace.createItem(createInfoElement(infoText))
+    infoCard.setSize(162, 100)
+    infoCard.setAnchor(infoCard.atMid())
+    infoCard.setContentInput('pointer')
+    layer.addChild(infoCard, cards[3].atTopLeft().offset(0, -100))
+    infoCard.element.style.fontSize = '0.62em'
+
+    // Nodes
+    const nodes = tapspace.createSpace()
+    space.addChild(nodes)
+
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createCircle(20, 'orange'), infoCard.atBottomRight())
+
+  </script>
+</body>
+</html>

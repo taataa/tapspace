@@ -7,6 +7,25 @@ Architectural guidelines for tapspace classes:
    This is against DRY but for a reason.
 */
 
+.affine-viewport {
+  /* Space elements are absolutely positioned and therefore
+    the view must be either absolutely or relatively positioned. */
+  position: relative;
+  /* Viewport is a camera that looks to the space, thus crop */
+  overflow: hidden;
+  /* Mobile browsers have touch actions that cancel our gestures */
+  touch-action: none;
+  /* Camera distance from the image plane in viewport pixels */
+  perspective: none;
+  /* Host app must give viewport height for it to be visible.
+    However, that requirement could be annoying to learn if
+    the viewport is not visible at all (default zero height).
+    Therefore set a minimum height to avoid the annoyance. */
+  min-height: 200px;
+  /* Ensure viewport contents do not take part to external 3D space */
+  transform-style: flat;
+}
+
 .affine-hyperspace {
   /* The space contains the layers and is a child of viewport.
      It must fill the viewport behind controls. */
@@ -14,8 +33,8 @@ Architectural guidelines for tapspace classes:
   height: 100%;
   /* Ensure default transform origin. */
   transform-origin: 0 0;
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
+  /* Fast flat by default */
+  transform-style: flat;
 }
 
 .affine-layer,
@@ -38,14 +57,8 @@ Architectural guidelines for tapspace classes:
 }
 
 .affine-group,
-.affine-space {
-  /* Span the same 3D space all over the affine elements. */
-  transform-style: preserve-3d;
-}
-
 .affine-plane {
-  /* Force plane and its contents to 2D.
-     This supposedly gives computational benefits. */
+  /* Flat by default. */
   transform-style: flat;
 }
 
@@ -67,8 +80,8 @@ Architectural guidelines for tapspace classes:
   /* Ensure default transform origin.
     Planes with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
-  /* Init 3D transform. Maybe unnecessary. */
-  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  /* Init transform. Maybe unnecessary. */
+  transform: matrix(1, 0, 0, 1, 0, 0);
   /* Show only the front face. This helps Gecko-based browsers
     to render 3D elements. */
   /* backface-visibility: hidden; */
@@ -76,25 +89,6 @@ Architectural guidelines for tapspace classes:
 
 .affine-item {
   /* Items are always flat */
-  transform-style: flat;
-}
-
-.affine-viewport {
-  /* Space elements are absolutely positioned and therefore
-    the view must be either absolutely or relatively positioned. */
-  position: relative;
-  /* Viewport is a camera that looks to the space, thus crop */
-  overflow: hidden;
-  /* Mobile browsers have touch actions that cancel our gestures */
-  touch-action: none;
-  /* Camera distance from the image plane in viewport pixels */
-  perspective: 300px;
-  /* Host app must give viewport height for it to be visible.
-    However, that requirement could be annoying to learn if
-    the viewport is not visible at all (default zero height).
-    Therefore set a minimum height to avoid the annoyance. */
-  min-height: 200px;
-  /* Ensure viewport contents do not take part to external 3D space */
   transform-style: flat;
 }
 

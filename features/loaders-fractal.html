@@ -267,7 +267,7 @@
     })
 
     loader.on('initiated', () => {
-      const contentBounds = viewport.getHyperspace().getBoundingSphere()
+      const contentBounds = viewport.getHyperspace().getBoundingCircle()
       const fractalCenter = contentBounds.atCenter()
       viewport.translateTo(fractalCenter)
     })

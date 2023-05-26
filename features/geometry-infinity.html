@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Infinite Geometry - Tapspace Features</title>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 600px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .hello {
+      background: transparent;
+      color: black;
+      border: 0px dotted gray;
+    }
+    .world {
+      background: red;
+    }
+    .mylabel {
+      margin-top: 0;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Infinite Geometry – Tapspace Features</h1>
+  <p>You can zoom to surfaces indefinitely.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.pannable().zoomable()
+    const layer = tapspace.createSpace()
+    viewport.addChild(layer)
+
+    // Create a component for reference. A group of hellos
+    const template = (t) => '<p class="mylabel">' + t + '</p>'
+
+    const blockA = tapspace.createItem('')
+    blockA.addClass('mycomponent')
+    layer.addChild(blockA, viewport.atNorm(0.1, 0.1))
+
+    // Change perspective.
+    layer.setAnchor(blockA.atNorm(1.15, 0.75))
+
+    // 2D Hellos
+    const numHellos = 16
+    const helloSize = { w: 80, h: 40 }
+    let prevHello = null
+    for (let i = 0; i < numHellos; i += 1) {
+      const html = template('Hello')
+      const hello = tapspace.createItem(html)
+      hello.addClass('hello')
+      hello.isHello = true
+      hello.setSize(helloSize)
+      hello.setContentInput(false)
+      layer.addChild(hello)
+      hello.scaleBy(Math.pow(0.618, i))
+      let position
+      if (i === 0) {
+        position = blockA.atNorm(0.38, 0.38)
+      } else {
+        position = prevHello.atNorm(0.51, 0.8)
+      }
+      hello.translateTo(position)
+      prevHello = hello
+    }
+
+    // 2D Worlds
+    const numWorlds = 16
+    const worldSize = { w: 80, h: 40 }
+
+    const createWorld = () => {
+      const html = template('World')
+      const world = tapspace.createItem(html)
+      world.addClass('world')
+      world.isWorld = true
+      world.setSize(worldSize)
+      world.setContentInput(false)
+      return world
+    }
+
+    const positionWorld = (world, group, relative) => {
+      group.prependChild(world)
+      const targetScale = relative.getScale().scaleBy(0.618)
+      world.setScale(targetScale, world.at(0, 0))
+      const targetPosition = relative.atNorm(-0.3, 0.8)
+      world.translateTo(targetPosition)
+      // Link the world according to the position.
+      world.addLink('prev', prevWorld)
+      prevWorld.addLink('next', world)
+    }
+
+    let prevWorld = null
+    for (let i = 0; i < numWorlds; i += 1) {
+      const world = createWorld()
+
+      if (prevWorld) {
+        positionWorld(world, layer, prevWorld)
+      } else {
+        layer.prependChild(world)
+        world.translateTo(blockA.atNorm(1.38, 0.38))
+      }
+
+      prevWorld = world
+    }
+
+    // Center viewport to components
+    viewport.match({
+      source: viewport.atMid(),
+      target: blockA.atMid()
+    })
+
+    // Add a control
+    const zoomControl = new tapspace.components.ZoomControl({
+      scaleStep: 1.5
+    })
+    viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(10, -10)
+    })
+
+    // Clean up the small elements
+    viewport.on('idle', () => {
+      const metrics = viewport.measureGroup(layer)
+      metrics.forEach(metric => {
+        if (!metric.target.isWorld) {
+          return
+        }
+
+        if (metric.dilation < 0.02) {
+          metric.target.removeLinks()
+          metric.target.remove()
+        } else if (metric.dilation > 0.05 && metric.distanceToViewport < 200) {
+          if (!metric.target.hasLink('next')) {
+            const world = createWorld()
+            positionWorld(world, layer, metric.target)
+          }
+          console.log('links', Object.keys(metric.target.links))
+        }
+      })
+    })
+
+  </script>
+</body>
+</html>

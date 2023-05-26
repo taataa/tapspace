@@ -60,7 +60,7 @@
     item.on('tap', () => {
       console.log('focus')
       viewport.animateOnce()
-      viewport.fit(item, { margin: '30%' })
+      viewport.zoomTo(item, 0.2)
     })
   </script>
 </body>

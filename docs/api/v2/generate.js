@@ -25,7 +25,7 @@ yamdog.generate({
     'WheelCapturer': 'tapspace.capturers.WheelCapturer',
     // Components
     'Arc': 'tapspace.components.Arc',
-    'BasisComponent': 'tapspace.components.BasisComponent',
+    'Component': 'tapspace.components.Component',
     'BlockComponent': 'tapspace.components.BlockComponent',
     'CircleItem': 'tapspace.components.CircleItem',
     'ControlComponent': 'tapspace.components.ControlComponent',
@@ -61,6 +61,7 @@ yamdog.generate({
     'Volume': 'tapspace.geometry.Volume',
     // Loaders
     'FractalLoader': 'tapspace.loaders.FractalLoader',
+    'TreeLoader': 'tapspace.loaders.TreeLoader',
     // Metrics
     'Measurement': 'tapspace.metrics.Measurement'
   },
@@ -150,7 +151,7 @@ yamdog.generate({
     }),
     deco.sourceLinks({
       basePath: path.resolve(__dirname, '..', '..', '..'),
-      baseUrl: 'https://github.com/taataa/tapspace/blob/2.0-dev/'
+      baseUrl: 'https://github.com/taataa/tapspace/blob/master/'
     }),
     deco.backTopLinks()
   ]

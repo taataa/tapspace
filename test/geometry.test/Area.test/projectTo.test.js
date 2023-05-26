@@ -8,7 +8,10 @@ module.exports = function (test, container, tapspace) {
     const view = tapspace.createView('#testspace')
     const space = tapspace.createSpace()
     view.addChild(space)
-    const camDist = view.getCameraDistance().getNumber()
+
+    // Virtual camera
+    const camDist = 300
+    const camera = view.atCenter().offset(0, 0, -camDist)
 
     // Create an element
     const hello = tapspace.createItem('hello')
@@ -20,7 +23,7 @@ module.exports = function (test, container, tapspace) {
 
     // Original area: 400
     t.equal(
-      area.projectTo(view, view.atCamera()).getNumber(),
+      area.projectTo(view, camera).getNumber(),
       100,
       'should have quarter of original area'
     )

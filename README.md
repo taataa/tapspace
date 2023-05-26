@@ -14,6 +14,13 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 This installs an alpha version of Tapspace.js 2.x. For the earlier and stable Tapspace.js 1.x, see [1.6-stable](https://github.com/taataa/tapspace/tree/1.6-stable) branch.
 
+Via [unpkg](https://www.unpkg.com/browse/tapspace@2.0.0-alpha.8/):
+
+```
+<script src="https://unpkg.com/tapspace@2.0.0-alpha.8/dist/tapspace.min.js"></script>
+```
+
+
 ## Documentation
 
 See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:

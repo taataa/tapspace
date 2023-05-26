@@ -9,14 +9,16 @@ module.exports = function (test, container, tapspace) {
     const space = tapspace.createSpace()
     view.addChild(space)
 
-    // Assume camera distance 300
-    const viewDepth = view.getCameraDistance().getNumber()
+    // Virtual camera
+    const camDist = 300
+    const camera = view.at(0, 0, -camDist)
+
     const item = tapspace.createCircle(10, 'black')
-    space.addChild(item, space.at(10, 10, viewDepth))
+    space.addChild(item, space.at(10, 10, camDist))
     // Get a box. It should be at space (0, 0, 300) and have size (20, 20, 0)
     const box = item.getBoundingBox()
 
-    const projectedBox = box.projectTo(view, view.at(0, 0, -viewDepth))
+    const projectedBox = box.projectTo(view, camera)
 
     t.equal(
       projectedBox.getWidth().getNumber(),

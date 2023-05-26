@@ -2,7 +2,7 @@
 
 We believe **zoomable touch user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built ***Tapspace***, a **JavaScript** library dedicated for building such **dynamic front-ends**. It implements a **scene graph** that provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
-[**Tutorial**](tutorial/) is a good place to start for newcomers.
+[**Tutorial**](tutorial/v2/) is a good place to start for newcomers.
 
 [**API Reference**](api/v2/) comes handy when coding.
 
@@ -39,6 +39,13 @@ Whether you dream about a vast data visualization, a deep map-like home page, or
 <h3>Minimal</h3>
 Your first minimal Tapspace app<br>
 <a href="examples/minimal/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/minimal/">[See source]</a>
+</div>
+
+<div style="clear: both">
+<img src="examples/treeloader/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>Tree Loader</h3>
+An infinite, zoomable fractal displaying capabilities of Tapspace.js TreeLoader<br>
+<a href="examples/treeloader/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/treeloader/">[See source]</a>
 </div>
 
 <div style="clear: both">
