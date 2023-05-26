@@ -33,12 +33,12 @@
     .tree-node {
       background: DodgerBlue;
       text-align: center;
-      padding: 4rem;
+      padding: 4.3rem 4rem;
     }
     .tree-node.current {
       border: 1rem solid black;
       background: MistyRose;
-      padding: 3rem;
+      padding: 3.3rem 3rem;
     }
   </style>
 </head>
@@ -79,7 +79,9 @@
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
           loader.openNeighbors(id, 3)
+          window.getSelection().removeAllRanges()
         })
+        item.setContentInput(false)
 
         return item
       },
@@ -98,6 +100,14 @@
               + 'is necessary in order to explore huge masses of data. '
               + 'Otherwise web browsers would slow down to tar '
               + 'under the load of thousands of elements.</div>'
+            fontSize = 16
+          } else if (id === 'aaacf') {
+            content = '<div>tapspace.loaders.TreeLoader is the class '
+              + 'that drives '
+              + 'the recursive construction and destruction of content. '
+              + '<br><br>'
+              + 'Think it as a sliding window or a dynamic subset for '
+              + 'your tree of content.</div>'
             fontSize = 16
           }
 
@@ -145,20 +155,14 @@
       }
     })
 
-    const firstBasis = tapspace.geometry.Basis.fromPoints(
-      viewport,
-      viewport.atCenter(),
-      viewport.atCenter().offset(1, 0)
+    const firstBasis = viewport.getBasisAt(
+      viewport.atCenter().offset(-150, -170),
     )
 
     loader.init('aaa', firstBasis, (err, sid, space) => {
       if (err) {
         console.error(err)
         return
-      }
-
-      if (space) {
-        viewport.translateTo(space.atAnchor())
       }
     })
 
