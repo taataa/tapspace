@@ -19,16 +19,16 @@
       background: white;
       color: black;
     }
-    header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 2;
-      padding: 0em 1em;
-    }
     .myspaceapp {
       background: white;
       height: 100%;
+    }
+    .meters {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+      padding: 0 0 1em 1em;
     }
     .tree-space .tree-placeholder {
       background-image: url(assets/Ajax-loader.gif);
@@ -54,6 +54,7 @@
 <body>
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
+  <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
   <script src="../dist/tapspace.min.js"></script>
@@ -233,6 +234,9 @@
 
       const metrics = viewport.measureMany(loadedSpaces)
 
+      // DEBUG
+      const metersEl = document.getElementById('meters')
+      metersEl.innerHTML = '# of nodes: ' + spaces.length
 
       // DEBUG
       // display visual distance
