@@ -123,6 +123,12 @@
             content = '<div>I am the root node. I do not have parents but '
               + 'I have lots of grandchildren.</div>'
             fontSize = 24
+          } else if (id === 'aa') {
+            content = '<div>The nodes with thick black border '
+              + 'represent our current location in the tree. '
+              + 'Loading and unloading of content is based on '
+              + 'the traversing distances to these nodes.</div>'
+            fontSize = 18
           } else if (id === 'ab') {
             content = '<div class="comic">And I am upside down!</div>'
             fontSize = 40
@@ -216,7 +222,8 @@
 
     viewport.on('idle', () => {
       const hyperspace = viewport.getHyperspace()
-      const spaces = hyperspace.getChildren().filter((comp) => {
+      const spaces = hyperspace.getChildren()
+      const loadedSpaces = spaces.filter((comp) => {
         // Skip placeholders
         if (comp.data && comp.data.id) {
           return true
@@ -224,7 +231,8 @@
         return false
       })
 
-      const metrics = viewport.measureMany(spaces)
+      const metrics = viewport.measureMany(loadedSpaces)
+
 
       // DEBUG
       // display visual distance
@@ -242,7 +250,9 @@
             bestDistance: metric.visualDistance,
             secondDistance: acc.bestDistance,
             bestTarget: metric.target,
-            secondTarget: acc.bestTarget
+            secondTarget: acc.bestTarget,
+            bestMetric: metric,
+            secondMetric: acc.bestMetric
           }
         }
         if (metric.visualDistance < acc.secondDistance) {
@@ -251,20 +261,25 @@
             bestDistance: acc.bestDistance,
             secondDistance: metric.visualDistance,
             bestTarget: acc.bestTarget,
-            secondTarget: metric.target
+            secondTarget: metric.target,
+            bestMetric: acc.bestMetric,
+            secondMetric: metric
           }
         }
         return acc
       }, {
         bestDistance: Infinity,
+        secondDistance: Infinity,
         bestTarget: null,
-        secondTarget: null
+        secondTarget: null,
+        bestMetric: null,
+        secondMetric: null
       })
 
       const currentSpace = best.bestTarget
       const secondSpace = best.secondTarget
 
-      spaces.forEach(space => {
+      loadedSpaces.forEach(space => {
         if (space !== currentSpace && space !== secondSpace) {
           space.removeClass('current')
           space.item.setContentInput(false)
@@ -290,8 +305,15 @@
           loader.openNeighbors(secondId, 3)
         }
       }
-    })
 
+      // Prevent viewport from getting too far from the current node.
+      const dilationLimit = 0.1
+      if (best.bestMetric && best.bestMetric.dilation < dilationLimit) {
+        const origin = best.bestMetric.target.atAnchor()
+        viewport.scaleBy(best.bestMetric.dilation / dilationLimit, origin)
+        viewport.translateTo(origin)
+      }
+    })
   </script>
 </body>
 </html>
