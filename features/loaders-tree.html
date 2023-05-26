@@ -32,23 +32,17 @@
     }
     .tree-node {
       background: DodgerBlue;
+      text-align: center;
+      padding: 4rem;
     }
     .tree-node.current {
-      border: 2px solid black;
-      background: Crimson;
+      border: 1rem solid black;
+      background: MistyRose;
+      padding: 3rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Tree Loader – Tapspace Features</h1>
-    <p>
-      Recursive loading and unloading of content is necessary in order
-      to explore huge masses of data. Otherwise web browsers would slow down
-      to tar under the load of thousands of elements.
-    </p>
-  </header>
-
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
 
@@ -67,18 +61,20 @@
       placeholder: function (id) {
         // Render placeholder
         const plane = tapspace.createPlane()
-        const circle = tapspace.createCircle(10, 'gray')
-        plane.addChild(circle, plane.at(15, 15))
+        const circle = tapspace.createCircle(100, 'gray')
+        plane.addChild(circle, plane.at(150, 150))
         return plane
       },
 
       generator: function (id, data) {
         // Render content to replace the placeholder
-        const item = tapspace.createCircle(15)
+        const item = tapspace.createCircle(150)
         item.addClass('tree-node')
         item.element.title = 'id:' + id
 
         item.data = data
+        item.element.style.fontSize = data.fontSize + 'px'
+        item.html(data.content)
 
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
@@ -90,16 +86,32 @@
 
       fetcher: function (id, callback) {
         // Async call to fetch data for the generator.
+        // For the sake of demo, simulate a server response
         setTimeout(() => {
+          let content = ''
+          let fontSize = 16
+          if (id === 'aaa') {
+            content = '<div>Tree Loader<br>–<br>Tapspace.js Demo</div>'
+            fontSize = 32
+          } else if (id === 'aaac') {
+            content = '<div>Recursive loading and unloading of content '
+              + 'is necessary in order to explore huge masses of data. '
+              + 'Otherwise web browsers would slow down to tar '
+              + 'under the load of thousands of elements.</div>'
+            fontSize = 16
+          }
+
           const responseData = {
             id: id,
+            content: content,
+            fontSize: fontSize,
             nodes: [
-              { id: id + 'a', x: 100, y: 0 },
-              { id: id + 'b', x: 60, y: 80 },
-              { id: id + 'c', x: 60, y: -80 },
-              { id: id + 'd', x: -60, y: -80 },
-              { id: id + 'e', x: -100, y: 0 },
-              { id: id + 'f', x: -60, y: 80 }
+              { id: id + 'a', x: 1000, y: 0 },
+              { id: id + 'b', x: 600, y: 800 },
+              { id: id + 'c', x: 600, y: -800 },
+              { id: id + 'd', x: -600, y: -800 },
+              { id: id + 'e', x: -1000, y: 0 },
+              { id: id + 'f', x: -600, y: 800 }
             ]
           }
           callback(null, responseData)
@@ -139,10 +151,14 @@
       viewport.atCenter().offset(1, 0)
     )
 
-    loader.init('aaa', firstBasis, (err) => {
+    loader.init('aaa', firstBasis, (err, sid, space) => {
       if (err) {
         console.error(err)
         return
+      }
+
+      if (space) {
+        viewport.translateTo(space.atAnchor())
       }
     })
 
@@ -179,8 +195,10 @@
       spaces.forEach(space => {
         if (space !== currentSpace && space !== secondSpace) {
           space.removeClass('current')
+          space.setContentInput(false)
         } else {
           space.addClass('current')
+          space.setContentInput('pointer')
         }
       })
 
