@@ -25,10 +25,10 @@
     }
     .meters {
       position: absolute;
-      left: 0;
+      right: 0;
       bottom: 0;
       z-index: 2;
-      padding: 0 0 1em 1em;
+      padding: 0 16px 16px 0;
     }
     .tree-space .tree-placeholder {
       background-image: url(../assets/Ajax-loader.gif);
@@ -66,6 +66,13 @@
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace')
     viewport.zoomable()
+    // Add a control for navigation
+    const zoomControl = new tapspace.components.ZoomControl()
+    viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(16, -16)
+    })
 
     const jitter = (mean) => {
       // Poisson process inter-arrival time to simulate natural lag.
