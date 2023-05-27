@@ -37,13 +37,15 @@
       background-size: 50%;
     }
     .tree-space .tree-node {
-      background: DodgerBlue;
+      background-color: DodgerBlue;
       text-align: center;
       padding: 4.3rem 4rem;
+      background-position: center center;
+      background-size: 300px;
     }
     .tree-space.current .tree-node {
       border: 1rem solid black;
-      background: MistyRose;
+      background-color: MistyRose;
       padding: 3.3rem 3rem;
     }
     .comic {
@@ -84,6 +86,89 @@
         return plane
       },
 
+      fetcher: function (id, callback) {
+        // Async call to fetch data for the generator.
+        // For the sake of demo, simulate a server response
+        setTimeout(() => {
+          let content = ''
+          let fontSize = 16
+          let img = null
+          let orientation = 0
+          if (id === 'a') {
+            content = '<div>I am the root node. I do not have parents but '
+              + 'I have lots of grandchildren.</div>'
+            fontSize = 24
+          } else if (id === 'aa') {
+            content = '<div>' +
+              'Thick black borders in this demo represent ' +
+              'our current location. ' +
+              'We can have many locations. ' +
+              'The current locations drive the content loading ' +
+              'by expanding and limiting their neighborhood.</div>'
+            fontSize = 17
+          } else if (id === 'ab') {
+            content = '<div class="comic">And I am upside down!</div>'
+            fontSize = 40
+            orientation = 170
+          } else if (id === 'aaa') {
+            content = '<div>Tree Loader<br>–<br>'
+              + '<a href="https://github.com/taataa/tapspace" target="_blank">'
+              + 'Tapspace.js</a> Demo</div>'
+            fontSize = 32
+          } else if (id === 'aaae') {
+            img = '../assets/chellah_star.jpg'
+          } else if (id === 'aaac') {
+            content = '<div>Recursive loading and unloading of content '
+              + 'is necessary in order to explore huge masses of data. '
+              + 'Otherwise web browsers would slow down to tar '
+              + 'under the load of thousands of elements.</div>'
+            fontSize = 16
+          } else if (id === 'aaaee') {
+            img = '../assets/oudaya_door.jpg'
+          } else if (id === 'aaace') {
+            content = '<div>This demo simulates fetching content from '
+              + 'backend servers by applying a jittered delay. Therefore '
+              + 'some nodes take more time to load than others.</div>'
+            fontSize = 18
+          } else if (id === 'aaacf') {
+            content = '<div>'
+              + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
+              + 'tapspace.loaders.TreeLoader</a> is the class '
+              + 'that drives the recursive and asynchronous '
+              + 'loading, construction, and destruction of content. '
+              + '<br><br>'
+              + 'Think it as a sliding window or a dynamic subset for '
+              + 'your tree of content.</div>'
+            fontSize = 14
+          } else if (id === 'aaaeea') {
+            img = '../assets/wood-cracked.jpg'
+          } else if (id === 'aaaeeae') {
+            img = '../assets/tile01.png'
+          } else if (id === 'aaaeeaee') {
+            img = '../assets/gearhandle.png'
+          } else if (id.startsWith('aaaeeaeea')) {
+            img = '../assets/chellah_nw.jpg'
+          }
+
+          const responseData = {
+            id: id,
+            content: content,
+            fontSize: fontSize,
+            img: img,
+            orientation: orientation,
+            nodes: [
+              { id: id + 'a', x: 1000, y: 0 },
+              { id: id + 'b', x: 600, y: 800 },
+              { id: id + 'c', x: 600, y: -800 },
+              { id: id + 'd', x: -600, y: -800 },
+              { id: id + 'e', x: -1000, y: 0 },
+              { id: id + 'f', x: -600, y: 800 }
+            ]
+          }
+          callback(null, responseData)
+        }, jitter(400))
+      },
+
       generator: function (id, data) {
         // Render content to replace the placeholder
         const plane = tapspace.createPlane()
@@ -96,6 +181,10 @@
 
         item.element.style.fontSize = data.fontSize + 'px'
         item.html(data.content)
+
+        if (data.img) {
+          item.element.style.backgroundImage = `url(${data.img})`
+        }
 
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
@@ -114,78 +203,6 @@
         return plane
       },
 
-      fetcher: function (id, callback) {
-        // Async call to fetch data for the generator.
-        // For the sake of demo, simulate a server response
-        setTimeout(() => {
-          let content = ''
-          let fontSize = 16
-          let orientation = 0
-          if (id === 'a') {
-            content = '<div>I am the root node. I do not have parents but '
-              + 'I have lots of grandchildren.</div>'
-            fontSize = 24
-          } else if (id === 'aa') {
-            content = '<div>The nodes with thick black border '
-              + 'represent our current location in the tree. '
-              + 'Loading and unloading of content is based on '
-              + 'the traversing distances to these nodes.</div>'
-            fontSize = 18
-          } else if (id === 'ab') {
-            content = '<div class="comic">And I am upside down!</div>'
-            fontSize = 40
-            orientation = 170
-          } else if (id === 'aaa') {
-            content = '<div>Tree Loader<br>–<br>'
-              + '<a href="https://github.com/taataa/tapspace" target="_blank">'
-              + 'Tapspace.js</a> Demo</div>'
-            fontSize = 32
-          } else if (id === 'aaac') {
-            content = '<div>Recursive loading and unloading of content '
-              + 'is necessary in order to explore huge masses of data. '
-              + 'Otherwise web browsers would slow down to tar '
-              + 'under the load of thousands of elements.</div>'
-            fontSize = 16
-          } else if (id === 'aaace') {
-            content = '<div>This demo simulates fetching content from '
-              + 'backend servers by applying a jittered delay. Therefore '
-              + 'some nodes take more time to load than others.</div>'
-            fontSize = 18
-          } else if (id === 'aaacf') {
-            content = '<div>'
-              + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
-              + 'tapspace.loaders.TreeLoader</a> is the class '
-              + 'that drives the recursive and asynchronous '
-              + 'loading, construction, and destruction of content. '
-              + '<br><br>'
-              + 'Think it as a sliding window or a dynamic subset for '
-              + 'your tree of content.</div>'
-            fontSize = 14
-          }
-
-          const responseData = {
-            id: id,
-            content: content,
-            fontSize: fontSize,
-            orientation: orientation,
-            nodes: [
-              { id: id + 'a', x: 1000, y: 0 },
-              { id: id + 'b', x: 600, y: 800 },
-              { id: id + 'c', x: 600, y: -800 },
-              { id: id + 'd', x: -600, y: -800 },
-              { id: id + 'e', x: -1000, y: 0 },
-              { id: id + 'f', x: -600, y: 800 }
-            ]
-          }
-          callback(null, responseData)
-        }, jitter(400))
-      },
-
-      tracker: function (parent) {
-        // Get IDs of the children of the parent component.
-        return parent.data.nodes.map(node => node.id)
-      },
-
       mapper: function (parent, childId) {
         // Find basis for a child with respect to the parent.
         const data = parent.data.nodes.find(n => n.id === childId)
@@ -197,6 +214,11 @@
         }
 
         return null
+      },
+
+      tracker: function (parent) {
+        // Get IDs of the children of the parent component.
+        return parent.data.nodes.map(node => node.id)
       },
 
       backer: function (childId) {
