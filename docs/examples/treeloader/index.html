@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader - Tapspace Features</title>
+  <title>Tree Loader - Tapspace Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -59,7 +59,8 @@
   <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.9/dist/tapspace.min.js"></script>
+  <!-- script src="../../../dist/tapspace.min.js"></script -->
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -254,112 +255,49 @@
     viewport.on('idle', () => {
       const hyperspace = viewport.getHyperspace()
       const spaces = hyperspace.getChildren()
-      const metrics = viewport.measureMany(spaces)
 
-      const loadedMetrics = metrics.filter((metric) => {
-        // Remove all too small spaces immediately.
-        // Do this to avoid singular inversions.
-        const determinant = metric.dilation * metric.dilation
-        if (determinant < tapspace.math.epsilon * 100) {
-          const target = metric.target
-          const spaceId = target.placeholderId || target.data.id
-          loader.removeSpace(spaceId)
-
-          return false
-        }
-
-        // Skip placeholders
-        if (metric.target.data && metric.target.data.id) {
-          return true
-        }
-
-        return false
+      // Remove all too small spaces immediately.
+      // Do this to avoid singular inversions.
+      const singulars = viewport.findSingular()
+      singulars.forEach(space => {
+        const spaceId = space.placeholderId || space.data.id
+        loader.removeSpace(spaceId)
       })
 
       // DEBUG
+      const numNodes = spaces.length - singulars.length
       const metersEl = document.getElementById('meters')
-      metersEl.innerHTML = '# of nodes: ' + spaces.length
+      metersEl.innerHTML = '# of nodes: ' + numNodes
 
-      // DEBUG
-      // display visual distance
-      // metrics.forEach(metric => {
-      //   metric.target.html([
-      //     'distance: ' + metric.visualDistance.toFixed(3),
-      //     'areaRatio: ' + metric.areaRatio.toFixed(3)
-      //   ].join('<br>'))
-      // })
-
-      const best = loadedMetrics.reduce((acc, metric) => {
-        if (metric.visualDistance < acc.bestDistance) {
-          // Replace best
-          return {
-            bestDistance: metric.visualDistance,
-            secondDistance: acc.bestDistance,
-            bestTarget: metric.target,
-            secondTarget: acc.bestTarget,
-            bestMetric: metric,
-            secondMetric: acc.bestMetric
-          }
-        }
-        if (metric.visualDistance < acc.secondDistance) {
-          // Replace second best
-          return {
-            bestDistance: acc.bestDistance,
-            secondDistance: metric.visualDistance,
-            bestTarget: acc.bestTarget,
-            secondTarget: metric.target,
-            bestMetric: acc.bestMetric,
-            secondMetric: metric
-          }
-        }
-        return acc
-      }, {
-        bestDistance: Infinity,
-        secondDistance: Infinity,
-        bestTarget: null,
-        secondTarget: null,
-        bestMetric: null,
-        secondMetric: null
+      // Skip placeholders
+      const loadedSpaces = spaces.filter((space) => {
+        return space.data && space.data.id
       })
 
-      const currentSpace = best.bestTarget
-      const secondSpace = best.secondTarget
+      // Find closest, our current location.
+      const nearest = viewport.measureNearest(loadedSpaces, 2)
+      const nearestSpaces = nearest.map(ne => ne.target)
 
-      loadedMetrics.forEach(metric => {
-        const space = metric.target
-        if (space !== currentSpace && space !== secondSpace) {
-          space.removeClass('current')
-          space.item.setContentInput(false)
-        } else {
+      // Style the closest. Unstyle others.
+      loadedSpaces.forEach(space => {
+        if (nearestSpaces.includes(space)) {
           space.addClass('current')
           space.item.setContentInput('pointer')
+        } else {
+          space.removeClass('current')
+          space.item.setContentInput(false)
         }
       })
 
-      if (currentSpace) {
-        const currentId = currentSpace.data.id
+      // Expand and prune the tree.
+      const nearestIds = nearestSpaces.map(space => space.data.id)
+      loader.closeNeighbors(nearestIds, 4)
+      nearestIds.forEach(spaceId => {
+        loader.openNeighbors(spaceId, 3)
+      })
 
-        if (secondSpace) {
-          const secondId = secondSpace.data.id
-          loader.closeNeighbors([currentId, secondId], 4)
-        } else {
-          loader.closeNeighbors(currentId, 4)
-        }
-
-        loader.openNeighbors(currentId, 3)
-        if (secondSpace) {
-          const secondId = secondSpace.data.id
-          loader.openNeighbors(secondId, 3)
-        }
-      }
-
-      // Prevent viewport from getting too far from the current node.
-      const dilationLimit = 0.1
-      if (best.bestMetric && best.bestMetric.dilation < dilationLimit) {
-        const origin = best.bestMetric.target.atAnchor()
-        viewport.scaleBy(best.bestMetric.dilation / dilationLimit, origin)
-        viewport.translateTo(origin)
-      }
+      // Prevent viewport from getting too far from the current nodes.
+      viewport.limitTo(nearestSpaces)
     })
   </script>
 </body>
