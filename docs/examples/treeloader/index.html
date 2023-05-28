@@ -212,10 +212,22 @@
 
         item.tappable({ preventDefault: false })
         item.on('tap', () => {
-          loader.openNeighbors(id, 3)
+          const metric = viewport.measureOne(item)
+
+          // Zoom to
+          if (metric.areaRatio > 0.01) {
+            viewport.animateOnce({ duration: '500ms' })
+            viewport.zoomTo(item, 0.2)
+          } else if (metric.areaRatio > 0.001) {
+            viewport.animateOnce({ duration: '800ms' })
+            viewport.zoomTo(item, 0.4)
+          } else if (metric.areaRatio > 0.0001) {
+            viewport.animateOnce({ duration: '1500ms' })
+            viewport.zoomTo(item, 0.6)
+          }
+
+          // Clear annoying accidental text selections.
           window.getSelection().removeAllRanges()
-          viewport.animateOnce({ duration: '500ms' })
-          viewport.zoomTo(item, 0.2)
         })
         item.setContentInput(false)
 
@@ -271,6 +283,7 @@
       viewport.emit('idle')
     })
 
+    // Idle driver for the tree.
     viewport.on('idle', () => {
       const hyperspace = viewport.getHyperspace()
       const spaces = hyperspace.getChildren()
