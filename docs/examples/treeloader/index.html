@@ -211,7 +211,7 @@
         return plane
       },
 
-      mapper: function (parent, childId) {
+      mapper: function (parentId, parent, childId) {
         // Find basis for a child with respect to the parent.
         const data = parent.data.nodes.find(n => n.id === childId)
 
@@ -224,12 +224,12 @@
         return null
       },
 
-      tracker: function (parent) {
+      tracker: function (parentId, parent) {
         // Get IDs of the children of the parent component.
         return parent.data.nodes.map(node => node.id)
       },
 
-      backer: function (childId) {
+      backtracker: function (childId) {
         // Find parent id.
         if (childId.length <= 1) {
           return null
