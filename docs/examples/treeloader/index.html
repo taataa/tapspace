@@ -75,6 +75,11 @@
       target: viewport.atBottomLeft().offset(16, -16)
     })
 
+    // TreeLoader is agnostic of how you fetch and store your data.
+    // You might want to cache the data or update it independently.
+    // In this demo we simulate storing server responses locally.
+    const localData = {}
+
     const jitter = (mean) => {
       // Poisson process inter-arrival time to simulate natural lag.
       return -Math.log(1 - Math.random()) * mean
@@ -87,10 +92,12 @@
         // Render placeholder
         const plane = tapspace.createPlane()
         plane.addClass('tree-space')
-        plane.placeholderId = id
+        plane.spaceId = id
         const circle = tapspace.createCircle(100)
         circle.addClass('tree-placeholder')
         plane.addChild(circle, plane.at(0, 0))
+        // Clear up old local data.
+        delete localData[id]
         return plane
       },
 
@@ -164,6 +171,7 @@
             fontSize: fontSize,
             img: img,
             orientation: orientation,
+            parent: id.substring(0, id.length - 1) || null,
             nodes: [
               { id: id + 'a', x: 1000, y: 0 },
               { id: id + 'b', x: 600, y: 800 },
@@ -173,15 +181,23 @@
               { id: id + 'f', x: -600, y: 800 }
             ]
           }
-          callback(null, responseData)
+
+          // Simulate receiving and storing the data.
+          localData[id] = responseData
+
+          callback(null)
         }, jitter(400))
       },
 
-      generator: function (id, data) {
+      generator: function (id) {
         // Render content to replace the placeholder
+        const data = localData[id]
+
         const plane = tapspace.createPlane()
         plane.addClass('tree-space')
-        plane.data = data
+
+        // Devise a way to find the space id from the component.
+        plane.spaceId = id
 
         const item = tapspace.createCircle(150)
         item.addClass('tree-node')
@@ -213,12 +229,13 @@
 
       mapper: function (parentId, parent, childId) {
         // Find basis for a child with respect to the parent.
-        const data = parent.data.nodes.find(n => n.id === childId)
+        const parentData = localData[parentId]
+        const childData = parentData.nodes.find(n => n.id === childId)
 
-        if (data) {
+        if (childData) {
           return parent.getBasis()
             .scaleBy(0.3, parent.atAnchor())
-            .offset(data.x, data.y)
+            .offset(childData.x, childData.y)
         }
 
         return null
@@ -226,15 +243,17 @@
 
       tracker: function (parentId, parent) {
         // Get IDs of the children of the parent component.
-        return parent.data.nodes.map(node => node.id)
+        const parentData = localData[parentId]
+        return parentData.nodes.map(node => node.id)
       },
 
       backtracker: function (childId) {
         // Find parent id.
-        if (childId.length <= 1) {
-          return null
+        const parentId = localData[childId].parent
+        if (parentId) {
+          return parentId
         }
-        return childId.substring(0, childId.length - 1)
+        return null
       }
     })
 
@@ -260,7 +279,7 @@
       // Do this to avoid singular inversions.
       const singulars = viewport.findSingular()
       singulars.forEach(space => {
-        const spaceId = space.placeholderId || space.data.id
+        const spaceId = space.spaceId
         loader.removeSpace(spaceId)
       })
 
@@ -271,7 +290,7 @@
 
       // Skip placeholders
       const loadedSpaces = spaces.filter((space) => {
-        return space.data && space.data.id
+        return space.spaceId in localData
       })
 
       // Find closest, our current location.
@@ -290,7 +309,7 @@
       })
 
       // Expand and prune the tree.
-      const nearestIds = nearestSpaces.map(space => space.data.id)
+      const nearestIds = nearestSpaces.map(space => space.spaceId)
       loader.closeNeighbors(nearestIds, 4)
       nearestIds.forEach(spaceId => {
         loader.openNeighbors(spaceId, 3)
