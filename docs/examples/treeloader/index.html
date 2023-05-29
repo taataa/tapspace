@@ -211,19 +211,19 @@
         }
 
         item.tappable({ preventDefault: false })
-        item.on('tap', () => {
+        item.on('tap', (ev) => {
           const metric = viewport.measureOne(item)
 
           // Zoom to
           if (metric.areaRatio > 0.01) {
             viewport.animateOnce({ duration: '500ms' })
-            viewport.zoomTo(item, 0.2)
+            viewport.zoomTo(item, { margin: '30%' })
           } else if (metric.areaRatio > 0.001) {
             viewport.animateOnce({ duration: '800ms' })
-            viewport.zoomTo(item, 0.4)
+            viewport.zoomTo(item, { margin: '40%' })
           } else if (metric.areaRatio > 0.0001) {
             viewport.animateOnce({ duration: '1500ms' })
-            viewport.zoomTo(item, 0.6)
+            viewport.zoomTo(item, { margin: '45%' })
           }
 
           // Clear annoying accidental text selections.
