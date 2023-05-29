@@ -42,6 +42,7 @@
       padding: 4.3rem 4rem;
       background-position: center center;
       background-size: 300px;
+      cursor: pointer;
     }
     .tree-space.current .tree-node {
       border: 1rem solid black;
@@ -216,13 +217,13 @@
 
           // Zoom to
           if (metric.areaRatio > 0.01) {
-            viewport.animateOnce({ duration: '500ms' })
+            viewport.animateOnce({ duration: '500ms', easing: 'ease-in' })
             viewport.zoomTo(item, { margin: '30%' })
           } else if (metric.areaRatio > 0.001) {
-            viewport.animateOnce({ duration: '800ms' })
+            viewport.animateOnce({ duration: '800ms', easing: 'ease-in' })
             viewport.zoomTo(item, { margin: '40%' })
           } else if (metric.areaRatio > 0.0001) {
-            viewport.animateOnce({ duration: '1500ms' })
+            viewport.animateOnce({ duration: '1500ms', easing: 'ease-in' })
             viewport.zoomTo(item, { margin: '45%' })
           }
 
@@ -330,6 +331,28 @@
 
       // Prevent viewport from getting too far from the current nodes.
       viewport.limitTo(nearestSpaces)
+    })
+
+    // Tap viewport background to zoom out.
+    viewport.tappable()
+    viewport.on('tap', (ev) => {
+      if (ev.target === viewport.hyperspace) {
+        const spaces = viewport.hyperspace.getChildren()
+
+        // Find if there is an item near by.
+        const near = spaces.find(space => {
+          const circle = space.getBoundingCircle()
+          const dist = circle.atCenter().getDistanceTo(ev.mean)
+          const distPx = dist.transitRaw(viewport)
+          return distPx < 25
+        })
+
+        if (!near) {
+          // Closest item is far. Zoom out. A good mean for user to go back?
+          viewport.animateOnce({ duration: 500 })
+          viewport.scaleBy(2, ev.mean)
+        }
+      }
     })
   </script>
 </body>
