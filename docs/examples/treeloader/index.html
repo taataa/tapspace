@@ -177,9 +177,9 @@
       const plane = tapspace.createPlane()
       plane.addClass('tree-space')
       plane.spaceId = id
-      const circle = tapspace.createCircle(100)
-      circle.addClass('tree-placeholder')
-      plane.addChild(circle, plane.at(0, 0))
+      const node = tapspace.createNode(100)
+      node.addClass('tree-placeholder')
+      plane.addChild(node, plane.at(0, 0))
       // Clear up old local data.
       delete localData[id]
       return plane
@@ -195,7 +195,7 @@
       // Devise a way to find the space id from the component.
       plane.spaceId = id
 
-      const item = tapspace.createCircle(150)
+      const item = tapspace.createNode(150)
       item.addClass('tree-node')
       item.element.title = 'id:' + id
 
