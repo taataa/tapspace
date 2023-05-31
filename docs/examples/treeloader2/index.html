@@ -222,8 +222,6 @@
           viewport.zoomTo(item, { margin: '45%' })
         }
 
-        loader.openNeighbors(id, 1)
-
         // Clear annoying accidental text selections.
         window.getSelection().removeAllRanges()
       })
@@ -276,25 +274,18 @@
       }
     })
 
+    const firstId = 'aaa'
     const firstBasis = viewport.getBasisAt(
       viewport.atCenter().offset(0, -20),
     )
 
-    loader.init('aaa', firstBasis, (err, sid, space) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-
-      // Force expansion after first loaded.
-      viewport.emit('idle')
-    })
+    loader.init(firstId, firstBasis)
 
     loader.on('open', (id) => {
       console.log('open', id)
 
       const placeholder = createPlaceholder(id)
-      loader.open(id, placeholder)
+      loader.placeholder(id, placeholder)
 
       fetchData(id, (err, data) => {
         if (err) {
@@ -305,56 +296,60 @@
         console.log('fetched', id)
         const nodeItem = createNode(id)
         loader.open(id, nodeItem)
+
+        if (id === firstId) {
+          viewport.requestIdle()
+        }
       })
     })
 
     // Idle driver for the tree.
-    // viewport.on('idle', () => {
-    //   const spaces = viewport.getSpaces()
-    //
-    //   // Remove all too small spaces immediately.
-    //   // Do this to avoid singular inversions.
-    //   const singulars = viewport.findSingular()
-    //   singulars.forEach(space => {
-    //     const spaceId = space.spaceId
-    //     loader.removeSpace(spaceId)
-    //   })
-    //
-    //   // DEBUG
-    //   const numNodes = spaces.length - singulars.length
-    //   const metersEl = document.getElementById('meters')
-    //   metersEl.innerHTML = '# of nodes: ' + numNodes
-    //
-    //   // Skip placeholders
-    //   const loadedSpaces = spaces.filter((space) => {
-    //     return space.spaceId in localData
-    //   })
-    //
-    //   // Find closest, our current location.
-    //   const nearest = viewport.measureNearest(loadedSpaces, 2)
-    //   const nearestSpaces = nearest.map(ne => ne.target)
-    //
-    //   // Style the closest. Unstyle others.
-    //   loadedSpaces.forEach(space => {
-    //     if (nearestSpaces.includes(space)) {
-    //       space.addClass('current')
-    //       space.item.setContentInput('pointer')
-    //     } else {
-    //       space.removeClass('current')
-    //       space.item.setContentInput(false)
-    //     }
-    //   })
-    //
-    //   // Expand and prune the tree.
-    //   const nearestIds = nearestSpaces.map(space => space.spaceId)
-    //   loader.closeNeighbors(nearestIds, 4)
-    //   nearestIds.forEach(spaceId => {
-    //     loader.openNeighbors(spaceId, 3)
-    //   })
-    //
-    //   // Prevent viewport from getting too far from the current nodes.
-    //   viewport.limitTo(nearestSpaces)
-    // })
+    viewport.on('idle', () => {
+      const spaces = viewport.getSpaces()
+
+      // Remove all too small spaces immediately.
+      // Do this to avoid singular inversions.
+      const singulars = viewport.findSingular()
+      singulars.forEach(space => {
+        const spaceId = space.spaceId
+        loader.removeSpace(spaceId)
+      })
+
+      // DEBUG
+      const numNodes = spaces.length - singulars.length
+      const metersEl = document.getElementById('meters')
+      metersEl.innerHTML = '# of nodes: ' + numNodes
+
+      // Skip placeholders
+      const loadedSpaces = spaces.filter((space) => {
+        return space.spaceId in localData
+      })
+
+      // Find closest, our current location.
+      const nearest = viewport.measureNearest(loadedSpaces, 2)
+      const nearestSpaces = nearest.map(ne => ne.target)
+
+      // Style the closest. Unstyle others.
+      loadedSpaces.forEach(space => {
+        if (nearestSpaces.includes(space)) {
+          space.addClass('current')
+          space.item.setContentInput('pointer')
+        } else {
+          space.removeClass('current')
+          space.item.setContentInput(false)
+        }
+      })
+
+      // // Expand and prune the tree.
+      const nearestIds = nearestSpaces.map(space => space.spaceId)
+      loader.closeNeighbors(nearestIds, 3)
+      nearestIds.forEach(spaceId => {
+        loader.openNeighbors(spaceId, 2)
+      })
+
+      // Prevent viewport from getting too far from the current nodes.
+      viewport.limitTo(nearestSpaces)
+    })
   </script>
 </body>
 </html>
