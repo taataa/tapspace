@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CIELAB Color Explorer- Tapspace Demo</title>
+
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: black;
+    }
+    .myspaceapp {
+      background: white;
+      height: 100%;
+    }
+    .affine-node {
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Import tapspace. -->
+  <script src="../../../dist/tapspace.min.js"></script>
+  <!-- script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script -->
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.zoomable()
+    // Add a control for navigation
+    const zoomControl = new tapspace.components.ZoomControl()
+    viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(16, -16)
+    })
+
+    const jitter = (mean) => {
+      // Poisson process inter-arrival time to simulate natural lag.
+      return -Math.log(1 - Math.random()) * mean
+    }
+
+    const loader = new tapspace.loaders.TreeLoader({
+      viewport: viewport,
+
+      mapper: (superid, superspace, subid) => {
+        const superbasis = superspace.getBasis()
+        switch (subid.substring(subid.length - 1)) {
+          case 'a':
+            return superbasis.translateBy({ x: 200, y: 0 })
+          case 'b':
+            return superbasis.translateBy({ x: 0, y: 200 })
+          default:
+            return null
+        }
+      },
+
+      tracker: (superid, superspace) => {
+        return [
+          superid + 'a',
+          superid + 'b'
+        ]
+      },
+
+      backtracker: (subid, subspace) => {
+        return subid.substring(0, subid.length - 1) || null
+      }
+    })
+
+    const firstId = 'a'
+    const firstBasis = viewport.getBasisAt(viewport.atCenter().offset(-100, -100))
+    loader.init(firstId, firstBasis)
+
+    // On first open, ignite the driver.
+    loader.once('open', (id) => {
+      viewport.requestIdle()
+    })
+
+    const createColorPatch = (id) => {
+      const plane = tapspace.createPlane()
+      const node = tapspace.createNode(100)
+      node.element.title = 'id:' + id
+      plane.addChild(node, { x: 100, y: 100 })
+      plane.setAnchor({ x: 100, y: 100 })
+      plane.contentNode = node // easy way to reach
+      plane.spaceId = id
+      return plane
+    }
+
+    loader.on('open', (id) => {
+      const node = createColorPatch(id)
+      loader.open(id, node)
+    })
+
+    // Idle driver for the tree.
+    viewport.on('idle', () => {
+      console.log('idle')
+      const spaces = viewport.getSpaces()
+
+      // Remove all too small spaces immediately.
+      // Do this to avoid singular inversions.
+      const singulars = viewport.findSingular()
+      singulars.forEach(space => {
+        const spaceId = space.spaceId
+        loader.removeSpace(spaceId)
+      })
+
+      // Find closest, our current location.
+      const nearest = viewport.measureNearest(spaces, 2)
+      const nearestSpaces = nearest.map(ne => ne.target)
+
+      // Style the closest. Unstyle others.
+      spaces.forEach(space => {
+        if (nearestSpaces.includes(space)) {
+          space.addClass('current')
+          space.contentNode.setContentInput('pointer')
+        } else {
+          space.removeClass('current')
+          space.contentNode.setContentInput(false)
+        }
+      })
+
+      // Expand and prune the tree.
+      const nearestIds = nearestSpaces.map(space => space.spaceId)
+      loader.closeNeighbors(nearestIds, 3)
+      nearestIds.forEach(id => {
+        loader.openNeighbors(id, 2)
+      })
+
+      // Prevent viewport from getting too far from the current nodes.
+      viewport.limitTo(nearestSpaces)
+    })
+  </script>
+</body>
+</html>
