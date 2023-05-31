@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Event-based Tree Loader - Tapspace Demo</title>
+  <title>Tree Loader - Tapspace Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -235,7 +235,7 @@
       return plane
     }
 
-    const loader = new tapspace.loaders.EventTreeLoader({
+    const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
       mapper: function (parentId, parent, childId) {
@@ -282,8 +282,6 @@
     loader.init(firstId, firstBasis)
 
     loader.on('open', (id) => {
-      console.log('open', id)
-
       const placeholder = createPlaceholder(id)
       loader.placeholder(id, placeholder)
 
