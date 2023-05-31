@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader - Tapspace Demo</title>
+  <title>Event-based Tree Loader - Tapspace Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -60,8 +60,8 @@
   <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
-  <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
+  <script src="../../../dist/tapspace.min.js"></script>
+  <!-- script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script -->
 
   <!-- Your code -->
   <script>
@@ -81,164 +81,162 @@
     // In this demo we simulate storing server responses locally.
     const localData = {}
 
+    // Poisson process inter-arrival time to simulate natural lag.
     const jitter = (mean) => {
-      // Poisson process inter-arrival time to simulate natural lag.
       return -Math.log(1 - Math.random()) * mean
     }
 
-    const loader = new tapspace.loaders.TreeLoader({
-      viewport: viewport,
-
-      placeholder: function (id) {
-        // Render placeholder
-        const plane = tapspace.createPlane()
-        plane.addClass('tree-space')
-        plane.spaceId = id
-        const circle = tapspace.createCircle(100)
-        circle.addClass('tree-placeholder')
-        plane.addChild(circle, plane.at(0, 0))
-        // Clear up old local data.
-        delete localData[id]
-        return plane
-      },
-
-      fetcher: function (id, callback) {
-        // Async call to fetch data for the generator.
-        // For the sake of demo, simulate a server response
-        setTimeout(() => {
-          let content = ''
-          let fontSize = 16
-          let img = null
-          let orientation = 0
-          if (id === 'a') {
-            content = '<div>I am the root node. I do not have parents but '
-              + 'I have lots of grandchildren.</div>'
-            fontSize = 24
-          } else if (id === 'aa') {
-            content = '<div>' +
-              'Thick black borders in this demo represent ' +
-              'our current location. ' +
-              'We can have many locations. ' +
-              'The current locations drive the content loading ' +
-              'by expanding and limiting their neighborhood.</div>'
-            fontSize = 17
-          } else if (id === 'ab') {
-            content = '<div class="comic">And I am upside down!</div>'
-            fontSize = 40
-            orientation = 170
-          } else if (id === 'aaa') {
-            content = '<div>Tree Loader<br>–<br>'
-              + '<a href="https://github.com/taataa/tapspace" target="_blank">'
-              + 'Tapspace.js</a> Demo</div>'
-            fontSize = 32
-          } else if (id === 'aaae') {
-            img = '../assets/chellah_star.jpg'
-          } else if (id === 'aaac') {
-            content = '<div>Recursive loading and unloading of content '
-              + 'is necessary in order to explore huge masses of data. '
-              + 'Otherwise web browsers would slow down to tar '
-              + 'under the load of thousands of elements.</div>'
-            fontSize = 16
-          } else if (id === 'aaaee') {
-            img = '../assets/oudaya_door.jpg'
-          } else if (id === 'aaace') {
-            content = '<div>This demo simulates fetching content from '
-              + 'backend servers by applying a jittered delay. Therefore '
-              + 'some nodes take more time to load than others.</div>'
-            fontSize = 18
-          } else if (id === 'aaacf') {
-            content = '<div>'
-              + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
-              + 'tapspace.loaders.TreeLoader</a> is the class '
-              + 'that drives the recursive and asynchronous '
-              + 'loading, construction, and destruction of content. '
-              + '<br><br>'
-              + 'Think it as a sliding window or a dynamic subset for '
-              + 'your tree of content.</div>'
-            fontSize = 14
-          } else if (id === 'aaaeea') {
-            img = '../assets/wood-cracked.jpg'
-          } else if (id === 'aaaeeae') {
-            img = '../assets/tile01.png'
-          } else if (id === 'aaaeeaee') {
-            img = '../assets/gearhandle.png'
-          } else if (id.startsWith('aaaeeaeea')) {
-            img = '../assets/chellah_nw.jpg'
-          }
-
-          const responseData = {
-            id: id,
-            content: content,
-            fontSize: fontSize,
-            img: img,
-            orientation: orientation,
-            parent: id.substring(0, id.length - 1) || null,
-            nodes: [
-              { id: id + 'a', x: 1000, y: 0 },
-              { id: id + 'b', x: 600, y: 800 },
-              { id: id + 'c', x: 600, y: -800 },
-              { id: id + 'd', x: -600, y: -800 },
-              { id: id + 'e', x: -1000, y: 0 },
-              { id: id + 'f', x: -600, y: 800 }
-            ]
-          }
-
-          // Simulate receiving and storing the data.
-          localData[id] = responseData
-
-          callback(null)
-        }, jitter(400))
-      },
-
-      generator: function (id) {
-        // Render content to replace the placeholder
-        const data = localData[id]
-
-        const plane = tapspace.createPlane()
-        plane.addClass('tree-space')
-
-        // Devise a way to find the space id from the component.
-        plane.spaceId = id
-
-        const item = tapspace.createCircle(150)
-        item.addClass('tree-node')
-        item.element.title = 'id:' + id
-
-        item.element.style.fontSize = data.fontSize + 'px'
-        item.html(data.content)
-
-        if (data.img) {
-          item.element.style.backgroundImage = `url(${data.img})`
+    // In this example we simulate server responses with this function:
+    const fetchData = (id, callback) => {
+      // Async call to fetch data for the generator.
+      // For the sake of demo, simulate a server response
+      setTimeout(() => {
+        let content = ''
+        let fontSize = 16
+        let img = null
+        let orientation = 0
+        if (id === 'a') {
+          content = '<div>I am the root node. I do not have parents but '
+            + 'I have lots of grandchildren.</div>'
+          fontSize = 24
+        } else if (id === 'aa') {
+          content = '<div>' +
+            'Thick black borders in this demo represent ' +
+            'our current location. ' +
+            'We can have many locations. ' +
+            'The current locations drive the content loading ' +
+            'by expanding and limiting their neighborhood.</div>'
+          fontSize = 17
+        } else if (id === 'ab') {
+          content = '<div class="comic">And I am upside down!</div>'
+          fontSize = 40
+          orientation = 170
+        } else if (id === 'aaa') {
+          content = '<div>Tree Loader<br>–<br>'
+            + '<a href="https://github.com/taataa/tapspace" target="_blank">'
+            + 'Tapspace.js</a> Demo</div>'
+          fontSize = 32
+        } else if (id === 'aaae') {
+          img = '../assets/chellah_star.jpg'
+        } else if (id === 'aaac') {
+          content = '<div>Recursive loading and unloading of content '
+            + 'is necessary in order to explore huge masses of data. '
+            + 'Otherwise web browsers would slow down to tar '
+            + 'under the load of thousands of elements.</div>'
+          fontSize = 16
+        } else if (id === 'aaaee') {
+          img = '../assets/oudaya_door.jpg'
+        } else if (id === 'aaace') {
+          content = '<div>This demo simulates fetching content from '
+            + 'backend servers by applying a jittered delay. Therefore '
+            + 'some nodes take more time to load than others.</div>'
+          fontSize = 18
+        } else if (id === 'aaacf') {
+          content = '<div>'
+            + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
+            + 'tapspace.loaders.TreeLoader</a> is the class '
+            + 'that drives the recursive and asynchronous '
+            + 'loading, construction, and destruction of content. '
+            + '<br><br>'
+            + 'Think it as a sliding window or a dynamic subset for '
+            + 'your tree of content.</div>'
+          fontSize = 14
+        } else if (id === 'aaaeea') {
+          img = '../assets/wood-cracked.jpg'
+        } else if (id === 'aaaeeae') {
+          img = '../assets/tile01.png'
+        } else if (id === 'aaaeeaee') {
+          img = '../assets/gearhandle.png'
+        } else if (id.startsWith('aaaeeaeea')) {
+          img = '../assets/chellah_nw.jpg'
         }
 
-        item.tappable({ preventDefault: false })
-        item.on('tap', (ev) => {
-          const metric = viewport.measureOne(item)
+        const responseData = {
+          id: id,
+          content: content,
+          fontSize: fontSize,
+          img: img,
+          orientation: orientation,
+          parent: id.substring(0, id.length - 1) || null,
+          nodes: [
+            { id: id + 'a', x: 1000, y: 0 },
+            { id: id + 'b', x: 600, y: 800 },
+            { id: id + 'c', x: 600, y: -800 },
+            { id: id + 'd', x: -600, y: -800 },
+            { id: id + 'e', x: -1000, y: 0 },
+            { id: id + 'f', x: -600, y: 800 }
+          ]
+        }
 
-          // Zoom to
-          if (metric.areaRatio > 0.01) {
-            viewport.animateOnce({ duration: '500ms', easing: 'ease-in' })
-            viewport.zoomTo(item, { margin: '30%' })
-          } else if (metric.areaRatio > 0.001) {
-            viewport.animateOnce({ duration: '800ms', easing: 'ease-in' })
-            viewport.zoomTo(item, { margin: '40%' })
-          } else if (metric.areaRatio > 0.0001) {
-            viewport.animateOnce({ duration: '1500ms', easing: 'ease-in' })
-            viewport.zoomTo(item, { margin: '45%' })
-          }
+        callback(null, responseData)
+      }, jitter(400))
+    }
 
-          // Clear annoying accidental text selections.
-          window.getSelection().removeAllRanges()
-        })
-        item.setContentInput(false)
+    const createPlaceholder = (id) => {
+      // Render placeholder
+      const plane = tapspace.createPlane()
+      plane.addClass('tree-space')
+      plane.spaceId = id
+      const circle = tapspace.createCircle(100)
+      circle.addClass('tree-placeholder')
+      plane.addChild(circle, plane.at(0, 0))
+      // Clear up old local data.
+      delete localData[id]
+      return plane
+    }
 
-        plane.addChild(item, { x: 0, y: 0 })
-        plane.item = item // HACKY
+    const createNode = (id) => {
+      // Render content to replace the placeholder
+      const data = localData[id]
 
-        item.rotateByDegrees(data.orientation)
+      const plane = tapspace.createPlane()
+      plane.addClass('tree-space')
 
-        return plane
-      },
+      // Devise a way to find the space id from the component.
+      plane.spaceId = id
+
+      const item = tapspace.createCircle(150)
+      item.addClass('tree-node')
+      item.element.title = 'id:' + id
+
+      item.element.style.fontSize = data.fontSize + 'px'
+      item.html(data.content)
+
+      if (data.img) {
+        item.element.style.backgroundImage = `url(${data.img})`
+      }
+
+      item.tappable({ preventDefault: false })
+      item.on('tap', (ev) => {
+        const metric = viewport.measureOne(item)
+
+        // Zoom to
+        if (metric.areaRatio > 0.01) {
+          viewport.animateOnce({ duration: '500ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '30%' })
+        } else if (metric.areaRatio > 0.001) {
+          viewport.animateOnce({ duration: '800ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '40%' })
+        } else if (metric.areaRatio > 0.0001) {
+          viewport.animateOnce({ duration: '1500ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '45%' })
+        }
+
+        // Clear annoying accidental text selections.
+        window.getSelection().removeAllRanges()
+      })
+      item.setContentInput(false)
+
+      plane.addChild(item, { x: 0, y: 0 })
+      plane.item = item // HACKY
+
+      item.rotateByDegrees(data.orientation)
+
+      return plane
+    }
+
+    const loader = new tapspace.loaders.EventTreeLoader({
+      viewport: viewport,
 
       mapper: function (parentId, parent, childId) {
         // Find basis for a child with respect to the parent.
@@ -257,37 +255,56 @@
       tracker: function (parentId, parent) {
         // Get IDs of the children of the parent component.
         const parentData = localData[parentId]
-        return parentData.nodes.map(node => node.id)
+        if (parentData) {
+          return parentData.nodes.map(node => node.id)
+        }
+        return []
       },
 
-      backtracker: function (childId) {
+      backtracker: function (childId, child) {
         // Find parent id.
-        const parentId = localData[childId].parent
-        if (parentId) {
-          return parentId
+        const childData = localData[childId]
+        if (childData) {
+          const parentId = childData.parent
+          if (parentId) {
+            return parentId
+          }
         }
         return null
       }
     })
 
+    const firstId = 'aaa'
     const firstBasis = viewport.getBasisAt(
       viewport.atCenter().offset(0, -20),
     )
 
-    loader.init('aaa', firstBasis, (err, sid, space) => {
-      if (err) {
-        console.error(err)
-        return
-      }
+    loader.init(firstId, firstBasis)
 
-      // Force expansion after first loaded.
-      viewport.emit('idle')
+    loader.on('open', (id) => {
+      console.log('open', id)
+
+      const placeholder = createPlaceholder(id)
+      loader.placeholder(id, placeholder)
+
+      fetchData(id, (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        localData[id] = data
+        const nodeItem = createNode(id)
+        loader.open(id, nodeItem)
+
+        if (id === firstId) {
+          viewport.requestIdle()
+        }
+      })
     })
 
     // Idle driver for the tree.
     viewport.on('idle', () => {
-      const hyperspace = viewport.getHyperspace()
-      const spaces = hyperspace.getChildren()
+      const spaces = viewport.getSpaces()
 
       // Remove all too small spaces immediately.
       // Do this to avoid singular inversions.
@@ -322,37 +339,15 @@
         }
       })
 
-      // Expand and prune the tree.
+      // // Expand and prune the tree.
       const nearestIds = nearestSpaces.map(space => space.spaceId)
-      loader.closeNeighbors(nearestIds, 4)
+      loader.closeNeighbors(nearestIds, 3)
       nearestIds.forEach(spaceId => {
-        loader.openNeighbors(spaceId, 3)
+        loader.openNeighbors(spaceId, 2)
       })
 
       // Prevent viewport from getting too far from the current nodes.
       viewport.limitTo(nearestSpaces)
-    })
-
-    // Tap viewport background to zoom out.
-    viewport.tappable()
-    viewport.on('tap', (ev) => {
-      if (ev.target === viewport.hyperspace) {
-        const spaces = viewport.hyperspace.getChildren()
-
-        // Find if there is an item near by.
-        const near = spaces.find(space => {
-          const circle = space.getBoundingCircle()
-          const dist = circle.atCenter().getDistanceTo(ev.mean)
-          const distPx = dist.transitRaw(viewport)
-          return distPx < 25
-        })
-
-        if (!near) {
-          // Closest item is far. Zoom out. A good mean for user to go back?
-          viewport.animateOnce({ duration: 500 })
-          viewport.scaleBy(2, ev.mean)
-        }
-      }
     })
   </script>
 </body>
