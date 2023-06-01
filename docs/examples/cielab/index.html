@@ -62,9 +62,8 @@
       target: viewport.atBottomLeft().offset(16, -16)
     })
 
-    const jitter = (mean) => {
-      // Poisson process inter-arrival time to simulate natural lag.
-      return -Math.log(1 - Math.random()) * mean
+    const limit = (n, min, max) => {
+      return Math.min(max, Math.max(min, n))
     }
     const idToLab = (id) => {
       const tid = id.substring(1)
@@ -89,9 +88,9 @@
       }, { l: 50, a: 0, b: 0 })
     }
     const labToColor = (lab) => {
-      const l = lab.l.toFixed(8)
-      const a = lab.a.toFixed(8)
-      const b = lab.b.toFixed(8)
+      const l = limit(lab.l, 0, 100).toFixed(8)
+      const a = limit(lab.a, -125, 125).toFixed(8)
+      const b = limit(lab.b, -125, 125).toFixed(8)
       return `lab(${l} ${a} ${b})`
     }
     const idToText = (id) => {
