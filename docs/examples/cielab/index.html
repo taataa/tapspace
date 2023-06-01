@@ -32,9 +32,21 @@
       padding-top: 50px;
       font-size: 26px;
       color: white;
+      cursor: pointer;
     }
     .color-plane.current .color-node {
       /* border: 1rem solid black; */
+    }
+    .color-plane .color-info {
+      color: transparent;
+      display: none;
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      line-height: 10px;
+      text-align: center;
+    }
+    .color-plane.current .color-info {
+      display: block;
     }
     .word-cielab { font-size: 28px; }
     .word-colorspace { font-size: 19px; line-height: 28px; }
@@ -62,6 +74,10 @@
       target: viewport.atBottomLeft().offset(16, -16)
     })
 
+    const jitter = (mean) => {
+      // Poisson process inter-arrival time to simulate natural lag.
+      return -Math.log(1 - Math.random()) * mean
+    }
     const limit = (n, min, max) => {
       return Math.min(max, Math.max(min, n))
     }
@@ -92,6 +108,13 @@
       const a = limit(lab.a, -125, 125).toFixed(8)
       const b = limit(lab.b, -125, 125).toFixed(8)
       return `lab(${l} ${a} ${b})`
+    }
+    const labToText = (lab, precision) => {
+      return '<span>' + [
+        'L:' + lab.l.toFixed(precision),
+        'a:' + lab.a.toFixed(precision),
+        'b:' + lab.b.toFixed(precision),
+      ].join(' ') + '</span>'
     }
     const idToText = (id) => {
       if (id === 'r') {
@@ -139,25 +162,49 @@
     const createColorPatch = (id) => {
       const plane = tapspace.createPlane()
       plane.addClass('color-plane')
-      const color = labToColor(idToLab(id))
+      plane.setAnchor({ x: 100, y: 100 })
+
+      const lab = idToLab(id)
+      const color = labToColor(lab)
       const node = tapspace.createNode(100, color)
       node.addClass('color-node')
       node.element.title = 'id:' + id
       node.html(idToText(id))
-      plane.addChild(node, { x: 100, y: 100 })
-      plane.setAnchor({ x: 100, y: 100 })
+      node.setParent(plane, { x: 100, y: 100 })
+      node.tappable({ preventDefault: false })
+      node.on('tap', () => {
+        viewport.animateOnce({ duration: 800, easing: 'ease-out' })
+        viewport.zoomTo(node, { margin: '38%' })
+        // Clear text selections.
+        window.getSelection().removeAllRanges()
+      })
+      node.setContentInput(false)
+
+      const info = tapspace.createItem()
+      info.addClass('color-info')
+      info.setSize(80, 50)
+      info.html(labToText(lab, 0))
+      info.setParent(plane)
+      info.matchPoint(info.atBottomMid(), node.atBottomMid())
+      info.scaleBy(0.62, info.atBottomMid())
+
       plane.contentNode = node // easy way to reach
+      plane.contentInfo = info // easy way to reach
       plane.spaceId = id
+
       return plane
     }
 
     loader.on('open', (id) => {
-      const node = createColorPatch(id)
-      loader.open(id, node)
+      setTimeout(() => {
+        const node = createColorPatch(id)
+        loader.open(id, node)
+      }, jitter(50))
     })
 
     // Idle driver for the tree.
     viewport.on('idle', () => {
+      console.log('idle')
       const spaces = viewport.getSpaces()
 
       // Remove all too small spaces immediately.
@@ -176,10 +223,10 @@
       spaces.forEach(space => {
         if (nearestSpaces.includes(space)) {
           space.addClass('current')
-          space.contentNode.setContentInput('pointer')
+          space.contentInfo.setContentInput('pointer')
         } else {
           space.removeClass('current')
-          space.contentNode.setContentInput(false)
+          space.contentInfo.setContentInput(false)
         }
       })
 
