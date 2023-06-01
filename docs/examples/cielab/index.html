@@ -26,6 +26,19 @@
     .affine-node {
       background-color: blue;
     }
+    .color-plane .color-node {
+      text-align: center;
+      font-family: Georgia, serif;
+      padding-top: 50px;
+      font-size: 26px;
+      color: white;
+    }
+    .color-plane.current .color-node {
+      /* border: 1rem solid black; */
+    }
+    .word-cielab { font-size: 28px; }
+    .word-colorspace { font-size: 19px; line-height: 28px; }
+    .word-explorer { font-size: 26px; }
   </style>
 </head>
 <body>
@@ -53,27 +66,61 @@
       // Poisson process inter-arrival time to simulate natural lag.
       return -Math.log(1 - Math.random()) * mean
     }
+    const idToLab = (id) => {
+      const tid = id.substring(1)
+      return tid.split('').reduce((lab, char, i) => {
+        const scale = Math.pow(0.5, i + 1)
+        switch (char) {
+          case 'd':
+            return { l: lab.l - scale * 50, a: lab.a, b: lab.b }
+          case 'a':
+            return { l: lab.l, a: lab.a - scale * 125, b: lab.b }
+          case 'b':
+            return { l: lab.l, a: lab.a, b: lab.b - scale * 125 }
+          case 'l':
+            return { l: lab.l + scale * 50, a: lab.a, b: lab.b }
+          case 'e':
+            return { l: lab.l, a: lab.a + scale * 125, b: lab.b }
+          case 'f':
+            return { l: lab.l, a: lab.a, b: lab.b + scale * 125 }
+          default:
+            return labl
+        }
+      }, { l: 50, a: 0, b: 0 })
+    }
+    const labToColor = (lab) => {
+      const l = lab.l.toFixed(8)
+      const a = lab.a.toFixed(8)
+      const b = lab.b.toFixed(8)
+      return `lab(${l} ${a} ${b})`
+    }
+    const idToText = (id) => {
+      if (id === 'r') {
+        return [
+          '<span class="word-cielab">CIELAB</span>',
+          '<span class="word-colorspace">Color Space</span>',
+          '<span class="word-explorer">Explorer</span>'
+        ].join('<br>')
+      }
+      return ''
+    }
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
       mapper: (superid, superspace, subid) => {
-        const superbasis = superspace.getBasis()
-        switch (subid.substring(subid.length - 1)) {
-          case 'a':
-            return superbasis.translateBy({ x: 200, y: 0 })
-          case 'b':
-            return superbasis.translateBy({ x: 0, y: 200 })
-          default:
-            return null
-        }
+        const dir = Math.PI / 2
+        const step = Math.PI / 3
+        const sid = subid.substring(subid.length - 1)
+        const i = 'dablef'.indexOf(sid)
+        if (i < 0) return null
+        return superspace.getBasis()
+          .polarOffset(600, dir + step * i)
+          .scaleBy(0.32, superspace.contentNode.atCenter())
       },
 
       tracker: (superid, superspace) => {
-        return [
-          superid + 'a',
-          superid + 'b'
-        ]
+        return 'dablef'.split('').map(char => superid + char)
       },
 
       backtracker: (subid, subspace) => {
@@ -81,7 +128,7 @@
       }
     })
 
-    const firstId = 'a'
+    const firstId = 'r'
     const firstBasis = viewport.getBasisAt(viewport.atCenter().offset(-100, -100))
     loader.init(firstId, firstBasis)
 
@@ -92,8 +139,12 @@
 
     const createColorPatch = (id) => {
       const plane = tapspace.createPlane()
-      const node = tapspace.createNode(100)
+      plane.addClass('color-plane')
+      const color = labToColor(idToLab(id))
+      const node = tapspace.createNode(100, color)
+      node.addClass('color-node')
       node.element.title = 'id:' + id
+      node.html(idToText(id))
       plane.addChild(node, { x: 100, y: 100 })
       plane.setAnchor({ x: 100, y: 100 })
       plane.contentNode = node // easy way to reach
@@ -108,7 +159,6 @@
 
     // Idle driver for the tree.
     viewport.on('idle', () => {
-      console.log('idle')
       const spaces = viewport.getSpaces()
 
       // Remove all too small spaces immediately.
@@ -136,9 +186,9 @@
 
       // Expand and prune the tree.
       const nearestIds = nearestSpaces.map(space => space.spaceId)
-      loader.closeNeighbors(nearestIds, 3)
+      loader.closeNeighbors(nearestIds, 4)
       nearestIds.forEach(id => {
-        loader.openNeighbors(id, 2)
+        loader.openNeighbors(id, 3)
       })
 
       // Prevent viewport from getting too far from the current nodes.
