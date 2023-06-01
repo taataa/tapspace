@@ -68,7 +68,7 @@
     const idToLab = (id) => {
       const tid = id.substring(1)
       return tid.split('').reduce((lab, char, i) => {
-        const scale = Math.pow(0.5, i + 1)
+        const scale = Math.pow(0.618, i + 1)
         switch (char) {
           case 'd':
             return { l: lab.l - scale * 50, a: lab.a, b: lab.b }
