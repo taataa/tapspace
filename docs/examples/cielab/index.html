@@ -30,13 +30,17 @@
     .color-plane .color-node {
       text-align: center;
       font-family: Georgia, serif;
-      padding-top: 50px;
+      padding: 50px;
       font-size: 26px;
       color: white;
       cursor: pointer;
     }
     .color-plane.current .color-node {
       /* border: 1rem solid black; */
+    }
+    .color-plane .color-node.color-node-impossible {
+      background: transparent;
+      border: 5px dashed gray;
     }
     .color-plane .color-info {
       color: transparent;
@@ -52,6 +56,7 @@
     .word-cielab { font-size: 28px; }
     .word-colorspace { font-size: 19px; line-height: 28px; }
     .word-explorer { font-size: 26px; }
+    .word-cutout { font-size: 12px; line-height: 20px; }
   </style>
 </head>
 <body>
@@ -121,9 +126,9 @@
         : 12.92 * v
 
       return {
-        r: varToS(var_R) * 255,
-        g: varToS(var_G) * 255,
-        b: varToS(var_B) * 255
+        r: Math.round(varToS(var_R) * 255),
+        g: Math.round(varToS(var_G) * 255),
+        b: Math.round(varToS(var_B) * 255)
       }
     }
     const idToLab = (id) => {
@@ -165,9 +170,9 @@
     }
     const labToText = (lab, precision) => {
       return '<span>' + [
-        'L:' + lab.l.toFixed(precision),
-        'a:' + lab.a.toFixed(precision),
-        'b:' + lab.b.toFixed(precision),
+        'L*' + lab.l.toFixed(precision),
+        'a*' + lab.a.toFixed(precision),
+        'b*' + lab.b.toFixed(precision),
       ].join(' ') + '</span>'
     }
     const rgbToText = (rgb) => {
@@ -177,6 +182,12 @@
         Math.round(rgb.b).toString(16).padStart(2, '0')
       ].join('') + '</span>'
     }
+    const validRgb = (rgb) => {
+      // Skip subnodes that do not fit into sRGB colorspace.
+      return rgb.r >= 0 && rgb.r <= 255 &&
+        rgb.g >= 0 && rgb.g <= 255 &&
+        rgb.b >= 0 && rgb.b <= 255
+    }
     const idToText = (id) => {
       if (id === 'r') {
         return [
@@ -184,6 +195,12 @@
           '<span class="word-colorspace">Color Space</span>',
           '<span class="word-explorer">Explorer</span>'
         ].join('<br>')
+      }
+      if (id === 'ra') {
+        return '<div class="word-cutout">' + [
+          'Some nodes are cut off because',
+          'not all LAB colors can be displayed in RGB.'
+        ].join(' ') + '</div>'
       }
       return ''
     }
@@ -194,28 +211,17 @@
       mapper: (superid, superspace, subid) => {
         const dir = Math.PI / 2
         const step = Math.PI / 3
-        const sid = subid.substring(subid.length - 1)
-        const i = 'dablef'.indexOf(sid)
+        const lastChar = subid.substring(subid.length - 1)
+        const i = 'dablef'.indexOf(lastChar)
         if (i < 0) return null
+        const origin = superspace.appData.node.atCenter()
         return superspace.getBasis()
           .polarOffset(600, dir + step * i)
-          .scaleBy(0.32, superspace.contentNode.atCenter())
+          .scaleBy(0.32, origin)
       },
 
       tracker: (superid, superspace) => {
-        const subids = 'dablef'.split('').map(char => superid + char)
-        // Skip subnodes that do not fit into sRGB colorspace.
-        return subids.filter(id => {
-          const sublab = idToLab(id)
-          const subxyz = labToXyz(sublab)
-          const subrgb = xyzToRgb(subxyz)
-          const subr = Math.round(subrgb.r)
-          const subg = Math.round(subrgb.g)
-          const subb = Math.round(subrgb.b)
-          return subr >= 0 && subr <= 255 &&
-            subg >= 0 && subg <= 255 &&
-            subb >= 0 && subb <= 255
-        })
+        return 'dablef'.split('').map(char => superid + char)
       },
 
       backtracker: (subid, subspace) => {
@@ -237,13 +243,23 @@
       plane.addClass('color-plane')
       plane.setAnchor({ x: 100, y: 100 })
 
+      let node
       const lab = idToLab(id)
-      const color = labToColor(lab)
-      const node = tapspace.createNode(100, color)
+      const rgb = xyzToRgb(labToXyz(lab))
+      const possible = validRgb(rgb)
+      if (possible) {
+        const color = labToColor(lab)
+        node = tapspace.createNode(100, color)
+      } else {
+        node = tapspace.createNode(100)
+        node.addClass('color-node-impossible')
+      }
+
       node.addClass('color-node')
-      node.element.title = 'id:' + id
       node.html(idToText(id))
+      node.element.title = 'id:' + id
       node.setParent(plane, { x: 100, y: 100 })
+
       node.tappable({ preventDefault: false })
       node.on('tap', () => {
         viewport.animateOnce({ duration: 800, easing: 'ease-out' })
@@ -256,23 +272,31 @@
       const info = tapspace.createItem()
       info.addClass('color-info')
       info.setSize(100, 50)
-      const rgb = xyzToRgb(labToXyz(lab))
-      info.html(labToText(lab, 0) + '<br>' + rgbToText(rgb))
+      const infoText = possible ?
+        labToText(lab, 0) + '<br>' + rgbToText(rgb) :
+        labToText(lab, 0)
+      info.html(infoText)
       info.setParent(plane)
       info.matchPoint(info.atBottomMid(), node.atBottomMid())
       info.scaleBy(0.62, info.atBottomMid())
 
-      plane.contentNode = node // easy way to reach
-      plane.contentInfo = info // easy way to reach
-      plane.spaceId = id
+      // Easy way to reach data
+      plane.appData = {
+        id: id,
+        lab: lab,
+        rgb: rgb,
+        possible: possible,
+        node: node,
+        info: info
+      }
 
       return plane
     }
 
     loader.on('open', (id) => {
       setTimeout(() => {
-        const node = createColorPatch(id)
-        loader.open(id, node)
+        const space = createColorPatch(id)
+        loader.open(id, space)
       }, jitter(50))
     })
 
@@ -285,7 +309,7 @@
       // Do this to avoid singular inversions.
       const singulars = viewport.findSingular()
       singulars.forEach(space => {
-        const spaceId = space.spaceId
+        const spaceId = space.appData.id
         loader.removeSpace(spaceId)
       })
 
@@ -297,27 +321,31 @@
       spaces.forEach(space => {
         if (nearestSpaces.includes(space)) {
           space.addClass('current')
-          space.contentInfo.setContentInput('pointer')
+          space.appData.info.setContentInput('pointer')
         } else {
           space.removeClass('current')
-          space.contentInfo.setContentInput(false)
+          space.appData.info.setContentInput(false)
         }
       })
 
       // Adjust background color for better contrast.
       if (nearestSpaces.length > 0) {
         const nearestOne = nearestSpaces[0]
-        const nearestInfo = nearestOne.contentInfo
-        const nearestId = nearestOne.spaceId
-        const nearestLab = idToLab(nearestId)
+        const nearestId = nearestOne.appData.id
+        const nearestInfo = nearestOne.appData.info
+        const nearestLab = nearestOne.appData.lab
         const invLab = complementaryLab(nearestLab)
         const invColor = labToColor(invLab)
         viewport.element.style.backgroundColor = invColor
-        nearestInfo.element.style.color = invColor
+        if (nearestOne.appData.possible) {
+          nearestInfo.element.style.color = invColor
+        } else {
+          nearestInfo.element.style.color = 'gray'
+        }
       }
 
       // Expand and prune the tree.
-      const nearestIds = nearestSpaces.map(space => space.spaceId)
+      const nearestIds = nearestSpaces.map(space => space.appData.id)
       loader.closeNeighbors(nearestIds, 4)
       nearestIds.forEach(id => {
         loader.openNeighbors(id, 3)
