@@ -20,8 +20,9 @@
       color: black;
     }
     .myspaceapp {
-      background: white;
+      background-color: white;
       height: 100%;
+      transition: background-color 1s linear 0s;
     }
     .affine-node {
       background-color: blue;
@@ -81,27 +82,80 @@
     const limit = (n, min, max) => {
       return Math.min(max, Math.max(min, n))
     }
+    const labToXyz = (lab) => {
+      // Source: http://www.easyrgb.com/en/math.php
+      const ref_X =  95.047
+      const ref_Y = 100.000
+      const ref_Z = 108.883
+
+      const var_Y = (lab.l + 16) / 116
+      const var_X = lab.a / 500 + var_Y
+      const var_Z = var_Y - lab.b / 200
+
+      const [X, Y, Z] = [var_X, var_Y, var_Z]
+          .map(n => Math.pow(n, 3) > 0.008856
+              ? Math.pow(n, 3)
+              : (n - 16 / 116) / 7.787)
+
+      return {
+        x: X * ref_X,
+        y: Y * ref_Y,
+        z: Z * ref_Z
+      }
+    }
+    function xyzToRgb(xyz) {
+      // Source: http://www.easyrgb.com/en/math.php
+      // X, Y and Z input refer to a D65/2° standard illuminant.
+      // sR, sG and sB (standard RGB) output range = 0 ÷ 255
+
+      const var_X = xyz.x / 100
+      const var_Y = xyz.y / 100
+      const var_Z = xyz.z / 100
+
+      const var_R = var_X *  3.2406 + var_Y * -1.5372 + var_Z * -0.4986
+      const var_G = var_X * -0.9689 + var_Y *  1.8758 + var_Z *  0.0415
+      const var_B = var_X *  0.0557 + var_Y * -0.2040 + var_Z *  1.0570
+
+      const varToS = v => v > 0.0031308
+        ? 1.055 * Math.pow(v, (1 / 2.4)) - 0.055
+        : 12.92 * v
+
+      return {
+        r: varToS(var_R) * 255,
+        g: varToS(var_G) * 255,
+        b: varToS(var_B) * 255
+      }
+    }
     const idToLab = (id) => {
       const tid = id.substring(1)
       return tid.split('').reduce((lab, char, i) => {
-        const scale = Math.pow(0.618, i + 1)
+        const steps = [30, 20, 10, 10, 5, 5, 2, 2, 1]
+        const stepi = limit(i, 0, steps.length - 1)
+        const step = steps[stepi]
         switch (char) {
           case 'd':
-            return { l: lab.l - scale * 50, a: lab.a, b: lab.b }
+            return { l: lab.l - step, a: lab.a, b: lab.b }
           case 'a':
-            return { l: lab.l, a: lab.a - scale * 125, b: lab.b }
+            return { l: lab.l, a: lab.a - step, b: lab.b }
           case 'b':
-            return { l: lab.l, a: lab.a, b: lab.b - scale * 125 }
+            return { l: lab.l, a: lab.a, b: lab.b - step }
           case 'l':
-            return { l: lab.l + scale * 50, a: lab.a, b: lab.b }
+            return { l: lab.l + step, a: lab.a, b: lab.b }
           case 'e':
-            return { l: lab.l, a: lab.a + scale * 125, b: lab.b }
+            return { l: lab.l, a: lab.a + step, b: lab.b }
           case 'f':
-            return { l: lab.l, a: lab.a, b: lab.b + scale * 125 }
+            return { l: lab.l, a: lab.a, b: lab.b + step }
           default:
             return labl
         }
       }, { l: 50, a: 0, b: 0 })
+    }
+    const complementaryLab = (lab) => {
+      return {
+        l: lab.l === 50 ? 85 : (lab.l > 50 ? 0 : 100),
+        a: 0,
+        b: 0
+      }
     }
     const labToColor = (lab) => {
       const l = limit(lab.l, 0, 100).toFixed(8)
@@ -115,6 +169,13 @@
         'a:' + lab.a.toFixed(precision),
         'b:' + lab.b.toFixed(precision),
       ].join(' ') + '</span>'
+    }
+    const rgbToText = (rgb) => {
+      return '<span>#' + [
+        Math.round(rgb.r).toString(16).padStart(2, '0'),
+        Math.round(rgb.g).toString(16).padStart(2, '0'),
+        Math.round(rgb.b).toString(16).padStart(2, '0')
+      ].join('') + '</span>'
     }
     const idToText = (id) => {
       if (id === 'r') {
@@ -142,7 +203,19 @@
       },
 
       tracker: (superid, superspace) => {
-        return 'dablef'.split('').map(char => superid + char)
+        const subids = 'dablef'.split('').map(char => superid + char)
+        // Skip subnodes that do not fit into sRGB colorspace.
+        return subids.filter(id => {
+          const sublab = idToLab(id)
+          const subxyz = labToXyz(sublab)
+          const subrgb = xyzToRgb(subxyz)
+          const subr = Math.round(subrgb.r)
+          const subg = Math.round(subrgb.g)
+          const subb = Math.round(subrgb.b)
+          return subr >= 0 && subr <= 255 &&
+            subg >= 0 && subg <= 255 &&
+            subb >= 0 && subb <= 255
+        })
       },
 
       backtracker: (subid, subspace) => {
@@ -182,8 +255,9 @@
 
       const info = tapspace.createItem()
       info.addClass('color-info')
-      info.setSize(80, 50)
-      info.html(labToText(lab, 0))
+      info.setSize(100, 50)
+      const rgb = xyzToRgb(labToXyz(lab))
+      info.html(labToText(lab, 0) + '<br>' + rgbToText(rgb))
       info.setParent(plane)
       info.matchPoint(info.atBottomMid(), node.atBottomMid())
       info.scaleBy(0.62, info.atBottomMid())
@@ -229,6 +303,18 @@
           space.contentInfo.setContentInput(false)
         }
       })
+
+      // Adjust background color for better contrast.
+      if (nearestSpaces.length > 0) {
+        const nearestOne = nearestSpaces[0]
+        const nearestInfo = nearestOne.contentInfo
+        const nearestId = nearestOne.spaceId
+        const nearestLab = idToLab(nearestId)
+        const invLab = complementaryLab(nearestLab)
+        const invColor = labToColor(invLab)
+        viewport.element.style.backgroundColor = invColor
+        nearestInfo.element.style.color = invColor
+      }
 
       // Expand and prune the tree.
       const nearestIds = nearestSpaces.map(space => space.spaceId)
