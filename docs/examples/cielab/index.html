@@ -134,8 +134,8 @@
     const idToLab = (id) => {
       const tid = id.substring(1)
       return tid.split('').reduce((lab, char, i) => {
-        const steps = [30, 20, 10, 10, 5, 5, 2, 2, 1]
-        const stepi = limit(i, 0, steps.length - 1)
+        const steps = [30, 20, 10, 5, 2, 2, 1]
+        const stepi = i % steps.length
         const step = steps[stepi]
         switch (char) {
           case 'd':
@@ -204,19 +204,24 @@
       }
       return ''
     }
+    const idToDirection = (id) => {
+      const dir = Math.PI / 2
+      const step = Math.PI / 3
+      const lastChar = id.substring(id.length - 1)
+      const i = 'dablef'.indexOf(lastChar)
+      if (i < 0) return null
+      return dir + step * i
+    }
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
       mapper: (superid, superspace, subid) => {
-        const dir = Math.PI / 2
-        const step = Math.PI / 3
-        const lastChar = subid.substring(subid.length - 1)
-        const i = 'dablef'.indexOf(lastChar)
-        if (i < 0) return null
+        const dir = idToDirection(subid)
+        if (!dir) return null
         const origin = superspace.appData.node.atCenter()
         return superspace.getBasis()
-          .polarOffset(600, dir + step * i)
+          .polarOffset(600, dir)
           .scaleBy(0.32, origin)
       },
 
@@ -272,9 +277,10 @@
       const info = tapspace.createItem()
       info.addClass('color-info')
       info.setSize(100, 50)
-      const infoText = possible ?
+      let infoText = (possible ?
         labToText(lab, 0) + '<br>' + rgbToText(rgb) :
         labToText(lab, 0)
+      )
       info.html(infoText)
       info.setParent(plane)
       info.matchPoint(info.atBottomMid(), node.atBottomMid())
