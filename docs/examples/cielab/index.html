@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>CIELAB Color Explorer- Tapspace Demo</title>
+  <title>CIELAB Color Explorer - Tapspace.js Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -10,35 +10,26 @@
 
   <!-- your custom styles -->
   <style>
-    html, body {
+    html, body, .color-explorer {
       margin: 0;
       padding: 0;
       height: 100%;
     }
     body {
-      background: white;
-      color: black;
-    }
-    .myspaceapp {
-      background-color: white;
-      height: 100%;
-      transition: background-color 1s linear 0s;
-    }
-    .affine-node {
-      background-color: blue;
+      background: black;
+      color: white;
     }
     .color-plane .color-node {
       text-align: center;
       font-family: Georgia, serif;
       padding: 50px;
       font-size: 26px;
-      color: white;
+      line-height: 10px;
+      color: transparent;
       cursor: pointer;
     }
-    .color-plane.current .color-node {
-      /* border: 1rem solid black; */
-    }
     .color-plane .color-node.color-node-impossible {
+      color: gray;
       background: transparent;
       border: 5px dashed gray;
     }
@@ -53,15 +44,22 @@
     .color-plane.current .color-info {
       display: block;
     }
-    .word-cielab { font-size: 28px; }
-    .word-colorspace { font-size: 19px; line-height: 28px; }
-    .word-explorer { font-size: 26px; }
-    .word-cutout { font-size: 12px; line-height: 20px; }
+    .word-cielab { font-size: 29px; line-height: 30px; }
+    .word-colorspace { font-size: 19px; line-height: 30px; }
+    .word-explorer { font-size: 26px; line-height: 24px; }
+    .word-tapspace { font-size: 9px; line-height: 11px; }
+    .word-tapspace a:link { color: #222; }
+    .word-tapspace a:visited { color: #222; }
+    .word-tapspace a:focus { color: #555; }
+    .word-tapspace a:hover { color: #555; }
+    .word-tapspace a:active { color: #555; }
+    .word-params { font-size: 12px; line-height: 16px; }
+    .word-cutout { font-size: 10px; line-height: 20px; }
   </style>
 </head>
 <body>
   <!-- A tapspace viewport -->
-  <div id="tapspace" class="myspaceapp"></div>
+  <div id="tapspace" class="color-explorer"></div>
 
   <!-- Import tapspace. -->
   <script src="../../../dist/tapspace.min.js"></script>
@@ -80,9 +78,9 @@
       target: viewport.atBottomLeft().offset(16, -16)
     })
 
-    const jitter = (mean) => {
+    const jitter = (mean, rand) => {
       // Poisson process inter-arrival time to simulate natural lag.
-      return -Math.log(1 - Math.random()) * mean
+      return -Math.log(1 - rand()) * mean
     }
     const limit = (n, min, max) => {
       return Math.min(max, Math.max(min, n))
@@ -131,29 +129,32 @@
         b: Math.round(varToS(var_B) * 255)
       }
     }
+    const indexToStep = (i) => {
+      const steps = [30, 20, 10, 5, 10, 20]
+      const stepi = i % steps.length
+      return steps[stepi]
+    }
     const idToLab = (id) => {
       const tid = id.substring(1)
       return tid.split('').reduce((lab, char, i) => {
-        const steps = [30, 20, 10, 5, 2, 2, 1]
-        const stepi = i % steps.length
-        const step = steps[stepi]
+        const step = indexToStep(i)
         switch (char) {
           case 'd':
             return { l: lab.l - step, a: lab.a, b: lab.b }
           case 'a':
-            return { l: lab.l, a: lab.a - step, b: lab.b }
+            return { l: lab.l, a: lab.a + step, b: lab.b }
           case 'b':
-            return { l: lab.l, a: lab.a, b: lab.b - step }
+            return { l: lab.l, a: lab.a, b: lab.b + step }
           case 'l':
             return { l: lab.l + step, a: lab.a, b: lab.b }
           case 'e':
-            return { l: lab.l, a: lab.a + step, b: lab.b }
+            return { l: lab.l, a: lab.a - step, b: lab.b }
           case 'f':
-            return { l: lab.l, a: lab.a, b: lab.b + step }
+            return { l: lab.l, a: lab.a, b: lab.b - step }
           default:
-            return labl
+            return lab
         }
-      }, { l: 50, a: 0, b: 0 })
+      }, { l: 60, a: 0, b: 0 })
     }
     const complementaryLab = (lab) => {
       return {
@@ -170,9 +171,9 @@
     }
     const labToText = (lab, precision) => {
       return '<span>' + [
-        'L*' + lab.l.toFixed(precision),
-        'a*' + lab.a.toFixed(precision),
-        'b*' + lab.b.toFixed(precision),
+        'L:' + lab.l.toFixed(precision),
+        'a:' + lab.a.toFixed(precision),
+        'b:' + lab.b.toFixed(precision),
       ].join(' ') + '</span>'
     }
     const rgbToText = (rgb) => {
@@ -193,10 +194,20 @@
         return [
           '<span class="word-cielab">CIELAB</span>',
           '<span class="word-colorspace">Color Space</span>',
-          '<span class="word-explorer">Explorer</span>'
+          '<span class="word-explorer">Explorer</span>',
+          '<span class="word-tapspace">a ' +
+          '<a href="https://github.com/taataa/tapspace">Tapspace.js</a> ' +
+          'example</span>'
         ].join('<br>')
       }
-      if (id === 'ra') {
+      if (id === 'rl') {
+        return '<div class="word-params">' + [
+          'Each CIELAB color is defined by three parameters.',
+          '<em>L</em> controls lightness while',
+          '<em>a</em> and <em>b</em> control hue.'
+        ].join(' ') + '</div>'
+      }
+      if (id === 'rll') {
         return '<div class="word-cutout">' + [
           'Some nodes are cut off because',
           'not all LAB colors can be displayed in RGB.'
@@ -207,10 +218,43 @@
     const idToDirection = (id) => {
       const dir = Math.PI / 2
       const step = Math.PI / 3
-      const lastChar = id.substring(id.length - 1)
-      const i = 'dablef'.indexOf(lastChar)
-      if (i < 0) return null
-      return dir + step * i
+      const char = id.substring(id.length - 1)
+      switch (char) {
+        case 'l':
+        return -dir
+        case 'a':
+        return -dir + step
+        case 'b':
+        return -dir - step
+        case 'd':
+        return dir
+        case 'e':
+        return dir + step
+        case 'f':
+        return dir - step
+        default:
+        return null
+      }
+    }
+    const idToIncrementLabel = (id) => {
+      const char = id.substring(id.length - 1)
+      const step = indexToStep(id.length - 2)
+      switch (char) {
+        case 'l':
+        return 'L+' + step
+        case 'a':
+        return 'a+' + step
+        case 'b':
+        return 'b+' + step
+        case 'd':
+        return 'L-' + step
+        case 'e':
+        return 'a-' + step
+        case 'f':
+        return 'b-' + step
+        default:
+        return ''
+      }
     }
 
     const loader = new tapspace.loaders.TreeLoader({
@@ -239,7 +283,7 @@
     loader.init(firstId, firstBasis)
 
     // On first open, ignite the driver.
-    loader.once('open', (id) => {
+    loader.once('opened', (id) => {
       viewport.requestIdle()
     })
 
@@ -255,6 +299,9 @@
       if (possible) {
         const color = labToColor(lab)
         node = tapspace.createNode(100, color)
+        const invLab = complementaryLab(lab)
+        const invColor = labToColor(invLab)
+        node.element.style.color = invColor
       } else {
         node = tapspace.createNode(100)
         node.addClass('color-node-impossible')
@@ -276,10 +323,16 @@
 
       const info = tapspace.createItem()
       info.addClass('color-info')
-      info.setSize(100, 50)
-      let infoText = (possible ?
+      info.setSize(100, 40)
+      const incrementLabel = idToIncrementLabel(id)
+      let infoText = (
+        possible ?
         labToText(lab, 0) + '<br>' + rgbToText(rgb) :
         labToText(lab, 0)
+      ) + (
+        incrementLabel ?
+        '<br>' + incrementLabel :
+        ''
       )
       info.html(infoText)
       info.setParent(plane)
@@ -303,7 +356,7 @@
       setTimeout(() => {
         const space = createColorPatch(id)
         loader.open(id, space)
-      }, jitter(50))
+      }, jitter(50, Math.random))
     })
 
     // Idle driver for the tree.
@@ -342,7 +395,6 @@
         const nearestLab = nearestOne.appData.lab
         const invLab = complementaryLab(nearestLab)
         const invColor = labToColor(invLab)
-        viewport.element.style.backgroundColor = invColor
         if (nearestOne.appData.possible) {
           nearestInfo.element.style.color = invColor
         } else {
