@@ -1,9 +1,7 @@
 const units = {
   boundaries: require('./boundaries.test'),
   collisions: require('./collisions.test'),
-  construction: require('./construction.test'),
   dimensions: require('./dimensions.test'),
-  measures: require('./measures.test'),
   points: require('./points.test'),
   transformations: require('./transformations.test'),
   transitions: require('./transitions.test'),

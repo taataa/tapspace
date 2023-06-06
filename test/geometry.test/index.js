@@ -2,6 +2,7 @@ const units = {
   Area: require('./Area.test'),
   Basis: require('./Basis.test'),
   Box: require('./Box.test'),
+  Circle: require('./Circle.test'),
   Direction: require('./Direction.test'),
   Distance: require('./Distance.test'),
   Orientation: require('./Orientation.test'),
