@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.9
+# Tapspace API Documentation v2.0.0-alpha.10
 
 
 Welcome to Tapspace.js API documentation.
@@ -33,6 +33,7 @@ components, images, and other resources.
 - [tapspace.createControl](#tapspacecreatecontrol)
 - [tapspace.createGroup](#tapspacecreategroup)
 - [tapspace.createItem](#tapspacecreateitem)
+- [tapspace.createNode](#tapspacecreatenode)
 - [tapspace.createPlane](#tapspacecreateplane)
 - [tapspace.createView](#tapspacecreateview)
 - [tapspace.effects](#tapspaceeffects)
@@ -441,7 +442,7 @@ Various components to render into [tapspace](#tapspace).
 
 <p style="margin-bottom: 0"><strong>Special components:</strong></p>
 
-- [CircleItem](#tapspacecomponentscircleitem), a round HTML element in space.
+- Node, a round HTML element in space.
 - [Edge](#tapspacecomponentsedge), a CSS border as a line segment in space.
 - [Arc](#tapspacecomponentsarc), a curved CSS border as an arc segment in space.
 
@@ -471,7 +472,6 @@ Various components to render into [tapspace](#tapspace).
 
 - [tapspace.components.Arc](#tapspacecomponentsarc)
 - [tapspace.components.BlockComponent](#tapspacecomponentsblockcomponent)
-- [tapspace.components.CircleItem](#tapspacecomponentscircleitem)
 - [tapspace.components.Component](#tapspacecomponentscomponent)
 - [tapspace.components.ControlComponent](#tapspacecomponentscontrolcomponent)
 - [tapspace.components.CustomControl](#tapspacecomponentscustomcontrol)
@@ -1046,58 +1046,6 @@ The scaling is performed about a pivot point.
 
 Source: [scaleToWidth.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/scaleToWidth.js)
 
-<a name="tapspacecomponentscircleitem"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[CircleItem](#tapspacecomponentscircleitem)(radius, color)
-
-Inherits [Item](#tapspacecomponentsitem)
-
-A colorful circle.
-Instance class for a circle-like object on an affine plane.
-Useful for debugging coordinate positions.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *radius*
-  - a number.
-- *color*
-  - optional string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
-  - Leave undefined if you want to control the color via CSS classes.
-
-
-
-<p style="margin-bottom: 0"><strong>Contents:</strong></p>
-
-
-- [tapspace.components.CircleItem:getDiameter](#tapspacecomponentscircleitemgetdiameter)
-- [tapspace.components.CircleItem:getRadius](#tapspacecomponentscircleitemgetradius)
-
-
-Source: [CircleItem/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/CircleItem/index.js)
-
-<a name="tapspacecomponentscircleitemgetdiameter"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[CircleItem](#tapspacecomponentscircleitem):[getDiameter](#tapspacecomponentscircleitemgetdiameter)()
-
-Get the circle diameter.
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- a [Distance](#tapspacegeometrydistance)
-
-
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/components/CircleItem/getDiameter.js)
-
-<a name="tapspacecomponentscircleitemgetradius"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[CircleItem](#tapspacecomponentscircleitem):[getRadius](#tapspacecomponentscircleitemgetradius)()
-
-Get the circle radius.
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- a [Distance](#tapspacegeometrydistance)
-
-
-Source: [getRadius.js](https://github.com/taataa/tapspace/blob/master/lib/components/CircleItem/getRadius.js)
-
 <a name="tapspacecomponentscomponent"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent)(element)
 
@@ -1154,6 +1102,7 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Component:removeLinks](#tapspacecomponentscomponentremovelinks)
 - [tapspace.components.Component:replaceChild](#tapspacecomponentscomponentreplacechild)
 - [tapspace.components.Component:replaceParent](#tapspacecomponentscomponentreplaceparent)
+- [tapspace.components.Component:requestIdle](#tapspacecomponentscomponentrequestidle)
 - [tapspace.components.Component:setId](#tapspacecomponentscomponentsetid)
 - [tapspace.components.Component:setParent](#tapspacecomponentscomponentsetparent)
 - [tapspace.components.Component.findAffineAncestor](#tapspacecomponentscomponentfindaffineancestor)
@@ -1535,7 +1484,7 @@ Get the affine root. Will return self if has no affine parent.
 Source: [getRoot.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/getRoot.js)
 
 <a name="tapspacecomponentscomponentgettransitionfrom"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getTransitionFrom](#tapspacecomponentscomponentgettransitionfrom)(source)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getTransitionFrom](#tapspacecomponentscomponentgettransitionfrom)(source[, silent])
 
 Compute a coordinate transition matrix from the source basis
 to this basis. The transition matrix can be used to convert
@@ -1547,6 +1496,8 @@ then you should compute the transition matrix again.
 
 - *source*
   - a [Component](#tapspacecomponentscomponent)
+- *silent*
+  - optional boolean, default false. Set false to throw an error if the components are not connected in an affine tree. Set true to return null instead.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1562,7 +1513,7 @@ then you should compute the transition matrix again.
 Source: [getTransitionFrom.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/getTransitionFrom.js)
 
 <a name="tapspacecomponentscomponentgettransitionto"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getTransitionTo](#tapspacecomponentscomponentgettransitionto)(target)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getTransitionTo](#tapspacecomponentscomponentgettransitionto)(target[, silent])
 
 Compute a transition that maps the coordinate system of this basis
 to the coordinate system of the target basis. The resulting transition
@@ -1573,6 +1524,8 @@ to compute the same geometry represented on the the target basis.
 
 - *target*
   - a [Component](#tapspacecomponentscomponent)
+- *silent*
+  - optional boolean, default false. Set false to throw an error if the components are not connected in an affine tree. Set true to return null instead.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -1924,6 +1877,23 @@ to the parent origin, see [Component:setParent](#tapspacecomponentscomponentsetp
 
 
 Source: [replaceParent.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/replaceParent.js)
+
+<a name="tapspacecomponentscomponentrequestidle"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[requestIdle](#tapspacecomponentscomponentrequestidle)()
+
+Targeted for internal use.
+
+Ask component to emit an idle event.
+The idle events are used for computationally heavy tasks.
+Therefore this method attempts to limit the frequency of idle events
+by throttling and respecting ongoing animations.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [requestIdle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/requestIdle.js)
 
 <a name="tapspacecomponentscomponentsetid"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[setId](#tapspacecomponentscomponentsetid)
@@ -2555,7 +2525,7 @@ Alias of [tapspace.createGroup](#tapspacecreategroup)
 Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Group/create.js)
 
 <a name="tapspacecomponentshyperspace"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace)()
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace)(viewport)
 
 Inherits [Component](#tapspacecomponentscomponent)
 
@@ -2575,6 +2545,7 @@ and cannot be used as a reliable reference to position content.
 
 
 - [tapspace.components.Hyperspace:atAnchor](#tapspacecomponentshyperspaceatanchor)
+- [tapspace.components.Hyperspace:commit](#tapspacecomponentshyperspacecommit)
 - [tapspace.components.Hyperspace:renderTransform](#tapspacecomponentshyperspacerendertransform)
 - [tapspace.components.Hyperspace:scaleBy](#tapspacecomponentshyperspacescaleby)
 - [tapspace.components.Hyperspace:transformBy](#tapspacecomponentshyperspacetransformby)
@@ -2589,6 +2560,18 @@ Source: [Hyperspace/index.js](https://github.com/taataa/tapspace/blob/master/lib
 Reuse viewport anchor.
 
 Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/master/lib/components/Hyperspace/atAnchor.js)
+
+<a name="tapspacecomponentshyperspacecommit"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[commit](#tapspacecomponentshyperspacecommit)()
+
+Push hyperspace transformation to the spaces.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [commit.js](https://github.com/taataa/tapspace/blob/master/lib/components/Hyperspace/commit.js)
 
 <a name="tapspacecomponentshyperspacerendertransform"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[renderTransform](#tapspacecomponentshyperspacerendertransform)()
@@ -2656,7 +2639,8 @@ Source: [transformBy.js](https://github.com/taataa/tapspace/blob/master/lib/comp
 <a name="tapspacecomponentshyperspacetranslateby"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[translateBy](#tapspacecomponentshyperspacetranslateby)(translation)
 
-Translate the spaces in relation to the viewport along x, y, and z axis.
+Translate the hyperspace in relation to the viewport
+along x, y, and z axis.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -3439,7 +3423,6 @@ meaning that they can be moved around, rotated, and scaled.
 
 
 - [tapspace.components.TransformerComponent:animate](#tapspacecomponentstransformercomponentanimate)
-- [tapspace.components.TransformerComponent:animateOnce](#tapspacecomponentstransformercomponentanimateonce)
 - [tapspace.components.TransformerComponent:atAnchor](#tapspacecomponentstransformercomponentatanchor)
 - [tapspace.components.TransformerComponent:getDirection](#tapspacecomponentstransformercomponentgetdirection)
 - [tapspace.components.TransformerComponent:getDistanceTo](#tapspacecomponentstransformercomponentgetdistanceto)
@@ -3489,31 +3472,7 @@ Update CSS transition animation properties of the component.
 - this, for chaining
 
 
-Source: [animate.js](https://github.com/taataa/tapspace/blob/master/lib/components/TransformerComponent/animate.js)
-
-<a name="tapspacecomponentstransformercomponentanimateonce"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[TransformerComponent](#tapspacecomponentstransformercomponent):[animateOnce](#tapspacecomponentstransformercomponentanimateonce)
-
-Animate the next move of the component.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *options*
-  - optional object with properties
-    - *duration*
-      - optional string. The transition-duration value, e.g. '500ms' or '2s'. Default is '200ms'.
-    - *easing*
-      - optional string. The transition-timing-function, e.g. 'linear' or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
-    - *delay*
-      - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- this, for chaining
-
-
-Source: [animateOnce.js](https://github.com/taataa/tapspace/blob/master/lib/components/TransformerComponent/animateOnce.js)
+Source: [animate.js](https://github.com/taataa/tapspace/blob/master/lib/components/Animatable/animate.js)
 
 <a name="tapspacecomponentstransformercomponentatanchor"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[TransformerComponent](#tapspacecomponentstransformercomponent):[atAnchor](#tapspacecomponentstransformercomponentatanchor)(alt)
@@ -3998,13 +3957,15 @@ Update transition animation properties of an element.
 - *params*
   - *duration*
     - optional string. The transition-duration value, e.g. '500ms' or '2s'. Default is '200ms'.
+    - optional integer. Microseconds, ms.
   - *easing*
     - optional string. The transition-timing-function, e.g. 'linear' or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
   - *delay*
     - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
+    - optional integer. Microseconds, ms.
 
 
-Source: [applyTransition.js](https://github.com/taataa/tapspace/blob/master/lib/components/TransformerComponent/dom/applyTransition.js)
+Source: [applyTransition.js](https://github.com/taataa/tapspace/blob/master/lib/components/Animatable/dom/applyTransition.js)
 
 <a name="tapspacecomponentsviewport"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport)(element)
@@ -4035,12 +3996,12 @@ creates an illusion of a viewport into space.
 
 - [tapspace.components.Viewport:addChild](#tapspacecomponentsviewportaddchild)
 - [tapspace.components.Viewport:addControl](#tapspacecomponentsviewportaddcontrol)
-- [tapspace.components.Viewport:animate](#tapspacecomponentsviewportanimate)
 - [tapspace.components.Viewport:animateOnce](#tapspacecomponentsviewportanimateonce)
 - [tapspace.components.Viewport:atNorm](#tapspacecomponentsviewportatnorm)
 - [tapspace.components.Viewport:atPage](#tapspacecomponentsviewportatpage)
 - [tapspace.components.Viewport:atPageFn](#tapspacecomponentsviewportatpagefn)
 - [tapspace.components.Viewport:balanceOrientation](#tapspacecomponentsviewportbalanceorientation)
+- [tapspace.components.Viewport:findSingular](#tapspacecomponentsviewportfindsingular)
 - [tapspace.components.Viewport:focus](#tapspacecomponentsviewportfocus)
 - [tapspace.components.Viewport:getAspectRatio](#tapspacecomponentsviewportgetaspectratio)
 - [tapspace.components.Viewport:getControls](#tapspacecomponentsviewportgetcontrols)
@@ -4049,11 +4010,14 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:getItemAt](#tapspacecomponentsviewportgetitemat)
 - [tapspace.components.Viewport:getNavigationBasis](#tapspacecomponentsviewportgetnavigationbasis)
 - [tapspace.components.Viewport:getSize](#tapspacecomponentsviewportgetsize)
+- [tapspace.components.Viewport:getSpaces](#tapspacecomponentsviewportgetspaces)
 - [tapspace.components.Viewport:getWidth](#tapspacecomponentsviewportgetwidth)
+- [tapspace.components.Viewport:limitTo](#tapspacecomponentsviewportlimitto)
 - [tapspace.components.Viewport:measureAll](#tapspacecomponentsviewportmeasureall)
 - [tapspace.components.Viewport:measureDilation](#tapspacecomponentsviewportmeasuredilation)
 - [tapspace.components.Viewport:measureGroup](#tapspacecomponentsviewportmeasuregroup)
 - [tapspace.components.Viewport:measureMany](#tapspacecomponentsviewportmeasuremany)
+- [tapspace.components.Viewport:measureNearest](#tapspacecomponentsviewportmeasurenearest)
 - [tapspace.components.Viewport:measureOne](#tapspacecomponentsviewportmeasureone)
 - [tapspace.components.Viewport:moveTo](#tapspacecomponentsviewportmoveto)
 - [tapspace.components.Viewport:normAt](#tapspacecomponentsviewportnormat)
@@ -4061,6 +4025,7 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:removeChild](#tapspacecomponentsviewportremovechild)
 - [tapspace.components.Viewport:removeControl](#tapspacecomponentsviewportremovecontrol)
 - [tapspace.components.Viewport:renderTransform](#tapspacecomponentsviewportrendertransform)
+- [tapspace.components.Viewport:requestIdle](#tapspacecomponentsviewportrequestidle)
 - [tapspace.components.Viewport:responsive](#tapspacecomponentsviewportresponsive)
 - [tapspace.components.Viewport:rotatable](#tapspacecomponentsviewportrotatable)
 - [tapspace.components.Viewport:rotateBy](#tapspacecomponentsviewportrotateby)
@@ -4079,6 +4044,7 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:zoomToFit](#tapspacecomponentsviewportzoomtofit)
 - [tapspace.components.Viewport:zoomable](#tapspacecomponentsviewportzoomable)
 - [tapspace.components.Viewport.create](#tapspacecomponentsviewportcreate)
+- [tapspace.components.ViewportControls:adapt](#tapspacecomponentsviewportcontrolsadapt)
 
 
 Source: [Viewport/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/index.js)
@@ -4130,13 +4096,6 @@ Controls do not move with the space.
 
 
 Source: [addControl.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/addControl.js)
-
-<a name="tapspacecomponentsviewportanimate"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[animate](#tapspacecomponentsviewportanimate)(options)
-
-TODO doc
-
-Source: [animate.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/animate.js)
 
 <a name="tapspacecomponentsviewportanimateonce"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[animateOnce](#tapspacecomponentsviewportanimateonce)(options)
@@ -4253,6 +4212,23 @@ and weighted by their relative apparent areas.
 
 Source: [balanceOrientation.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/balanceOrientation.js)
 
+<a name="tapspacecomponentsviewportfindsingular"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[findSingular](#tapspacecomponentsviewportfindsingular)()
+
+Find spaces with singular or near-singular scale.
+Singular spaces cannot be transformed reliably due to
+floating point overflow and underflow.
+Useful for detecting near-singular spaces for graceful unloading.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- array of [Component](#tapspacecomponentscomponent)
+  - min length is 0
+  - max length is the number of spaces
+
+
+Source: [findSingular.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/findSingular.js)
+
 <a name="tapspacecomponentsviewportfocus"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[focus](#tapspacecomponentsviewportfocus)(options)
 
@@ -4368,6 +4344,19 @@ element.offsetWidth and element.offsetHeight.
 
 Source: [getSize.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/getSize.js)
 
+<a name="tapspacecomponentsviewportgetspaces"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getSpaces](#tapspacecomponentsviewportgetspaces)()
+
+Get spaces attached to the viewport.
+In other words, get all children of the viewport hyperspace.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- array of [Component](#tapspacecomponentscomponent)
+
+
+Source: [getSpaces.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/getSpaces.js)
+
 <a name="tapspacecomponentsviewportgetwidth"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[getWidth](#tapspacecomponentsviewportgetwidth)()
 
@@ -4379,6 +4368,26 @@ Get viewport width as a [Distance](#tapspacegeometrydistance).
 
 
 Source: [getWidth.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/getWidth.js)
+
+<a name="tapspacecomponentsviewportlimitto"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[limitTo](#tapspacecomponentsviewportlimitto)(targets)
+
+Zoom until the targets are at least partly visible in the viewport.
+Do not zoom at all if some of them are visible.
+Useful for preventing users from getting lost in space.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *targets*
+  - array of [Component](#tapspacecomponentscomponent)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [limitTo.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/limitTo.js)
 
 <a name="tapspacecomponentsviewportmeasureall"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measureAll](#tapspacecomponentsviewportmeasureall)([filter])
@@ -4491,6 +4500,28 @@ const measurements = view.measureMany(items)
 
 
 Source: [measureMany.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/measureMany.js)
+
+<a name="tapspacecomponentsviewportmeasurenearest"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measureNearest](#tapspacecomponentsviewportmeasurenearest)(components, k)
+
+Measure K nearest of the given components.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *components*
+  - array of [Component](#tapspacecomponentscomponent)
+- *k*
+  - a number
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- array of [Component](#tapspacecomponentscomponent)
+  - min length is components.length
+  - max length is k
+
+
+Source: [measureNearest.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/measureNearest.js)
 
 <a name="tapspacecomponentsviewportmeasureone"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measureOne](#tapspacecomponentsviewportmeasureone)(component)
@@ -4630,6 +4661,23 @@ or replaced the basis.tran property.
 
 
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/renderTransform.js)
+
+<a name="tapspacecomponentsviewportrequestidle"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[requestIdle](#tapspacecomponentsviewportrequestidle)()
+
+Targeted for internal use.
+
+Ask viewport to emit an idle event.
+The idle events are used for computationally heavy tasks.
+Therefore this method attempts to limit the frequency of idle events
+by throttling and respecting ongoing animations.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [requestIdle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/requestIdle.js)
 
 <a name="tapspacecomponentsviewportresponsive"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[responsive](#tapspacecomponentsviewportresponsive)([enable])
@@ -5071,7 +5119,35 @@ A container for viewport controls.
 Designed to be used internally by [Viewport](#tapspacecomponentsviewport).
 Cannot be moved.
 
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.components.ViewportControls:adapt](#tapspacecomponentsviewportcontrolsadapt)
+
+
 Source: [ViewportControls/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/ViewportControls/index.js)
+
+<a name="tapspacecomponentsviewportcontrolsadapt"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[ViewportControls](#tapspacecomponentsviewportcontrols):[adapt](#tapspacecomponentsviewportcontrolsadapt)(resizeEvent)
+
+This method receives a ResizeEvent from the [ResizeCapturer](#tapspacecapturersresizecapturer)
+and adjusts the controls so that they stay at the same distance
+from their associated corner of the viewport.
+Useful when the viewport size changes.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *resizeEvent*
+  - an object
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [adapt.js](https://github.com/taataa/tapspace/blob/master/lib/components/ViewportControls/adapt.js)
 
 <a name="tapspacecomponentszoomcontrol"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[ZoomControl](#tapspacecomponentszoomcontrol)(options)
@@ -5115,25 +5191,11 @@ Unbind button actions
 Source: [ZoomControl/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/ZoomControl/index.js)
 
 <a name="tapspacecreatecircle"></a>
-## [tapspace](#tapspace).[createCircle](#tapspacecreatecircle)(radius)
+## [tapspace](#tapspace).[createCircle](#tapspacecreatecircle)
 
-Make a circle-shaped element.
+Alias of [tapspace.createNode](#tapspacecreatenode)
 
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *radius*
-  - a number
-- *color*
-  - optional CSS color string.
-  - Leave empty if you want to control the color via CSS classes.
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- a [CircleItem](#tapspacecomponentscircleitem)
-
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/CircleItem/create.js)
+Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/create.js)
 
 <a name="tapspacecreatecontrol"></a>
 ## [tapspace](#tapspace).[createControl](#tapspacecreatecontrol)(content)
@@ -5192,6 +5254,29 @@ Make an affine item from HTML content. Wraps the content inside a div.
 
 
 Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/create.js)
+
+<a name="tapspacecreatenode"></a>
+## [tapspace](#tapspace).[createNode](#tapspacecreatenode)(radius)
+
+Make a circle-shaped element.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *radius*
+  - a number
+- *color*
+  - optional CSS color string.
+  - Omit if you want to control the color via CSS classes.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a Node
+
+
+Aliases: [tapspace.createCircle](#tapspacecreatecircle)
+
+Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/create.js)
 
 <a name="tapspacecreateplane"></a>
 ## [tapspace](#tapspace).[createPlane](#tapspacecreateplane)()
@@ -5446,6 +5531,7 @@ the scale, orientation, and position of a virtual basis.
 - [tapspace.geometry.Basis:createDirection](#tapspacegeometrybasiscreatedirection)
 - [tapspace.geometry.Basis:createDistance](#tapspacegeometrybasiscreatedistance)
 - [tapspace.geometry.Basis:createVector](#tapspacegeometrybasiscreatevector)
+- [tapspace.geometry.Basis:getMatchedOuter](#tapspacegeometrybasisgetmatchedouter)
 - [tapspace.geometry.Basis:getOrientation](#tapspacegeometrybasisgetorientation)
 - [tapspace.geometry.Basis:getPoint](#tapspacegeometrybasisgetpoint)
 - [tapspace.geometry.Basis:getRaw](#tapspacegeometrybasisgetraw)
@@ -5571,6 +5657,30 @@ Create a vector using coordinate system of this basis.
 
 
 Source: [createVector.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/createVector.js)
+
+<a name="tapspacegeometrybasisgetmatchedouter"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[getMatchedOuter](#tapspacegeometrybasisgetmatchedouter)(targetBasis)
+
+Get a basis that would represent the placement of the element basis,
+if we transformed the element so that this basis and the target basis
+match. Useful when you want to get a basis for a yet unpositioned element
+and you know a basis relative to that element and you also know
+where that basis should be space. Then the resulting basis is the basis
+to which you should move the element.
+See also [TransformerComponent:matchBasis](#tapspacecomponentstransformercomponentmatchbasis)
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *targetBasis*
+  - a [Basis](#tapspacegeometrybasis)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Basis](#tapspacegeometrybasis)
+
+
+Source: [getMatchedOuter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/getMatchedOuter.js)
 
 <a name="tapspacegeometrybasisgetorientation"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[getOrientation](#tapspacegeometrybasisgetorientation)()
@@ -6383,7 +6493,258 @@ A circle tensor. The circle is a flat round shape in 3D space.
   - a [circle3](https://axelpale.github.io/affineplane/docs/API.html#affineplanecircle3) object `{ x, y, z, r }`
 
 
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.geometry.Circle:atCenter](#tapspacegeometrycircleatcenter)
+- [tapspace.geometry.Circle:atMid](#tapspacegeometrycircleatmid)
+- [tapspace.geometry.Circle:changeBasis](#tapspacegeometrycirclechangebasis)
+- [tapspace.geometry.Circle:detectCollision](#tapspacegeometrycircledetectcollision)
+- [tapspace.geometry.Circle:getArea](#tapspacegeometrycirclegetarea)
+- [tapspace.geometry.Circle:getBoundingBox](#tapspacegeometrycirclegetboundingbox)
+- [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
+- [tapspace.geometry.Circle:getHeight](#tapspacegeometrycirclegetheight)
+- [tapspace.geometry.Circle:getRadius](#tapspacegeometrycirclegetradius)
+- [tapspace.geometry.Circle:getRaw](#tapspacegeometrycirclegetraw)
+- [tapspace.geometry.Circle:getSize](#tapspacegeometrycirclegetsize)
+- [tapspace.geometry.Circle:getWidth](#tapspacegeometrycirclegetwidth)
+- [tapspace.geometry.Circle:offset](#tapspacegeometrycircleoffset)
+- [tapspace.geometry.Circle:scaleBy](#tapspacegeometrycirclescaleby)
+- [tapspace.geometry.Circle:transitRaw](#tapspacegeometrycircletransitraw)
+- [tapspace.geometry.Circle:translateBy](#tapspacegeometrycircletranslateby)
+
+
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/index.js)
+
+<a name="tapspacegeometrycircleatcenter"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atCenter](#tapspacegeometrycircleatcenter)()
+
+Get the center point of the sphere.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Point](#tapspacegeometrypoint)
+
+
+Aliases: [tapspace.geometry.Circle:atMid](#tapspacegeometrycircleatmid)
+
+Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/atCenter.js)
+
+<a name="tapspacegeometrycircleatmid"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atMid](#tapspacegeometrycircleatmid)()
+
+Alias of [tapspace.geometry.Circle:atCenter](#tapspacegeometrycircleatcenter)
+
+Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/atCenter.js)
+
+<a name="tapspacegeometrycirclechangebasis"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[changeBasis](#tapspacegeometrycirclechangebasis)(newBasis)
+
+Transit the circle to another basis. In other words, represent the same
+geometry in the coordinate system of the given basis.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *newBasis*
+  - a [Component](#tapspacecomponentscomponent)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/changeBasis.js)
+
+<a name="tapspacegeometrycircledetectcollision"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[detectCollision](#tapspacegeometrycircledetectcollision)(geometry)
+
+Check if the circle collides with the given geometry.
+Note that not all geometries are supported, see below.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *geometry*
+  - a [Point](#tapspacegeometrypoint) or [Circle](#tapspacegeometrycircle)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean, true if collides
+
+
+Source: [detectCollision.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/detectCollision.js)
+
+<a name="tapspacegeometrycirclegetarea"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getArea](#tapspacegeometrycirclegetarea)()
+
+Get the area of the circle.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- an [Area](#tapspacegeometryarea)
+
+
+Source: [getArea.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getArea.js)
+
+<a name="tapspacegeometrycirclegetboundingbox"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getBoundingBox](#tapspacegeometrycirclegetboundingbox)([basis])
+
+Get the cuboid boundary of the circle. The boundary is a box
+that has the same orientation as the given basis.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *basis*
+  - optional [Component](#tapspacecomponentscomponent). Default is this.basis
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Box](#tapspacegeometrybox)
+
+
+Source: [getBoundingBox.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getBoundingBox.js)
+
+<a name="tapspacegeometrycirclegetdiameter"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getDiameter](#tapspacegeometrycirclegetdiameter)()
+
+Get circle diameter as a distance. The diameter equals the circle
+width, height, and depth.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Aliases: [tapspace.geometry.Circle:getHeight](#tapspacegeometrycirclegetheight), [tapspace.geometry.Circle:getWidth](#tapspacegeometrycirclegetwidth)
+
+Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getDiameter.js)
+
+<a name="tapspacegeometrycirclegetheight"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getHeight](#tapspacegeometrycirclegetheight)
+
+Alias of [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
+
+Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getDiameter.js)
+
+<a name="tapspacegeometrycirclegetradius"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getRadius](#tapspacegeometrycirclegetradius)()
+
+Get radius as a distance.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Source: [getRadius.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getRadius.js)
+
+<a name="tapspacegeometrycirclegetraw"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getRaw](#tapspacegeometrycirclegetraw)()
+
+**Returns:** plain [circle3](https://axelpale.github.io/affineplane/docs/API.html#affineplanecircle3) object `{ x, y, z, r }` without basis data.
+
+Source: [getRaw.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getRaw.js)
+
+<a name="tapspacegeometrycirclegetsize"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getSize](#tapspacegeometrycirclegetsize)()
+
+Get circle dimensions.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Size](#tapspacegeometrysize)
+
+
+Source: [getSize.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getSize.js)
+
+<a name="tapspacegeometrycirclegetwidth"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getWidth](#tapspacegeometrycirclegetwidth)
+
+Alias of [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
+
+Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getDiameter.js)
+
+<a name="tapspacegeometrycircleoffset"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[offset](#tapspacegeometrycircleoffset)(dx, dy[, dz])
+
+Translate the circle by scalars.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dx*
+  - a number or [Distance](#tapspacegeometrydistance)
+- *dy*
+  - a number or [Distance](#tapspacegeometrydistance)
+- *dz*
+  - optional number or [Distance](#tapspacegeometrydistance). Default is zero.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [offset.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/offset.js)
+
+<a name="tapspacegeometrycirclescaleby"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[scaleBy](#tapspacegeometrycirclescaleby)(multiplier, origin)
+
+[Scale](#tapspacegeometryscale) the circle about an origin point.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *multiplier*
+  - a number, the scaling factor
+- *origin*
+  - optional [Point](#tapspacegeometrypoint), the transform origin. Defaults to circle center.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/scaleBy.js)
+
+<a name="tapspacegeometrycircletransitraw"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[transitRaw](#tapspacegeometrycircletransitraw)(newBasis)
+
+Represent the circle in another basis.
+Unlike changeBasis, returns a plain object without basis data.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *newBasis*
+  - a [Component](#tapspacecomponentscomponent)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [circle3](https://axelpale.github.io/affineplane/docs/API.html#affineplanecircle3), an object.
+
+
+Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/transitRaw.js)
+
+<a name="tapspacegeometrycircletranslateby"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[translateBy](#tapspacegeometrycircletranslateby)(vec)
+
+Translate the circle by a vector.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *vec*
+  - a [Vector](#tapspacegeometryvector), the translation
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [translateBy.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/translateBy.js)
 
 <a name="tapspacegeometrydirection"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection)(basis, vec)
@@ -7092,6 +7453,7 @@ let p = new tapspace.geometry.Point(basis, { x: 1, y: 2, z: 3 })
 - [tapspace.geometry.Point:transformBy](#tapspacegeometrypointtransformby)
 - [tapspace.geometry.Point:transitRaw](#tapspacegeometrypointtransitraw)
 - [tapspace.geometry.Point:transitRawOuter](#tapspacegeometrypointtransitrawouter)
+- [tapspace.geometry.Point:translateBy](#tapspacegeometrypointtranslateby)
 - [tapspace.geometry.Point.fromAverage](#tapspacegeometrypointfromaverage)
 - [tapspace.geometry.Point.fromMean](#tapspacegeometrypointfrommean)
 
@@ -7356,6 +7718,24 @@ but is more efficient and does not require the affine parent to exist.
 
 
 Source: [transitRawOuter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/transitRawOuter.js)
+
+<a name="tapspacegeometrypointtranslateby"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[translateBy](#tapspacegeometrypointtranslateby)(vec)
+
+Get a point that has been translated i.e. offset by the given vector.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *vec*
+  - a [Vector](#tapspacegeometryvector) or [vec3](https://axelpale.github.io/affineplane/docs/API.html#affineplanevec3), the translation.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Point](#tapspacegeometrypoint)
+
+
+Source: [translateBy.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/translateBy.js)
 
 <a name="tapspacegeometrypointfromaverage"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint).[fromAverage](#tapspacegeometrypointfromaverage)(basis, points)
@@ -9356,6 +9736,7 @@ loading, construction, and destruction.
 
 - [tapspace.loaders.FractalLoader](#tapspaceloadersfractalloader)
 - [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
+- [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
 - [tapspace.loaders.loadImages](#tapspaceloadersloadimages)
 
 
@@ -9441,7 +9822,15 @@ An asynchronous and recursive loader for your tree-structured content.
 Use this to build infinite or very deep, zoomable web applications
 to overcome limits of floating point arithmetics.
 
-To ignite the loader, you need to implement a few functions.
+To setup the loader, you need to implement a few functions:
+mapper, backmapper, tracker, and backtracker.
+The mappers define the relative positions of content and
+the trackers define the order of content.
+The mappers are optional in a sense that you need to implement only
+one of the two for the loader to work.
+Pick the one that best suits your data: if your datum stores
+its location relative to the parent, implement a backmapper;
+if your datum stores the locations of its children, implement a mapper.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -9449,36 +9838,195 @@ To ignite the loader, you need to implement a few functions.
   - an object with properties:
     - *viewport*
       - a [tapspace.components.Viewport](#tapspacecomponentsviewport)
-    - *placeholder*
-      - a function (id), synchronous. Render a placeholder element that is displayed during fetching of the actual content. Return a [Component](#tapspacecomponentscomponent).
-    - *generator*
-      - a function (id, data), synchronous. Render the content element given its freshly-fetched data. Return a [Component](#tapspacecomponentscomponent).
-    - *fetcher*
-      - a function (id, callback), asynchronous. Fetch the content data from your data store. and then call the callback. The callback is a function (err, data). The data is later fed to the generator.
-    - *tracker*
-      - a function (parent), synchronous, where parent is a [Component](#tapspacecomponentscomponent). Return a list of ID strings where each ID represents a child of the parent.
     - *mapper*
-      - a function (parent, childId), synchronous, where parent is a [Component](#tapspacecomponentscomponent). Determine the position of the child by returning a [Basis](#tapspacegeometrybasis).
-    - *backer*
-      - a function (id), synchronous. Return the parent ID of the the given ID. Return null if the ID does not have a parent.
+      - optional function (parentId, parent, childId), synchronous, where parent is a [Component](#tapspacecomponentscomponent). Determine the placement of the child by returning a [Basis](#tapspacegeometrybasis) relative to the parent.
+    - *backmapper*
+      - optional function (childId, child, parentId), synchronous, where child is a [Component](#tapspacecomponentscomponent). Determine the placement of the parent by returning a [Basis](#tapspacegeometrybasis) relative to the child.
+    - *tracker*
+      - a function (parentId, parent), synchronous. The parent is a [Component](#tapspacecomponentscomponent). Return a list of ID strings where each ID represents a child of the parent.
+    - *backtracker*
+      - a function (childId, child), synchronous. The child is a [Component](#tapspacecomponentscomponent). Return the parent ID string. Return null if the child does not have a parent.
 
+
+<p style="margin-bottom: 0">Emits:</p>
+
+- *open*
+  - when you should build a space and call loader.open().
+- *opened*
+  - when a space has been added to the loader successfully.
+- *close*
+  - when a space is about to be closed.
+- *closed*
+  - when a space has been closed successfully.
+
+
+By calling `loader.init(id, basis)` the loader is initiated and
+the tree-building starts.
+However, the loader does not yet know your content.
+To provide the content, and also means to render and retrieve the content,
+you need to set an 'open' event handler:
+
+```
+loader.on('open', (id) => { 
+})
+```
+
+Inside the handler, you can create your content for your tree node,
+like text, images, html, loading animations.
+Place the content into a [tapspace](#tapspace) item or plane,
+and call `loader.open(id, content)`.
+You can also call `loader.placeholder(id, content)`
+to place a placeholder that will be replaced when the actual content
+is retrieved and opened.
+
+Here is a minimal example:
+
+```
+loader.on('open', (id) => {
+  loader.placeholder(id, '...')
+  fetch('https://api.example.com/data')
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not OK')
+      return response.json()
+    })
+    .then(data => {
+      loader.open(id, data.html)
+      callback(null)
+    })
+    .catch(error => {
+      loader.open(id, error.message)
+      console.error('Error:', error)
+      callback(error)
+    })
+})
+```
+
+The loader also emits 'close' event.
+While the loader closes content automatically,
+if your code needs some deconstruction behavior,
+place a listener. For example:
+
+```
+loader.on('close', (id) => {
+  streams[id].close()
+})
+```
+
+Here is a complete configuration example:
+
+```
+const loader = new tapspace.loaders.TreeLoader({
+  viewport: viewport,
+
+  mapper: function (parentId, parent, childId) {
+    // Find the location for the child, relative to the parent.
+    // The return value must be a Basis.
+    // Get the parent basis, and transform it as you like.
+    // Return null if there is no place for the child.
+    const data = store[parentId]
+    const dataPoint = data.points[childId]
+    if (dataPoint) {
+      return parent.getBasis().offset(dataPoint.x, dataPoint.y)
+    }
+    return null
+  },
+
+  backmapper: function (childId, child, parentId) {
+    // Find the location for the parent, relative to the child.
+    // The mapper and backmapper are optional, but you need to implement
+    // at least one of the two.
+    const data = store[childId]
+    const dataPoint = data.parent.point
+    if (dataPoint) {
+      return child.getBasis().offset(dataPoint.x, dataPoint.y)
+    }
+    return null
+  },
+
+  tracker: function (parentId, parent) {
+    // Find IDs of the child nodes, given the parent node.
+    // Return an empty array if there are no childred.
+    const dataPoints = store[parentId].points
+    const idArray = dataPoints.map(p => p.id)
+    return idArray
+  },
+
+  backtracker: function (childId, child) {
+    // Find ID of the parent node, given the child node.
+    // Return null if there are no parents. Such child is the root node.
+    const data = store[childId]
+    if (data.parent.id) {
+      return data.parent.id
+    }
+    return null
+  }
+})
+```
+
+Now you have the [TreeLoader](#tapspaceloaderstreeloader) constructed.
+You still need to build a driver for it. See examples.
+
+Aliases: [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
 - [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
 - [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
 - [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
+- [tapspace.loaders.TreeLoader:open](#tapspaceloaderstreeloaderopen)
 - [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
 - [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
 - [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
 - [tapspace.loaders.TreeLoader:openParent](#tapspaceloaderstreeloaderopenparent)
+- [tapspace.loaders.TreeLoader:placeholder](#tapspaceloaderstreeloaderplaceholder)
+- [tapspace.loaders.TreeLoader:remapChildren](#tapspaceloaderstreeloaderremapchildren)
 - [tapspace.loaders.TreeLoader:removeSpace](#tapspaceloaderstreeloaderremovespace)
 
 
 Source: [TreeLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/index.js)
+
+<a name="tapspaceloaderstreeloader"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader)
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
+- [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
+- [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
+- [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
+- [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
+- [tapspace.loaders.TreeLoader:open](#tapspaceloaderstreeloaderopen)
+- [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
+- [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
+- [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
+- [tapspace.loaders.TreeLoader:openParent](#tapspaceloaderstreeloaderopenparent)
+- [tapspace.loaders.TreeLoader:placeholder](#tapspaceloaderstreeloaderplaceholder)
+- [tapspace.loaders.TreeLoader:remapChildren](#tapspaceloaderstreeloaderremapchildren)
+- [tapspace.loaders.TreeLoader:removeSpace](#tapspaceloaderstreeloaderremovespace)
+
+
+Source: [TreeLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/index.js)
+
+<a name="tapspaceloaderstreeloaderclosechild"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChild](#tapspaceloaderstreeloaderclosechild)(parentId, childId)
+
+Close child space.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *parentId*
+  - a string
+- *childId*
+  - a string
+
+
+Source: [closeChild.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeChild.js)
 
 <a name="tapspaceloaderstreeloaderclosechildren"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChildren](#tapspaceloaderstreeloaderclosechildren)(parentId)
@@ -9524,7 +10072,7 @@ Close parent space, given that the given child space exists.
 Source: [closeParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeParent.js)
 
 <a name="tapspaceloaderstreeloaderinit"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis, callback)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis)
 
 Initialize the tree. Add and load the first space.
 
@@ -9534,44 +10082,62 @@ Initialize the tree. Add and load the first space.
   - a string
 - *basis*
   - a [Basis](#tapspacegeometrybasis), the placement of the first item.
-- *callback*
-  - a function (err, spaceId, space)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
 
 
 Source: [init.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/init.js)
 
+<a name="tapspaceloaderstreeloaderopen"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[open](#tapspaceloaderstreeloaderopen)(id, content[, isPlaceholder])
+
+Open a space, given that there are neighbors.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string
+- *content*
+  - a [Component](#tapspacecomponentscomponent)
+- *isPlaceholder*
+  - optional boolean, default false. Set true to prevent loading propagation continuing to neighbors.
+
+
+Source: [open.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/open.js)
+
 <a name="tapspaceloaderstreeloaderopenchild"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(childId, callback)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(parentId, childId)
 
 Open a child space, given that the parent exists.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
+- *parentId*
+  - a string
 - *childId*
   - a string
-- *callback*
-  - a function (err, child)
 
 
 Source: [openChild.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChild.js)
 
 <a name="tapspaceloaderstreeloaderopenchildren"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(id, callback)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(id)
 
 Open all child spaces for the given parent id.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *id*
-  - a string
-- *callback*
-  - a function (err, childIds, childSpaces)
+  - a string, the parent space ID.
 
 
 Source: [openChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChildren.js)
 
 <a name="tapspaceloaderstreeloaderopenneighbors"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, maxDepth, callback)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, maxDepth)
 
 Open parents and children until max depth.
 
@@ -9581,14 +10147,12 @@ Open parents and children until max depth.
   - a string, the first node ID.
 - *maxDepth*
   - a number, the maximum depth. For example `2`
-- *callback*
-  - a function (err), called once all opened or at error.
 
 
 Source: [openNeighbors.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openNeighbors.js)
 
 <a name="tapspaceloaderstreeloaderopenparent"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openParent](#tapspaceloaderstreeloaderopenparent)(childId, callback)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openParent](#tapspaceloaderstreeloaderopenparent)(childId)
 
 Open a parent space relative to the given child.
 
@@ -9596,11 +10160,41 @@ Open a parent space relative to the given child.
 
 - *childId*
   - a string
-- *callback*
-  - a function (err, parentId, parent)
 
 
 Source: [openParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openParent.js)
+
+<a name="tapspaceloaderstreeloaderplaceholder"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[placeholder](#tapspaceloaderstreeloaderplaceholder)(id, content)
+
+Open a placeholder space. Placeholders do not trigger
+recursive loading.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string
+- *content*
+  - a [Component](#tapspacecomponentscomponent)
+
+
+Source: [placeholder.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/placeholder.js)
+
+<a name="tapspaceloaderstreeloaderremapchildren"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[remapChildren](#tapspaceloaderstreeloaderremapchildren)(parentId)
+
+Update placements of children of the given parent.
+[Transform](#tapspacegeometrytransform) the children to match their new bases.
+Internally, calls mapper to find the new bases.
+Synchronous.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *parentId*
+  - a string
+
+
+Source: [remapChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/remapChildren.js)
 
 <a name="tapspaceloaderstreeloaderremovespace"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[removeSpace](#tapspaceloaderstreeloaderremovespace)(spaceId)
@@ -9679,11 +10273,14 @@ the given viewport properties.
 <p style="margin-bottom: 0">Properties:</p>
 
 - target, the measured element
+- connected, boolean true if in same space and measurable.
 - areaPx, the element area in viewport square pixels.
 - areaRatio, the element area relative to the viewport area.
+- circle, a {x,y,r} object, bounding sphere on the viewport.
 - dilation, a number, the scaling factor, pxOnView per pxOnLocal.
 - distanceToViewport, a number, in viewport pixels.
 - visible, boolean and true if the element or parts of it are visibly within the viewport or approximately close of being visible.
+- visualDistance, a heuristic for how well the object is showing.
 
 
 Source: [Measurement/index.js](https://github.com/taataa/tapspace/blob/master/lib/metrics/Measurement/index.js)

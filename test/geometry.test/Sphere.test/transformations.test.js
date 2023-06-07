@@ -26,4 +26,7 @@ module.exports = function (test, container, tapspace) {
 
     t.end()
   })
+
+  // TODO rotateAroundLine
+  // TODO rotateBy
 }

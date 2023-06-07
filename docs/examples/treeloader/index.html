@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader - Tapspace Features</title>
+  <title>Tree Loader - Tapspace Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -42,6 +42,7 @@
       padding: 4.3rem 4rem;
       background-position: center center;
       background-size: 300px;
+      cursor: pointer;
     }
     .tree-space.current .tree-node {
       border: 1rem solid black;
@@ -59,7 +60,8 @@
   <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.9/dist/tapspace.min.js"></script>
+  <!-- script src="../../../dist/tapspace.min.js"></script -->
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -74,292 +76,276 @@
       target: viewport.atBottomLeft().offset(16, -16)
     })
 
+    // TreeLoader is agnostic of how you fetch and store your data.
+    // You might want to cache the data or update it independently.
+    // In this demo we simulate storing server responses locally.
+    const localData = {}
+
+    // Poisson process inter-arrival time to simulate natural lag.
     const jitter = (mean) => {
-      // Poisson process inter-arrival time to simulate natural lag.
       return -Math.log(1 - Math.random()) * mean
+    }
+
+    // In this example we simulate server responses with this function:
+    const fetchData = (id, callback) => {
+      // Async call to fetch data for the generator.
+      // For the sake of demo, simulate a server response
+      setTimeout(() => {
+        let content = ''
+        let fontSize = 16
+        let img = null
+        let orientation = 0
+        if (id === 'a') {
+          content = '<div>I am the root node. I do not have parents but '
+            + 'I have lots of grandchildren.</div>'
+          fontSize = 24
+        } else if (id === 'aa') {
+          content = '<div>' +
+            'Thick black borders in this demo represent ' +
+            'our current location. ' +
+            'We can have many locations. ' +
+            'The current locations drive the content loading ' +
+            'by expanding and limiting their neighborhood.</div>'
+          fontSize = 17
+        } else if (id === 'ab') {
+          content = '<div class="comic">And I am upside down!</div>'
+          fontSize = 40
+          orientation = 170
+        } else if (id === 'aaa') {
+          content = '<div>Tree Loader<br>–<br>'
+            + '<a href="https://github.com/taataa/tapspace" target="_blank">'
+            + 'Tapspace.js</a> Demo</div>'
+          fontSize = 32
+        } else if (id === 'aaae') {
+          img = '../assets/chellah_star.jpg'
+        } else if (id === 'aaac') {
+          content = '<div>Recursive loading and unloading of content '
+            + 'is necessary in order to explore huge masses of data. '
+            + 'Otherwise web browsers would slow down to tar '
+            + 'under the load of thousands of elements.</div>'
+          fontSize = 16
+        } else if (id === 'aaaee') {
+          img = '../assets/oudaya_door.jpg'
+        } else if (id === 'aaace') {
+          content = '<div>This demo simulates fetching content from '
+            + 'backend servers by applying a jittered delay. Therefore '
+            + 'some nodes take more time to load than others.</div>'
+          fontSize = 18
+        } else if (id === 'aaacf') {
+          content = '<div>'
+            + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
+            + 'tapspace.loaders.TreeLoader</a> is the class '
+            + 'that drives the recursive and asynchronous '
+            + 'loading, construction, and destruction of content. '
+            + '<br><br>'
+            + 'Think it as a sliding window or a dynamic subset for '
+            + 'your tree of content.</div>'
+          fontSize = 14
+        } else if (id === 'aaaeea') {
+          img = '../assets/wood-cracked.jpg'
+        } else if (id === 'aaaeeae') {
+          img = '../assets/tile01.png'
+        } else if (id === 'aaaeeaee') {
+          img = '../assets/gearhandle.png'
+        } else if (id.startsWith('aaaeeaeea')) {
+          img = '../assets/chellah_nw.jpg'
+        }
+
+        const responseData = {
+          id: id,
+          content: content,
+          fontSize: fontSize,
+          img: img,
+          orientation: orientation,
+          parent: id.substring(0, id.length - 1) || null,
+          nodes: [
+            { id: id + 'a', x: 1000, y: 0 },
+            { id: id + 'b', x: 600, y: 800 },
+            { id: id + 'c', x: 600, y: -800 },
+            { id: id + 'd', x: -600, y: -800 },
+            { id: id + 'e', x: -1000, y: 0 },
+            { id: id + 'f', x: -600, y: 800 }
+          ]
+        }
+
+        callback(null, responseData)
+      }, jitter(400))
+    }
+
+    const createPlaceholder = (id) => {
+      // Render placeholder
+      const plane = tapspace.createPlane()
+      plane.addClass('tree-space')
+      plane.spaceId = id
+      const node = tapspace.createNode(100)
+      node.addClass('tree-placeholder')
+      plane.addChild(node, plane.at(0, 0))
+      // Clear up old local data.
+      delete localData[id]
+      return plane
+    }
+
+    const createNode = (id) => {
+      // Render content to replace the placeholder
+      const data = localData[id]
+
+      const plane = tapspace.createPlane()
+      plane.addClass('tree-space')
+
+      // Devise a way to find the space id from the component.
+      plane.spaceId = id
+
+      const item = tapspace.createNode(150)
+      item.addClass('tree-node')
+      item.element.title = 'id:' + id
+
+      item.element.style.fontSize = data.fontSize + 'px'
+      item.html(data.content)
+
+      if (data.img) {
+        item.element.style.backgroundImage = `url(${data.img})`
+      }
+
+      item.tappable({ preventDefault: false })
+      item.on('tap', (ev) => {
+        const metric = viewport.measureOne(item)
+
+        // Zoom to
+        if (metric.areaRatio > 0.01) {
+          viewport.animateOnce({ duration: '500ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '30%' })
+        } else if (metric.areaRatio > 0.001) {
+          viewport.animateOnce({ duration: '800ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '40%' })
+        } else if (metric.areaRatio > 0.0001) {
+          viewport.animateOnce({ duration: '1500ms', easing: 'ease-in' })
+          viewport.zoomTo(item, { margin: '45%' })
+        }
+
+        // Clear annoying accidental text selections.
+        window.getSelection().removeAllRanges()
+      })
+      item.setContentInput(false)
+
+      plane.addChild(item, { x: 0, y: 0 })
+      plane.item = item // HACKY
+
+      item.rotateByDegrees(data.orientation)
+
+      return plane
     }
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
-      placeholder: function (id) {
-        // Render placeholder
-        const plane = tapspace.createPlane()
-        plane.addClass('tree-space')
-        plane.placeholderId = id
-        const circle = tapspace.createCircle(100)
-        circle.addClass('tree-placeholder')
-        plane.addChild(circle, plane.at(0, 0))
-        return plane
-      },
-
-      fetcher: function (id, callback) {
-        // Async call to fetch data for the generator.
-        // For the sake of demo, simulate a server response
-        setTimeout(() => {
-          let content = ''
-          let fontSize = 16
-          let img = null
-          let orientation = 0
-          if (id === 'a') {
-            content = '<div>I am the root node. I do not have parents but '
-              + 'I have lots of grandchildren.</div>'
-            fontSize = 24
-          } else if (id === 'aa') {
-            content = '<div>' +
-              'Thick black borders in this demo represent ' +
-              'our current location. ' +
-              'We can have many locations. ' +
-              'The current locations drive the content loading ' +
-              'by expanding and limiting their neighborhood.</div>'
-            fontSize = 17
-          } else if (id === 'ab') {
-            content = '<div class="comic">And I am upside down!</div>'
-            fontSize = 40
-            orientation = 170
-          } else if (id === 'aaa') {
-            content = '<div>Tree Loader<br>–<br>'
-              + '<a href="https://github.com/taataa/tapspace" target="_blank">'
-              + 'Tapspace.js</a> Demo</div>'
-            fontSize = 32
-          } else if (id === 'aaae') {
-            img = '../assets/chellah_star.jpg'
-          } else if (id === 'aaac') {
-            content = '<div>Recursive loading and unloading of content '
-              + 'is necessary in order to explore huge masses of data. '
-              + 'Otherwise web browsers would slow down to tar '
-              + 'under the load of thousands of elements.</div>'
-            fontSize = 16
-          } else if (id === 'aaaee') {
-            img = '../assets/oudaya_door.jpg'
-          } else if (id === 'aaace') {
-            content = '<div>This demo simulates fetching content from '
-              + 'backend servers by applying a jittered delay. Therefore '
-              + 'some nodes take more time to load than others.</div>'
-            fontSize = 18
-          } else if (id === 'aaacf') {
-            content = '<div>'
-              + '<a href="https://taataa.github.io/tapspace/api/v2/#tapspaceloaders" target="_blank">'
-              + 'tapspace.loaders.TreeLoader</a> is the class '
-              + 'that drives the recursive and asynchronous '
-              + 'loading, construction, and destruction of content. '
-              + '<br><br>'
-              + 'Think it as a sliding window or a dynamic subset for '
-              + 'your tree of content.</div>'
-            fontSize = 14
-          } else if (id === 'aaaeea') {
-            img = '../assets/wood-cracked.jpg'
-          } else if (id === 'aaaeeae') {
-            img = '../assets/tile01.png'
-          } else if (id === 'aaaeeaee') {
-            img = '../assets/gearhandle.png'
-          } else if (id.startsWith('aaaeeaeea')) {
-            img = '../assets/chellah_nw.jpg'
-          }
-
-          const responseData = {
-            id: id,
-            content: content,
-            fontSize: fontSize,
-            img: img,
-            orientation: orientation,
-            nodes: [
-              { id: id + 'a', x: 1000, y: 0 },
-              { id: id + 'b', x: 600, y: 800 },
-              { id: id + 'c', x: 600, y: -800 },
-              { id: id + 'd', x: -600, y: -800 },
-              { id: id + 'e', x: -1000, y: 0 },
-              { id: id + 'f', x: -600, y: 800 }
-            ]
-          }
-          callback(null, responseData)
-        }, jitter(400))
-      },
-
-      generator: function (id, data) {
-        // Render content to replace the placeholder
-        const plane = tapspace.createPlane()
-        plane.addClass('tree-space')
-        plane.data = data
-
-        const item = tapspace.createCircle(150)
-        item.addClass('tree-node')
-        item.element.title = 'id:' + id
-
-        item.element.style.fontSize = data.fontSize + 'px'
-        item.html(data.content)
-
-        if (data.img) {
-          item.element.style.backgroundImage = `url(${data.img})`
-        }
-
-        item.tappable({ preventDefault: false })
-        item.on('tap', () => {
-          loader.openNeighbors(id, 3)
-          window.getSelection().removeAllRanges()
-          viewport.animateOnce({ duration: '500ms' })
-          viewport.zoomTo(item, 0.2)
-        })
-        item.setContentInput(false)
-
-        plane.addChild(item, { x: 0, y: 0 })
-        plane.item = item // HACKY
-
-        item.rotateByDegrees(data.orientation)
-
-        return plane
-      },
-
-      mapper: function (parent, childId) {
+      mapper: function (parentId, parent, childId) {
         // Find basis for a child with respect to the parent.
-        const data = parent.data.nodes.find(n => n.id === childId)
+        const parentData = localData[parentId]
+        const childData = parentData.nodes.find(n => n.id === childId)
 
-        if (data) {
+        if (childData) {
           return parent.getBasis()
             .scaleBy(0.3, parent.atAnchor())
-            .offset(data.x, data.y)
+            .offset(childData.x, childData.y)
         }
 
         return null
       },
 
-      tracker: function (parent) {
+      tracker: function (parentId, parent) {
         // Get IDs of the children of the parent component.
-        return parent.data.nodes.map(node => node.id)
+        const parentData = localData[parentId]
+        if (parentData) {
+          return parentData.nodes.map(node => node.id)
+        }
+        return []
       },
 
-      backer: function (childId) {
+      backtracker: function (childId, child) {
         // Find parent id.
-        if (childId.length <= 1) {
-          return null
+        const childData = localData[childId]
+        if (childData) {
+          const parentId = childData.parent
+          if (parentId) {
+            return parentId
+          }
         }
-        return childId.substring(0, childId.length - 1)
+        return null
       }
     })
 
+    const firstId = 'aaa'
     const firstBasis = viewport.getBasisAt(
       viewport.atCenter().offset(0, -20),
     )
 
-    loader.init('aaa', firstBasis, (err, sid, space) => {
-      if (err) {
-        console.error(err)
-        return
-      }
+    loader.init(firstId, firstBasis)
 
-      // Force expansion after first loaded.
-      viewport.emit('idle')
+    loader.on('open', (id) => {
+      const placeholder = createPlaceholder(id)
+      loader.placeholder(id, placeholder)
+
+      fetchData(id, (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        localData[id] = data
+        const nodeItem = createNode(id)
+        loader.open(id, nodeItem)
+
+        if (id === firstId) {
+          viewport.requestIdle()
+        }
+      })
     })
 
+    // Idle driver for the tree.
     viewport.on('idle', () => {
-      const hyperspace = viewport.getHyperspace()
-      const spaces = hyperspace.getChildren()
-      const metrics = viewport.measureMany(spaces)
+      const spaces = viewport.getSpaces()
 
-      const loadedMetrics = metrics.filter((metric) => {
-        // Remove all too small spaces immediately.
-        // Do this to avoid singular inversions.
-        const determinant = metric.dilation * metric.dilation
-        if (determinant < tapspace.math.epsilon * 100) {
-          const target = metric.target
-          const spaceId = target.placeholderId || target.data.id
-          loader.removeSpace(spaceId)
-
-          return false
-        }
-
-        // Skip placeholders
-        if (metric.target.data && metric.target.data.id) {
-          return true
-        }
-
-        return false
+      // Remove all too small spaces immediately.
+      // Do this to avoid singular inversions.
+      const singulars = viewport.findSingular()
+      singulars.forEach(space => {
+        const spaceId = space.spaceId
+        loader.removeSpace(spaceId)
       })
 
       // DEBUG
+      const numNodes = spaces.length - singulars.length
       const metersEl = document.getElementById('meters')
-      metersEl.innerHTML = '# of nodes: ' + spaces.length
+      metersEl.innerHTML = '# of nodes: ' + numNodes
 
-      // DEBUG
-      // display visual distance
-      // metrics.forEach(metric => {
-      //   metric.target.html([
-      //     'distance: ' + metric.visualDistance.toFixed(3),
-      //     'areaRatio: ' + metric.areaRatio.toFixed(3)
-      //   ].join('<br>'))
-      // })
-
-      const best = loadedMetrics.reduce((acc, metric) => {
-        if (metric.visualDistance < acc.bestDistance) {
-          // Replace best
-          return {
-            bestDistance: metric.visualDistance,
-            secondDistance: acc.bestDistance,
-            bestTarget: metric.target,
-            secondTarget: acc.bestTarget,
-            bestMetric: metric,
-            secondMetric: acc.bestMetric
-          }
-        }
-        if (metric.visualDistance < acc.secondDistance) {
-          // Replace second best
-          return {
-            bestDistance: acc.bestDistance,
-            secondDistance: metric.visualDistance,
-            bestTarget: acc.bestTarget,
-            secondTarget: metric.target,
-            bestMetric: acc.bestMetric,
-            secondMetric: metric
-          }
-        }
-        return acc
-      }, {
-        bestDistance: Infinity,
-        secondDistance: Infinity,
-        bestTarget: null,
-        secondTarget: null,
-        bestMetric: null,
-        secondMetric: null
+      // Skip placeholders
+      const loadedSpaces = spaces.filter((space) => {
+        return space.spaceId in localData
       })
 
-      const currentSpace = best.bestTarget
-      const secondSpace = best.secondTarget
+      // Find closest, our current location.
+      const nearest = viewport.measureNearest(loadedSpaces, 2)
+      const nearestSpaces = nearest.map(ne => ne.target)
 
-      loadedMetrics.forEach(metric => {
-        const space = metric.target
-        if (space !== currentSpace && space !== secondSpace) {
-          space.removeClass('current')
-          space.item.setContentInput(false)
-        } else {
+      // Style the closest. Unstyle others.
+      loadedSpaces.forEach(space => {
+        if (nearestSpaces.includes(space)) {
           space.addClass('current')
           space.item.setContentInput('pointer')
+        } else {
+          space.removeClass('current')
+          space.item.setContentInput(false)
         }
       })
 
-      if (currentSpace) {
-        const currentId = currentSpace.data.id
+      // // Expand and prune the tree.
+      const nearestIds = nearestSpaces.map(space => space.spaceId)
+      loader.closeNeighbors(nearestIds, 3)
+      nearestIds.forEach(spaceId => {
+        loader.openNeighbors(spaceId, 2)
+      })
 
-        if (secondSpace) {
-          const secondId = secondSpace.data.id
-          loader.closeNeighbors([currentId, secondId], 4)
-        } else {
-          loader.closeNeighbors(currentId, 4)
-        }
-
-        loader.openNeighbors(currentId, 3)
-        if (secondSpace) {
-          const secondId = secondSpace.data.id
-          loader.openNeighbors(secondId, 3)
-        }
-      }
-
-      // Prevent viewport from getting too far from the current node.
-      const dilationLimit = 0.1
-      if (best.bestMetric && best.bestMetric.dilation < dilationLimit) {
-        const origin = best.bestMetric.target.atAnchor()
-        viewport.scaleBy(best.bestMetric.dilation / dilationLimit, origin)
-        viewport.translateTo(origin)
-      }
+      // Prevent viewport from getting too far from the current nodes.
+      viewport.limitTo(nearestSpaces)
     })
   </script>
 </body>

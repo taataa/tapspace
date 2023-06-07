@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CIELAB Color Explorer - Tapspace.js Demo</title>
+
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    html, body, .color-explorer {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background: black;
+      color: white;
+    }
+    .color-plane .color-node {
+      text-align: center;
+      font-family: Georgia, serif;
+      padding: 50px;
+      font-size: 26px;
+      line-height: 10px;
+      color: transparent;
+      cursor: pointer;
+    }
+    .color-plane .color-node.color-node-impossible {
+      color: gray;
+      background: transparent;
+      border: 5px dashed gray;
+    }
+    .color-plane .color-info {
+      color: transparent;
+      display: none;
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      line-height: 10px;
+      text-align: center;
+    }
+    .color-plane.current .color-info {
+      display: block;
+    }
+    .word-cielab { font-size: 29px; line-height: 30px; }
+    .word-colorspace { font-size: 19px; line-height: 30px; }
+    .word-explorer { font-size: 26px; line-height: 24px; }
+    .word-tapspace { font-size: 9px; line-height: 11px; }
+    .word-tapspace a:link { color: #222; }
+    .word-tapspace a:visited { color: #222; }
+    .word-tapspace a:focus { color: #555; }
+    .word-tapspace a:hover { color: #555; }
+    .word-tapspace a:active { color: #555; }
+    .word-params { font-size: 12px; line-height: 16px; }
+    .word-cutout { font-size: 10px; line-height: 20px; }
+  </style>
+</head>
+<body>
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="color-explorer"></div>
+
+  <!-- Import tapspace. -->
+  <!-- script src="../../../dist/tapspace.min.js"></script -->
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup the tapspace viewport and the default layer for content.
+    const viewport = tapspace.createView('#tapspace')
+    viewport.zoomable()
+    // Add a control for navigation
+    const zoomControl = new tapspace.components.ZoomControl()
+    viewport.addControl(zoomControl)
+    zoomControl.match({
+      source: zoomControl.atBottomLeft(),
+      target: viewport.atBottomLeft().offset(16, -16)
+    })
+
+    const jitter = (mean, rand) => {
+      // Poisson process inter-arrival time to simulate natural lag.
+      return -Math.log(1 - rand()) * mean
+    }
+    const limit = (n, min, max) => {
+      return Math.min(max, Math.max(min, n))
+    }
+    const labToXyz = (lab) => {
+      // Source: http://www.easyrgb.com/en/math.php
+      const ref_X =  95.047
+      const ref_Y = 100.000
+      const ref_Z = 108.883
+
+      const var_Y = (lab.l + 16) / 116
+      const var_X = lab.a / 500 + var_Y
+      const var_Z = var_Y - lab.b / 200
+
+      const [X, Y, Z] = [var_X, var_Y, var_Z]
+          .map(n => Math.pow(n, 3) > 0.008856
+              ? Math.pow(n, 3)
+              : (n - 16 / 116) / 7.787)
+
+      return {
+        x: X * ref_X,
+        y: Y * ref_Y,
+        z: Z * ref_Z
+      }
+    }
+    function xyzToRgb(xyz) {
+      // Source: http://www.easyrgb.com/en/math.php
+      // X, Y and Z input refer to a D65/2° standard illuminant.
+      // sR, sG and sB (standard RGB) output range = 0 ÷ 255
+
+      const var_X = xyz.x / 100
+      const var_Y = xyz.y / 100
+      const var_Z = xyz.z / 100
+
+      const var_R = var_X *  3.2406 + var_Y * -1.5372 + var_Z * -0.4986
+      const var_G = var_X * -0.9689 + var_Y *  1.8758 + var_Z *  0.0415
+      const var_B = var_X *  0.0557 + var_Y * -0.2040 + var_Z *  1.0570
+
+      const varToS = v => v > 0.0031308
+        ? 1.055 * Math.pow(v, (1 / 2.4)) - 0.055
+        : 12.92 * v
+
+      return {
+        r: Math.round(varToS(var_R) * 255),
+        g: Math.round(varToS(var_G) * 255),
+        b: Math.round(varToS(var_B) * 255)
+      }
+    }
+    const indexToStep = (i) => {
+      const steps = [30, 20, 10, 5, 10, 20]
+      const stepi = i % steps.length
+      return steps[stepi]
+    }
+    const idToLab = (id) => {
+      const tid = id.substring(1)
+      return tid.split('').reduce((lab, char, i) => {
+        const step = indexToStep(i)
+        switch (char) {
+          case 'd':
+            return { l: lab.l - step, a: lab.a, b: lab.b }
+          case 'a':
+            return { l: lab.l, a: lab.a + step, b: lab.b }
+          case 'b':
+            return { l: lab.l, a: lab.a, b: lab.b + step }
+          case 'l':
+            return { l: lab.l + step, a: lab.a, b: lab.b }
+          case 'e':
+            return { l: lab.l, a: lab.a - step, b: lab.b }
+          case 'f':
+            return { l: lab.l, a: lab.a, b: lab.b - step }
+          default:
+            return lab
+        }
+      }, { l: 60, a: 0, b: 0 })
+    }
+    const complementaryLab = (lab) => {
+      return {
+        l: lab.l === 50 ? 85 : (lab.l > 50 ? 0 : 100),
+        a: 0,
+        b: 0
+      }
+    }
+    const labToColor = (lab) => {
+      const l = limit(lab.l, 0, 100).toFixed(8)
+      const a = limit(lab.a, -125, 125).toFixed(8)
+      const b = limit(lab.b, -125, 125).toFixed(8)
+      return `lab(${l} ${a} ${b})`
+    }
+    const labToText = (lab, precision) => {
+      return '<span>' + [
+        'L:' + lab.l.toFixed(precision),
+        'a:' + lab.a.toFixed(precision),
+        'b:' + lab.b.toFixed(precision),
+      ].join(' ') + '</span>'
+    }
+    const rgbToText = (rgb) => {
+      return '<span>#' + [
+        Math.round(rgb.r).toString(16).padStart(2, '0'),
+        Math.round(rgb.g).toString(16).padStart(2, '0'),
+        Math.round(rgb.b).toString(16).padStart(2, '0')
+      ].join('') + '</span>'
+    }
+    const validRgb = (rgb) => {
+      // Skip subnodes that do not fit into sRGB colorspace.
+      return rgb.r >= 0 && rgb.r <= 255 &&
+        rgb.g >= 0 && rgb.g <= 255 &&
+        rgb.b >= 0 && rgb.b <= 255
+    }
+    const idToText = (id) => {
+      if (id === 'r') {
+        return [
+          '<span class="word-cielab">CIELAB</span>',
+          '<span class="word-colorspace">Color Space</span>',
+          '<span class="word-explorer">Explorer</span>',
+          '<span class="word-tapspace">a ' +
+          '<a href="https://github.com/taataa/tapspace">Tapspace.js</a> ' +
+          'example</span>'
+        ].join('<br>')
+      }
+      if (id === 'rl') {
+        return '<div class="word-params">' + [
+          'Each CIELAB color is defined by three parameters.',
+          '<em>L</em> controls lightness while',
+          '<em>a</em> and <em>b</em> control hue.'
+        ].join(' ') + '</div>'
+      }
+      if (id === 'rll') {
+        return '<div class="word-cutout">' + [
+          'Some nodes are cut off because',
+          'not all LAB colors can be displayed in RGB.'
+        ].join(' ') + '</div>'
+      }
+      return ''
+    }
+    const idToDirection = (id) => {
+      const dir = Math.PI / 2
+      const step = Math.PI / 3
+      const char = id.substring(id.length - 1)
+      switch (char) {
+        case 'l':
+        return -dir
+        case 'a':
+        return -dir + step
+        case 'b':
+        return -dir - step
+        case 'd':
+        return dir
+        case 'e':
+        return dir + step
+        case 'f':
+        return dir - step
+        default:
+        return null
+      }
+    }
+    const idToIncrementLabel = (id) => {
+      const char = id.substring(id.length - 1)
+      const step = indexToStep(id.length - 2)
+      switch (char) {
+        case 'l':
+        return 'L+' + step
+        case 'a':
+        return 'a+' + step
+        case 'b':
+        return 'b+' + step
+        case 'd':
+        return 'L-' + step
+        case 'e':
+        return 'a-' + step
+        case 'f':
+        return 'b-' + step
+        default:
+        return ''
+      }
+    }
+
+    const loader = new tapspace.loaders.TreeLoader({
+      viewport: viewport,
+
+      mapper: (superid, superspace, subid) => {
+        const dir = idToDirection(subid)
+        if (!dir) return null
+        const origin = superspace.appData.node.atCenter()
+        return superspace.getBasis()
+          .polarOffset(600, dir)
+          .scaleBy(0.32, origin)
+      },
+
+      tracker: (superid, superspace) => {
+        return 'dablef'.split('').map(char => superid + char)
+      },
+
+      backtracker: (subid, subspace) => {
+        return subid.substring(0, subid.length - 1) || null
+      }
+    })
+
+    const firstId = 'r'
+    const firstBasis = viewport.getBasisAt(viewport.atCenter().offset(-100, -100))
+    loader.init(firstId, firstBasis)
+
+    // On first open, ignite the driver.
+    loader.once('opened', (id) => {
+      viewport.requestIdle()
+    })
+
+    const createColorPatch = (id) => {
+      const plane = tapspace.createPlane()
+      plane.addClass('color-plane')
+      plane.setAnchor({ x: 100, y: 100 })
+
+      let node
+      const lab = idToLab(id)
+      const rgb = xyzToRgb(labToXyz(lab))
+      const possible = validRgb(rgb)
+      if (possible) {
+        const color = labToColor(lab)
+        node = tapspace.createNode(100, color)
+        const invLab = complementaryLab(lab)
+        const invColor = labToColor(invLab)
+        node.element.style.color = invColor
+      } else {
+        node = tapspace.createNode(100)
+        node.addClass('color-node-impossible')
+      }
+
+      node.addClass('color-node')
+      node.html(idToText(id))
+      node.element.title = 'id:' + id
+      node.setParent(plane, { x: 100, y: 100 })
+
+      node.tappable({ preventDefault: false })
+      node.on('tap', () => {
+        viewport.animateOnce({ duration: 800, easing: 'ease-out' })
+        viewport.zoomTo(node, { margin: '38%' })
+        // Clear text selections.
+        window.getSelection().removeAllRanges()
+      })
+      node.setContentInput(false)
+
+      const info = tapspace.createItem()
+      info.addClass('color-info')
+      info.setSize(100, 40)
+      const incrementLabel = idToIncrementLabel(id)
+      let infoText = (
+        possible ?
+        labToText(lab, 0) + '<br>' + rgbToText(rgb) :
+        labToText(lab, 0)
+      ) + (
+        incrementLabel ?
+        '<br>' + incrementLabel :
+        ''
+      )
+      info.html(infoText)
+      info.setParent(plane)
+      info.matchPoint(info.atBottomMid(), node.atBottomMid())
+      info.scaleBy(0.62, info.atBottomMid())
+
+      // Easy way to reach data
+      plane.appData = {
+        id: id,
+        lab: lab,
+        rgb: rgb,
+        possible: possible,
+        node: node,
+        info: info
+      }
+
+      return plane
+    }
+
+    loader.on('open', (id) => {
+      setTimeout(() => {
+        const space = createColorPatch(id)
+        loader.open(id, space)
+      }, jitter(50, Math.random))
+    })
+
+    // Idle driver for the tree.
+    viewport.on('idle', () => {
+      console.log('idle')
+      const spaces = viewport.getSpaces()
+
+      // Remove all too small spaces immediately.
+      // Do this to avoid singular inversions.
+      const singulars = viewport.findSingular()
+      singulars.forEach(space => {
+        const spaceId = space.appData.id
+        loader.removeSpace(spaceId)
+      })
+
+      // Find closest, our current location.
+      const nearest = viewport.measureNearest(spaces, 2)
+      const nearestSpaces = nearest.map(ne => ne.target)
+
+      // Style the closest. Unstyle others.
+      spaces.forEach(space => {
+        if (nearestSpaces.includes(space)) {
+          space.addClass('current')
+          space.appData.info.setContentInput('pointer')
+        } else {
+          space.removeClass('current')
+          space.appData.info.setContentInput(false)
+        }
+      })
+
+      // Adjust background color for better contrast.
+      if (nearestSpaces.length > 0) {
+        const nearestOne = nearestSpaces[0]
+        const nearestId = nearestOne.appData.id
+        const nearestInfo = nearestOne.appData.info
+        const nearestLab = nearestOne.appData.lab
+        const invLab = complementaryLab(nearestLab)
+        const invColor = labToColor(invLab)
+        if (nearestOne.appData.possible) {
+          nearestInfo.element.style.color = invColor
+        } else {
+          nearestInfo.element.style.color = 'gray'
+        }
+      }
+
+      // Expand and prune the tree.
+      const nearestIds = nearestSpaces.map(space => space.appData.id)
+      loader.closeNeighbors(nearestIds, 4)
+      nearestIds.forEach(id => {
+        loader.openNeighbors(id, 3)
+      })
+
+      // Prevent viewport from getting too far from the current nodes.
+      viewport.limitTo(nearestSpaces)
+    })
+  </script>
+</body>
+</html>
