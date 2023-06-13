@@ -442,7 +442,7 @@ Various components to render into [tapspace](#tapspace).
 
 <p style="margin-bottom: 0"><strong>Special components:</strong></p>
 
-- Node, a round HTML element in space.
+- [Node](#tapspacecomponentsnode), a round HTML element in space.
 - [Edge](#tapspacecomponentsedge), a CSS border as a line segment in space.
 - [Arc](#tapspacecomponentsarc), a curved CSS border as an arc segment in space.
 
@@ -481,6 +481,7 @@ Various components to render into [tapspace](#tapspace).
 - [tapspace.components.Hyperspace](#tapspacecomponentshyperspace)
 - [tapspace.components.InteractiveComponent](#tapspacecomponentsinteractivecomponent)
 - [tapspace.components.Item](#tapspacecomponentsitem)
+- [tapspace.components.Node](#tapspacecomponentsnode)
 - [tapspace.components.Plane](#tapspacecomponentsplane)
 - [tapspace.components.TransformerComponent](#tapspacecomponentstransformercomponent)
 - [tapspace.components.Viewport](#tapspacecomponentsviewport)
@@ -3265,6 +3266,72 @@ Alias of [tapspace.components.Item:draggable](#tapspacecomponentsitemdraggable)
 
 Source: [draggable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/draggable.js)
 
+<a name="tapspacecomponentsnode"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Node](#tapspacecomponentsnode)(radius, color)
+
+Inherits [Item](#tapspacecomponentsitem)
+
+A colorful circle.
+Instance class for a circle-like object on an affine plane.
+Useful for debugging coordinate positions.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *radius*
+  - a number.
+- *color*
+  - optional string. A CSS color e.g. '#ff2200' or 'rgb(123,123,123)'
+  - Leave undefined if you want to control the color via CSS classes.
+
+
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.components.Node:getBoundingCircle](#tapspacecomponentsnodegetboundingcircle)
+- [tapspace.components.Node:getDiameter](#tapspacecomponentsnodegetdiameter)
+- [tapspace.components.Node:getRadius](#tapspacecomponentsnodegetradius)
+
+
+Source: [Node/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/index.js)
+
+<a name="tapspacecomponentsnodegetboundingcircle"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Node](#tapspacecomponentsnode):[getBoundingCircle](#tapspacecomponentsnodegetboundingcircle)()
+
+Get the bounding circle of the node.
+Takes in account the circle shape of the node.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/getBoundingCircle.js)
+
+<a name="tapspacecomponentsnodegetdiameter"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Node](#tapspacecomponentsnode):[getDiameter](#tapspacecomponentsnodegetdiameter)()
+
+Get the circle diameter.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/getDiameter.js)
+
+<a name="tapspacecomponentsnodegetradius"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Node](#tapspacecomponentsnode):[getRadius](#tapspacecomponentsnodegetradius)()
+
+Get the circle radius.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Source: [getRadius.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/getRadius.js)
+
 <a name="tapspacecomponentsplane"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane)()
 
@@ -5271,7 +5338,7 @@ Make a circle-shaped element.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
-- a Node
+- a [Node](#tapspacecomponentsnode)
 
 
 Aliases: [tapspace.createCircle](#tapspacecreatecircle)
@@ -9736,7 +9803,6 @@ loading, construction, and destruction.
 
 - [tapspace.loaders.FractalLoader](#tapspaceloadersfractalloader)
 - [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
-- [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
 - [tapspace.loaders.loadImages](#tapspaceloadersloadimages)
 
 
@@ -9782,7 +9848,7 @@ the number of concurrently rendered elements.
         - *maxVisibleCover*
           - a number, default is 2. Maximum area the node can cover in the viewport and still be rendered. Larger nodes are removed. The number is the node area relative to the viewport area.
         - *maxDistance*
-          - a number, default is 1500. Maximum distance in the viewport pixels from the viewport center so that the node is still kept rendered. Nodes farther away are removed.
+          - a number, default is 1500. Maximum distance in the viewport pixels from the viewport center so that the node is still kept rendered. [Node](#tapspacecomponentsnode)s farther away are removed.
 
 
 Tracker functions define the fractal layout. They consume an array of
@@ -9852,12 +9918,16 @@ if your datum stores the locations of its children, implement a mapper.
 
 - *open*
   - when you should build a space and call loader.open().
+  - Called with `{ id, data }`.
 - *opened*
   - when a space has been added to the loader successfully.
+  - Called with `{ id, space }`.
 - *close*
   - when a space is about to be closed.
+  - Called with `{ id, space, data }`.
 - *closed*
   - when a space has been closed successfully.
+  - Called with `{ id }`.
 
 
 By calling `loader.init(id, basis)` the loader is initiated and
@@ -9867,7 +9937,7 @@ To provide the content, and also means to render and retrieve the content,
 you need to set an 'open' event handler:
 
 ```
-loader.on('open', (id) => { 
+loader.on('open', (ev) => { 
 })
 ```
 
@@ -9882,19 +9952,19 @@ is retrieved and opened.
 Here is a minimal example:
 
 ```
-loader.on('open', (id) => {
-  loader.placeholder(id, '...')
+loader.on('open', (ev) => {
+  loader.addPlaceholder(ev.id, '...')
   fetch('https://api.example.com/data')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not OK')
       return response.json()
     })
     .then(data => {
-      loader.open(id, data.html)
+      loader.addSpace(ev.id, data.html)
       callback(null)
     })
     .catch(error => {
-      loader.open(id, error.message)
+      loader.addSpace(ev.id, error.message)
       console.error('Error:', error)
       callback(error)
     })
@@ -9907,8 +9977,8 @@ if your code needs some deconstruction behavior,
 place a listener. For example:
 
 ```
-loader.on('close', (id) => {
-  streams[id].close()
+loader.on('close', (ev) => {
+  streams[ev.id].close()
 })
 ```
 
@@ -9964,57 +10034,53 @@ const loader = new tapspace.loaders.TreeLoader({
 ```
 
 Now you have the [TreeLoader](#tapspaceloaderstreeloader) constructed.
-You still need to build a driver for it. See examples.
-
-Aliases: [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
+You still need to build a driver for it.
+The driver is a function ran at each viewport idle event
+or similar, non-realtime schedule.
+Its purpose is to find our current location in the tree
+and open/close the [TreeLoader](#tapspaceloaderstreeloader) nodes accordingly.
+See examples.
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.loaders.TreeLoader:addPlaceholder](#tapspaceloaderstreeloaderaddplaceholder)
 - [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
 - [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
 - [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
+- [tapspace.loaders.TreeLoader:countSpaces](#tapspaceloaderstreeloadercountspaces)
 - [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
 - [tapspace.loaders.TreeLoader:open](#tapspaceloaderstreeloaderopen)
 - [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
 - [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
 - [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
 - [tapspace.loaders.TreeLoader:openParent](#tapspaceloaderstreeloaderopenparent)
-- [tapspace.loaders.TreeLoader:placeholder](#tapspaceloaderstreeloaderplaceholder)
 - [tapspace.loaders.TreeLoader:remapChildren](#tapspaceloaderstreeloaderremapchildren)
 - [tapspace.loaders.TreeLoader:removeSpace](#tapspaceloaderstreeloaderremovespace)
 
 
 Source: [TreeLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/index.js)
 
-<a name="tapspaceloaderstreeloader"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader)
+<a name="tapspaceloaderstreeloaderaddplaceholder"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[addPlaceholder](#tapspaceloaderstreeloaderaddplaceholder)(id, content)
+
+Add a placeholder space. Placeholders do not trigger
+recursive loading.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string
+- *content*
+  - a [Component](#tapspacecomponentscomponent)
 
 
-<p style="margin-bottom: 0"><strong>Contents:</strong></p>
-
-
-- [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
-- [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
-- [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
-- [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
-- [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
-- [tapspace.loaders.TreeLoader:open](#tapspaceloaderstreeloaderopen)
-- [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
-- [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
-- [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
-- [tapspace.loaders.TreeLoader:openParent](#tapspaceloaderstreeloaderopenparent)
-- [tapspace.loaders.TreeLoader:placeholder](#tapspaceloaderstreeloaderplaceholder)
-- [tapspace.loaders.TreeLoader:remapChildren](#tapspaceloaderstreeloaderremapchildren)
-- [tapspace.loaders.TreeLoader:removeSpace](#tapspaceloaderstreeloaderremovespace)
-
-
-Source: [TreeLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/index.js)
+Source: [addPlaceholder.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addPlaceholder.js)
 
 <a name="tapspaceloaderstreeloaderclosechild"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChild](#tapspaceloaderstreeloaderclosechild)(parentId, childId)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChild](#tapspaceloaderstreeloaderclosechild)(parentId, childId[, data])
 
 Close child space.
 
@@ -10024,12 +10090,14 @@ Close child space.
   - a string
 - *childId*
   - a string
+- *data*
+  - optional object, the context data passed to 'close' event.
 
 
 Source: [closeChild.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeChild.js)
 
 <a name="tapspaceloaderstreeloaderclosechildren"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChildren](#tapspaceloaderstreeloaderclosechildren)(parentId)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChildren](#tapspaceloaderstreeloaderclosechildren)(parentId[, data])
 
 Close child spaces, given that the given space exists.
 Synchronous.
@@ -10038,12 +10106,14 @@ Synchronous.
 
 - *parentId*
   - a string
+- *data*
+  - optional object passed to 'close' event
 
 
 Source: [closeChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeChildren.js)
 
 <a name="tapspaceloaderstreeloadercloseneighbors"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)(rootIds, maxDepth)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)(rootIds, maxDepth[, data])
 
 Close those neighbors that are farther than the given depth
 from one of the given IDs.
@@ -10054,12 +10124,14 @@ from one of the given IDs.
   - array of string, for example `['1234', '2345']`
 - *maxDepth*
   - a number, for example `4`.
+- *data*
+  - optional object to be passed to 'close' event.
 
 
 Source: [closeNeighbors.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeNeighbors.js)
 
 <a name="tapspaceloaderstreeloadercloseparent"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeParent](#tapspaceloaderstreeloadercloseparent)(childId)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeParent](#tapspaceloaderstreeloadercloseparent)(childId[, data])
 
 Close parent space, given that the given child space exists.
 
@@ -10067,12 +10139,26 @@ Close parent space, given that the given child space exists.
 
 - *childId*
   - a string
+- *data*
+  - optional object to be passed to 'close' event.
 
 
 Source: [closeParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeParent.js)
 
+<a name="tapspaceloaderstreeloadercountspaces"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[countSpaces](#tapspaceloaderstreeloadercountspaces)()
+
+Get number of open spaces.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a number
+
+
+Source: [countSpaces.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/countSpaces.js)
+
 <a name="tapspaceloaderstreeloaderinit"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis[, data])
 
 Initialize the tree. Add and load the first space.
 
@@ -10082,6 +10168,8 @@ Initialize the tree. Add and load the first space.
   - a string
 - *basis*
   - a [Basis](#tapspacegeometrybasis), the placement of the first item.
+- *data*
+  - optional object, to be passed to 'open' event.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -10106,10 +10194,10 @@ Open a space, given that there are neighbors.
   - optional boolean, default false. Set true to prevent loading propagation continuing to neighbors.
 
 
-Source: [open.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/open.js)
+Source: [addSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addSpace.js)
 
 <a name="tapspaceloaderstreeloaderopenchild"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(parentId, childId)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(parentId, childId[, data])
 
 Open a child space, given that the parent exists.
 
@@ -10119,12 +10207,14 @@ Open a child space, given that the parent exists.
   - a string
 - *childId*
   - a string
+- *data*
+  - optional object, the context data passed to 'open' event.
 
 
 Source: [openChild.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChild.js)
 
 <a name="tapspaceloaderstreeloaderopenchildren"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(id)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(id[, data])
 
 Open all child spaces for the given parent id.
 
@@ -10132,12 +10222,14 @@ Open all child spaces for the given parent id.
 
 - *id*
   - a string, the parent space ID.
+- *data*
+  - optional object, the context data passed to 'open' event.
 
 
 Source: [openChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChildren.js)
 
 <a name="tapspaceloaderstreeloaderopenneighbors"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, maxDepth)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, maxDepth[, data])
 
 Open parents and children until max depth.
 
@@ -10147,12 +10239,14 @@ Open parents and children until max depth.
   - a string, the first node ID.
 - *maxDepth*
   - a number, the maximum depth. For example `2`
+- *data*
+  - optional object, the context data passed to 'open' event.
 
 
 Source: [openNeighbors.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openNeighbors.js)
 
 <a name="tapspaceloaderstreeloaderopenparent"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openParent](#tapspaceloaderstreeloaderopenparent)(childId)
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openParent](#tapspaceloaderstreeloaderopenparent)(childId[, data])
 
 Open a parent space relative to the given child.
 
@@ -10160,25 +10254,11 @@ Open a parent space relative to the given child.
 
 - *childId*
   - a string
+- *data*
+  - optional object, the context data passed to 'open' event.
 
 
 Source: [openParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openParent.js)
-
-<a name="tapspaceloaderstreeloaderplaceholder"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[placeholder](#tapspaceloaderstreeloaderplaceholder)(id, content)
-
-Open a placeholder space. Placeholders do not trigger
-recursive loading.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *id*
-  - a string
-- *content*
-  - a [Component](#tapspacecomponentscomponent)
-
-
-Source: [placeholder.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/placeholder.js)
 
 <a name="tapspaceloaderstreeloaderremapchildren"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[remapChildren](#tapspaceloaderstreeloaderremapchildren)(parentId)
