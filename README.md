@@ -1,4 +1,4 @@
-# ![tapspace.js](docs/tapspace-banner-2022.png?raw=true)
+# ![tapspace.js](docs/tapspace-banner-2023.png?raw=true)
 
 [![NPM Version](https://img.shields.io/npm/v/tapspace/alpha?color=7FCD0F)](https://www.npmjs.com/package/tapspace)
 [![Build Status](https://img.shields.io/travis/com/taataa/tapspace)](https://travis-ci.com/github/taataa/tapspace)
