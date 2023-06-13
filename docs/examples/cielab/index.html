@@ -352,10 +352,10 @@
       return plane
     }
 
-    loader.on('open', (id) => {
+    loader.on('open', (ev) => {
       setTimeout(() => {
-        const space = createColorPatch(id)
-        loader.addSpace(id, space)
+        const space = createColorPatch(ev.id)
+        loader.addSpace(ev.id, space)
       }, jitter(50, Math.random))
     })
 

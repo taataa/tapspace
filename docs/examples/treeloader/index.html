@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader - Tapspace Demo</title>
+  <title>Tree Loader - Tapspace.js Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -281,7 +281,8 @@
 
     loader.init(firstId, firstBasis)
 
-    loader.on('open', (id) => {
+    loader.on('open', (ev) => {
+      const id = ev.id
       const placeholder = createPlaceholder(id)
       loader.addPlaceholder(id, placeholder)
 
