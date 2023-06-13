@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader - Tapspace Demo</title>
+  <title>Tree Loader - Tapspace.js Demo</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -61,7 +61,7 @@
 
   <!-- Import tapspace. -->
   <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -281,9 +281,10 @@
 
     loader.init(firstId, firstBasis)
 
-    loader.on('open', (id) => {
+    loader.on('open', (ev) => {
+      const id = ev.id
       const placeholder = createPlaceholder(id)
-      loader.placeholder(id, placeholder)
+      loader.addPlaceholder(id, placeholder)
 
       fetchData(id, (err, data) => {
         if (err) {
@@ -292,13 +293,22 @@
         }
         localData[id] = data
         const nodeItem = createNode(id)
-        loader.open(id, nodeItem)
+        loader.addSpace(id, nodeItem)
 
         if (id === firstId) {
           viewport.requestIdle()
         }
       })
     })
+
+    // DEBUG
+    const updateMeter = () => {
+      const numNodes = loader.countSpaces()
+      const metersEl = document.getElementById('meters')
+      metersEl.innerHTML = '# of nodes: ' + numNodes
+    }
+    loader.on('opened', updateMeter)
+    loader.on('closed', updateMeter)
 
     // Idle driver for the tree.
     viewport.on('idle', () => {
@@ -311,11 +321,6 @@
         const spaceId = space.spaceId
         loader.removeSpace(spaceId)
       })
-
-      // DEBUG
-      const numNodes = spaces.length - singulars.length
-      const metersEl = document.getElementById('meters')
-      metersEl.innerHTML = '# of nodes: ' + numNodes
 
       // Skip placeholders
       const loadedSpaces = spaces.filter((space) => {
@@ -337,7 +342,7 @@
         }
       })
 
-      // // Expand and prune the tree.
+      // Expand and prune the tree.
       const nearestIds = nearestSpaces.map(space => space.spaceId)
       loader.closeNeighbors(nearestIds, 3)
       nearestIds.forEach(spaceId => {

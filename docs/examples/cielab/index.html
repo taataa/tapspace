@@ -63,7 +63,7 @@
 
   <!-- Import tapspace. -->
   <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.10/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -352,10 +352,10 @@
       return plane
     }
 
-    loader.on('open', (id) => {
+    loader.on('open', (ev) => {
       setTimeout(() => {
-        const space = createColorPatch(id)
-        loader.open(id, space)
+        const space = createColorPatch(ev.id)
+        loader.addSpace(ev.id, space)
       }, jitter(50, Math.random))
     })
 
