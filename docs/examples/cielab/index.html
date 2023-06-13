@@ -355,7 +355,7 @@
     loader.on('open', (id) => {
       setTimeout(() => {
         const space = createColorPatch(id)
-        loader.open(id, space)
+        loader.addSpace(id, space)
       }, jitter(50, Math.random))
     })
 

@@ -283,7 +283,7 @@
 
     loader.on('open', (id) => {
       const placeholder = createPlaceholder(id)
-      loader.placeholder(id, placeholder)
+      loader.addPlaceholder(id, placeholder)
 
       fetchData(id, (err, data) => {
         if (err) {
@@ -292,7 +292,7 @@
         }
         localData[id] = data
         const nodeItem = createNode(id)
-        loader.open(id, nodeItem)
+        loader.addSpace(id, nodeItem)
 
         if (id === firstId) {
           viewport.requestIdle()
@@ -337,7 +337,7 @@
         }
       })
 
-      // // Expand and prune the tree.
+      // Expand and prune the tree.
       const nearestIds = nearestSpaces.map(space => space.spaceId)
       loader.closeNeighbors(nearestIds, 3)
       nearestIds.forEach(spaceId => {
