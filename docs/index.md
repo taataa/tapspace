@@ -49,6 +49,13 @@ An infinite, zoomable fractal displaying capabilities of Tapspace.js TreeLoader<
 </div>
 
 <div style="clear: both">
+<img src="examples/cielab/preview.png" style="float: left; margin: 0 1em 1em 0">
+<h3>CIELAB Color Space Explorer</h3>
+A fractal of colors using Tapspace.js TreeLoader<br>
+<a href="examples/cielab/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/cielab/">[See source]</a>
+</div>
+
+<div style="clear: both">
 <img src="examples/tiles/preview.jpg" style="float: left;  margin: 0 1em 1em 0">
 <h3>Tiles</h3>
 Pinch-zoomable grid of 400 tile images<br>
