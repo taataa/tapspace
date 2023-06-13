@@ -140,13 +140,6 @@ Lenna, a `SpaceGroup` of `SpacePixels`<br>
 </div>
 
 <div style="clear: both">
-<img src="examples/multiview/preview.jpg" style="float: left; margin: 0 1em 1em 0">
-<h3>Multiview</h3>
-Multiple views to single `Space`<br>
-<a href="examples/multiview/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/multiview/">[See source]</a>
-</div>
-
-<div style="clear: both">
 <img src="examples/modes/preview.jpg" style="float: left; margin: 0 1em 1em 0">
 <h3>Modes</h3>
 Modes of direct manipulation allowed by `Touchable`<br>
@@ -160,15 +153,20 @@ Interactive and recursive <a href="https://visjs.github.io/vis-network/docs/netw
 <a href="examples/visjs/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/visjs/">[See source]</a>
 </div>
 
-<div style="clear: both">
-<img src="examples/hammerjs/preview.jpg" style="float: left; margin: 0 1em 0 0">
-<h3>HammerJS</h3>
-What if touch interaction is implemented with <a href="https://hammerjs.github.io/">HammerJS</a> instead of `Touchable`?<br>
-<a href="examples/hammerjs/index.html">[Try app]</a> <a href="https://github.com/taataa/tapspace/blob/master/docs/examples/hammerjs/">[See source]</a>
-</div>
 <div style="clear: both"></div>
 
+See also [early Tapspace.js v2 examples](https://demos.akselipalen.com/tapspace-demos/).
+
 ## Thanks to
+
+Members of LINCS team at [Texas A+M University](https://www.tamu.edu/) and [University of Guelph](https://www.uoguelph.ca/), 2023.
+- Bryan Tarpley
+- Susan Brown
+- Jordan Lum
+
+Fellows of Infant Cognition Laboratory at [Tampere University](https://www.tuni.fi/en), 2016.
+- Jussi Kaatiala
+- Jukka Leppänen
 
 Members of the Tapspace v0 code inspection group on 2013-Nov-18
 - Mikko Nurminen

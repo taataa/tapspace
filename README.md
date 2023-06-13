@@ -5,6 +5,17 @@
 
 We believe **zoomable user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Tapspace.js**, a **JavaScript** library dedicated for building such **dynamic front-ends**. It provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace.js uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 
+## Examples
+
+<a href="docs/examples/treeloader/index.html"><img src="docs/examples/treeloader/preview.png" style="margin: 0 1em 1em 0;" title="Tree Loader"></a>
+<a href="docs/examples/cielab/index.html"><img src="docs/examples/cielab/preview.png" style="margin: 0 1em 1em 0;" title="CIELAB Color Explorer"></a>
+<a href="docs/examples/go/index.html"><img src="docs/examples/go/preview.jpg" style="margin: 0 1em 1em 0;" title="Go"></a>
+<a href="docs/examples/book/index.html"><img src="docs/examples/book/preview.png" style="margin: 0 1em 1em 0;" title="Book"></a>
+<a href="docs/examples/gears/index.html"><img src="docs/examples/gears/preview.jpg" style="margin: 0 1em 1em 0;" title="Gears"></a>
+<a href="docs/examples/html/index.html"><img src="docs/examples/html/preview.jpg" style="margin: 0 1em 1em 0;" title="HTML"></a>
+
+See [all example apps](https://taataa.github.io/tapspace/#examples).
+
 ## Install
 
 With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com/en/package/tapspace):
@@ -14,7 +25,7 @@ With [npm](https://www.npmjs.com/package/tapspace) or [yarn](https://yarnpkg.com
 
 This installs an alpha version of Tapspace.js 2.x. For the earlier and stable Tapspace.js 1.x, see [1.6-stable](https://github.com/taataa/tapspace/tree/1.6-stable) branch.
 
-Via [unpkg](https://www.unpkg.com/browse/tapspace@2.0.0-alpha.8/):
+Via [unpkg](https://www.unpkg.com/browse/tapspace@2.0.0-alpha.11/):
 
 ```
 <script src="https://unpkg.com/tapspace@2.0.0-alpha.8/dist/tapspace.min.js"></script>
@@ -26,7 +37,7 @@ Via [unpkg](https://www.unpkg.com/browse/tapspace@2.0.0-alpha.8/):
 See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [Tutorial](http://taataa.github.io/tapspace/tutorial)
 - [Features](http://taataa.github.io/tapspace#features)
-- [Examples (v1)](http://taataa.github.io/tapspace#examples) and [Examples (v2)](https://demos.akselipalen.com/tapspace-demos/)
+- [Examples](http://taataa.github.io/tapspace#examples)
 - [API Reference](https://taataa.github.io/tapspace/api/v2/)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
