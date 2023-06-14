@@ -60,8 +60,8 @@
   <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
-  <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script>
+  <script src="../../../dist/tapspace.min.js"></script>
+  <!-- script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script -->
 
   <!-- Your code -->
   <script>
@@ -299,6 +299,10 @@
           viewport.requestIdle()
         }
       })
+    })
+
+    loader.on('close', (ev) => {
+      loader.removeSpace(ev.id)
     })
 
     // DEBUG
