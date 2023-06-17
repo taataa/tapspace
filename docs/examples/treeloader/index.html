@@ -177,17 +177,15 @@
       const plane = tapspace.createPlane()
       plane.addClass('tree-space')
       plane.spaceId = id
+      plane.isPlaceholder = true
       const node = tapspace.createNode(100)
       node.addClass('tree-placeholder')
       plane.addChild(node, plane.at(0, 0))
-      // Clear up old local data.
-      delete localData[id]
       return plane
     }
 
-    const createNode = (id) => {
+    const createNode = (id, data) => {
       // Render content to replace the placeholder
-      const data = localData[id]
 
       const plane = tapspace.createPlane()
       plane.addClass('tree-space')
@@ -283,8 +281,14 @@
 
     loader.on('open', (ev) => {
       const id = ev.id
+      // Temporary data for trackers to find parent.
+      localData[id] = {
+        id: ev.id,
+        parent: ev.parentId || null,
+        nodes: []
+      }
       const placeholder = createPlaceholder(id)
-      loader.addPlaceholder(id, placeholder)
+      loader.addSpace(id, placeholder)
 
       fetchData(id, (err, data) => {
         if (err) {
@@ -292,8 +296,8 @@
           return
         }
         localData[id] = data
-        const nodeItem = createNode(id)
-        loader.addSpace(id, nodeItem)
+        const nodeItem = createNode(id, data)
+        loader.replaceSpace(id, nodeItem)
 
         if (id === firstId) {
           viewport.requestIdle()
