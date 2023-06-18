@@ -233,6 +233,7 @@
       return plane
     }
 
+    // Setup loader
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
@@ -272,13 +273,7 @@
       }
     })
 
-    const firstId = 'aaa'
-    const firstBasis = viewport.getBasisAt(
-      viewport.atCenter().offset(0, -20),
-    )
-
-    loader.init(firstId, firstBasis)
-
+    // Setup generator for the loader.
     loader.on('open', (ev) => {
       const id = ev.id
       // Temporary data for trackers to find parent.
@@ -305,11 +300,12 @@
       })
     })
 
+    // Setup destructor for the loader.
     loader.on('close', (ev) => {
       loader.removeSpace(ev.id)
     })
 
-    // DEBUG
+    // Setup a counter to observe unloading.
     const updateMeter = () => {
       const numNodes = loader.countSpaces()
       const metersEl = document.getElementById('meters')
@@ -318,7 +314,7 @@
     loader.on('opened', updateMeter)
     loader.on('closed', updateMeter)
 
-    // Idle driver for the tree.
+    // Setup an idle driver for the loader.
     viewport.on('idle', () => {
       const spaces = viewport.getSpaces()
 
@@ -360,6 +356,13 @@
       // Prevent viewport from getting too far from the current nodes.
       viewport.limitTo(nearestSpaces)
     })
+
+    // Start up the loader.
+    const firstId = 'aaa'
+    const firstBasis = viewport.getBasisAt(
+      viewport.atCenter().offset(0, -20),
+    )
+    loader.init(firstId, firstBasis)
   </script>
 </body>
 </html>
