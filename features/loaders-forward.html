@@ -75,15 +75,13 @@
     })
 
     loader.on('open', (ev) => {
-      setTimeout(() => {
-        const node = tapspace.createNode(40)
-        node.html(ev.id)
-        node.spaceId = ev.id
-        loader.addSpace(ev.id, node)
-        if (ev.depth > 0) {
-          loader.openNeighbors(ev.id, ev.depth)
-        }
-      })
+      const node = tapspace.createNode(40)
+      node.html(ev.id)
+      node.spaceId = ev.id
+      loader.addSpace(ev.id, node)
+      if (ev.depth > 0) {
+        loader.openNeighbors(ev.id, ev.depth)
+      }
     })
     loader.on('close', (ev) => {
       loader.removeSpace(ev.id)
