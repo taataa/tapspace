@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader: Mapper - Tapspace Features</title>
+  <title>Tree Loader: Backmapper - Tapspace Features</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -32,7 +32,7 @@
   </style>
 </head>
 <body>
-  <h1>Tree loader: Mapper – Tapspace Features</h1>
+  <h1>Tree loader: Backmapper – Tapspace Features</h1>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -49,15 +49,15 @@
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
-      mapper: function (parentId, parent, childId) {
-        return parent.getBasis().offset(100, 0)
+      mapper: function (parentId, parentSpace, childId) {
+        return null // dummy mapper, rely on good backmapper
       },
 
-      backmapper: function (childId, child, parentId) {
-        return child.getBasis().offset(-100, 0)
+      backmapper: function (childId, childSpace, parentId) {
+        return childSpace.getBasis().offset(-100, 0)
       },
 
-      tracker: function (parentId, parent) {
+      tracker: function (parentId, parentSpace) {
         const i = parseInt(parentId)
         if (i >= 20) {
           return [null] // TEST nullish ids in tracker.
@@ -65,9 +65,9 @@
         return ['' + (i + 1)]
       },
 
-      backtracker: function (childId, child) {
+      backtracker: function (childId, childSpace) {
         const i = parseInt(childId)
-        if (i === 0) {
+        if (i <= 0) {
           return null
         }
         return '' + (i - 1)
