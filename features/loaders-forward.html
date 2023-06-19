@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Tree Loader: Mapper - Tapspace Features</title>
+  <title>Tree Loader: Forward Mapper - Tapspace Features</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -32,7 +32,7 @@
   </style>
 </head>
 <body>
-  <h1>Tree loader: Mapper – Tapspace Features</h1>
+  <h1>Tree loader: Forward Mapper – Tapspace Features</h1>
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
@@ -54,7 +54,7 @@
       },
 
       backmapper: function (childId, child, parentId) {
-        return child.getBasis().offset(-100, 0)
+        return null
       },
 
       tracker: function (parentId, parent) {
