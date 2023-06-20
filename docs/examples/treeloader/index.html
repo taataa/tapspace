@@ -237,21 +237,26 @@
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
-      mapper: function (parentId, parent, childId) {
+      mapper: function (parentId, parentSpace, childId) {
         // Find basis for a child with respect to the parent.
         const parentData = localData[parentId]
         const childData = parentData.nodes.find(n => n.id === childId)
 
         if (childData) {
-          return parent.getBasis()
-            .scaleBy(0.3, parent.atAnchor())
+          return parentSpace.getBasis()
+            .scaleBy(0.3, parentSpace.atAnchor())
             .offset(childData.x, childData.y)
         }
 
         return null
       },
 
-      tracker: function (parentId, parent) {
+      backmapper: function (childId, childSpace, parentId) {
+        // Dummy backmapper
+        return null
+      },
+
+      tracker: function (parentId, parentSpace) {
         // Get IDs of the children of the parent component.
         const parentData = localData[parentId]
         if (parentData) {
@@ -260,7 +265,7 @@
         return []
       },
 
-      backtracker: function (childId, child) {
+      backtracker: function (childId, childSpace) {
         // Find parent id.
         const childData = localData[childId]
         if (childData) {
@@ -276,12 +281,6 @@
     // Setup generator for the loader.
     loader.on('open', (ev) => {
       const id = ev.id
-      // Temporary data for trackers to find parent.
-      localData[id] = {
-        id: ev.id,
-        parent: ev.parentId || null,
-        nodes: []
-      }
       const placeholder = createPlaceholder(id)
       loader.addSpace(id, placeholder)
 
@@ -292,7 +291,11 @@
         }
         localData[id] = data
         const nodeItem = createNode(id, data)
-        loader.replaceSpace(id, nodeItem)
+        loader.addSpace(id, nodeItem)
+
+        if (ev.depth > 0) {
+          loader.openNeighbors(ev.id, ev.depth)
+        }
 
         if (id === firstId) {
           viewport.requestIdle()
@@ -328,7 +331,7 @@
 
       // Skip placeholders
       const loadedSpaces = spaces.filter((space) => {
-        return space.spaceId in localData
+        return !space.isPlaceholder
       })
 
       // Find closest, our current location.
