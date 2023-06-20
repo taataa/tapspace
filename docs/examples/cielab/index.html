@@ -62,7 +62,7 @@
   <div id="tapspace" class="color-explorer"></div>
 
   <!-- Import tapspace. -->
-  <!-- script src="../../../dist/tapspace.min.js"></script -->
+  <!-- <script src="../../../dist/tapspace.min.js"></script> -->
   <script src="https://unpkg.com/tapspace@2.0.0-alpha.12/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
@@ -269,7 +269,7 @@
           .scaleBy(0.32, origin)
       },
 
-      backmapper: function (childId, childSpace, parentId) {
+      backmapper: function (subid, subspace, superid) {
         // Dummy backmapper
         return null
       },
@@ -320,7 +320,7 @@
       node.tappable({ preventDefault: false })
       node.on('tap', () => {
         viewport.animateOnce({ duration: 800, easing: 'ease-out' })
-        viewport.zoomTo(node, { margin: '38%' })
+        viewport.zoomToFill(node, 0.4)
         // Clear text selections.
         window.getSelection().removeAllRanges()
       })
@@ -363,6 +363,10 @@
         loader.addSpace(ev.id, space)
         loader.openNeighbors(ev.id, ev.depth)
       }, jitter(50, Math.random))
+    })
+
+    loader.on('close', (ev) => {
+      loader.removeSpace(ev.id)
     })
 
     // Idle driver for the tree.
