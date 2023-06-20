@@ -63,7 +63,7 @@
 
   <!-- Import tapspace. -->
   <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script>
+  <script src="https://unpkg.com/tapspace@2.0.0-alpha.12/dist/tapspace.min.js"></script>
 
   <!-- Your code -->
   <script>
@@ -269,6 +269,11 @@
           .scaleBy(0.32, origin)
       },
 
+      backmapper: function (childId, childSpace, parentId) {
+        // Dummy backmapper
+        return null
+      },
+
       tracker: (superid, superspace) => {
         return 'dablef'.split('').map(char => superid + char)
       },
@@ -356,6 +361,7 @@
       setTimeout(() => {
         const space = createColorPatch(ev.id)
         loader.addSpace(ev.id, space)
+        loader.openNeighbors(ev.id, ev.depth)
       }, jitter(50, Math.random))
     })
 
