@@ -60,8 +60,8 @@
   <div id="meters" class="meters"></div>
 
   <!-- Import tapspace. -->
-  <!-- script src="../../../dist/tapspace.min.js"></script -->
-  <script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script>
+  <script src="../../../dist/tapspace.min.js"></script>
+  <!-- script src="https://unpkg.com/tapspace@2.0.0-alpha.11/dist/tapspace.min.js"></script -->
 
   <!-- Your code -->
   <script>
@@ -177,17 +177,15 @@
       const plane = tapspace.createPlane()
       plane.addClass('tree-space')
       plane.spaceId = id
+      plane.isPlaceholder = true
       const node = tapspace.createNode(100)
       node.addClass('tree-placeholder')
       plane.addChild(node, plane.at(0, 0))
-      // Clear up old local data.
-      delete localData[id]
       return plane
     }
 
-    const createNode = (id) => {
+    const createNode = (id, data) => {
       // Render content to replace the placeholder
-      const data = localData[id]
 
       const plane = tapspace.createPlane()
       plane.addClass('tree-space')
@@ -235,24 +233,30 @@
       return plane
     }
 
+    // Setup loader
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
-      mapper: function (parentId, parent, childId) {
+      mapper: function (parentId, parentSpace, childId) {
         // Find basis for a child with respect to the parent.
         const parentData = localData[parentId]
         const childData = parentData.nodes.find(n => n.id === childId)
 
         if (childData) {
-          return parent.getBasis()
-            .scaleBy(0.3, parent.atAnchor())
+          return parentSpace.getBasis()
+            .scaleBy(0.3, parentSpace.atAnchor())
             .offset(childData.x, childData.y)
         }
 
         return null
       },
 
-      tracker: function (parentId, parent) {
+      backmapper: function (childId, childSpace, parentId) {
+        // Dummy backmapper
+        return null
+      },
+
+      tracker: function (parentId, parentSpace) {
         // Get IDs of the children of the parent component.
         const parentData = localData[parentId]
         if (parentData) {
@@ -261,7 +265,7 @@
         return []
       },
 
-      backtracker: function (childId, child) {
+      backtracker: function (childId, childSpace) {
         // Find parent id.
         const childData = localData[childId]
         if (childData) {
@@ -274,17 +278,11 @@
       }
     })
 
-    const firstId = 'aaa'
-    const firstBasis = viewport.getBasisAt(
-      viewport.atCenter().offset(0, -20),
-    )
-
-    loader.init(firstId, firstBasis)
-
+    // Setup generator for the loader.
     loader.on('open', (ev) => {
       const id = ev.id
       const placeholder = createPlaceholder(id)
-      loader.addPlaceholder(id, placeholder)
+      loader.addSpace(id, placeholder)
 
       fetchData(id, (err, data) => {
         if (err) {
@@ -292,8 +290,12 @@
           return
         }
         localData[id] = data
-        const nodeItem = createNode(id)
+        const nodeItem = createNode(id, data)
         loader.addSpace(id, nodeItem)
+
+        if (ev.depth > 0) {
+          loader.openNeighbors(ev.id, ev.depth)
+        }
 
         if (id === firstId) {
           viewport.requestIdle()
@@ -301,7 +303,12 @@
       })
     })
 
-    // DEBUG
+    // Setup destructor for the loader.
+    loader.on('close', (ev) => {
+      loader.removeSpace(ev.id)
+    })
+
+    // Setup a counter to observe unloading.
     const updateMeter = () => {
       const numNodes = loader.countSpaces()
       const metersEl = document.getElementById('meters')
@@ -310,7 +317,7 @@
     loader.on('opened', updateMeter)
     loader.on('closed', updateMeter)
 
-    // Idle driver for the tree.
+    // Setup an idle driver for the loader.
     viewport.on('idle', () => {
       const spaces = viewport.getSpaces()
 
@@ -324,7 +331,7 @@
 
       // Skip placeholders
       const loadedSpaces = spaces.filter((space) => {
-        return space.spaceId in localData
+        return !space.isPlaceholder
       })
 
       // Find closest, our current location.
@@ -352,6 +359,13 @@
       // Prevent viewport from getting too far from the current nodes.
       viewport.limitTo(nearestSpaces)
     })
+
+    // Start up the loader.
+    const firstId = 'aaa'
+    const firstBasis = viewport.getBasisAt(
+      viewport.atCenter().offset(0, -20),
+    )
+    loader.init(firstId, firstBasis)
   </script>
 </body>
 </html>
