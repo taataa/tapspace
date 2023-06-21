@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.11
+# Tapspace API Documentation v2.0.0-alpha.12
 
 
 Welcome to Tapspace.js API documentation.
@@ -1844,8 +1844,7 @@ occupy larger or smaller area than the replaced one.
 
 <p style="margin-bottom: 0"><strong>Throws:</strong></p>
 
-- if the old child does not exist. This may reveal a race condition or
-- otherwise unexpected situation.
+- when the old child does not exist. This may reveal a race condition or otherwise unexpected situation.
 
 
 Source: [replaceChild.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/replaceChild.js)
@@ -2251,6 +2250,8 @@ change their size.
 - [tapspace.components.FrameComponent:setHeight](#tapspacecomponentsframecomponentsetheight)
 - [tapspace.components.FrameComponent:setSize](#tapspacecomponentsframecomponentsetsize)
 - [tapspace.components.FrameComponent:setWidth](#tapspacecomponentsframecomponentsetwidth)
+- [tapspace.components.FrameComponent:transformToFill](#tapspacecomponentsframecomponenttransformtofill)
+- [tapspace.components.FrameComponent:transformToFit](#tapspacecomponentsframecomponenttransformtofit)
 
 
 Source: [FrameComponent/index.js](https://github.com/taataa/tapspace/blob/master/lib/components/FrameComponent/index.js)
@@ -2493,6 +2494,50 @@ The resize is performed about a fixed pivot point.
 
 
 Source: [setWidth.js](https://github.com/taataa/tapspace/blob/master/lib/components/FrameComponent/setWidth.js)
+
+<a name="tapspacecomponentsframecomponenttransformtofill"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[FrameComponent](#tapspacecomponentsframecomponent):[transformToFill](#tapspacecomponentsframecomponenttransformtofill)(target[, ratio])
+
+[Transform](#tapspacegeometrytransform) the component so that it fully contains the target.
+In other words, transform so that the target fits inside the component.
+See [FrameComponent:transformToFit](#tapspacecomponentsframecomponenttransformtofit) to fully fit inside the target.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *target*
+  - a [BlockComponent](#tapspacecomponentsblockcomponent) or a [Box](#tapspacegeometrybox).
+- *ratio*
+  - optional number, default is 1. Kind of a scale relative to available space. Target side length relative to the frame side.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [transformToFill.js](https://github.com/taataa/tapspace/blob/master/lib/components/FrameComponent/transformToFill.js)
+
+<a name="tapspacecomponentsframecomponenttransformtofit"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[FrameComponent](#tapspacecomponentsframecomponent):[transformToFit](#tapspacecomponentsframecomponenttransformtofit)(target[, ratio])
+
+[Transform](#tapspacegeometrytransform) the component so that it fully fits inside the target.
+In other words, transform so that the target fills the frame entirely.
+See [FrameComponent:transformToFill](#tapspacecomponentsframecomponenttransformtofill) to fit the target inside the frame.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *target*
+  - a [BlockComponent](#tapspacecomponentsblockcomponent) or a [Box](#tapspacegeometrybox).
+- *ratio*
+  - optional number, default is 1. Kind of a scale relative to available space. Target side length relative to the frame side.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [transformToFit.js](https://github.com/taataa/tapspace/blob/master/lib/components/FrameComponent/transformToFit.js)
 
 <a name="tapspacecomponentsgroup"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup)(element)
@@ -3669,7 +3714,8 @@ only in 2D on xy-plane.
   - target, alias targets
     - a [Point](#tapspacegeometrypoint) or an array of [Point](#tapspacegeometrypoint)s. The length must match the sources. Alias: target.
   - *estimator*
-    - string. The estimator type restricts the ways the plane is allowed to move during the operation. For details on the estimator types, see [nudged.estimate](https://github.com/axelpale/nudged/).
+    - a string. Optional, default 'TSR'.
+    - The estimator type restricts the ways the plane is allowed to move during the operation. For details on the estimator types, see [nudged.estimate](https://github.com/axelpale/nudged/).
       - 'TSR': allow translation, scaling, and rotation. The default.
       - 'SR': allow scaling and rotation around the pivot point.
       - 'TR': allow translation and rotation but no scaling.
@@ -3681,9 +3727,9 @@ only in 2D on xy-plane.
       - 'Y': allow only translation along the y-axis of the plane.
       - 'L': allow only translation along the given angle.
   - *pivot*
-    - a [Point](#tapspacegeometrypoint) or {x,y}. Optional. The pivot for the estimators 'SR', 'R', and 'S' acts as a fixed center of rotation and scaling.
+    - a [Point](#tapspacegeometrypoint) or {x,y}. Optional. The pivot for the estimators 'SR', 'R', and 'S' acts as a fixed origin of rotation and scaling.
   - *angle*
-    - a number in radians or [Direction](#tapspacegeometrydirection). Optional. The angle for the estimator 'L'.
+    - a number in radians or [Direction](#tapspacegeometrydirection). Optional. The line angle for the estimator 'L'.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -5073,21 +5119,18 @@ You may specify margin to control how much room to leave around the frame.
 Source: [zoomTo.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/zoomTo.js)
 
 <a name="tapspacecomponentsviewportzoomtofill"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[zoomToFill](#tapspacecomponentsviewportzoomtofill)(target, margin)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[zoomToFill](#tapspacecomponentsviewportzoomtofill)(target[, ratio])
 
-Translate the viewport so that it fully contains the target.
-In other words, translate so that the target fits inside the viewport.
+[Transform](#tapspacegeometrytransform) the viewport so that it fully contains the target.
+In other words, transform so that the target fits inside the viewport.
 See [Viewport:zoomToFit](#tapspacecomponentsviewportzoomtofit) to fully fit the viewport inside a target.
-
-Zooming does not rotate the viewport. In order to do a screw-zoom and
-match the orientation of the target, first call [Transform](#tapspacegeometrytransform):setOrientation.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *target*
   - a [BlockComponent](#tapspacecomponentsblockcomponent) or a [Box](#tapspacegeometrybox).
-- *margin*
-  - optional [Distance](#tapspacegeometrydistance) or a number in viewport pixels. Default is `0`. Amount of margin to leave between the target and viewport bounds. For example, value `50` will make the viewport fill the area that we would get if we expanded the target by 50 viewport pixels in every direction.
+- *ratio*
+  - optional number, default is 1. Kind of a scale relative to available space. Target side length relative to viewport side.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -5098,21 +5141,18 @@ match the orientation of the target, first call [Transform](#tapspacegeometrytra
 Source: [zoomToFill.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/zoomToFill.js)
 
 <a name="tapspacecomponentsviewportzoomtofit"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[zoomToFit](#tapspacecomponentsviewportzoomtofit)(target, margin)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[zoomToFit](#tapspacecomponentsviewportzoomtofit)(target[, ratio])
 
 Translate the viewport so that it fully fits inside the target.
 In other words, translate so that the target fills the viewport entirely.
 See [Viewport:zoomToFill](#tapspacecomponentsviewportzoomtofill) to fully fit a target inside the viewport.
 
-Zooming does not rotate the viewport. In order to do a screw-zoom and
-match the orientation of the target, first call [Transform](#tapspacegeometrytransform):setOrientation.
-
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *target*
   - a [BlockComponent](#tapspacecomponentsblockcomponent) or a [Box](#tapspacegeometrybox).
-- *margin*
-  - optional [Distance](#tapspacegeometrydistance) or a number in viewport pixels. Default is `0`. Amount of margin to leave between the viewport and target bounds. For example, value `50` will make the viewport fit in the area that we would get if we shrank the target by 50 viewport pixels in every direction.
+- *ratio*
+  - optional number, default is 1. Kind of a scale relative to available space. Target side length relative to viewport side.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -9891,12 +9931,19 @@ to overcome limits of floating point arithmetics.
 To setup the loader, you need to implement a few functions:
 mapper, backmapper, tracker, and backtracker.
 The mappers define the relative positions of content and
-the trackers define the order of content.
-The mappers are optional in a sense that you need to implement only
-one of the two for the loader to work.
-Pick the one that best suits your data: if your datum stores
-its location relative to the parent, implement a backmapper;
-if your datum stores the locations of its children, implement a mapper.
+the trackers define the structure and order of content.
+
+The mappers are allowed to be incomplete in a sense that
+if one yields null result then another will be called in reverse manner.
+If both yield null, then the loader determines that
+no mapping is available and avoids placing the space
+until the tree has enough context to facilitate the mapping.
+Implement the mappers to suit your data: if your datum stores
+its position relative to the parent, you only need a good backmapper;
+if your datum stores the locations of its children, a good mapper.
+If your data allows both mappers to be good, this provides the benefit
+that the placeholder content such as loading animations can be positioned
+for adjacent spaces before their data are fetched.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -9905,9 +9952,9 @@ if your datum stores the locations of its children, implement a mapper.
     - *viewport*
       - a [tapspace.components.Viewport](#tapspacecomponentsviewport)
     - *mapper*
-      - optional function (parentId, parent, childId), synchronous, where parent is a [Component](#tapspacecomponentscomponent). Determine the placement of the child by returning a [Basis](#tapspacegeometrybasis) relative to the parent.
+      - a function (parentId, parent, childId), synchronous, where parent is a [Component](#tapspacecomponentscomponent). Determine the placement of the child by returning a [Basis](#tapspacegeometrybasis) relative to the parent.
     - *backmapper*
-      - optional function (childId, child, parentId), synchronous, where child is a [Component](#tapspacecomponentscomponent). Determine the placement of the parent by returning a [Basis](#tapspacegeometrybasis) relative to the child.
+      - a function (childId, child, parentId), synchronous, where child is a [Component](#tapspacecomponentscomponent). Determine the placement of the parent by returning a [Basis](#tapspacegeometrybasis) relative to the child.
     - *tracker*
       - a function (parentId, parent), synchronous. The parent is a [Component](#tapspacecomponentscomponent). Return a list of ID strings where each ID represents a child of the parent.
     - *backtracker*
@@ -9917,13 +9964,13 @@ if your datum stores the locations of its children, implement a mapper.
 <p style="margin-bottom: 0">Emits:</p>
 
 - *open*
-  - when you should build a space and call loader.open().
+  - when you should build a space and call loader.addSpace(...).
   - Called with `{ id, data }`.
 - *opened*
   - when a space has been added to the loader successfully.
   - Called with `{ id, space }`.
 - *close*
-  - when a space is about to be closed.
+  - when you should deconstruct a space and call loader.removeSpace(...).
   - Called with `{ id, space, data }`.
 - *closed*
   - when a space has been closed successfully.
@@ -9944,8 +9991,8 @@ loader.on('open', (ev) => {
 Inside the handler, you can create your content for your tree node,
 like text, images, html, loading animations.
 Place the content into a [tapspace](#tapspace) item or plane,
-and call `loader.open(id, content)`.
-You can also call `loader.placeholder(id, content)`
+and call `loader.addSpace(id, content)`.
+You can also call `loader.addPlaceholder(id, content)`
 to place a placeholder that will be replaced when the actual content
 is retrieved and opened.
 
@@ -9953,32 +10000,35 @@ Here is a minimal example:
 
 ```
 loader.on('open', (ev) => {
-  loader.addPlaceholder(ev.id, '...')
+  const placeholder = tapspace.createItem('loading...')
+  loader.addSpace(ev.id, placeholder)
   fetch('https://api.example.com/data')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not OK')
       return response.json()
     })
     .then(data => {
-      loader.addSpace(ev.id, data.html)
-      callback(null)
+      const item = tapspace.createItem(data.html)
+      loader.replaceSpace(ev.id, item)
+      loader.openNeighbors(ev.id, ev.depth)
     })
     .catch(error => {
-      loader.addSpace(ev.id, error.message)
+      const item = tapspace.createItem(error.message)
+      loader.replaceSpace(ev.id, item)
       console.error('Error:', error)
-      callback(error)
     })
 })
 ```
 
 The loader also emits 'close' event.
-While the loader closes content automatically,
-if your code needs some deconstruction behavior,
-place a listener. For example:
+You must handle the event by calling `loader.removeSpace(ev.id)`
+and some other deconstruction behavior if your code needs it.
+For example:
 
 ```
 loader.on('close', (ev) => {
   streams[ev.id].close()
+  loader.removeSpace(ev.id)
 })
 ```
 
@@ -10003,8 +10053,6 @@ const loader = new tapspace.loaders.TreeLoader({
 
   backmapper: function (childId, child, parentId) {
     // Find the location for the parent, relative to the child.
-    // The mapper and backmapper are optional, but you need to implement
-    // at least one of the two.
     const data = store[childId]
     const dataPoint = data.parent.point
     if (dataPoint) {
@@ -10045,44 +10093,53 @@ See examples.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
-- [tapspace.loaders.TreeLoader:addPlaceholder](#tapspaceloaderstreeloaderaddplaceholder)
+- [tapspace.loaders.TreeLoader:addSpace](#tapspaceloaderstreeloaderaddspace)
 - [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
 - [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
 - [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
 - [tapspace.loaders.TreeLoader:countSpaces](#tapspaceloaderstreeloadercountspaces)
+- [tapspace.loaders.TreeLoader:getFrontier](#tapspaceloaderstreeloadergetfrontier)
 - [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
-- [tapspace.loaders.TreeLoader:open](#tapspaceloaderstreeloaderopen)
 - [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
 - [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
 - [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
 - [tapspace.loaders.TreeLoader:openParent](#tapspaceloaderstreeloaderopenparent)
 - [tapspace.loaders.TreeLoader:remapChildren](#tapspaceloaderstreeloaderremapchildren)
+- [tapspace.loaders.TreeLoader:remapParent](#tapspaceloaderstreeloaderremapparent)
 - [tapspace.loaders.TreeLoader:removeSpace](#tapspaceloaderstreeloaderremovespace)
 
 
 Source: [TreeLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/index.js)
 
-<a name="tapspaceloaderstreeloaderaddplaceholder"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[addPlaceholder](#tapspaceloaderstreeloaderaddplaceholder)(id, content)
+<a name="tapspaceloaderstreeloaderaddspace"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[addSpace](#tapspaceloaderstreeloaderaddspace)(id, content)
 
-Add a placeholder space. Placeholders do not trigger
-recursive loading.
+Add a space, given that it has existing neighbors and is expected.
+A space is expected after the loader emits 'open' and before it is closed.
+If the space exists already, the old space is replaced with the content.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *id*
   - a string
 - *content*
-  - a [Component](#tapspacecomponentscomponent)
+  - a [Component](#tapspacecomponentscomponent), the space
 
 
-Source: [addPlaceholder.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addPlaceholder.js)
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean. True if it was possible to add or replace the space and false otherwise.
+
+
+Source: [addSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addSpace.js)
 
 <a name="tapspaceloaderstreeloaderclosechild"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChild](#tapspaceloaderstreeloaderclosechild)(parentId, childId[, data])
 
-Close child space.
+Close child space and all its children.
+Makes the loader emit 'close'.
+The event should be handled by calling loader.removeSpace()
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -10157,6 +10214,29 @@ Get number of open spaces.
 
 Source: [countSpaces.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/countSpaces.js)
 
+<a name="tapspaceloaderstreeloadergetfrontier"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[getFrontier](#tapspaceloaderstreeloadergetfrontier)(id, depth)
+
+Find a frontier for the given root space id until the given depth.
+In other words, find spaces that have unopened parents or children
+and the distance to the root space is depth or smaller.
+The root space itself can belong to the frontier.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string, the root space id
+- *depth*
+  - a number, the maximum search distance from the root space.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- an array: { id, space, depth }
+
+
+Source: [getFrontier.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/getFrontier.js)
+
 <a name="tapspaceloaderstreeloaderinit"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis[, data])
 
@@ -10177,24 +10257,13 @@ Initialize the tree. Add and load the first space.
 - this, for chaining
 
 
+<p style="margin-bottom: 0">Emits:</p>
+
+- *open*
+  - with `{ id, first, data }` where `first` is a boolean.
+
+
 Source: [init.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/init.js)
-
-<a name="tapspaceloaderstreeloaderopen"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[open](#tapspaceloaderstreeloaderopen)(id, content[, isPlaceholder])
-
-Open a space, given that there are neighbors.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *id*
-  - a string
-- *content*
-  - a [Component](#tapspacecomponentscomponent)
-- *isPlaceholder*
-  - optional boolean, default false. Set true to prevent loading propagation continuing to neighbors.
-
-
-Source: [addSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addSpace.js)
 
 <a name="tapspaceloaderstreeloaderopenchild"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(parentId, childId[, data])
@@ -10211,16 +10280,22 @@ Open a child space, given that the parent exists.
   - optional object, the context data passed to 'open' event.
 
 
+<p style="margin-bottom: 0">Emits:</p>
+
+- *open*
+  - with { id, parentId, data }
+
+
 Source: [openChild.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChild.js)
 
 <a name="tapspaceloaderstreeloaderopenchildren"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(id[, data])
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChildren](#tapspaceloaderstreeloaderopenchildren)(parentId[, data])
 
 Open all child spaces for the given parent id.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
-- *id*
+- *parentId*
   - a string, the parent space ID.
 - *data*
   - optional object, the context data passed to 'open' event.
@@ -10229,18 +10304,26 @@ Open all child spaces for the given parent id.
 Source: [openChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openChildren.js)
 
 <a name="tapspaceloaderstreeloaderopenneighbors"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, maxDepth[, data])
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, depth[, data])
 
 Open parents and children until max depth.
+Relies on an 'open' event handler calling [TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors).
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *id*
   - a string, the first node ID.
-- *maxDepth*
-  - a number, the maximum depth. For example `2`
+- *depth*
+  - a number, the desired opening depth. For example `2`.
 - *data*
   - optional object, the context data passed to 'open' event.
+
+
+<p style="margin-bottom: 0">Emits:</p>
+
+- *open*
+  - { id, space, depth, data }
+  - Loader emits for each child and the parent space.
 
 
 Source: [openNeighbors.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openNeighbors.js)
@@ -10275,6 +10358,23 @@ Synchronous.
 
 
 Source: [remapChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/remapChildren.js)
+
+<a name="tapspaceloaderstreeloaderremapparent"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[remapParent](#tapspaceloaderstreeloaderremapparent)(childId)
+
+Update placement of parent with respect to the given children.
+[Transform](#tapspacegeometrytransform) the parent to match its new basis.
+Internally, calls backmapper to find the new basis.
+If the backmapper is not available, tries mapper.
+Synchronous.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *childId*
+  - a string
+
+
+Source: [remapParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/remapParent.js)
 
 <a name="tapspaceloaderstreeloaderremovespace"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[removeSpace](#tapspaceloaderstreeloaderremovespace)(spaceId)
