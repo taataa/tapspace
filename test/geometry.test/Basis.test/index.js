@@ -3,6 +3,7 @@ const units = {
   changeBasis: require('./changeBasis.test'),
   createDirection: require('./createDirection.test'),
   createVector: require('./createVector.test'),
+  getMatchedOuter: require('./getMatchedOuter.test'),
   getTransformTo: require('./getTransformTo.test'),
   offsets: require('./offsets.test'),
   rotateBy: require('./rotateBy.test'),

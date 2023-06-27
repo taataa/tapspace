@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.12
+# Tapspace API Documentation v2.0.0-alpha.13
 
 
 Welcome to Tapspace.js API documentation.
@@ -1072,6 +1072,8 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Component:appendChild](#tapspacecomponentscomponentappendchild)
 - [tapspace.components.Component:at](#tapspacecomponentscomponentat)
 - [tapspace.components.Component:atAnchor](#tapspacecomponentscomponentatanchor)
+- [tapspace.components.Component:bringAbove](#tapspacecomponentscomponentbringabove)
+- [tapspace.components.Component:bringToFront](#tapspacecomponentscomponentbringtofront)
 - [tapspace.components.Component:findCommonAncestor](#tapspacecomponentscomponentfindcommonancestor)
 - [tapspace.components.Component:followLink](#tapspacecomponentscomponentfollowlink)
 - [tapspace.components.Component:getAncestors](#tapspacecomponentscomponentgetancestors)
@@ -1095,6 +1097,7 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Component:hasLink](#tapspacecomponentscomponenthaslink)
 - [tapspace.components.Component:isLeaf](#tapspacecomponentscomponentisleaf)
 - [tapspace.components.Component:isRoot](#tapspacecomponentscomponentisroot)
+- [tapspace.components.Component:orderByDepth](#tapspacecomponentscomponentorderbydepth)
 - [tapspace.components.Component:prependChild](#tapspacecomponentscomponentprependchild)
 - [tapspace.components.Component:remove](#tapspacecomponentscomponentremove)
 - [tapspace.components.Component:removeChild](#tapspacecomponentscomponentremovechild)
@@ -1104,6 +1107,8 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Component:replaceChild](#tapspacecomponentscomponentreplacechild)
 - [tapspace.components.Component:replaceParent](#tapspacecomponentscomponentreplaceparent)
 - [tapspace.components.Component:requestIdle](#tapspacecomponentscomponentrequestidle)
+- [tapspace.components.Component:sendBelow](#tapspacecomponentscomponentsendbelow)
+- [tapspace.components.Component:sendToBack](#tapspacecomponentscomponentsendtoback)
 - [tapspace.components.Component:setId](#tapspacecomponentscomponentsetid)
 - [tapspace.components.Component:setParent](#tapspacecomponentscomponentsetparent)
 - [tapspace.components.Component.findAffineAncestor](#tapspacecomponentscomponentfindaffineancestor)
@@ -1234,6 +1239,36 @@ Get origin point. At zero by default.
 
 
 Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/atAnchor.js)
+
+<a name="tapspacecomponentscomponentbringabove"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[bringAbove](#tapspacecomponentscomponentbringabove)(target)
+
+Reinsert the element above the given target element.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *target*
+  - a [Component](#tapspacecomponentscomponent)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [bringAbove.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/bringAbove.js)
+
+<a name="tapspacecomponentscomponentbringtofront"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[bringToFront](#tapspacecomponentscomponentbringtofront)()
+
+Remove this element and reinsert it as the last child.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [bringToFront.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/bringToFront.js)
 
 <a name="tapspacecomponentscomponentfindcommonancestor"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[findCommonAncestor](#tapspacecomponentscomponentfindcommonancestor)(node)
@@ -1709,6 +1744,29 @@ A root basis can have non-affine parent in DOM.
 
 Source: [isRoot.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/isRoot.js)
 
+<a name="tapspacecomponentscomponentorderbydepth"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[orderByDepth](#tapspacecomponentscomponentorderbydepth)()
+
+Sort the affine child components in DOM according to their z-coordinate.
+The larger the z coord, the farther the component. In other words,
+the smallest z coord is positioned to be the last and thus the
+topmost to render.
+Note that the order is opposite when compared to the z-index CSS rule.
+You can use the z-index rule to make exceptions to the rendering order
+defined by the sorted DOM.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+<p style="margin-bottom: 0"><a href="https://en.wikipedia.org/wiki/Computational_complexity">Complexity</a></p>
+
+- O(n*log(n)), where n is the number of children.
+
+
+Source: [sortByDepth.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/sortByDepth.js)
+
 <a name="tapspacecomponentscomponentprependchild"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[prependChild](#tapspacecomponentscomponentprependchild)(component, position)
 
@@ -1894,6 +1952,40 @@ by throttling and respecting ongoing animations.
 
 
 Source: [requestIdle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/requestIdle.js)
+
+<a name="tapspacecomponentscomponentsendbelow"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[sendBelow](#tapspacecomponentscomponentsendbelow)(target)
+
+Reinsert this element below the given target element.
+In other words, reinsert this element just before the target in DOM
+so that the target is rendered after this element.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *target*
+  - a [Component](#tapspacecomponentscomponent)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [sendBelow.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/sendBelow.js)
+
+<a name="tapspacecomponentscomponentsendtoback"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[sendToBack](#tapspacecomponentscomponentsendtoback)()
+
+Remove this element and reinsert it as the first child.
+The element will be rendered first and thus becomes the farthest and
+and bottommost.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [sendToBack.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/sendToBack.js)
 
 <a name="tapspacecomponentscomponentsetid"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[setId](#tapspacecomponentscomponentsetid)
@@ -4135,6 +4227,7 @@ creates an illusion of a viewport into space.
 - [tapspace.components.Viewport:moveTo](#tapspacecomponentsviewportmoveto)
 - [tapspace.components.Viewport:normAt](#tapspacecomponentsviewportnormat)
 - [tapspace.components.Viewport:pannable](#tapspacecomponentsviewportpannable)
+- [tapspace.components.Viewport:prependChild](#tapspacecomponentsviewportprependchild)
 - [tapspace.components.Viewport:removeChild](#tapspacecomponentsviewportremovechild)
 - [tapspace.components.Viewport:removeControl](#tapspacecomponentsviewportremovecontrol)
 - [tapspace.components.Viewport:renderTransform](#tapspacecomponentsviewportrendertransform)
@@ -4615,7 +4708,7 @@ const measurements = view.measureMany(items)
 Source: [measureMany.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/measureMany.js)
 
 <a name="tapspacecomponentsviewportmeasurenearest"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measureNearest](#tapspacecomponentsviewportmeasurenearest)(components, k)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[measureNearest](#tapspacecomponentsviewportmeasurenearest)(components, k[, options])
 
 Measure K nearest of the given components.
 
@@ -4625,6 +4718,10 @@ Measure K nearest of the given components.
   - array of [Component](#tapspacecomponentscomponent)
 - *k*
   - a number
+- *options*
+  - optional object with properties:
+    - *optimalAreaRatio*
+      - optional number, default is 0.1. This guides the search by defining which content size is the most useful for the user. The ratio is relative to the viewport area.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -4722,6 +4819,27 @@ The view maintains the size and the angle.
 
 
 Source: [pannable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/pannable.js)
+
+<a name="tapspacecomponentsviewportprependchild"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[prependChild](#tapspacecomponentsviewportprependchild)(space, position)
+
+Add a Space or [Plane](#tapspacecomponentsplane) as the first child of the [Viewport](#tapspacecomponentsviewport) [Hyperspace](#tapspacecomponentshyperspace).
+See also [Viewport:addChild](#tapspacecomponentsviewportaddchild)
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *space*
+  - a Space or [Plane](#tapspacecomponentsplane).
+- *position*
+  - optional [Point](#tapspacegeometrypoint). The position for the space origin.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [prependChild.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/prependChild.js)
 
 <a name="tapspacecomponentsviewportremovechild"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[removeChild](#tapspacecomponentsviewportremovechild)(space)
@@ -10100,6 +10218,7 @@ See examples.
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
 - [tapspace.loaders.TreeLoader:countSpaces](#tapspaceloaderstreeloadercountspaces)
 - [tapspace.loaders.TreeLoader:getFrontier](#tapspaceloaderstreeloadergetfrontier)
+- [tapspace.loaders.TreeLoader:hasSpace](#tapspaceloaderstreeloaderhasspace)
 - [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
 - [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
 - [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
@@ -10181,6 +10300,7 @@ from one of the given IDs.
   - array of string, for example `['1234', '2345']`
 - *maxDepth*
   - a number, for example `4`.
+  - If zero or negative, all neighbors will be closed except the roots.
 - *data*
   - optional object to be passed to 'close' event.
 
@@ -10236,6 +10356,25 @@ The root space itself can belong to the frontier.
 
 
 Source: [getFrontier.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/getFrontier.js)
+
+<a name="tapspaceloaderstreeloaderhasspace"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[hasSpace](#tapspaceloaderstreeloaderhasspace)(id)
+
+Test if the loader has the space by its ID.
+Useful for checking if the space is ready or removed.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string, the space ID
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [hasSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/hasSpace.js)
 
 <a name="tapspaceloaderstreeloaderinit"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis[, data])
@@ -10463,7 +10602,33 @@ the given viewport properties.
 - visualDistance, a heuristic for how well the object is showing.
 
 
+
+<p style="margin-bottom: 0"><strong>Contents:</strong></p>
+
+
+- [tapspace.metrics.Measurement:getVisualDistance](#tapspacemetricsmeasurementgetvisualdistance)
+
+
 Source: [Measurement/index.js](https://github.com/taataa/tapspace/blob/master/lib/metrics/Measurement/index.js)
+
+<a name="tapspacemetricsmeasurementgetvisualdistance"></a>
+## [tapspace](#tapspace).[metrics](#tapspacemetrics).[Measurement](#tapspacemetricsmeasurement):[getVisualDistance](#tapspacemetricsmeasurementgetvisualdistance)([optimalAreaRatio])
+
+Compute a visual, virtual, heuristic distance to the target.
+Measures how prominent the target is for the user.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *optimalAreaRatio*
+  - optional number, default is 0.1. The most favourable ratio between the area consumed by the prominent content and by the viewport.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a number
+
+
+Source: [getVisualDistance.js](https://github.com/taataa/tapspace/blob/master/lib/metrics/Measurement/getVisualDistance.js)
 
 <a name="tapspaceversion"></a>
 ## [tapspace](#tapspace).[version](#tapspaceversion)
