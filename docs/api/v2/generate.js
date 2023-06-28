@@ -145,6 +145,11 @@ yamdog.generate({
         pattern: /^examples?:?/i,
         replacement: '**Example:**'
       },
+      {
+        // Normalize complexity title
+        pattern: /^complexity?:?/i,
+        replacement: '**Complexity:**'
+      },
     ]),
     deco.toc({
       title: '**Contents:**'
