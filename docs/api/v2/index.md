@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.13
+# Tapspace API Documentation v2.0.0-alpha.14
 
 
 Welcome to Tapspace.js API documentation.
@@ -841,7 +841,7 @@ Get the bounding circle of the block.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
-- a [Sphere](#tapspacegeometrysphere)
+- a [Circle](#tapspacegeometrycircle)
 
 
 Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/getBoundingCircle.js)
@@ -1652,6 +1652,7 @@ Source: [getVector.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 
 Get the affine viewport this basis currently belongs to, if any.
 Will return null if the basis is not connected to a viewport.
+Useful for checking if the component is rendered.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -3562,11 +3563,11 @@ Source: [getBoundingBox.js](https://github.com/taataa/tapspace/blob/master/lib/c
 <a name="tapspacecomponentsplanegetboundingcircle"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[getBoundingCircle](#tapspacecomponentsplanegetboundingcircle)()
 
-Get bounding sphere of the content on the plane.
+Get bounding circle of the content on the plane.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
-- a [Sphere](#tapspacegeometrysphere)
+- a [Circle](#tapspacegeometrycircle)
 
 
 Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Plane/getBoundingCircle.js)
@@ -6258,6 +6259,7 @@ in any basis, not only those that have same orientation.
 - [tapspace.geometry.Box:getArea](#tapspacegeometryboxgetarea)
 - [tapspace.geometry.Box:getBoundingBox](#tapspacegeometryboxgetboundingbox)
 - [tapspace.geometry.Box:getBoundingCircle](#tapspacegeometryboxgetboundingcircle)
+- [tapspace.geometry.Box:getBoundingSphere](#tapspacegeometryboxgetboundingsphere)
 - [tapspace.geometry.Box:getDepth](#tapspacegeometryboxgetdepth)
 - [tapspace.geometry.Box:getDiagonal](#tapspacegeometryboxgetdiagonal)
 - [tapspace.geometry.Box:getHeight](#tapspacegeometryboxgetheight)
@@ -6462,6 +6464,19 @@ Source: [getBoundingBox.js](https://github.com/taataa/tapspace/blob/master/lib/g
 <a name="tapspacegeometryboxgetboundingcircle"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getBoundingCircle](#tapspacegeometryboxgetboundingcircle)()
 
+Get the circle boundary of the rectangular box front.
+The circle center equals the box front center.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getBoundingCircle.js)
+
+<a name="tapspacegeometryboxgetboundingsphere"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getBoundingSphere](#tapspacegeometryboxgetboundingsphere)()
+
 Get the spherical boundary of the box.
 The sphere center equals the box center.
 
@@ -6470,7 +6485,7 @@ The sphere center equals the box center.
 - a [Sphere](#tapspacegeometrysphere)
 
 
-Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getBoundingCircle.js)
+Source: [getBoundingSphere.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getBoundingSphere.js)
 
 <a name="tapspacegeometryboxgetdepth"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getDepth](#tapspacegeometryboxgetdepth)()
@@ -6726,6 +6741,7 @@ A circle tensor. The circle is a flat round shape in 3D space.
 - [tapspace.geometry.Circle:atMid](#tapspacegeometrycircleatmid)
 - [tapspace.geometry.Circle:changeBasis](#tapspacegeometrycirclechangebasis)
 - [tapspace.geometry.Circle:detectCollision](#tapspacegeometrycircledetectcollision)
+- [tapspace.geometry.Circle:fromPoints](#tapspacegeometrycirclefrompoints)
 - [tapspace.geometry.Circle:getArea](#tapspacegeometrycirclegetarea)
 - [tapspace.geometry.Circle:getBoundingBox](#tapspacegeometrycirclegetboundingbox)
 - [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
@@ -6745,7 +6761,7 @@ Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/master/lib/geo
 <a name="tapspacegeometrycircleatcenter"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atCenter](#tapspacegeometrycircleatcenter)()
 
-Get the center point of the sphere.
+Get the center point of the circle.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -6800,6 +6816,29 @@ Note that not all geometries are supported, see below.
 
 
 Source: [detectCollision.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/detectCollision.js)
+
+<a name="tapspacegeometrycirclefrompoints"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[fromPoints](#tapspacegeometrycirclefrompoints)(basis, points)
+
+Find an approximate bounding circle for the given set of points.
+Reads only x and y. The circle has z coordinate at the basis origin.
+The circle contains all the points but can be larger than minimal.
+Empty array will return zero-size circle at origin.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *basis*
+  - a [Component](#tapspacecomponentscomponent) for the circle
+- *points*
+  - array of [Point](#tapspacegeometrypoint)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [fromPoints.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/fromPoints.js)
 
 <a name="tapspacegeometrycirclegetarea"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getArea](#tapspacegeometrycirclegetarea)()
@@ -10572,7 +10611,7 @@ Tools to measure geometric properties of content in space.
 Source: [metrics/index.js](https://github.com/taataa/tapspace/blob/master/lib/metrics/index.js)
 
 <a name="tapspacemetricsmeasurement"></a>
-## [tapspace](#tapspace).[metrics](#tapspacemetrics).[Measurement](#tapspacemetricsmeasurement)(node, basis, camera, viewportSphere, viewportArea)
+## [tapspace](#tapspace).[metrics](#tapspacemetrics).[Measurement](#tapspacemetricsmeasurement)(node, basis, camera, viewportCircle, viewportArea)
 
 A measurement provides geometric information about the node based on
 the given viewport properties.
@@ -10583,8 +10622,8 @@ the given viewport properties.
   - a space element, component
 - *basis*
   - a [plane3](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane3), relative to the viewport
-- *viewportSphere*
-  - a [sphere3](https://axelpale.github.io/affineplane/docs/API.html#affineplanesphere3), the viewport boundary
+- *viewportCircle*
+  - a [circle3](https://axelpale.github.io/affineplane/docs/API.html#affineplanecircle3), the viewport boundary
 - *viewportArea*
   - a number, the viewport area
 
@@ -10595,7 +10634,7 @@ the given viewport properties.
 - connected, boolean true if in same space and measurable.
 - areaPx, the element area in viewport square pixels.
 - areaRatio, the element area relative to the viewport area.
-- circle, a {x,y,r} object, bounding sphere on the viewport.
+- circle, a {x,y,r} object, bounding circle on the viewport.
 - dilation, a number, the scaling factor, pxOnView per pxOnLocal.
 - distanceToViewport, a number, in viewport pixels.
 - visible, boolean and true if the element or parts of it are visibly within the viewport or approximately close of being visible.
