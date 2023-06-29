@@ -7,12 +7,12 @@ We believe **zoomable user interfaces** to be the best way for humans to explore
 
 ## Examples
 
-<a href="docs/examples/treeloader/index.html"><img src="docs/examples/treeloader/preview.png" style="margin: 0 1em 1em 0;" title="Tree Loader"></a>
-<a href="docs/examples/cielab/index.html"><img src="docs/examples/cielab/preview.png" style="margin: 0 1em 1em 0;" title="CIELAB Color Explorer"></a>
-<a href="docs/examples/go/index.html"><img src="docs/examples/go/preview.jpg" style="margin: 0 1em 1em 0;" title="Go"></a>
-<a href="docs/examples/book/index.html"><img src="docs/examples/book/preview.png" style="margin: 0 1em 1em 0;" title="Book"></a>
-<a href="docs/examples/gears/index.html"><img src="docs/examples/gears/preview.jpg" style="margin: 0 1em 1em 0;" title="Gears"></a>
-<a href="docs/examples/html/index.html"><img src="docs/examples/html/preview.jpg" style="margin: 0 1em 1em 0;" title="HTML"></a>
+<a href="https://taataa.github.io/tapspace/examples/treeloader/index.html"><img src="docs/examples/treeloader/preview.png" style="margin: 0 1em 1em 0;" title="Tree Loader"></a>
+<a href="https://taataa.github.io/tapspace/examples/cielab/index.html"><img src="docs/examples/cielab/preview.png" style="margin: 0 1em 1em 0;" title="CIELAB Color Explorer"></a>
+<a href="https://taataa.github.io/tapspace/examples/go/index.html"><img src="docs/examples/go/preview.jpg" style="margin: 0 1em 1em 0;" title="Go"></a>
+<a href="https://taataa.github.io/tapspace/examples/book/index.html"><img src="docs/examples/book/preview.png" style="margin: 0 1em 1em 0;" title="Book"></a>
+<a href="https://taataa.github.io/tapspace/examples/gears/index.html"><img src="docs/examples/gears/preview.jpg" style="margin: 0 1em 1em 0;" title="Gears"></a>
+<a href="https://taataa.github.io/tapspace/examples/html/index.html"><img src="docs/examples/html/preview.jpg" style="margin: 0 1em 1em 0;" title="HTML"></a>
 
 See [all example apps](https://taataa.github.io/tapspace/#examples).
 

@@ -5,7 +5,7 @@ For older versions, see [Tapspace.js API docs index](https://taataa.github.io/ta
 
 This document follows these naming conventions: \`ClassName\`, \`namespace\`, \`.CONSTANT\`, \`.classMethod()\`, \`:instanceProperty\`, \`:instanceMethod()\`, and \`[optionalParameter]\`.
 
-See also: [Introduction](https://taataa.github.io/tapspace/) – [Tutorial](https://taataa.github.io/tapspace/tutorial/) - [Glossary](https://taataa.github.io/tapspace/glossary/v2/) - [GitHub](https://github.com/taataa/tapspace)
+See also: [Introduction](https://taataa.github.io/tapspace/) – [Examples](https://taataa.github.io/tapspace/#examples) – [Tutorial](https://taataa.github.io/tapspace/tutorial/) - [Glossary](https://taataa.github.io/tapspace/glossary/v2/) - [GitHub](https://github.com/taataa/tapspace)
 
 This document is generated with [yamdog](https://github.com/axelpale/yamdog).
 `
