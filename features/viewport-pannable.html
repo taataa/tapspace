@@ -69,8 +69,8 @@
     layer.addChild(blockB, blockA.atBottomRight())
 
     // Make the viewport pannable
-    // TODO set limits
-    viewport.pannable({ step: 50 }).focusable()
+    // TODO set panning limits
+    viewport.pannable({ step: 50, wasd: true }).focusable()
     viewport.on('pinchstart', () => {
       viewport.focus()
     })
