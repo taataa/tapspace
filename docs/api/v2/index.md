@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.14
+# Tapspace API Documentation v2.0.0-alpha.15
 
 
 Welcome to Tapspace.js API documentation.
@@ -8,7 +8,7 @@ For older versions, see [Tapspace.js API docs index](https://taataa.github.io/ta
 
 This document follows these naming conventions: `ClassName`, `namespace`, `.CONSTANT`, `.classMethod()`, `:instanceProperty`, `:instanceMethod()`, and `[optionalParameter]`.
 
-See also: [Introduction](https://taataa.github.io/tapspace/) – [Tutorial](https://taataa.github.io/tapspace/tutorial/) - [Glossary](https://taataa.github.io/tapspace/glossary/v2/) - [GitHub](https://github.com/taataa/tapspace)
+See also: [Introduction](https://taataa.github.io/tapspace/) – [Examples](https://taataa.github.io/tapspace/#examples) – [Tutorial](https://taataa.github.io/tapspace/tutorial/) - [Glossary](https://taataa.github.io/tapspace/glossary/v2/) - [GitHub](https://github.com/taataa/tapspace)
 
 This document is generated with [yamdog](https://github.com/axelpale/yamdog).
 
@@ -3476,14 +3476,6 @@ Source: [getRadius.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 Inherits [TransformerComponent](#tapspacecomponentstransformercomponent)
 
 A flat container for space components.
-About 10x more lightweight for the browser to render than Space. [1]
-[Plane](#tapspacecomponentsplane)s flatten their subspace. Therefore components on a plane may appear
-rendered flat and on the plane, even if they have a non-zero z coordinate.
-Although they appear flat, components and geometry on the plane
-do not lose their true z coordinates. The benefit is that we
-can move 3D constructions between spaces and planes without
-losing 3D information but still rendering faster. For example,
-far-away graphs and scenes might benefit from flattening.
 
 **Example:**
 ```
@@ -3492,8 +3484,6 @@ viewport.addChild(nodeplane)
 const node = tapspace.createCircle(20, 'red')
 nodeplane.addChild(node)
 ```
-
-[1] Tested on Chrome v109 in year 2023.
 
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
@@ -4806,6 +4796,10 @@ The view maintains the size and the angle.
   - optional object with properties:
     - *step*
       - a [Distance](#tapspacegeometrydistance). Default is 100 in viewport pixels.
+    - *arrows*
+      - a boolean, default true. Enable arrow keys for panning.
+    - *wasd*
+      - a boolean, default false. Enable WASD keys for panning.
 
 
 <p style="margin-bottom: 0"><strong>Parameters (alternative):</strong></p>
@@ -6802,6 +6796,7 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[detectCollision](#tapspacegeometrycircledetectcollision)(geometry)
 
 Check if the circle collides with the given geometry.
+The collision check does not consider z coordinates.
 Note that not all geometries are supported, see below.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
@@ -9491,6 +9486,25 @@ Unbind listeners.
 
 Source: [KeyboardPan/index.js](https://github.com/taataa/tapspace/blob/master/lib/interaction/KeyboardPan/index.js)
 
+<a name="tapspaceinteractionkeyboardpanupdate"></a>
+## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardPan](#tapspaceinteractionkeyboardpan):[update](#tapspaceinteractionkeyboardpanupdate)(options)
+
+Update panning options.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *options*
+  - an object with properties:
+    - *step*
+      - optional number or [Distance](#tapspacegeometrydistance)
+    - *arrows*
+      - optional boolean
+    - *wasd*
+      - optional boolean
+
+
+Source: [update.js](https://github.com/taataa/tapspace/blob/master/lib/interaction/KeyboardPan/update.js)
+
 <a name="tapspaceinteractionkeyboardzoombind"></a>
 ## [tapspace](#tapspace).[interaction](#tapspaceinteraction).[KeyboardZoom](#tapspaceinteractionkeyboardzoom):[bind](#tapspaceinteractionkeyboardzoombind)()
 
@@ -9941,6 +9955,8 @@ Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/master/lib/
 <a name="tapspaceinteractionskeyboardpan"></a>
 ## [tapspace](#tapspace).[interactions](#tapspaceinteractions).[KeyboardPan](#tapspaceinteractionskeyboardpan)(source, target, options)
 
+Translate the component by using keyboard.
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *source*
@@ -9951,6 +9967,10 @@ Source: [WheelZoom/index.js](https://github.com/taataa/tapspace/blob/master/lib/
   - optional object with properties:
     - *step*
       - a [Distance](#tapspacegeometrydistance) or a number represented in pixels on target. Default is 100. The travelling distance per key press.
+    - *arrows*
+      - a boolean, default true. Enable arrow keys for panning.
+    - *wasd*
+      - a boolean, default false. Enable WASD keys for panning.
 
 
 <p style="margin-bottom: 0">Makes the source emit:</p>
@@ -10428,11 +10448,6 @@ Initialize the tree. Add and load the first space.
   - a [Basis](#tapspacegeometrybasis), the placement of the first item.
 - *data*
   - optional object, to be passed to 'open' event.
-
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- this, for chaining
 
 
 <p style="margin-bottom: 0">Emits:</p>
