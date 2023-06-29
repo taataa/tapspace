@@ -7,7 +7,7 @@
    viewBox="0 0 230 230"
    version="1.1"
    id="svg5"
-   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
    sodipodi:docname="tapspace_class_chart.svg"
    inkscape:export-filename="tapspace_class_chart.png"
    inkscape:export-xdpi="88.349998"
@@ -27,13 +27,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.55370687"
-     inkscape:cx="605.91627"
-     inkscape:cy="497.55568"
+     inkscape:zoom="1.1074137"
+     inkscape:cx="424.41229"
+     inkscape:cy="686.7352"
      inkscape:window-width="1589"
-     inkscape:window-height="1035"
+     inkscape:window-height="1027"
      inkscape:window-x="33"
-     inkscape:window-y="23"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -227,7 +227,7 @@
        y="0"><tspan
          x="140.43237"
          y="739.03403"
-         id="tspan4331">Interactive</tspan></text>
+         id="tspan729">Interactive</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect539"
@@ -244,14 +244,14 @@
        y="54.342365" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,38.207938,-133.19863)"
+       transform="matrix(0.26458333,0,0,0.26458333,38.207938,-132.66946)"
        id="text215"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect217);display:inline"
        x="26.28121"
        y="0"><tspan
-         x="163.55733"
+         x="134.49488"
          y="739.03403"
-         id="tspan4333">Basis</tspan></text>
+         id="tspan731">Component</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676402, 0.52338201;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect541"
@@ -268,7 +268,7 @@
        y="0"><tspan
          x="132.72405"
          y="736.36736"
-         id="tspan4335">Hyperspace</tspan></text>
+         id="tspan733">Hyperspace</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676402, 0.52338201;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect543"
@@ -285,13 +285,13 @@
        y="0"><tspan
          x="131.94801"
          y="736.36736"
-         id="tspan4337">Transformer</tspan></text>
+         id="tspan735">Transformer</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect545"
        width="32.451027"
        height="15.528671"
-       x="72.264297"
+       x="66.443459"
        y="116.45702" />
     <text
        xml:space="preserve"
@@ -302,7 +302,7 @@
        y="0"><tspan
          x="163.55733"
          y="739.03403"
-         id="tspan4339">Block</tspan></text>
+         id="tspan737">Block</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect547"
@@ -312,14 +312,14 @@
        y="147.51439" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,38.285109,-70.355593)"
+       transform="matrix(0.26458333,0,0,0.26458333,32.464272,-70.355593)"
        id="text417"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect419);display:inline"
        x="26.28121"
        y="0"><tspan
-         x="159.39588"
+         x="162.35942"
          y="739.03403"
-         id="tspan4341">Space</tspan></text>
+         id="tspan739">Plane</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676402, 0.52338201;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect549"
@@ -336,7 +336,7 @@
        y="0"><tspan
          x="148.32819"
          y="739.03403"
-         id="tspan4343">Viewport</tspan></text>
+         id="tspan741">Viewport</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect551"
@@ -353,7 +353,7 @@
        y="0"><tspan
          x="158.82297"
          y="739.03403"
-         id="tspan4345">Frame</tspan></text>
+         id="tspan743">Frame</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676402, 0.52338201;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect553"
@@ -370,7 +370,7 @@
        y="0"><tspan
          x="168.89587"
          y="739.03403"
-         id="tspan4347">Item</tspan></text>
+         id="tspan745">Item</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,146.20137,-8.7394606)"
@@ -380,7 +380,7 @@
        y="0"><tspan
          x="155.25526"
          y="739.03403"
-         id="tspan4349">Control</tspan></text>
+         id="tspan747">Control</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="M 111.80622,85.267878 C 111.93663,76.192731 94.131444,81.137997 94.067294,73.272998"
@@ -413,7 +413,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
-       d="m 92.070364,116.01533 c -0.13041,-9.07515 23.310586,-3.87647 23.374736,-11.74147"
+       d="m 86.249527,116.01533 c -0.13041,-9.07515 23.310553,-3.87647 23.374703,-11.74147"
        id="path1908"
        sodipodi:nodetypes="cc" />
     <path
@@ -440,33 +440,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan4351">Tapspace 2.0.0-alpha.5 - Inheritance relations of core components</tspan></text>
-    <g
-       id="g3237"
-       transform="translate(-156.67158,38.099991)">
-      <rect
-         style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
-         id="rect3119"
-         width="32.451027"
-         height="15.528671"
-         x="175.98099"
-         y="78.357048" />
-      <text
-         xml:space="preserve"
-         transform="matrix(0.26458333,0,0,0.26458333,142.0018,-108.4556)"
-         id="text3123"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect3125);display:inline"
-         x="26.28121"
-         y="0"><tspan
-           x="162.35942"
-           y="739.03403"
-           id="tspan4353">Plane</tspan></text>
-    </g>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
-       d="m 41.144969,116.45705 c -0.13041,-9.07515 66.115811,-4.33268 66.179961,-12.19769"
-       id="path3239"
-       sodipodi:nodetypes="cc" />
+         id="tspan749">Tapspace 2.0.0-alpha.15 - Inheritance relations of core components</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:0.52338201,1.57014602;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect3243"
@@ -483,7 +457,7 @@
        y="0"><tspan
          x="155.85943"
          y="739.03403"
-         id="tspan4355">Emitter</tspan></text>
+         id="tspan751">Emitter</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="m 85.347879,54.047043 c 0.13041,-9.075147 -17.67477,-4.129881 -17.73892,-11.99488"
@@ -496,16 +470,6 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,38.207938,-127.37779)"
-       id="text2255"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect2257);display:inline"
-       x="26.28121"
-       y="0"><tspan
-         x="162.06762"
-         y="729.00437"
-         id="tspan4357">Component</tspan></text>
-    <text
-       xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,65.240408,-95.755482)"
        id="text2255-7"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect2257-4);display:inline"
@@ -513,7 +477,7 @@
        y="0"><tspan
          x="162.06762"
          y="729.00437"
-         id="tspan4359">Component</tspan></text>
+         id="tspan753">Component</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,92.195669,-64.8391)"
@@ -523,7 +487,7 @@
        y="0"><tspan
          x="162.06762"
          y="729.00437"
-         id="tspan4361">Component</tspan></text>
+         id="tspan755">Component</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,10.77081,-33.353762)"
@@ -533,7 +497,7 @@
        y="0"><tspan
          x="162.06762"
          y="729.00437"
-         id="tspan4363">Component</tspan></text>
+         id="tspan757">Component</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,119.15092,-33.860588)"
@@ -543,7 +507,7 @@
        y="0"><tspan
          x="162.06762"
          y="729.00437"
-         id="tspan4365">Component</tspan></text>
+         id="tspan759">Component</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,146.10621,-2.7752594)"
@@ -553,7 +517,7 @@
        y="0"><tspan
          x="162.06762"
          y="729.00437"
-         id="tspan4367">Component</tspan></text>
+         id="tspan761">Component</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:0.523382, 1.57015;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect2403"
@@ -570,7 +534,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan4369">External class</tspan></text>
+         id="tspan763">External class</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676, 0.523382;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
        id="rect3897"
@@ -587,7 +551,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan4371">Abstract class</tspan></text>
+         id="tspan765">Abstract class</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect3911"
@@ -604,6 +568,6 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan4373">Instance class</tspan></text>
+         id="tspan767">Instance class</tspan></text>
   </g>
 </svg>
