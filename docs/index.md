@@ -165,6 +165,7 @@ Members of LINCS team at [Texas A+M University](https://www.tamu.edu/) and [Univ
 - Bryan Tarpley
 - Susan Brown
 - Jordan Lum
+- Sarah Rogers
 
 Fellows of Infant Cognition Laboratory at [Tampere University](https://www.tuni.fi/en), 2016.
 - Jussi Kaatiala
