@@ -60,7 +60,6 @@ yamdog.generate({
     'Vector': 'tapspace.geometry.Vector',
     'Volume': 'tapspace.geometry.Volume',
     // Loaders
-    'FractalLoader': 'tapspace.loaders.FractalLoader',
     'TreeLoader': 'tapspace.loaders.TreeLoader',
     // Metrics
     'Measurement': 'tapspace.metrics.Measurement'

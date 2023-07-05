@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Navigation Limits - Tapspace Features</title>
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Import tapspace. -->
+  <script defer src="../dist/tapspace.min.js"></script>
+
+  <!-- your custom styles -->
+  <style>
+    body {
+      background: black;
+      color: grey;
+    }
+    .myspaceapp {
+      background: gray;
+      height: 500px;
+    }
+    .mycomponent {
+      background: white;
+      color: black;
+    }
+    .mycomponent.active {
+      background: #EEE;
+    }
+  </style>
+</head>
+<body>
+  <h1>Navigation Limits – Tapspace Features</h1>
+  <p>To prevent users accidentally becoming lost, the navigable area can be limited with the <code>Viewport:limitTo</code> method.</p>
+
+  <!-- A tapspace viewport -->
+  <div id="tapspace" class="myspaceapp"></div>
+
+  <!-- Your code -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup the tapspace viewport and the default layer for content.
+      const viewport = tapspace.createView('#tapspace').zoomable()
+      const space = tapspace.createSpace()
+      viewport.addChild(space)
+
+      const origin = viewport.atCenter()
+
+      const nodes = []
+      const N = 5
+      for (let i = 0; i < N; i += 1) {
+        const node = tapspace.createNode(100)
+        node.addClass('mycomponent')
+        node.setParent(space)
+
+        // Offset by geometric sum
+        const ratio = 0.5
+        const scale = Math.pow(ratio, i)
+        const dx = 200 * (1 - scale) / (1 - ratio)
+
+        node.setScale(scale)
+        node.translateTo(origin.offset(dx, 0))
+
+        nodes.push(node)
+      }
+
+      viewport.on('idle', () => {
+        viewport.limitTo(nodes)
+      })
+    })
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Fractal Loader - Tapspace Features</title>
+  <title>Fractal Content - Tapspace Features</title>
 
   <!-- Mobile-friendly width settings. Disables default browser zooming
        features native gestures. -->
@@ -39,7 +39,7 @@
   </style>
 </head>
 <body>
-  <h1>Fractal loader – Tapspace Features</h1>
+  <h1>Fractal Content – Tapspace Features</h1>
   <p>
     Recursive loading and unloading of content is necessary in order
     to explore huge masses of data. Otherwise web browsers would slow down
@@ -70,122 +70,78 @@
     const M = scaleStep
     const ROT = angleStep
 
-    const tracker = (parents) => {
-      // Find bases and IDs of the children of the given parents.
-      //
-      // Parameters:
-      //   parents
-      //     an array of track, where each track is { id, basis }
-      //
-      // Return
-      //   an array of track, the tracks of children
-      //
-
-      // Debug
-      if (parents.length < 1) {
-        const err = new Error('Tracker called with empty parent tracks.')
-        return callback(null, [])
-      }
-
-      // Single-parent tracker.
-      const parentId = parents[0].id
-      const parentBasis = parents[0].basis
-
-      const innerAnchorBasis = parentBasis
-        .offset(R, R, DD)
-        .scaleBy(M)
-
+    const mapper = (parentId, parentSpace, childId) => {
+      // Create a basis for a child space.
+      const parentBasis = parentSpace.getBasis()
+      const innerAnchorBasis = parentBasis.offset(R, R, DD).scaleBy(M)
       const radius = innerAnchorBasis.createDistance(FR)
 
-      // Children
-      const tracks = [
-        {
-          id: parentId + '0',
-          basis: innerAnchorBasis
+      const lastChar = childId.slice(-1)
+      switch (lastChar) {
+        case '0':
+          return innerAnchorBasis
             .polarOffset(radius, -ROT)
             .rotateBy(-ROT)
             .offset(-R, -R)
-        },
-        {
-          id: parentId + '1',
-          basis: innerAnchorBasis
+        case '1':
+          return innerAnchorBasis
             .polarOffset(radius, 0)
             .offset(-R, -R)
-        },
-        {
-          id: parentId + '2',
-          basis: innerAnchorBasis
+        case '2':
+          return innerAnchorBasis
             .polarOffset(radius, ROT)
             .rotateBy(ROT)
             .offset(-R, -R)
-        }
-      ]
-
-      return tracks
+        default:
+          return null
+      }
     }
 
-    const backtracker = (children) => {
-      // Find bases and IDs of parents of the given children.
-      //
-      // Parameters:
-      //   children
-      //     an array of track, where each track is { id, basis }
-      //
-      // Return
-      //   an array of track, the parent tracks. Can be empty if no parents.
-      //
+    const backmapper = (childId, childSpace, parentId) => {
+      // Create a basis for the parent space. Optional.
+      const childBasis = childSpace.getBasis()
+      const radius = childBasis.createDistance(FR)
 
-      // Debug
-      if (children.length < 1) {
-        const err = new Error('Backtracker called without child tracks.')
-        return callback(null, [])
+      const lastChar = childId.slice(-1)
+      switch (lastChar) {
+        case '0':
+          return childBasis.offset(R, R)
+            .scaleBy(1 / M)
+            .rotateBy(ROT)
+            .polarOffset(radius, 5 * ROT)
+            .offset(-R, -R, -DD)
+        case '1':
+          return childBasis.offset(R, R)
+            .scaleBy(1 / M)
+            .polarOffset(radius, Math.PI)
+            .offset(-R, -R, -DD)
+        case '2':
+          return childBasis.offset(R, R)
+            .scaleBy(1 / M)
+            .rotateBy(-ROT)
+            .polarOffset(radius, -5 * ROT)
+            .offset(-R, -R, -DD)
+        default:
+          return null
       }
+    }
 
-      // Single-parent backtracker
-      const primusId = children[0].id
-      const primusBasis = children[0].basis
-      const parentId = primusId.substring(0, primusId.length - 1)
+    const tracker = (parentId) => {
+      // Find child space IDs.
+      return [
+        parentId + '0',
+        parentId + '1',
+        parentId + '2'
+      ]
+    }
 
-      // Limit to root id
-      if (parentId.length < 1) {
-        return []
+    const backtracker = (childId) => {
+      // Find parent space ID.
+      if (childId.length <= 1) {
+        return null
       }
-
-      const radius = primusBasis.createDistance(FR)
-
-      let parentBasis = null
-      if (primusId === (parentId + '0')) {
-        parentBasis = primusBasis.offset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M)
-        parentBasis = parentBasis.rotateBy(ROT)
-        parentBasis = parentBasis.polarOffset(radius, 5 * ROT)
-        parentBasis = parentBasis.offset(-R, -R, -DD)
-      } else
-      if (primusId === (parentId + '1')) {
-        parentBasis = primusBasis.offset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M)
-        parentBasis = parentBasis.polarOffset(radius, Math.PI)
-        parentBasis = parentBasis.offset(-R, -R, -DD)
-      } else
-      if (primusId === (parentId + '2')) {
-        parentBasis = primusBasis.offset(R, R)
-        parentBasis = parentBasis.scaleBy(1 / M)
-        parentBasis = parentBasis.rotateBy(-ROT)
-        parentBasis = parentBasis.polarOffset(radius, -5 * ROT)
-        parentBasis = parentBasis.offset(-R, -R, -DD)
-      }
-
-      if (!parentBasis) {
-        console.warn('Unexpected id: ' + primusId + ' OR ' + parentId)
-        return
-      }
-
-      const parentTrack = {
-        id: parentId,
-        basis: parentBasis
-      }
-
-      return [parentTrack]
+      const parentId = childId.substring(0, childId.length - 1)
+      return parentId
     }
 
     const getDepth = (id) => {
@@ -227,46 +183,57 @@
         '</p>'
     }
 
-    const generator = (ids, callback) => {
-      // Create node components for IDs.
-      // This can include asynchronic fetching of node data from backend.
-      //
-      const nodes = ids.map(id => {
-        const size = R
-        const color = getColor(id)
-        const node = tapspace.createCircle(size, color)
-        node.html('' + squareText(id, 2 * R))
-        node.addClass('fractal-node')
-
-        // Tap to match orientation.
-        node.tappable({ preventDefault: false })
-        node.on('tap', () => {
-          const orient = node.getOrientation()
-          viewport.animateOnce({ duration: '500ms' })
-          viewport.setOrientation(orient, node.atCenter())
-        })
-        node.setContentInput('false')
-
-        return node
-      })
-
-      callback(null, nodes)
-    }
-
-    const initial = [{
-      id: '001',
-      basis: viewport.getBasis()
-    }]
-
-    const loader = new tapspace.loaders.FractalLoader({
+    const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
+      mapper: mapper,
+      backmapper: backmapper,
       tracker: tracker,
-      backtracker: backtracker,
-      generator: generator,
-      initial: initial
+      backtracker: backtracker
     })
 
-    loader.on('initiated', () => {
+    // Constructor
+    loader.on('open', (ev) => {
+      const size = R
+      const color = getColor(ev.id)
+      const node = tapspace.createCircle(size, color)
+      node.html('' + squareText(ev.id, 2 * R))
+      node.addClass('fractal-node')
+      node.spaceId = ev.id // TODO use WeakMap in TreeLoader to prevent this.
+
+      // Tap to match orientation.
+      node.tappable({ preventDefault: false })
+      node.on('tap', () => {
+        const orient = node.getOrientation()
+        viewport.animateOnce({ duration: '500ms' })
+        viewport.setOrientation(orient, node.atCenter())
+      })
+      node.setContentInput('false')
+
+      // Space ready
+      loader.addSpace(ev.id, node)
+    })
+
+    // Destructor
+    loader.on('close', (ev) => {
+      loader.removeSpace(ev.id)
+    })
+
+    // Driver
+    viewport.on('idle', (ev) => {
+      const spaces = viewport.getSpaces()
+      const metrics = viewport.measureNearest(spaces, 2)
+      if (metrics.length > 0) {
+        const nearest = metrics[0].target
+        // Grow and prune
+        loader.openNeighbors(nearest.spaceId, 2)
+        loader.closeNeighbors(nearest.spaceId, 4)
+      }
+    })
+
+    loader.init('001', viewport.getBasis())
+
+    loader.once('opened', (ev) => {
+      loader.openNeighbors(ev.id, 2)
       const contentBounds = viewport.getHyperspace().getBoundingCircle()
       const fractalCenter = contentBounds.atCenter()
       viewport.translateTo(fractalCenter)
