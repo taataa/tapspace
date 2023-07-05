@@ -14,7 +14,7 @@ module.exports = function (test, container, tapspace) {
 
     t.almostEqualPoint(
       p,
-      { basis: basis, point: { x: 1, y: 2, z: 0 } },
+      { basis, point: { x: 1, y: 2, z: 0 } },
       'should fill z'
     )
 
