@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.15
+# Tapspace API Documentation v2.0.0-alpha.16
 
 
 Welcome to Tapspace.js API documentation.
@@ -4567,7 +4567,7 @@ Get viewport width as a [Distance](#tapspacegeometrydistance).
 Source: [getWidth.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/getWidth.js)
 
 <a name="tapspacecomponentsviewportlimitto"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[limitTo](#tapspacecomponentsviewportlimitto)(targets)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[limitTo](#tapspacecomponentsviewportlimitto)(targets[, options])
 
 Zoom until the targets are at least partly visible in the viewport.
 Do not zoom at all if some of them are visible.
@@ -4577,6 +4577,12 @@ Useful for preventing users from getting lost in space.
 
 - *targets*
   - array of [Component](#tapspacecomponentscomponent)
+- *options*
+  - optional object with properties:
+    - *maxAreaRatio*
+      - optional number, default is 2. The largest allowed area of the *smallest* target relative to the viewport area. In other words, if the relative area of the smallest target grows above this maximum area ratio, viewport will zoom out.
+    - *minAreaRatio*
+      - optional number, default is 0.0002. The smallest allowed area of the *largest* target relative to the viewport area. In other words, if the relative area of the largest target shrinks below this minimum area ratio, viewport will zoom in.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -10018,85 +10024,11 @@ loading, construction, and destruction.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
-- [tapspace.loaders.FractalLoader](#tapspaceloadersfractalloader)
 - [tapspace.loaders.TreeLoader](#tapspaceloaderstreeloader)
 - [tapspace.loaders.loadImages](#tapspaceloadersloadimages)
 
 
 Source: [loaders/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/index.js)
-
-<a name="tapspaceloadersfractalloader"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[FractalLoader](#tapspaceloadersfractalloader)(config)
-
-Recursive, scale-free, and asynchronous content loader and layout manager
-for navigating fractal-like network structures. The loader guards against
-underflow and overflow of floating point arithmetics and helps in reducing
-the number of concurrently rendered elements.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *config*
-  - an object with properties:
-    - *viewport*
-      - a [Viewport](#tapspacecomponentsviewport)
-    - *tracker*
-      - a function (array of track) -> array of track. Synchronous.
-      - The tracker defines the identifiers and locations of child components given identifiers and locations of their parents. See below for details.
-    - *backtracker*
-      - a function (array of track) -> array of track. Synchronous.
-      - The backtracker defines the identifiers and locations of parent components given identifiers and locations of one or more of their children. See below for details.
-    - *generator*
-      - a function (ids, callback), where callback (err, nodes). Asynchronous.
-      - The generator constructs the component and may fetch data from background services to do so. This data often contain information about the children of the component that is needed by the trackers.
-    - *initial*
-      - an array of track. The initial component identifiers and locations.
-    - *limits*
-      - optional object with properties:
-        - *minCount*
-          - a number, default is 1. Minimum number of fractal nodes to keep rendered. Minimum of 1 prevents the destruction of the fractal.
-        - *maxCount*
-          - a number, default is 500. Maximum number of fractal nodes to keep rendered. The other limits may be strict enough so that the max count is never reached.
-        - *minVisibleCover*
-          - a number, default is 0.0001. Minimum area the node can cover in the viewport and still stay rendered. Smaller nodes are removed. The number is the node area relative to the viewport area.
-        - *minOpenCover*
-          - a number, default is 0.001. Minimum area the node can cover in the viewport and still have its parent, siblings, and children rendered. Smaller nodes are closed. The number is the node area relative to the viewport area.
-        - *maxOpenCover*
-          - a number, default is 1. Maximum area the node can cover in the viewport and still have its parent, siblings, and children rendered. Parents of larger nodes are removed. The number is the node area relative to the viewport area.
-        - *maxVisibleCover*
-          - a number, default is 2. Maximum area the node can cover in the viewport and still be rendered. Larger nodes are removed. The number is the node area relative to the viewport area.
-        - *maxDistance*
-          - a number, default is 1500. Maximum distance in the viewport pixels from the viewport center so that the node is still kept rendered. [Node](#tapspacecomponentsnode)s farther away are removed.
-
-
-Tracker functions define the fractal layout. They consume an array of
-tracks and output another array of tracks. Each track is an object
-`{ id, basis }` where the `id` is an identifier string for the node and
-the `basis` gives the placement of the node in the space.
-The tracker defines the children relative to the parents and
-the backtracker defines the parents relative to the children.
-In order to layout the fractal in an expected manner, the two tracker
-functions must be carefully designed to work in tandem.
-
-
-<p style="margin-bottom: 0"><strong>Contents:</strong></p>
-
-
-- [tapspace.loaders.FractalLoader:cardinality](#tapspaceloadersfractalloadercardinality)
-
-
-Source: [FractalLoader/index.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/FractalLoader/index.js)
-
-<a name="tapspaceloadersfractalloadercardinality"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[FractalLoader](#tapspaceloadersfractalloader):[cardinality](#tapspaceloadersfractalloadercardinality)()
-
-The number of rendered nodes.
-
-<p style="margin-bottom: 0"><strong>Returns:</strong></p>
-
-- a number
-
-
-Source: [cardinality.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/FractalLoader/cardinality.js)
 
 <a name="tapspaceloaderstreeloader"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader)(config)
@@ -10104,6 +10036,8 @@ Source: [cardinality.js](https://github.com/taataa/tapspace/blob/master/lib/load
 An asynchronous and recursive loader for your tree-structured content.
 Use this to build infinite or very deep, zoomable web applications
 to overcome limits of floating point arithmetics.
+
+Each node of the tree is a space. Each space should have unique ID.
 
 To setup the loader, you need to implement a few functions:
 mapper, backmapper, tracker, and backtracker.
