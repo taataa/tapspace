@@ -4180,7 +4180,7 @@ determined by the container element and the host app CSS rules.
   - an [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), becomes the viewport.
 
 
-**Under the hood**
+**Under the hood:**
 When the viewport is transformed, it does not move on the page.
 Instead, the space and its root planes are moved
 in opposite direction. This, combined with overflow CSS styles,
