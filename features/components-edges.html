@@ -20,6 +20,11 @@
       background: #DDD;
       height: 500px;
     }
+    .edge-01 { border-top: 10px dotted black; }
+    .edge-12 { border-top: 10px solid gray; }
+    .edge-20 { border-top: 10px dashed black; }
+    .edge-de01 { background: linear-gradient(0.25turn, magenta, aqua); }
+    .edge-de12 { background: linear-gradient(0.25turn, aqua, teal); }
   </style>
 </head>
 <body>
@@ -49,9 +54,9 @@
     flatEdges.addChild(m1, flatEdges.at(200, 0))
     flatEdges.addChild(m2, flatEdges.at(0, 0).polarOffset(200, Math.PI / 3))
     // Create edges
-    const edge01 = tapspace.createEdge('0.6em dotted black')
-    const edge12 = tapspace.createEdge('0.6em solid gray')
-    const edge20 = tapspace.createEdge('0.6em dashed black')
+    const edge01 = tapspace.createEdge(10).addClass('edge-01')
+    const edge12 = tapspace.createEdge(10).addClass('edge-12')
+    const edge20 = tapspace.createEdge(10).addClass('edge-20')
     flatEdges.prependChild(edge01)
     flatEdges.prependChild(edge12)
     flatEdges.prependChild(edge20)
@@ -97,8 +102,8 @@
     deepEdges.addChild(dn1, deepEdges.at(200, 0, 20))
     deepEdges.addChild(dn2, deepEdges.at(0, 0).polarOffset(200, Math.PI / 3))
     // Create edges
-    const de01 = tapspace.createEdge('0.6em dashed gray')
-    const de12 = tapspace.createEdge('0.6em solid gray')
+    const de01 = tapspace.createEdge(10).addClass('edge-de01')
+    const de12 = tapspace.createEdge(10).addClass('edge-de12')
     deepEdges.prependChild(de01)
     deepEdges.prependChild(de12)
     // Set edge positions. Trim edge ends for more ball-like joint.
@@ -113,23 +118,6 @@
     view.scaleToFill(spaceBounds.getSize())
     view.matchPoint(view.atCenter(), spaceBounds.atCenter())
     view.scaleBy(1.2, view.atCenter())
-
-    // DEBUG Visualization tools.
-    // const drawPoint = (p) => {
-    //   const c = tapspace.createCircle(7, 'red')
-    //   space.addChild(c, p)
-    // }
-    //
-    // const drawBox = (box) => {
-    //   drawPoint(box.atNorm(0, 0, 0))
-    //   drawPoint(box.atNorm(0, 0, 1))
-    //   drawPoint(box.atNorm(0, 1, 0))
-    //   drawPoint(box.atNorm(0, 1, 1))
-    //   drawPoint(box.atNorm(1, 0, 0))
-    //   drawPoint(box.atNorm(1, 0, 1))
-    //   drawPoint(box.atNorm(1, 1, 0))
-    //   drawPoint(box.atNorm(1, 1, 1))
-    // }
   </script>
 </body>
 </html>
