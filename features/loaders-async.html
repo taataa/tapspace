@@ -45,6 +45,15 @@
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
 
+  <nav id="navigation">
+    <h3>Navigate to:</h3>
+    <ul id="navigation">
+      <li><a href="#" data-target-id="0">0</a></li>
+      <li><a href="#" data-target-id="1">1</a></li>
+      <li><a href="#" data-target-id="2">2</a></li>
+    </ul>
+  </nav>
+
   <!-- Import tapspace. -->
   <script src="../dist/tapspace.min.js"></script>
 
@@ -53,6 +62,10 @@
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace')
     viewport.zoomable()
+
+    const MIN_ID = 0
+    const MAX_ID = 10
+    const INIT_ID = 5
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
@@ -67,7 +80,7 @@
 
       tracker: function (parentId, parent) {
         const i = parseInt(parentId)
-        if (i >= 10) {
+        if (i >= MAX_ID) {
           return [null] // TEST nullish ids in tracker.
         }
         return ['' + (i + 1)]
@@ -75,7 +88,7 @@
 
       backtracker: function (childId, child) {
         const i = parseInt(childId)
-        if (i === 0) {
+        if (i <= MIN_ID) {
           return null
         }
         return '' + (i - 1)
@@ -124,7 +137,14 @@
       }
     })
 
-    loader.initSpace('5', viewport.getBasisAt(viewport.atCenter()))
+    document.getElementById('navigation').addEventListener('click', (ev) => {
+      if (ev.target && ev.target.dataset.targetId) {
+        const spaceId = ev.target.dataset.targetId
+        console.log('spaceId', spaceId)
+      }
+    })
+
+    loader.initSpace(INIT_ID.toString(), viewport.getBasisAt(viewport.atCenter()))
   </script>
 </body>
 </html>
