@@ -49,8 +49,8 @@
     <h3>Navigate to:</h3>
     <ul id="navigation">
       <li><a href="#" data-target-id="0">0</a></li>
-      <li><a href="#" data-target-id="1">1</a></li>
-      <li><a href="#" data-target-id="2">2</a></li>
+      <li><a href="#" data-target-id="4">4</a></li>
+      <li><a href="#" data-target-id="10">10</a></li>
     </ul>
   </nav>
 
@@ -119,7 +119,7 @@
     })
 
     viewport.on('idle', () => {
-      const spaces = viewport.getSpaces()
+      const spaces = loader.getSpaces()
       const metrics = viewport.measureNearest(spaces, 1)
       if (metrics.length > 0) {
         const nearest = metrics[0].target
@@ -140,7 +140,24 @@
     document.getElementById('navigation').addEventListener('click', (ev) => {
       if (ev.target && ev.target.dataset.targetId) {
         const spaceId = ev.target.dataset.targetId
-        console.log('spaceId', spaceId)
+
+        if (loader.hasSpace(spaceId)) {
+          // Space loaded, we can jump directly.
+          const targetSpace = loader.getSpace(spaceId)
+
+          loader.getSpaces().forEach(space => {
+            if (space === targetSpace) {
+              space.addClass('current')
+            } else {
+              space.removeClass('current')
+            }
+          })
+          viewport.translateTo(targetSpace.atCenter())
+          loader.openNeighbors(spaceId, 2)
+          loader.closeNeighbors(spaceId, 4)
+        } else {
+          // Space not loaded, we need to clear and init. TODO
+        }
       }
     })
 
