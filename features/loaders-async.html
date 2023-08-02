@@ -157,6 +157,8 @@
           loader.closeNeighbors(spaceId, 4)
         } else {
           // Space not loaded, we need to clear and init. TODO
+          const targetBasis = viewport.getBasisAt(viewport.atCenter())
+          loader.initSpace(spaceId, targetBasis)
         }
       }
     })
