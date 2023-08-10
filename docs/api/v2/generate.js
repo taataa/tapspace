@@ -149,6 +149,11 @@ yamdog.generate({
         pattern: /^complexity?:?/i,
         replacement: '**Complexity:**'
       },
+      {
+        // Normalize under the hood
+        pattern: /^\*?\*?under the hood:?\*?\*?/i,
+        replacement: '**Under the hood:**'
+      },
     ]),
     deco.toc({
       title: '**Contents:**'

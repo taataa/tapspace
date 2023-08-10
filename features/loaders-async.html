@@ -37,6 +37,12 @@
     .affine-node.placeholder.current {
       background: gray;
     }
+    nav a {
+      color: white;
+    }
+    nav a:hover {
+      color: lightgray;
+    }
   </style>
 </head>
 <body>
@@ -44,6 +50,15 @@
 
   <!-- A tapspace viewport -->
   <div id="tapspace" class="myspaceapp"></div>
+
+  <nav id="navigation">
+    <h3>Navigate using links:</h3>
+    <ul id="navigation">
+      <li><a href="#" data-target-id="0">0</a></li>
+      <li><a href="#" data-target-id="4">4</a></li>
+      <li><a href="#" data-target-id="10">10</a></li>
+    </ul>
+  </nav>
 
   <!-- Import tapspace. -->
   <script src="../dist/tapspace.min.js"></script>
@@ -53,6 +68,12 @@
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace')
     viewport.zoomable()
+
+    const MIN_ID = 0
+    const MAX_ID = 10
+    const INIT_ID = 5
+    const MIN_DEPTH = 2
+    const MAX_DEPTH = 4
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
@@ -67,7 +88,7 @@
 
       tracker: function (parentId, parent) {
         const i = parseInt(parentId)
-        if (i >= 10) {
+        if (i >= MAX_ID) {
           return [null] // TEST nullish ids in tracker.
         }
         return ['' + (i + 1)]
@@ -75,7 +96,7 @@
 
       backtracker: function (childId, child) {
         const i = parseInt(childId)
-        if (i === 0) {
+        if (i <= MIN_ID) {
           return null
         }
         return '' + (i - 1)
@@ -106,7 +127,7 @@
     })
 
     viewport.on('idle', () => {
-      const spaces = viewport.getSpaces()
+      const spaces = loader.getSpaces()
       const metrics = viewport.measureNearest(spaces, 1)
       if (metrics.length > 0) {
         const nearest = metrics[0].target
@@ -119,12 +140,42 @@
           }
         })
         // Grow and prune
-        loader.openNeighbors(nearest.spaceId, 2)
-        loader.closeNeighbors(nearest.spaceId, 4)
+        loader.openNeighbors(nearest.spaceId, MIN_DEPTH)
+        loader.closeNeighbors(nearest.spaceId, MAX_DEPTH)
       }
     })
 
-    loader.init('5', viewport.getBasisAt(viewport.atCenter()))
+    document.getElementById('navigation').addEventListener('click', (ev) => {
+      if (ev.target && ev.target.dataset.targetId) {
+        const spaceId = ev.target.dataset.targetId
+
+        if (loader.hasSpace(spaceId)) {
+          // Space loaded, we can jump directly.
+          const targetSpace = loader.getSpace(spaceId)
+
+          loader.getSpaces().forEach(space => {
+            if (space === targetSpace) {
+              space.addClass('current')
+            } else {
+              space.removeClass('current')
+            }
+          })
+          viewport.translateTo(targetSpace.atCenter())
+          loader.openNeighbors(spaceId, MIN_DEPTH)
+          loader.closeNeighbors(spaceId, MAX_DEPTH)
+        } else {
+          // Space not loaded, thus clear and init again.
+          loader.closeAll()
+          const targetOrigin = viewport.atCenter().offset(-20, -20)
+          const targetBasis = viewport.getBasisAt(targetOrigin)
+          loader.initSpace(spaceId, targetBasis, MIN_DEPTH)
+        }
+      }
+    })
+
+    const targetOrigin = viewport.atCenter().offset(-20, -20)
+    const targetBasis = viewport.getBasisAt(targetOrigin)
+    loader.initSpace(INIT_ID.toString(), targetBasis, MIN_DEPTH)
   </script>
 </body>
 </html>

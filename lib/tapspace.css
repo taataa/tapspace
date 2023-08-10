@@ -115,6 +115,11 @@ Architectural guidelines for tapspace classes:
   transform-style: flat;
 }
 
+.affine-edge {
+  /* Include borders to the size */
+  box-sizing: border-box;
+}
+
 .affine-arc {
   overflow: hidden;
 }
