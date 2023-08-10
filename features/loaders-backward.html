@@ -46,6 +46,9 @@
     const viewport = tapspace.createView('#tapspace')
     viewport.zoomable()
 
+    const MIN_DEPTH = 2
+    const MAX_DEPTH = 4
+
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
 
@@ -101,12 +104,13 @@
           }
         })
         // Grow and prune
-        loader.openNeighbors(nearest.spaceId, 2)
-        loader.closeNeighbors(nearest.spaceId, 4)
+        loader.openNeighbors(nearest.spaceId, MIN_DEPTH)
+        loader.closeNeighbors(nearest.spaceId, MAX_DEPTH)
       }
     })
 
-    loader.initSpace('10', viewport.getBasisAt(viewport.atCenter()))
+    const targetBasis = viewport.getBasisAt(viewport.atCenter())
+    loader.initSpace('10', targetBasis, MIN_DEPTH)
   </script>
 </body>
 </html>
