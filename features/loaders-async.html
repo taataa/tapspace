@@ -72,6 +72,8 @@
     const MIN_ID = 0
     const MAX_ID = 10
     const INIT_ID = 5
+    const MIN_DEPTH = 2
+    const MAX_DEPTH = 4
 
     const loader = new tapspace.loaders.TreeLoader({
       viewport: viewport,
@@ -138,8 +140,8 @@
           }
         })
         // Grow and prune
-        loader.openNeighbors(nearest.spaceId, 2)
-        loader.closeNeighbors(nearest.spaceId, 4)
+        loader.openNeighbors(nearest.spaceId, MIN_DEPTH)
+        loader.closeNeighbors(nearest.spaceId, MAX_DEPTH)
       }
     })
 
@@ -159,20 +161,21 @@
             }
           })
           viewport.translateTo(targetSpace.atCenter())
-          loader.openNeighbors(spaceId, 2)
-          loader.closeNeighbors(spaceId, 4)
+          loader.openNeighbors(spaceId, MIN_DEPTH)
+          loader.closeNeighbors(spaceId, MAX_DEPTH)
         } else {
-          // Space not loaded, we need to clear and init. TODO
-          Object.keys(loader.spaces).forEach((spaceId) => {
-            loader.removeSpace(spaceId)
-          })
-          const targetBasis = viewport.getBasisAt(viewport.atCenter().offset(-20, -20))
-          loader.initSpace(spaceId, targetBasis)
+          // Space not loaded, thus clear and init again.
+          loader.closeAll()
+          const targetOrigin = viewport.atCenter().offset(-20, -20)
+          const targetBasis = viewport.getBasisAt(targetOrigin)
+          loader.initSpace(spaceId, targetBasis, MIN_DEPTH)
         }
       }
     })
 
-    loader.initSpace(INIT_ID.toString(), viewport.getBasisAt(viewport.atCenter().offset(-20, -20)))
+    const targetOrigin = viewport.atCenter().offset(-20, -20)
+    const targetBasis = viewport.getBasisAt(targetOrigin)
+    loader.initSpace(INIT_ID.toString(), targetBasis, MIN_DEPTH)
   </script>
 </body>
 </html>
