@@ -37,6 +37,12 @@
     .affine-node.placeholder.current {
       background: gray;
     }
+    nav a {
+      color: white;
+    }
+    nav a:hover {
+      color: lightgray;
+    }
   </style>
 </head>
 <body>
@@ -46,7 +52,7 @@
   <div id="tapspace" class="myspaceapp"></div>
 
   <nav id="navigation">
-    <h3>Navigate to:</h3>
+    <h3>Navigate using links:</h3>
     <ul id="navigation">
       <li><a href="#" data-target-id="0">0</a></li>
       <li><a href="#" data-target-id="4">4</a></li>
@@ -157,13 +163,16 @@
           loader.closeNeighbors(spaceId, 4)
         } else {
           // Space not loaded, we need to clear and init. TODO
-          const targetBasis = viewport.getBasisAt(viewport.atCenter())
+          Object.keys(loader.spaces).forEach((spaceId) => {
+            loader.removeSpace(spaceId)
+          })
+          const targetBasis = viewport.getBasisAt(viewport.atCenter().offset(-20, -20))
           loader.initSpace(spaceId, targetBasis)
         }
       }
     })
 
-    loader.initSpace(INIT_ID.toString(), viewport.getBasisAt(viewport.atCenter()))
+    loader.initSpace(INIT_ID.toString(), viewport.getBasisAt(viewport.atCenter().offset(-20, -20)))
   </script>
 </body>
 </html>
