@@ -1081,6 +1081,7 @@ Multiple bases together form an *affine subtree* in DOM.
 - [tapspace.components.Component:getBasisAt](#tapspacecomponentscomponentgetbasisat)
 - [tapspace.components.Component:getChildren](#tapspacecomponentscomponentgetchildren)
 - [tapspace.components.Component:getDescendants](#tapspacecomponentscomponentgetdescendants)
+- [tapspace.components.Component:getDirection](#tapspacecomponentscomponentgetdirection)
 - [tapspace.components.Component:getElement](#tapspacecomponentscomponentgetelement)
 - [tapspace.components.Component:getLeaves](#tapspacecomponentscomponentgetleaves)
 - [tapspace.components.Component:getOrientation](#tapspacecomponentscomponentgetorientation)
@@ -1425,6 +1426,26 @@ The affine descendants must be connected in affine part of DOM.
 
 
 Source: [getDescendants.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/getDescendants.js)
+
+<a name="tapspacecomponentscomponentgetdirection"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getDirection](#tapspacecomponentscomponentgetdirection)(theta[, phi])
+
+Create a [Direction](#tapspacegeometrydirection) on this basis.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *theta*
+  - a number, angle in radians relative to basis zero angle around z axis.
+- *phi*
+  - optional number, default π/2. Angle in radians away from positive z axis.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Direction](#tapspacegeometrydirection)
+
+
+Source: [getDirection.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/getDirection.js)
 
 <a name="tapspacecomponentscomponentgetelement"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getElement](#tapspacecomponentscomponentgetelement)()
@@ -2169,36 +2190,34 @@ Alias of [tapspace.createControl](#tapspacecreatecontrol)
 Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/CustomControl/create.js)
 
 <a name="tapspacecomponentsedge"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge)(border)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge)([width])
 
 Inherits [FrameComponent](#tapspacecomponentsframecomponent)
 
-[Edge](#tapspacecomponentsedge) is an instance class for a div with one visible border.
+[Edge](#tapspacecomponentsedge) is an instance class for an empty div with border or background style.
 It can be used as a line. [Line](#tapspacegeometryline)s can visually connect components.
-[Edge](#tapspacecomponentsedge) is rendered in 3D. Use setPoints(start, end) to place the edge.
+Use setPoints(start, end) to place the edge.
 
 **Example:**
 ```
-const edge = tapspace.createEdge('2px solid white')
+const edge = tapspace.createEdge(2)
+edge.addClass('my-edge')
 edgeGroup.addChild(edge)
-edge.setPoints(itemA.atBottomMid(), itemB.atTopMid())
+edge.setPoints(itemA.atBottomMid(), itemB.atTopMid()) 
+.my-edge {
+  background: linear-gradient(0.25turn, black, white);
+  border-top: 2px dotted black;
+}
 ```
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
-- *border*
-  - either string or object. This determines the style of border-top.
-    - *string*
-      - A CSS border style e.g. '1px solid #ff2200'
-    - object with properties
-      - width: number or string, e.g. 10 or '10px' or '1em'
-      - style: string, e.g. 'solid'
-      - color: string, e.g. 'red'
+- *width*
+  - optional integer, default 1.
 
 
 **Under the hood:**
-The border parameter is required in order to know the border width.
-The pixel width determines how much we need to offset the edge element
+The width determines how much we need to offset the edge element
 so that the edge endpoints match the middle of the border.
 
 
@@ -2211,6 +2230,7 @@ so that the edge endpoints match the middle of the border.
 - [tapspace.components.Edge:getLength](#tapspacecomponentsedgegetlength)
 - [tapspace.components.Edge:renderTransform](#tapspacecomponentsedgerendertransform)
 - [tapspace.components.Edge:setPoints](#tapspacecomponentsedgesetpoints)
+- [tapspace.components.Edge:setWidth](#tapspacecomponentsedgesetwidth)
 - [tapspace.components.Edge:trimPoints](#tapspacecomponentsedgetrimpoints)
 
 
@@ -2285,6 +2305,24 @@ Note that this does not scale the edge.
 
 
 Source: [setPoints.js](https://github.com/taataa/tapspace/blob/master/lib/components/Edge/setPoints.js)
+
+<a name="tapspacecomponentsedgesetwidth"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge):[setWidth](#tapspacecomponentsedgesetwidth)(width)
+
+Change edge pixel width.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *width*
+  - an integer
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- this, for chaining
+
+
+Source: [setWidth.js](https://github.com/taataa/tapspace/blob/master/lib/components/Edge/setWidth.js)
 
 <a name="tapspacecomponentsedgetrimpoints"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge):[trimPoints](#tapspacecomponentsedgetrimpoints)(startPoint, endPoint, trimStart[, trimEnd])
@@ -2685,6 +2723,8 @@ and cannot be used as a reliable reference to position content.
 
 - [tapspace.components.Hyperspace:atAnchor](#tapspacecomponentshyperspaceatanchor)
 - [tapspace.components.Hyperspace:commit](#tapspacecomponentshyperspacecommit)
+- [tapspace.components.Hyperspace:getBoundingBox](#tapspacecomponentshyperspacegetboundingbox)
+- [tapspace.components.Hyperspace:getBoundingCircle](#tapspacecomponentshyperspacegetboundingcircle)
 - [tapspace.components.Hyperspace:renderTransform](#tapspacecomponentshyperspacerendertransform)
 - [tapspace.components.Hyperspace:scaleBy](#tapspacecomponentshyperspacescaleby)
 - [tapspace.components.Hyperspace:transformBy](#tapspacecomponentshyperspacetransformby)
@@ -2711,6 +2751,42 @@ Push hyperspace transformation to the spaces.
 
 
 Source: [commit.js](https://github.com/taataa/tapspace/blob/master/lib/components/Hyperspace/commit.js)
+
+<a name="tapspacecomponentshyperspacegetboundingbox"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[getBoundingBox](#tapspacecomponentshyperspacegetboundingbox)([basis])
+
+Get bounding box of all the content in all spaces.
+Optional basis determines the orientation of the box.
+Can be computationally intensive if the spaces have hundreds of elements.
+Therefore avoid calling this at every frame.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *basis*
+  - optional [Component](#tapspacecomponentscomponent), default to this. The resulting box will be
+  - in this basis and have the same orientation.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Box](#tapspacegeometrybox)
+
+
+Source: [getBoundingBox.js](https://github.com/taataa/tapspace/blob/master/lib/components/Hyperspace/getBoundingBox.js)
+
+<a name="tapspacecomponentshyperspacegetboundingcircle"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[getBoundingCircle](#tapspacecomponentshyperspacegetboundingcircle)()
+
+Get bounding circle of all the content in all spaces.
+Can be computationally intensive if the spaces have hundreds of elements.
+Therefore avoid calling this at every frame.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Circle](#tapspacegeometrycircle)
+
+
+Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/lib/components/Hyperspace/getBoundingCircle.js)
 
 <a name="tapspacecomponentshyperspacerendertransform"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace):[renderTransform](#tapspacecomponentshyperspacerendertransform)()
@@ -6737,6 +6813,7 @@ A circle tensor. The circle is a flat round shape in 3D space.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Circle:atArc](#tapspacegeometrycircleatarc)
 - [tapspace.geometry.Circle:atCenter](#tapspacegeometrycircleatcenter)
 - [tapspace.geometry.Circle:atMid](#tapspacegeometrycircleatmid)
 - [tapspace.geometry.Circle:changeBasis](#tapspacegeometrycirclechangebasis)
@@ -6757,6 +6834,24 @@ A circle tensor. The circle is a flat round shape in 3D space.
 
 
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/index.js)
+
+<a name="tapspacegeometrycircleatarc"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atArc](#tapspacegeometrycircleatarc)(dir)
+
+Get a point at the circle perimeter at the given direction.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dir*
+  - a [Direction](#tapspacegeometrydirection) or number in radians.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Point](#tapspacegeometrypoint)
+
+
+Source: [atArc.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/atArc.js)
 
 <a name="tapspacegeometrycircleatcenter"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atCenter](#tapspacegeometrycircleatcenter)()
@@ -10088,11 +10183,11 @@ for adjacent spaces before their data are fetched.
   - Called with `{ id }`.
 
 
-By calling `loader.init(id, basis)` the loader is initiated and
+By calling `loader.loadSpace(id, basis)` the loader is initiated and
 the tree-building starts.
 However, the loader does not yet know your content.
 To provide the content, and also means to render and retrieve the content,
-you need to set an 'open' event handler:
+you need to write an 'open' event handler:
 
 ```
 loader.on('open', (ev) => { 
@@ -10103,9 +10198,6 @@ Inside the handler, you can create your content for your tree node,
 like text, images, html, loading animations.
 Place the content into a [tapspace](#tapspace) item or plane,
 and call `loader.addSpace(id, content)`.
-You can also call `loader.addPlaceholder(id, content)`
-to place a placeholder that will be replaced when the actual content
-is retrieved and opened.
 
 Here is a minimal example:
 
@@ -10120,12 +10212,12 @@ loader.on('open', (ev) => {
     })
     .then(data => {
       const item = tapspace.createItem(data.html)
-      loader.replaceSpace(ev.id, item)
+      loader.addSpace(ev.id, item)
       loader.openNeighbors(ev.id, ev.depth)
     })
     .catch(error => {
       const item = tapspace.createItem(error.message)
-      loader.replaceSpace(ev.id, item)
+      loader.addSpace(ev.id, item)
       console.error('Error:', error)
     })
 })
@@ -10205,14 +10297,17 @@ See examples.
 
 
 - [tapspace.loaders.TreeLoader:addSpace](#tapspaceloaderstreeloaderaddspace)
+- [tapspace.loaders.TreeLoader:closeAll](#tapspaceloaderstreeloadercloseall)
 - [tapspace.loaders.TreeLoader:closeChild](#tapspaceloaderstreeloaderclosechild)
 - [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
 - [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
 - [tapspace.loaders.TreeLoader:countSpaces](#tapspaceloaderstreeloadercountspaces)
 - [tapspace.loaders.TreeLoader:getFrontier](#tapspaceloaderstreeloadergetfrontier)
+- [tapspace.loaders.TreeLoader:getSpace](#tapspaceloaderstreeloadergetspace)
+- [tapspace.loaders.TreeLoader:getSpaces](#tapspaceloaderstreeloadergetspaces)
 - [tapspace.loaders.TreeLoader:hasSpace](#tapspaceloaderstreeloaderhasspace)
-- [tapspace.loaders.TreeLoader:init](#tapspaceloaderstreeloaderinit)
+- [tapspace.loaders.TreeLoader:initSpace](#tapspaceloaderstreeloaderinitspace)
 - [tapspace.loaders.TreeLoader:openChild](#tapspaceloaderstreeloaderopenchild)
 - [tapspace.loaders.TreeLoader:openChildren](#tapspaceloaderstreeloaderopenchildren)
 - [tapspace.loaders.TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors)
@@ -10245,6 +10340,21 @@ If the space exists already, the old space is replaced with the content.
 
 
 Source: [addSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/addSpace.js)
+
+<a name="tapspaceloaderstreeloadercloseall"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeAll](#tapspaceloaderstreeloadercloseall)([data])
+
+Close all spaces. Useful to clear loader before [TreeLoader:initSpace](#tapspaceloaderstreeloaderinitspace) call.
+Makes the loader emit 'close' for each closing space.
+The event should be handled at least by calling loader.removeSpace()
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *data*
+  - optional object, the context data passed to 'close' event.
+
+
+Source: [closeAll.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeAll.js)
 
 <a name="tapspaceloaderstreeloaderclosechild"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeChild](#tapspaceloaderstreeloaderclosechild)(parentId, childId[, data])
@@ -10350,6 +10460,36 @@ The root space itself can belong to the frontier.
 
 Source: [getFrontier.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/getFrontier.js)
 
+<a name="tapspaceloaderstreeloadergetspace"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[getSpace](#tapspaceloaderstreeloadergetspace)(id)
+
+Get a space by its ID. Null if does not exist.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string, the space ID
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Component](#tapspacecomponentscomponent) or null
+
+
+Source: [getSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/getSpace.js)
+
+<a name="tapspaceloaderstreeloadergetspaces"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[getSpaces](#tapspaceloaderstreeloadergetspaces)()
+
+Get all loaded spaces.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- an array of [Component](#tapspacecomponentscomponent)
+
+
+Source: [getSpaces.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/getSpaces.js)
+
 <a name="tapspaceloaderstreeloaderhasspace"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[hasSpace](#tapspaceloaderstreeloaderhasspace)(id)
 
@@ -10369,10 +10509,11 @@ Useful for checking if the space is ready or removed.
 
 Source: [hasSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/hasSpace.js)
 
-<a name="tapspaceloaderstreeloaderinit"></a>
-## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[init](#tapspaceloaderstreeloaderinit)(id, basis[, data])
+<a name="tapspaceloaderstreeloaderinitspace"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[initSpace](#tapspaceloaderstreeloaderinitspace)(id, basis, depth[, data])
 
-Initialize the tree. Add and load the first space.
+Initialize the tree. Add and load the first space and
+continue loading neighboring spaces to the given depth.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -10380,6 +10521,8 @@ Initialize the tree. Add and load the first space.
   - a string
 - *basis*
   - a [Basis](#tapspacegeometrybasis), the placement of the first item.
+- *depth*
+  - an integer, opening depth. The depth of 0 loads only the space with the given id and none of the adjacent spaces.
 - *data*
   - optional object, to be passed to 'open' event.
 
@@ -10387,10 +10530,14 @@ Initialize the tree. Add and load the first space.
 <p style="margin-bottom: 0">Emits:</p>
 
 - *open*
-  - with `{ id, first, data }` where `first` is a boolean.
+  - with `{ id, depth, first, data }` where
+    - *first*
+      - a boolean, true if the space was empty.
+    - *depth*
+      - an integer, the remaining
 
 
-Source: [init.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/init.js)
+Source: [initSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/initSpace.js)
 
 <a name="tapspaceloaderstreeloaderopenchild"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openChild](#tapspaceloaderstreeloaderopenchild)(parentId, childId[, data])
@@ -10441,7 +10588,7 @@ Relies on an 'open' event handler calling [TreeLoader:openNeighbors](#tapspacelo
 - *id*
   - a string, the first node ID.
 - *depth*
-  - a number, the desired opening depth. For example `2`.
+  - a number, the desired opening depth. For example `2` opens parents and children and their parents and children.
 - *data*
   - optional object, the context data passed to 'open' event.
 
@@ -10449,8 +10596,8 @@ Relies on an 'open' event handler calling [TreeLoader:openNeighbors](#tapspacelo
 <p style="margin-bottom: 0">Emits:</p>
 
 - *open*
-  - { id, space, depth, data }
-  - Loader emits for each child and the parent space.
+  - { id, depth, data }
+  - Loader emits this event for each child and the parent space.
 
 
 Source: [openNeighbors.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/openNeighbors.js)
