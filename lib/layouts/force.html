@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Point Attraction Visualization</title>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="800"></canvas>
+  <button id="startButton">Start Simulation</button>
+
+  <script>
+    function pseudorandom(seed) {
+      let state = seed;
+
+      return function() {
+        state = (state * 9301 + 49297) % 233280;
+        return state / 233280;
+      };
+    }
+
+    // Get the canvas and its 2D context
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Sample data for points
+    // pseudorandom(seed);
+    const points = [
+      { x: 0.2, y: 0.4, attractors: [{ index: 1, force: 0.02 }, { index: 2, force: 0.02 }] },
+      { x: 0.7, y: 0.6, attractors: [{ index: 0, force: 0.02 }, { index: 2, force: 0.02 }] },
+      { x: 0.5, y: 0.3, attractors: [{ index: 0, force: 0.02 }, { index: 1, force: 0.02 }] }
+    ];
+
+    // Get the start button element
+    const startButton = document.getElementById('startButton');
+
+    // Attach a click event listener to the start button
+    startButton.addEventListener('click', startSimulation);
+
+    // Function to start the simulation
+    function startSimulation() {
+      const iterations = 5000;
+      const stepSize = 0.01;
+      const friction = 0.001;
+      const repulsion = 0.001;
+
+      // Initiate the animation
+      animateSimulation(points, iterations, stepSize, friction, repulsion);
+    }
+
+    // Function to animate the simulation
+    function animateSimulation(points, iterations, stepSize, friction, repulsion) {
+      let currentIteration = 0;
+
+      // Function to perform a single simulation step and draw points
+      function animate() {
+        simulateAttractionStep(points, stepSize, friction, repulsion);
+        drawPoints(points);
+
+        currentIteration += 1;
+        if (currentIteration < iterations) {
+          // Continue the animation
+          requestAnimationFrame(animate);
+        }
+      }
+
+      // Start the animation
+      animate();
+    }
+
+    // Function to perform a single simulation step
+    function simulateAttractionStep(points, stepSize, friction, repulsion) {
+      for (let i = 0; i < points.length; i += 1) {
+        const point = points[i];
+        if (!point.dx) point.dx = 0;
+        if (!point.dy) point.dy = 0;
+
+        for (const attractor of point.attractors) {
+          const attractorPoint = points[attractor.index];
+          // Distance
+          const distx = (attractorPoint.x - point.x)
+          const disty = (attractorPoint.y - point.y)
+          const dist = Math.sqrt(distx * distx + disty * disty)
+          // Spring force: farther the stronger
+          const pullX = attractor.force * distx / dist;
+          const pullY = attractor.force * disty / dist;
+          // Repulsion force: not too close
+          const pushX = -repulsion * distx / (dist * dist)
+          const pushY = -repulsion * disty / (dist * dist)
+          // Foci force:
+          const distcx = 0.5 - point.x
+          const distcy = 0.5 - point.y
+          const distc = Math.sqrt(distcx * distcx + distcy * distcy)
+          const focalGravity = 0.001
+          const fociX = focalGravity * distcx / distc
+          const fociY = focalGravity * distcy / distc
+
+          const ddx = pullX + pushX + fociX
+          const ddy = pullY + pushY + fociY
+          point.dx += ddx;
+          point.dy += ddy;
+        }
+
+        // Constant friction
+        const speed = Math.sqrt(point.dx * point.dx + point.dy * point.dy)
+        point.dx -= friction * point.dx / speed
+        point.dy -= friction * point.dy / speed
+
+        point.x += point.dx * stepSize;
+        point.y += point.dy * stepSize;
+
+        // Ensure points stay within [0, 1] range
+        point.x = Math.min(1, Math.max(0, point.x));
+        point.y = Math.min(1, Math.max(0, point.y));
+      }
+    }
+
+    // Function to draw points on the canvas
+    function drawPoints(points) {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw each point as a blue circle
+      for (const point of points) {
+        const x = point.x * canvas.width;
+        const y = point.y * canvas.height;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = 'blue';
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+  </script>
+</body>
+</html>
