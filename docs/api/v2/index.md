@@ -688,8 +688,6 @@ Source: [atBottomRight.js](https://github.com/taataa/tapspace/blob/master/lib/co
 
 Alias of [tapspace.components.BlockComponent:atMid](#tapspacecomponentsblockcomponentatmid)
 
-Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/atMidMid.js)
-
 <a name="tapspacecomponentsblockcomponentatmid"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[atMid](#tapspacecomponentsblockcomponentatmid)()
 
@@ -721,8 +719,6 @@ Source: [atMidLeft.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 
 Alias of [tapspace.components.BlockComponent:atMid](#tapspacecomponentsblockcomponentatmid)
 
-Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/atMidMid.js)
-
 <a name="tapspacecomponentsblockcomponentatmidright"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[atMidRight](#tapspacecomponentsblockcomponentatmidright)()
 
@@ -739,8 +735,6 @@ Source: [atMidRight.js](https://github.com/taataa/tapspace/blob/master/lib/compo
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[atMiddle](#tapspacecomponentsblockcomponentatmiddle)
 
 Alias of [tapspace.components.BlockComponent:atMid](#tapspacecomponentsblockcomponentatmid)
-
-Source: [atMidMid.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/atMidMid.js)
 
 <a name="tapspacecomponentsblockcomponentatnorm"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[atNorm](#tapspacecomponentsblockcomponentatnorm)(rx, ry)
@@ -876,8 +870,6 @@ Source: [getHeight.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[getNormalizedPoint](#tapspacecomponentsblockcomponentgetnormalizedpoint)
 
 Alias of [tapspace.components.BlockComponent:atNorm](#tapspacecomponentsblockcomponentatnorm)
-
-Source: [atNorm.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/atNorm.js)
 
 <a name="tapspacecomponentsblockcomponentgetsize"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[getSize](#tapspacecomponentsblockcomponentgetsize)()
@@ -1199,8 +1191,6 @@ Source: [addLink.js](https://github.com/taataa/tapspace/blob/master/lib/componen
 
 Alias of [tapspace.components.Component:addChild](#tapspacecomponentscomponentaddchild)
 
-Source: [addChild.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/addChild.js)
-
 <a name="tapspacecomponentscomponentat"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[at](#tapspacecomponentscomponentat)(x, y, z)
 
@@ -1520,8 +1510,6 @@ Source: [getParent.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getPoint](#tapspacecomponentscomponentgetpoint)
 
 Alias of [tapspace.components.Component:at](#tapspacecomponentscomponentat)
-
-Source: [at.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/at.js)
 
 <a name="tapspacecomponentscomponentgetroot"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[getRoot](#tapspacecomponentscomponentgetroot)()
@@ -2187,8 +2175,6 @@ Source: [html.js](https://github.com/taataa/tapspace/blob/master/lib/components/
 
 Alias of [tapspace.createControl](#tapspacecreatecontrol)
 
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/CustomControl/create.js)
-
 <a name="tapspacecomponentsedge"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Edge](#tapspacecomponentsedge)([width])
 
@@ -2428,8 +2414,6 @@ Source: [getHeight.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[FrameComponent](#tapspacecomponentsframecomponent):[getNormalizedPoint](#tapspacecomponentsframecomponentgetnormalizedpoint)
 
 Alias of [tapspace.components.FrameComponent:atNorm](#tapspacecomponentsframecomponentatnorm)
-
-Source: [atNorm.js](https://github.com/taataa/tapspace/blob/master/lib/components/FrameComponent/atNorm.js)
 
 <a name="tapspacecomponentsframecomponentgetsize"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[FrameComponent](#tapspacecomponentsframecomponent):[getSize](#tapspacecomponentsframecomponentgetsize)()
@@ -2698,8 +2682,6 @@ Source: [Group/index.js](https://github.com/taataa/tapspace/blob/master/lib/comp
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Group](#tapspacecomponentsgroup).[create](#tapspacecomponentsgroupcreate)
 
 Alias of [tapspace.createGroup](#tapspacecreategroup)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Group/create.js)
 
 <a name="tapspacecomponentshyperspace"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Hyperspace](#tapspacecomponentshyperspace)(viewport)
@@ -3003,8 +2985,6 @@ Source: [focusable.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 
 Alias of [tapspace.components.InteractiveComponent:capturer](#tapspacecomponentsinteractivecomponentcapturer)
 
-Source: [capturer.js](https://github.com/taataa/tapspace/blob/master/lib/components/InteractiveComponent/capturer.js)
-
 <a name="tapspacecomponentsinteractivecomponentgetcapturer"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[InteractiveComponent](#tapspacecomponentsinteractivecomponent):[getCapturer](#tapspacecomponentsinteractivecomponentgetcapturer)(capturerName)
 
@@ -3154,8 +3134,6 @@ Source: [setContentInput.js](https://github.com/taataa/tapspace/blob/master/lib/
 
 Alias of [tapspace.components.InteractiveComponent:capturer](#tapspacecomponentsinteractivecomponentcapturer)
 
-Source: [capturer.js](https://github.com/taataa/tapspace/blob/master/lib/components/InteractiveComponent/capturer.js)
-
 <a name="tapspacecomponentsinteractivecomponentstopcapturer"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[InteractiveComponent](#tapspacecomponentsinteractivecomponent):[stopCapturer](#tapspacecomponentsinteractivecomponentstopcapturer)(capturerName)
 
@@ -3178,8 +3156,6 @@ Source: [stopCapturer.js](https://github.com/taataa/tapspace/blob/master/lib/com
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[InteractiveComponent](#tapspacecomponentsinteractivecomponent):[updateCapturer](#tapspacecomponentsinteractivecomponentupdatecapturer)(capturerName, opts)
 
 Alias of [tapspace.components.InteractiveComponent:capturer](#tapspacecomponentsinteractivecomponentcapturer)
-
-Source: [capturer.js](https://github.com/taataa/tapspace/blob/master/lib/components/InteractiveComponent/capturer.js)
 
 <a name="tapspacecomponentsitem"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem)(element)
@@ -3256,8 +3232,6 @@ Source: [approachable.js](https://github.com/taataa/tapspace/blob/master/lib/com
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[dilatable](#tapspacecomponentsitemdilatable)
 
 Alias of [tapspace.components.Item:scalable](#tapspacecomponentsitemscalable)
-
-Source: [scalable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/scalable.js)
 
 <a name="tapspacecomponentsitemdisable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[disable](#tapspacecomponentsitemdisable)()
@@ -3353,8 +3327,6 @@ Source: [html.js](https://github.com/taataa/tapspace/blob/master/lib/components/
 
 Alias of [tapspace.components.Item:draggable](#tapspacecomponentsitemdraggable)
 
-Source: [draggable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/draggable.js)
-
 <a name="tapspacecomponentsitemrotatable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[rotatable](#tapspacecomponentsitemrotatable)(options)
 
@@ -3382,8 +3354,6 @@ Source: [rotatable.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[rotateable](#tapspacecomponentsitemrotateable)
 
 Alias of [tapspace.components.Item:rotatable](#tapspacecomponentsitemrotatable)
-
-Source: [rotatable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/rotatable.js)
 
 <a name="tapspacecomponentsitemscalable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[scalable](#tapspacecomponentsitemscalable)(options)
@@ -3438,8 +3408,6 @@ Source: [slidable.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 
 Alias of [tapspace.components.Item:slidable](#tapspacecomponentsitemslidable)
 
-Source: [slidable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/slidable.js)
-
 <a name="tapspacecomponentsitemtappable"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[tappable](#tapspacecomponentsitemtappable)(options)
 
@@ -3477,8 +3445,6 @@ Source: [tappable.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Item](#tapspacecomponentsitem):[translatable](#tapspacecomponentsitemtranslatable)
 
 Alias of [tapspace.components.Item:draggable](#tapspacecomponentsitemdraggable)
-
-Source: [draggable.js](https://github.com/taataa/tapspace/blob/master/lib/components/Item/draggable.js)
 
 <a name="tapspacecomponentsnode"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Node](#tapspacecomponentsnode)(radius, color)
@@ -3604,8 +3570,6 @@ Source: [addChild.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 
 Alias of [tapspace.components.Plane:addChild](#tapspacecomponentsplaneaddchild)
 
-Source: [addChild.js](https://github.com/taataa/tapspace/blob/master/lib/components/Plane/addChild.js)
-
 <a name="tapspacecomponentsplanegetboundingbox"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Plane](#tapspacecomponentsplane):[getBoundingBox](#tapspacecomponentsplanegetboundingbox)([basis])
 
@@ -3643,8 +3607,6 @@ Source: [getBoundingCircle.js](https://github.com/taataa/tapspace/blob/master/li
 
 Alias of [tapspace.createPlane](#tapspacecreateplane)
 
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Plane/create.js)
-
 <a name="tapspacecomponentsspaceatnorm"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[atNorm](#tapspacecomponentsspaceatnorm)(rx, ry)
 
@@ -3672,8 +3634,6 @@ Source: [atNorm.js](https://github.com/taataa/tapspace/blob/master/lib/component
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Space](#tapspacecomponentsspace):[getNormalizedPoint](#tapspacecomponentsspacegetnormalizedpoint)
 
 Alias of [tapspace.components.Space:atNorm](#tapspacecomponentsspaceatnorm)
-
-Source: [atNorm.js](https://github.com/taataa/tapspace/blob/master/lib/components/Plane/atNorm.js)
 
 <a name="tapspacecomponentstransformercomponent"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[TransformerComponent](#tapspacecomponentstransformercomponent)(element)
@@ -4163,8 +4123,6 @@ Source: [transformBy.js](https://github.com/taataa/tapspace/blob/master/lib/comp
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[TransformerComponent](#tapspacecomponentstransformercomponent):[transformTo](#tapspacecomponentstransformercomponenttransformto)
 
 Alias of [tapspace.components.TransformerComponent:setBasis](#tapspacecomponentstransformercomponentsetbasis)
-
-Source: [setBasis.js](https://github.com/taataa/tapspace/blob/master/lib/components/TransformerComponent/setBasis.js)
 
 <a name="tapspacecomponentstransformercomponenttranslateby"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[TransformerComponent](#tapspacecomponentstransformercomponent):[translateBy](#tapspacecomponentstransformercomponenttranslateby)(translation)
@@ -4834,8 +4792,6 @@ Source: [measureOne.js](https://github.com/taataa/tapspace/blob/master/lib/compo
 
 Alias of [tapspace.components.Viewport:translateTo](#tapspacecomponentsviewporttranslateto)
 
-Source: [translateTo.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/translateTo.js)
-
 <a name="tapspacecomponentsviewportnormat"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[normAt](#tapspacecomponentsviewportnormat)(x, y)
 
@@ -5410,8 +5366,6 @@ Source: [zoomable.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 
 Alias of [tapspace.createView](#tapspacecreateview)
 
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/create.js)
-
 <a name="tapspacecomponentsviewportcontrols"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[ViewportControls](#tapspacecomponentsviewportcontrols)()
 
@@ -5467,6 +5421,13 @@ This control provides basic +/- buttons to zoom the viewport in and out.
       - The scale multiplier of single zoom step.
 
 
+<p style="margin-bottom: 0">Styling:</p>
+
+- affine-control-zoom
+- affine-control-zoom-in
+- affine-control-zoom-out
+
+
 
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
@@ -5496,8 +5457,6 @@ Source: [ZoomControl/index.js](https://github.com/taataa/tapspace/blob/master/li
 ## [tapspace](#tapspace).[createCircle](#tapspacecreatecircle)
 
 Alias of [tapspace.createNode](#tapspacecreatenode)
-
-Source: [create.js](https://github.com/taataa/tapspace/blob/master/lib/components/Node/create.js)
 
 <a name="tapspacecreatecontrol"></a>
 ## [tapspace](#tapspace).[createControl](#tapspacecreatecontrol)(content)
@@ -6008,8 +5967,6 @@ Source: [getOrientation.js](https://github.com/taataa/tapspace/blob/master/lib/g
 
 Alias of [tapspace.geometry.Basis:at](#tapspacegeometrybasisat)
 
-Source: [at.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/at.js)
-
 <a name="tapspacegeometrybasisgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[getRaw](#tapspacegeometrybasisgetraw)()
 
@@ -6055,8 +6012,6 @@ Source: [getTransformTo.js](https://github.com/taataa/tapspace/blob/master/lib/g
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[innerOffset](#tapspacegeometrybasisinneroffset)
 
 Alias of [tapspace.geometry.Basis:offset](#tapspacegeometrybasisoffset)
-
-Source: [offset.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/offset.js)
 
 <a name="tapspacegeometrybasisoffset"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[offset](#tapspacegeometrybasisoffset)(dx, dy[, dz])
@@ -6398,8 +6353,6 @@ Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometr
 
 Alias of [tapspace.geometry.Box:atCenter](#tapspacegeometryboxatcenter)
 
-Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/atCenter.js)
-
 <a name="tapspacegeometryboxatnorm"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[atNorm](#tapspacegeometryboxatnorm)(nx, ny[, nz])
 
@@ -6603,8 +6556,6 @@ Source: [getHeight.js](https://github.com/taataa/tapspace/blob/master/lib/geomet
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getPoint](#tapspacegeometryboxgetpoint)
 
 Alias of [tapspace.geometry.Box:at](#tapspacegeometryboxat)
-
-Source: [at.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/at.js)
 
 <a name="tapspacegeometryboxgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getRaw](#tapspacegeometryboxgetraw)()
@@ -6872,8 +6823,6 @@ Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometr
 
 Alias of [tapspace.geometry.Circle:atCenter](#tapspacegeometrycircleatcenter)
 
-Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/atCenter.js)
-
 <a name="tapspacegeometrycirclechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[changeBasis](#tapspacegeometrycirclechangebasis)(newBasis)
 
@@ -6987,8 +6936,6 @@ Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 
 Alias of [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
 
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getDiameter.js)
-
 <a name="tapspacegeometrycirclegetradius"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getRadius](#tapspacegeometrycirclegetradius)()
 
@@ -7024,8 +6971,6 @@ Source: [getSize.js](https://github.com/taataa/tapspace/blob/master/lib/geometry
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[getWidth](#tapspacegeometrycirclegetwidth)
 
 Alias of [tapspace.geometry.Circle:getDiameter](#tapspacegeometrycirclegetdiameter)
-
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/getDiameter.js)
 
 <a name="tapspacegeometrycircleoffset"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[offset](#tapspacegeometrycircleoffset)(dx, dy[, dz])
@@ -7452,8 +7397,6 @@ Source: [min.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Dis
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[multiply](#tapspacegeometrydistancemultiply)
 
 Alias of [tapspace.geometry.Distance:scaleBy](#tapspacegeometrydistancescaleby)
-
-Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Distance/scaleBy.js)
 
 <a name="tapspacegeometrydistanceprojectto"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[projectTo](#tapspacegeometrydistanceprojectto)(plane, camera)
@@ -8129,8 +8072,6 @@ Source: [fromAverage.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 
 Alias of [tapspace.geometry.Point.fromAverage](#tapspacegeometrypointfromaverage)
 
-Source: [fromAverage.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/fromAverage.js)
-
 <a name="tapspacegeometryray"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Ray](#tapspacegeometryray)(basis, ray)
 
@@ -8201,8 +8142,6 @@ Source: [getDistanceToPoint.js](https://github.com/taataa/tapspace/blob/master/l
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Ray](#tapspacegeometryray):[getPoint](#tapspacegeometryraygetpoint)
 
 Alias of [tapspace.geometry.Ray:at](#tapspacegeometryrayat)
-
-Source: [at.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Ray/at.js)
 
 <a name="tapspacegeometryraycreate"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Ray](#tapspacegeometryray).[create](#tapspacegeometryraycreate)(basis, origin, span)
@@ -8527,8 +8466,6 @@ Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometr
 
 Alias of [tapspace.geometry.Sphere:atCenter](#tapspacegeometrysphereatcenter)
 
-Source: [atCenter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/atCenter.js)
-
 <a name="tapspacegeometryspherechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[changeBasis](#tapspacegeometryspherechangebasis)(newBasis)
 
@@ -8613,8 +8550,6 @@ Source: [getBoundingBox.js](https://github.com/taataa/tapspace/blob/master/lib/g
 
 Alias of [tapspace.geometry.Sphere:getDiameter](#tapspacegeometryspheregetdiameter)
 
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/getDiameter.js)
-
 <a name="tapspacegeometryspheregetdiameter"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[getDiameter](#tapspacegeometryspheregetdiameter)()
 
@@ -8634,8 +8569,6 @@ Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[getHeight](#tapspacegeometryspheregetheight)
 
 Alias of [tapspace.geometry.Sphere:getDiameter](#tapspacegeometryspheregetdiameter)
-
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/getDiameter.js)
 
 <a name="tapspacegeometryspheregetradius"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[getRadius](#tapspacegeometryspheregetradius)()
@@ -8684,8 +8617,6 @@ Source: [getVolume.js](https://github.com/taataa/tapspace/blob/master/lib/geomet
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[getWidth](#tapspacegeometryspheregetwidth)
 
 Alias of [tapspace.geometry.Sphere:getDiameter](#tapspacegeometryspheregetdiameter)
-
-Source: [getDiameter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/getDiameter.js)
 
 <a name="tapspacegeometrysphereoffset"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[offset](#tapspacegeometrysphereoffset)(dx, dy[, dz])
@@ -8899,8 +8830,6 @@ Source: [getVector.js](https://github.com/taataa/tapspace/blob/master/lib/geomet
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[inverse](#tapspacegeometrytransforminverse)
 
 Alias of [tapspace.geometry.Transform:invert](#tapspacegeometrytransforminvert)
-
-Source: [inverse.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Transform/inverse.js)
 
 <a name="tapspacegeometrytransforminvert"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Transform](#tapspacegeometrytransform):[invert](#tapspacegeometrytransforminvert)()
@@ -9155,8 +9084,6 @@ Source: [negate.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/
 
 Alias of [tapspace.geometry.Vector:getDistance](#tapspacegeometryvectorgetdistance)
 
-Source: [getDistance.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Vector/getDistance.js)
-
 <a name="tapspacegeometryvectornormalize"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[normalize](#tapspacegeometryvectornormalize)([magnitude])
 
@@ -9221,14 +9148,10 @@ Source: [scaleBy.js](https://github.com/taataa/tapspace/blob/master/lib/geometry
 
 Alias of [tapspace.geometry.Vector:normalize](#tapspacegeometryvectornormalize)
 
-Source: [normalize.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Vector/normalize.js)
-
 <a name="tapspacegeometryvectorsubtract"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[subtract](#tapspacegeometryvectorsubtract)
 
 Alias of [tapspace.geometry.Vector:difference](#tapspacegeometryvectordifference)
-
-Source: [difference.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Vector/difference.js)
 
 <a name="tapspacegeometryvectortransformby"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[transformBy](#tapspacegeometryvectortransformby)(tr)
