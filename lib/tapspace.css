@@ -38,7 +38,7 @@ Architectural guidelines for tapspace classes:
 }
 
 .affine-layer,
-.affine-group,
+.affine-composite,
 .affine-plane,
 .affine-space {
   /* Space elements are absolutely positioned */
@@ -56,7 +56,7 @@ Architectural guidelines for tapspace classes:
   transform-origin: 0 0;
 }
 
-.affine-group,
+.affine-composite,
 .affine-plane {
   /* Flat by default. */
   transform-style: flat;
