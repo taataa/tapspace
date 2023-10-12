@@ -3,7 +3,7 @@ const units = {
   //
   at: require('./at.test'),
   boundaries: require('./boundaries.test'),
-  getVector: require('./getVector.test'),
+  createVector: require('./createVector.test'),
   rotateBy: require('./rotateBy.test'),
   matchBasis: require('./matchBasis.test'),
   setBasis: require('./setBasis.test'),
