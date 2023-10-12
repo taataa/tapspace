@@ -59,7 +59,7 @@
     // Layer for each
     const layers = []
     for (let j = 0; j < MAX_LEVELS; j += 1) {
-      const plane = tapspace.createPlane()
+      const plane = tapspace.createSpace()
       // Sum of geometric series.
       const z = DEPTH * (1 - Math.pow(SCALE_STEP, j)) / (1 - SCALE_STEP)
       space.addChild(plane, space.at(0, 0, z))

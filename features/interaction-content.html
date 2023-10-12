@@ -72,7 +72,7 @@
     const viewport = tapspace.createView('#tapspace').zoomable().focusable()
     const space = tapspace.createSpace()
     viewport.addChild(space)
-    const layer = tapspace.createPlane()
+    const layer = tapspace.createSpace()
     space.addChild(layer)
 
     // Steal focus to viewport when panning.

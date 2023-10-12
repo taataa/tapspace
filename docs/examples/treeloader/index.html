@@ -174,24 +174,24 @@
 
     const createPlaceholder = (id) => {
       // Render placeholder
-      const plane = tapspace.createPlane()
-      plane.addClass('tree-space')
-      plane.spaceId = id
-      plane.isPlaceholder = true
+      const space = tapspace.createSpace()
+      space.addClass('tree-space')
+      space.spaceId = id
+      space.isPlaceholder = true
       const node = tapspace.createNode(100)
       node.addClass('tree-placeholder')
-      plane.addChild(node, plane.at(0, 0))
-      return plane
+      space.addChild(node, space.at(0, 0))
+      return space
     }
 
     const createNode = (id, data) => {
       // Render content to replace the placeholder
 
-      const plane = tapspace.createPlane()
-      plane.addClass('tree-space')
+      const space = tapspace.createSpace()
+      space.addClass('tree-space')
 
       // Devise a way to find the space id from the component.
-      plane.spaceId = id
+      space.spaceId = id
 
       const item = tapspace.createNode(150)
       item.addClass('tree-node')
@@ -225,12 +225,12 @@
       })
       item.setContentInput(false)
 
-      plane.addChild(item, { x: 0, y: 0 })
-      plane.item = item // HACKY
+      space.addChild(item, { x: 0, y: 0 })
+      space.item = item // HACKY
 
       item.rotateByDegrees(data.orientation)
 
-      return plane
+      return space
     }
 
     // Setup loader

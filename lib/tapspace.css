@@ -39,25 +39,20 @@ Architectural guidelines for tapspace classes:
 
 .affine-layer,
 .affine-composite,
-.affine-plane,
 .affine-space {
   /* Space elements are absolutely positioned */
   position: absolute;
   top: 0;
   left: 0;
-  /* Planes themselves have zero size to allow pointer events reach
-    elements on the layers below. To make elements on the plane visible,
-    they must be visible over the plane borders. */
+  /* Spaces themselves have zero size to allow pointer events reach
+    elements below. To make elements on the space visible,
+    they must be visible over the space borders. */
   width: 0;
   height: 0;
   overflow: visible;
   /* Ensure default transform origin.
-    Planes with custom anchor may overwrite the origin. */
+    Spaces with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
-}
-
-.affine-composite,
-.affine-plane {
   /* Flat by default. */
   transform-style: flat;
 }
@@ -78,7 +73,7 @@ Architectural guidelines for tapspace classes:
   bottom: auto;
   right: auto;
   /* Ensure default transform origin.
-    Planes with custom anchor may overwrite the origin. */
+    Frames with custom anchor may overwrite the origin. */
   transform-origin: 0 0;
   /* Init transform. Maybe unnecessary. */
   transform: matrix(1, 0, 0, 1, 0, 0);

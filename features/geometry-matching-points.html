@@ -50,7 +50,7 @@
   const view = tapspace.createView(container)
   const space = tapspace.createSpace()
   view.addChild(space)
-  const layer = tapspace.createPlane()
+  const layer = tapspace.createSpace()
   space.addChild(layer)
 
   const par = (t) => '<p>' + t + '</p>'

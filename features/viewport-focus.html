@@ -43,7 +43,7 @@
   <script>
     // Setup the tapspace viewport and the default layer for content.
     const viewport = tapspace.createView('#tapspace').pannable()
-    const plane = tapspace.createPlane().setParent(viewport)
+    const plane = tapspace.createSpace().setParent(viewport)
 
     // Create a component
     const template = (t) => '<p class="mylabel">' + t + '</p>'

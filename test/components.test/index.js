@@ -3,7 +3,7 @@ const units = {
   Component: require('./Component.test'),
   FrameComponent: require('./FrameComponent.test'),
   Item: require('./Item.test'),
-  Plane: require('./Plane.test'),
+  Space: require('./Space.test'),
   Viewport: require('./Viewport.test')
 }
 

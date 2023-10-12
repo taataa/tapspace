@@ -6,8 +6,8 @@ module.exports = function (test, container, tapspace) {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const plane = tapspace.createPlane()
-    view.addChild(plane)
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // Create items for boundary
     const foo = tapspace.createItem('<p>Foo</p>')
@@ -17,12 +17,12 @@ module.exports = function (test, container, tapspace) {
     bar.setSize(200, 200)
     bar.setAnchor(0, 0)
 
-    // Try to add off the plane
-    plane.addChild(foo, plane.at(100, 100, 10))
-    plane.addChild(bar, plane.at(500, 300, -10))
+    // Try to add off the space
+    space.addChild(foo, space.at(100, 100, 10))
+    space.addChild(bar, space.at(500, 300, -10))
 
     // Take a direction
-    const bounds = plane.getBoundingBox()
+    const bounds = space.getBoundingBox()
 
     t.deepEqual(
       bounds.getSize().getRaw(),
