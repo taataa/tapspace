@@ -8,7 +8,7 @@ module.exports = function (test, container, tapspace) {
     const view = tapspace.createView('#testspace')
     const space = tapspace.createSpace()
     view.addChild(space)
-    const item = tapspace.createCircle(2, 'black')
+    const item = tapspace.createNode(2, 'black')
     space.addChild(item, space.at(4, 2, 1))
 
     // A bunch of points:

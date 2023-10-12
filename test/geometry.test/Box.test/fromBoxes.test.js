@@ -10,9 +10,9 @@ module.exports = function (test, container, tapspace) {
     view.addChild(space, view.at(10, 10))
 
     const items = []
-    items.push(tapspace.createCircle(1, 'black'))
+    items.push(tapspace.createNode(1, 'black'))
     space.addChild(items[0], space.at(0, 0, 0))
-    items.push(tapspace.createCircle(1, 'black'))
+    items.push(tapspace.createNode(1, 'black'))
     space.addChild(items[1], space.at(2, 2, 2))
 
     const boxes = items.map(item => item.getBoundingBox())

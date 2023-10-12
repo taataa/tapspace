@@ -152,12 +152,12 @@
     const nodes = tapspace.createSpace()
     space.addChild(nodes)
 
-    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[0].atNorm(0.53, 1.04))
-    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[1].atNorm(0.53, 1.04))
-    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[2].atNorm(0.53, 1.04))
-    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[3].atNorm(0.53, -0.04))
-    nodes.addChild(tapspace.createCircle(20, 'orange'), cards[4].atNorm(0.53, -0.04))
-    nodes.addChild(tapspace.createCircle(20, 'orange'), infoCard.atBottomRight())
+    nodes.addChild(tapspace.createNode(20, 'orange'), cards[0].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createNode(20, 'orange'), cards[1].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createNode(20, 'orange'), cards[2].atNorm(0.53, 1.04))
+    nodes.addChild(tapspace.createNode(20, 'orange'), cards[3].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createNode(20, 'orange'), cards[4].atNorm(0.53, -0.04))
+    nodes.addChild(tapspace.createNode(20, 'orange'), infoCard.atBottomRight())
 
   </script>
 </body>

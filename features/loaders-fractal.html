@@ -195,7 +195,7 @@
     loader.on('open', (ev) => {
       const size = R
       const color = getColor(ev.id)
-      const node = tapspace.createCircle(size, color)
+      const node = tapspace.createNode(size, color)
       node.html('' + squareText(ev.id, 2 * R))
       node.addClass('fractal-node')
       node.spaceId = ev.id // TODO use WeakMap in TreeLoader to prevent this.

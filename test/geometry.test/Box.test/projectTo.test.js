@@ -13,7 +13,7 @@ module.exports = function (test, container, tapspace) {
     const camDist = 300
     const camera = view.at(0, 0, -camDist)
 
-    const item = tapspace.createCircle(10, 'black')
+    const item = tapspace.createNode(10, 'black')
     space.addChild(item, space.at(10, 10, camDist))
     // Get a box. It should be at space (0, 0, 300) and have size (20, 20, 0)
     const box = item.getBoundingBox()

@@ -8,7 +8,7 @@ module.exports = function (test, container, tapspace) {
     const view = tapspace.createView('#testspace')
     const space = tapspace.createSpace()
     view.addChild(space)
-    const item = tapspace.createCircle(10, 'black')
+    const item = tapspace.createNode(10, 'black')
     space.addChild(item, space.at(0, 0))
 
     // Get a box. Size is { w: 20, h: 20, d: 0 }
