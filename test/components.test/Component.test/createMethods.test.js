@@ -17,4 +17,20 @@ module.exports = (test, container, tapspace) => {
 
     t.end()
   })
+
+  test('Component:createOrientation', (t) => {
+    // Setup
+    container.innerHTML = template()
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    t.almostEqualOrientation(
+      space.createOrientation(Math.PI).getRaw(),
+      { a: -1, b: 0 },
+      'should be upside down'
+    )
+
+    t.end()
+  })
 }
