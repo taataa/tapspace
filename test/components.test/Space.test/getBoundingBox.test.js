@@ -2,7 +2,7 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Plane:getBoundingBox', (t) => {
+  test('Space:getBoundingBox', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')

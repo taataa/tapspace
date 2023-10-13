@@ -2,19 +2,19 @@ const template = require('./template.ejs')
 
 module.exports = function (test, container, tapspace) {
   //
-  test('Plane:at', (t) => {
+  test('Space:at', (t) => {
     // Setup
     container.innerHTML = template()
     const view = tapspace.createView('#testspace')
-    const basis = tapspace.createSpace()
-    view.addChild(basis)
+    const space = tapspace.createSpace()
+    view.addChild(space)
 
     // Take a point
-    const p = basis.at(1, 2)
+    const p = space.at(1, 2)
 
     t.almostEqualPoint(
       p,
-      { basis, point: { x: 1, y: 2, z: 0 } },
+      { basis: space, point: { x: 1, y: 2, z: 0 } },
       'should fill z'
     )
 
