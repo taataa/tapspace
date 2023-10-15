@@ -10,8 +10,8 @@
    inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
    sodipodi:docname="tapspace_class_chart.svg"
    inkscape:export-filename="tapspace_class_chart.png"
-   inkscape:export-xdpi="88.349998"
-   inkscape:export-ydpi="88.349998"
+   inkscape:export-xdpi="88.347824"
+   inkscape:export-ydpi="88.347824"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -28,14 +28,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.78305974"
-     inkscape:cx="446.96462"
-     inkscape:cy="436.10977"
+     inkscape:cx="505.70854"
+     inkscape:cy="548.48944"
      inkscape:window-width="1589"
      inkscape:window-height="1027"
      inkscape:window-x="33"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="g618" />
   <defs
      id="defs2">
     <rect
@@ -239,7 +239,7 @@
        y="0"><tspan
          x="134.49488"
          y="739.03403"
-         id="tspan829">Component</tspan></text>
+         id="tspan1125">Component</tspan></text>
     <g
        id="g598"
        transform="translate(-0.47784009)">
@@ -259,7 +259,7 @@
          y="0"><tspan
            x="131.94801"
            y="736.36736"
-           id="tspan831">Transformer</tspan></text>
+           id="tspan1127">Transformer</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="M 111.80622,85.267878 C 111.93663,76.192731 94.131444,81.137997 94.067294,73.272998"
@@ -285,7 +285,7 @@
          y="0"><tspan
            x="168.89587"
            y="739.03403"
-           id="tspan833">Item</tspan></text>
+           id="tspan1129">Item</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="m 145.62497,178.18598 c -0.13041,-9.07515 17.67477,-4.12988 17.73892,-11.99488"
@@ -311,7 +311,7 @@
          y="0"><tspan
            x="148.32819"
            y="739.03403"
-           id="tspan835">Viewport</tspan></text>
+           id="tspan1131">Viewport</tspan></text>
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
@@ -334,7 +334,7 @@
        y="0"><tspan
          x="159.39588"
          y="739.03403"
-         id="tspan837">Space</tspan></text>
+         id="tspan1133">Space</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="m 90.866197,147.31386 c 0.13041,-9.07515 -23.310494,-3.87647 -23.374644,-11.74147"
@@ -359,7 +359,7 @@
          y="0"><tspan
            x="132.72405"
            y="736.36736"
-           id="tspan839">Hyperspace</tspan></text>
+           id="tspan1135">Hyperspace</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="m 64.870702,85.098937 c -0.13041,-9.07515 17.674774,-4.12988 17.738924,-11.99488"
@@ -380,7 +380,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan841">Tapspace.js 2.0.0-alpha.18 - Inheritance relations of core components</tspan></text>
+         id="tspan1137">Tapspace.js 2.0.0-alpha.18 - Inheritance relations of core components</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:0.523382, 1.57015;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect3243"
@@ -397,7 +397,7 @@
        y="0"><tspan
          x="155.85943"
          y="739.03403"
-         id="tspan843">Emitter</tspan></text>
+         id="tspan1139">Emitter</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="m 84.870039,54.047043 c 0.13041,-9.075147 -17.67477,-4.129881 -17.73892,-11.99488"
@@ -422,7 +422,7 @@
          y="0"><tspan
            x="163.55733"
            y="739.03403"
-           id="tspan845">Block</tspan></text>
+           id="tspan1141">Block</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="m 138.33011,116.35321 c 0.13041,-9.07515 -14.62854,-4.18961 -14.69269,-12.05461"
@@ -437,7 +437,7 @@
          y="0"><tspan
            x="162.06762"
            y="729.00437"
-           id="tspan847">Component</tspan></text>
+           id="tspan1143">Component</tspan></text>
     </g>
     <g
        id="g618"
@@ -451,24 +451,14 @@
          y="116.39147" />
       <text
          xml:space="preserve"
-         transform="matrix(0.26458333,0,0,0.26458333,54.387798,-70.466641)"
+         transform="matrix(0.26458333,0,0,0.26458333,54.387798,-70.297699)"
          id="text429"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect431);display:inline;fill:#000000"
          x="26.28121"
          y="0"><tspan
            x="140.43237"
            y="739.03403"
-           id="tspan849">Interactive</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="matrix(0.26458333,0,0,0.26458333,53.954162,-64.476671)"
-         id="text2255-7-66"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-align:center;white-space:pre;shape-inside:url(#rect2257-4-2);display:inline"
-         x="26.28121"
-         y="0"><tspan
-           x="162.06762"
-           y="729.00437"
-           id="tspan851">Component</tspan></text>
+           id="tspan1145">Interactive</tspan></text>
     </g>
     <g
        id="g556"
@@ -489,7 +479,7 @@
          y="0"><tspan
            x="158.82297"
            y="739.03403"
-           id="tspan853">Frame</tspan></text>
+           id="tspan1147">Frame</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="m 166.20554,147.2696 c 0.13041,-9.07515 -17.67477,-4.12988 -17.73892,-11.99488"
@@ -504,7 +494,7 @@
          y="0"><tspan
            x="162.06762"
            y="729.00437"
-           id="tspan855">Component</tspan></text>
+           id="tspan1149">Component</tspan></text>
     </g>
     <g
        id="g564"
@@ -525,7 +515,7 @@
          y="0"><tspan
            x="155.25526"
            y="739.03403"
-           id="tspan857">Control</tspan></text>
+           id="tspan1151">Control</tspan></text>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
          d="m 192.2226,178.01704 c 0.13041,-9.07515 -17.67477,-4.12988 -17.73892,-11.99488"
@@ -540,7 +530,7 @@
          y="0"><tspan
            x="162.06762"
            y="729.00437"
-           id="tspan859">Component</tspan></text>
+           id="tspan1153">Component</tspan></text>
     </g>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:0.523382, 1.57015;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
@@ -558,7 +548,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan861">External class</tspan></text>
+         id="tspan1155">External class</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676, 0.523382;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
        id="rect3897"
@@ -575,7 +565,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan863">Abstract class</tspan></text>
+         id="tspan1157">Abstract class</tspan></text>
     <rect
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="rect3911"
@@ -592,7 +582,7 @@
        y="0"><tspan
          x="116.21094"
          y="739.03403"
-         id="tspan865">Instance class</tspan></text>
+         id="tspan1159">Instance class</tspan></text>
     <rect
        style="font-variation-settings:normal;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.523382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1.5;stroke-dasharray:1.04676, 0.523382;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
        id="rect508"
@@ -609,7 +599,7 @@
        y="0"><tspan
          x="138.65633"
          y="739.03403"
-         id="tspan867">Composite</tspan></text>
+         id="tspan1161">Composite</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.52;stroke-linecap:square;stroke-miterlimit:1.5;stroke-dasharray:none;stroke-dashoffset:48;marker-end:url(#EmptyTriangleIn)"
        d="m 79.230471,116.09301 c -0.13041,-9.07515 23.310509,-3.87647 23.374659,-11.74147"
