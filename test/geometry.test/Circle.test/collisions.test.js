@@ -44,6 +44,13 @@ module.exports = function (test, container, tapspace) {
       'circles should not touch'
     )
 
+    // Test getCollisionArea
+    t.equal(
+      circle.getCollisionArea(circlee).getRaw(),
+      0,
+      'circles should not overlap'
+    )
+
     t.end()
   })
 }
