@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.19
+# Tapspace API Documentation v2.0.0-alpha.20
 
 
 Welcome to Tapspace.js API documentation.
@@ -2279,7 +2279,7 @@ Optional basis determines the orientation of the box.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *orientation*
-  - optional [Component](#tapspacecomponentscomponent) or [Basis](#tapspacegeometrybasis) or [Orientation](#tapspacegeometryorientation), default to this.
+  - optional [Basis](#tapspacegeometrybasis), [Component](#tapspacecomponentscomponent), or [Orientation](#tapspacegeometryorientation). Default is this.
   - The resulting box will have the same orientation.
 
 
@@ -6481,15 +6481,15 @@ Get the area of the front face of the box.
 Source: [getArea.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getArea.js)
 
 <a name="tapspacegeometryboxgetboundingbox"></a>
-## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getBoundingBox](#tapspacegeometryboxgetboundingbox)([basis])
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getBoundingBox](#tapspacegeometryboxgetboundingbox)([orientation])
 
 Get the boundary of the box. The boundary is another box
-that has the same orientation as the given basis.
+that has the given orientation.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
-- *basis*
-  - optional [Component](#tapspacecomponentscomponent). Default is this.basis
+- *orientation*
+  - optional [Basis](#tapspacegeometrybasis), [Component](#tapspacecomponentscomponent), or [Orientation](#tapspacegeometryorientation). Default is this.basis
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
