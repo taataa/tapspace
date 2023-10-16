@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.18
+# Tapspace API Documentation v2.0.0-alpha.19
 
 
 Welcome to Tapspace.js API documentation.
@@ -3633,7 +3633,7 @@ Takes into account the circle shape of the node.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *orientation*
-  - an [Orientation](#tapspacegeometryorientation). Determines the angle of the box.
+  - a [Basis](#tapspacegeometrybasis), [Component](#tapspacecomponentscomponent), or [Orientation](#tapspacegeometryorientation). Determines the angle of the box.
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
