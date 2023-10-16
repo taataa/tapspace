@@ -21,14 +21,31 @@ module.exports = function (test, container, tapspace) {
 
     t.almostEqual(
       bounds.getWidth().getNumber(),
-      20 * Math.sqrt(2),
-      'box size grown'
+      20,
+      'box size should not grow'
     )
 
     t.almostEqualPoint(
       bounds.atNorm(0.5, 0.5),
       box.atNorm(0.5, 0.5),
       'box still at same origin'
+    )
+
+    // Test custom orientation
+    const orientedBounds = rotatedBox.getBoundingBox(space)
+    const size = 20 * Math.sqrt(2)
+    const offset = 10 - size / 2
+
+    t.almostEqual(
+      orientedBounds.getWidth().getNumber(),
+      size,
+      'box size should grow'
+    )
+
+    t.almostEqualBox(
+      orientedBounds.getRaw(),
+      { a: 1, b: 0, x: offset, y: offset, z: 0, w: size, h: size, d: 0 },
+      'box should be correct'
     )
 
     t.end()
