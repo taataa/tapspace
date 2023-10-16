@@ -33,6 +33,13 @@ module.exports = function (test, container, tapspace) {
 
     // Test custom orientation
     const orientedBounds = rotatedBox.getBoundingBox(space)
+
+    t.almostEqualBox(
+      rotatedBox.getBoundingBox(space.getOrientation()),
+      orientedBounds,
+      'should allow Orientation'
+    )
+
     const size = 20 * Math.sqrt(2)
     const offset = 10 - size / 2
 
