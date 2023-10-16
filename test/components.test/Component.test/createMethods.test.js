@@ -18,6 +18,25 @@ module.exports = (test, container, tapspace) => {
     t.end()
   })
 
+  test('Component:createDirection', (t) => {
+    // Setup
+    container.innerHTML = template()
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Take a direction
+    const dir = space.createDirection(Math.PI, Math.PI / 2)
+
+    t.almostEqualDirection(
+      dir.dir,
+      { x: -1, y: 0, z: 0 },
+      'should point left'
+    )
+
+    t.end()
+  })
+
   test('Component:createOrientation', (t) => {
     // Setup
     container.innerHTML = template()
