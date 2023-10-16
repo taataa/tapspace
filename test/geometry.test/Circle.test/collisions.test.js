@@ -26,7 +26,7 @@ module.exports = function (test, container, tapspace) {
     )
 
     t.throws(() => {
-      circle.detectCollision(space.getVector(1, 0, 0))
+      circle.detectCollision(space.createVector(1, 0, 0))
     }, 'should detect unsupported geometry')
 
     const plainn = { x: 3, y: 1, z: 1, r: 1 }
@@ -42,6 +42,13 @@ module.exports = function (test, container, tapspace) {
     t.false(
       circle.detectCollision(circleee),
       'circles should not touch'
+    )
+
+    // Test getCollisionArea
+    t.equal(
+      circle.getCollisionArea(circlee).getRaw(),
+      0,
+      'circles should not overlap'
     )
 
     t.end()

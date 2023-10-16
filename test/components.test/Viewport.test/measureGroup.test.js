@@ -14,11 +14,11 @@ module.exports = function (test, container, tapspace) {
     view.addChild(space1, view.at(100, 100))
     space1.scaleBy(2)
     // Items to measure
-    const item00 = tapspace.createCircle(10)
-    const item01 = tapspace.createCircle(10)
+    const item00 = tapspace.createNode(10)
+    const item01 = tapspace.createNode(10)
     space0.addChild(item00, space0.at(10, 20))
     space0.addChild(item01, space0.at(20, 40))
-    const item10 = tapspace.createCircle(10)
+    const item10 = tapspace.createNode(10)
     space1.addChild(item10, space1.at(10, 20))
 
     const measures0 = view.measureGroup(space0)

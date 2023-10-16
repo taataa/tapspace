@@ -13,7 +13,7 @@ module.exports = function (test, container, tapspace) {
 
     // Create a ray
     const p = space.at(2, 3)
-    const v = space.getVector(1, 0, 0)
+    const v = space.createVector(1, 0, 0)
     const ray = Ray.create(space, p, v)
 
     t.almostEqualPoint(

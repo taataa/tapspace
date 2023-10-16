@@ -9,7 +9,7 @@ module.exports = function (test, container, tapspace) {
     const space = tapspace.createSpace()
     view.addChild(space)
 
-    const item = tapspace.createCircle(10, 'black')
+    const item = tapspace.createNode(10, 'black')
     space.addChild(item, space.at(20, 20))
 
     const basis = item.getBasis().scaleBy(2, item.atAnchor())

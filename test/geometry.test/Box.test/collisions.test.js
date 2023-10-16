@@ -26,7 +26,7 @@ module.exports = function (test, container, tapspace) {
     )
 
     t.throws(() => {
-      box.detectCollision(space.getVector(1, 0, 0))
+      box.detectCollision(space.createVector(1, 0, 0))
     }, 'should detect unsupported geometry')
 
     const plainn = { a: 1, b: 0, x: -1, y: -1, z: 0, w: 1, h: 1, d: 1 }

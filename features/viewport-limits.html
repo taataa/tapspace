@@ -47,9 +47,11 @@
       const origin = viewport.atCenter()
 
       const nodes = []
-      const N = 5
+      const N = 6
       for (let i = 0; i < N; i += 1) {
-        const node = tapspace.createNode(100)
+        // Test empty targets: make last node zero size.
+        const radius = (i === N - 1) ? 0 : 100
+        const node = tapspace.createNode(radius)
         node.addClass('mycomponent')
         node.setParent(space)
 

@@ -46,7 +46,7 @@
     // Create some content for reference.
     const pivot = viewport.atCenter()
     for (let i = 0; i < 30; i += 1) {
-      const dot = tapspace.createCircle(10, 'orange')
+      const dot = tapspace.createNode(10, 'orange')
       const angle = i * Math.PI / 5
       const depth = i * 20
       const position = pivot.polarOffset(100, angle).offset(0, 0, depth)

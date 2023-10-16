@@ -51,9 +51,9 @@
     viewport.setMeasureMode('lazy')
     viewport.setAnchor(viewport.atMiddle())
 
-    const createApproachableCircle = (label) => {
+    const createApproachableNode = (label) => {
       // Create a component
-      const circle = tapspace.createCircle(20)
+      const circle = tapspace.createNode(20)
       circle.addClass('ball')
       // Make it easy to determine this is a ball
       circle.isBall = true
@@ -103,7 +103,7 @@
           const position = origin.offset(x, y, z)
           const index = i * W * W + j * W + k // unique; in [0, W^3[
           const letter = pickCharacter(index)
-          const circle = createApproachableCircle(letter)
+          const circle = createApproachableNode(letter)
           circleGroup.addChild(circle, position)
         }
       }

@@ -43,12 +43,12 @@
     view.addChild(space)
 
     // Exhibit 1: Triangle with flat edges
-    const flatEdges = tapspace.createPlane()
+    const flatEdges = tapspace.createSpace()
     space.addChild(flatEdges)
     // Create nodes
-    const m0 = tapspace.createCircle(20, 'red')
-    const m1 = tapspace.createCircle(20, 'blue')
-    const m2 = tapspace.createCircle(20, 'green')
+    const m0 = tapspace.createNode(20, 'red')
+    const m1 = tapspace.createNode(20, 'blue')
+    const m2 = tapspace.createNode(20, 'green')
     // Set node positions
     flatEdges.addChild(m0, flatEdges.at(0, 0))
     flatEdges.addChild(m1, flatEdges.at(200, 0))
@@ -70,12 +70,12 @@
     edge20.element.title = 'Edge from m2 to m0'
 
     // Exhibit 2: Two curved arcs
-    const curvedEdges = tapspace.createPlane()
+    const curvedEdges = tapspace.createSpace()
     space.addChild(curvedEdges, flatEdges.at(300, 0))
     // Create nodes
-    const na0 = tapspace.createCircle(20, 'orange')
-    const na1 = tapspace.createCircle(20, 'purple')
-    const na2 = tapspace.createCircle(20, 'yellow')
+    const na0 = tapspace.createNode(20, 'orange')
+    const na1 = tapspace.createNode(20, 'purple')
+    const na2 = tapspace.createNode(20, 'yellow')
     // Set node positions
     curvedEdges.addChild(na0, curvedEdges.at(0, 0))
     curvedEdges.addChild(na1, curvedEdges.at(200, 0))
@@ -94,9 +94,9 @@
     const deepEdges = tapspace.createSpace()
     space.addChild(deepEdges, curvedEdges.at(300, 0))
     // Create nodes
-    const dn0 = tapspace.createCircle(20, 'magenta')
-    const dn1 = tapspace.createCircle(25, 'aqua')
-    const dn2 = tapspace.createCircle(20, 'teal')
+    const dn0 = tapspace.createNode(20, 'magenta')
+    const dn1 = tapspace.createNode(25, 'aqua')
+    const dn2 = tapspace.createNode(20, 'teal')
     // Set node positions
     deepEdges.addChild(dn0, deepEdges.at(0, 0, 50))
     deepEdges.addChild(dn1, deepEdges.at(200, 0, 20))

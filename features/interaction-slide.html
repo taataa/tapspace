@@ -44,7 +44,7 @@
     const viewport = tapspace.createView('#tapspace')
     const space = tapspace.createSpace()
     viewport.addChild(space)
-    const basis = tapspace.createPlane()
+    const basis = tapspace.createSpace()
     space.addChild(basis)
 
     // Create a component
@@ -59,7 +59,7 @@
     const deg10 = Math.PI / 18
     // Make the component emit slide events
     block.slidable({
-      direction: block.getDirection(-deg10)
+      direction: block.createDirection(-deg10)
     })
 
     // React to slide events and modify the block label accordingly.

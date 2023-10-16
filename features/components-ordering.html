@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rendering Order - Tapspace Features</title>
+
+  <!-- Here we test controlling the rendering order of sibling components. -->
+
+  <!-- Disable user scalability to override native touch gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- your custom styles -->
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: black;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: #BBB;
+      width: 100%;
+      height: 100%;
+    }
+    .myspaceapp {
+      background: #DDD;
+      width: 100%;
+      height: 100%;
+    }
+
+    .red { background-color: red; }
+    .green { background-color: green; }
+    .blue { background-color: blue; }
+  </style>
+</head>
+<body>
+  <!-- Container element for viewing space -->
+  <div class="container">
+    <div id="tapspace" class="myspaceapp"></div>
+  </div>
+
+  <!-- Import tapspace. -->
+  <script src="../dist/tapspace.min.js"></script>
+
+  <!-- Your code -->
+  <script>
+    // Setup
+    const view = tapspace.createView('#tapspace').zoomable()
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const a = tapspace.createItem('A')
+      .addClass('red')
+      .setParent(space)
+    const b = tapspace.createItem('B')
+      .addClass('green')
+      .setParent(space, { x: 100, y: 0 })
+    const c = tapspace.createItem('C')
+      .addClass('blue')
+      .setParent(space, { x: 200, y: 0 })
+
+    function tick () {
+      console.log('tick')
+      a.sendBelow(c)
+      // a.sendToBack()
+      setTimeout(tick, 500)
+    }
+
+    setTimeout(tick, 1000)
+  </script>
+</body>
+</html>

@@ -44,7 +44,7 @@
     const viewport = tapspace.createView('#tapspace')
     const space = tapspace.createSpace()
     viewport.addChild(space)
-    const basis = tapspace.createPlane()
+    const basis = tapspace.createSpace()
     space.addChild(basis)
 
     // Create a component
@@ -91,7 +91,7 @@
     ref.scaleBy(0.618)
     ref.matchPoint(ref.atBottomRight(), block.atBottomLeft())
     const measure = ref.getWidth().scaleBy(0.618)
-    const offset = measure.getVector(ref.getDirection(Math.PI))
+    const offset = measure.getVector(ref.createDirection(Math.PI))
     ref.translateBy(offset)
 
   </script>

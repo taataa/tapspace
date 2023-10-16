@@ -59,7 +59,7 @@
     // Layer for each
     const layers = []
     for (let j = 0; j < MAX_LEVELS; j += 1) {
-      const plane = tapspace.createPlane()
+      const plane = tapspace.createSpace()
       // Sum of geometric series.
       const z = DEPTH * (1 - Math.pow(SCALE_STEP, j)) / (1 - SCALE_STEP)
       space.addChild(plane, space.at(0, 0, z))
@@ -68,7 +68,7 @@
 
     // Set a counter on the first node.
     let totalNodes = 0
-    const firstNode = tapspace.createCircle(20, 'black')
+    const firstNode = tapspace.createNode(20, 'black')
     firstNode.element.style.color = 'white'
     firstNode.element.style.textAlign = 'center'
     firstNode.element.style.paddingTop = '10px'
@@ -95,7 +95,7 @@
         // Create node
         const angle = 2 * Math.PI * (i - 0.25) / 5
         const point = origin.polarOffset(NODE_RADIUS, angle)
-        const circle = tapspace.createCircle(20, colors[j])
+        const circle = tapspace.createNode(20, colors[j])
         kids.push(circle)
         layers[j].addChild(circle, point)
         circle.scaleBy(Math.pow(SCALE_STEP, j + 1), circle.atMid())

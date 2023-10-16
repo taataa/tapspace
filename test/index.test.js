@@ -14,6 +14,7 @@ const units = {
 const proto = test.Test.prototype
 proto.almostEqual = require('./utils/almostEqual')
 proto.almostEqualBasis = require('./utils/almostEqualBasis')
+proto.almostEqualBox = require('./utils/almostEqualBox')
 proto.almostEqualDirection = require('./utils/almostEqualDirection')
 proto.almostEqualDistance = require('./utils/almostEqualDistance')
 proto.almostEqualOrientation = require('./utils/almostEqualOrientation')

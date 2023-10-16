@@ -25,7 +25,7 @@ module.exports = function (test, container, tapspace) {
     )
 
     t.almostEqualPoint(
-      circle.atArc(space.getDirection(Math.PI / 2)),
+      circle.atArc(space.createDirection(Math.PI / 2)),
       space.at(1, 2, 1),
       'should handle direction tensor'
     )
