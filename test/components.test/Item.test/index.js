@@ -4,6 +4,8 @@ const units = {
   at: require('./at.test'),
   boundaries: require('./boundaries.test'),
   createVector: require('./createVector.test'),
+  getDistanceTo: require('./getDistanceTo.test'),
+  getVectorTo: require('./getVectorTo.test'),
   rotateBy: require('./rotateBy.test'),
   matchBasis: require('./matchBasis.test'),
   setBasis: require('./setBasis.test'),
