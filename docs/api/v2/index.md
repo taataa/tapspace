@@ -510,6 +510,8 @@ Source: [Animatable/index.js](https://github.com/taataa/tapspace/blob/master/lib
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Animatable](#tapspacecomponentsanimatable):[animate](#tapspacecomponentsanimatableanimate)(options)
 
 Update CSS transition animation properties of the component.
+These animation properties will be applied to every transformation
+until rewritten.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -518,7 +520,7 @@ Update CSS transition animation properties of the component.
     - *duration*
       - optional string. The transition-duration value, e.g. '500ms' or '2s'. Default is '200ms'.
     - *easing*
-      - optional string. The transition-timing-function, e.g. 'linear' or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
+      - optional string. The transition-timing-function, e.g. 'linear', 'ease-in', or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
     - *delay*
       - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
   - If boolean false, animation becomes disabled.
@@ -535,6 +537,9 @@ Source: [animate.js](https://github.com/taataa/tapspace/blob/master/lib/componen
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Animatable](#tapspacecomponentsanimatable):[animateOnce](#tapspacecomponentsanimatableanimateonce)
 
 Animate the next move of the component.
+Uses CSS transition property.
+After the animation ends, the animation settings are removed so
+that the next transformation is not animated by default.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -543,7 +548,7 @@ Animate the next move of the component.
     - *duration*
       - optional string. The transition-duration value, e.g. '500ms' or '2s'. Default is '200ms'.
     - *easing*
-      - optional string. The transition-timing-function, e.g. 'linear' or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
+      - optional string. The transition-timing-function, e.g. 'linear', 'ease-in', or 'cubic-bezier(0.33, 1, 0.68, 1)'. Default is 'ease'.
     - *delay*
       - optional string. The transition-delay value, e.g. '500ms' or '2s'. Default is '0ms'.
 
@@ -1309,6 +1314,9 @@ Source: [atAnchor.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 
 Reinsert the element above the given target element.
 
+This method reorders elements in DOM. That can cause elements to lose
+their hover state in some browsers. See issue #173 for details.
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *target*
@@ -1326,6 +1334,9 @@ Source: [bringAbove.js](https://github.com/taataa/tapspace/blob/master/lib/compo
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[bringToFront](#tapspacecomponentscomponentbringtofront)()
 
 Remove this element and reinsert it as the last child.
+
+This method reorders elements in DOM. That can cause elements to lose
+their hover state in some browsers. See issue #173 for details.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -2096,6 +2107,9 @@ Reinsert this element below the given target element.
 In other words, reinsert this element just before the target in DOM
 so that the target is rendered after this element.
 
+This method reorders elements in DOM. That can cause elements to lose
+their hover state in some browsers. See issue #173 for details.
+
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *target*
@@ -2115,6 +2129,9 @@ Source: [sendBelow.js](https://github.com/taataa/tapspace/blob/master/lib/compon
 Remove this element and reinsert it as the first child.
 The element will be rendered first and thus becomes the farthest and
 and bottommost.
+
+This method reorders elements in DOM. That can cause elements to lose
+their hover state in some browsers. See issue #173 for details.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
@@ -4075,25 +4092,27 @@ Source: [setScale.js](https://github.com/taataa/tapspace/blob/master/lib/compone
 <a name="tapspacecomponentstransformersnappixels"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Transformer](#tapspacecomponentstransformer):[snapPixels](#tapspacecomponentstransformersnappixels)([pivot])
 
-Coordinates of plane do not always match the pixel grid
+Coordinates of components do not always match the pixel grid
 of the screen device. This causes especially
 rotation and non-integer translation to blur the pixels of images a bit.
-This blurring can be annoying if the angle is close to a 90 deg or its
-multitude but not exactly.
+This blurring can be annoying if the angle is close to a 90 deg
+or if the content has lots of high-contrast details.
 
 To make the images crispier and the pixels match the screen pixel grid,
 snapPixels method adjusts the translation and visible rotation slightly.
 
-The method does not modify the plane transition, i.e. the true coordinates
+In order for the content of the component to match the pixel grid
+the content itself must have integer coordinates, integer scale, and
+orthogonal rotation (0, 90, 180, or 270 degrees). Use [Point:round](#tapspacegeometrypointround)
+to ensure integer coordinates.
+
+The method does not modify the true coordinates i.e. the plane transition
 of the plane, only the latent CSS rendered by the browser.
 However when snapPixels is applied to interactive planes, such as
 the viewport, the rounding can affect the input pointer coordinates.
 Therefore snapPixels should NOT be used during a gesture,
 but immediately after at the gesture end.
 Otherwise the gesture appears jittery and unpleasant.
-
-In the perspective view mode (3D) the pixel snapping is a lost cause,
-because in that case almost nothing matches the screen pixels exactly.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -4924,18 +4943,13 @@ Remove control from the viewport.
 Source: [removeControl.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/removeControl.js)
 
 <a name="tapspacecomponentsviewportrendertransform"></a>
-## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[renderTransform](#tapspacecomponentsviewportrendertransform)(alt)
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Viewport](#tapspacecomponentsviewport):[renderTransform](#tapspacecomponentsviewportrendertransform)()
 
-Updates the element.style.transform according to the viewport basis.
+You should never call this method for [Viewport](#tapspacecomponentsviewport).
+This method overrides [Transformer:renderTransform](#tapspacecomponentstransformerrendertransform) and
+its sole purpose is to throw an error if accidentally called.
 
-You need to call this function only when you have manually edited
-or replaced the basis.tran property.
-
-<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
-
-- *alt*
-  - optional [plane2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneplane2) transition to render instead of this.tran. See [Transformer:renderTransform](#tapspacecomponentstransformerrendertransform) for details.
-
+See also [Hyperspace:renderTransform](#tapspacecomponentshyperspacerendertransform)
 
 Source: [renderTransform.js](https://github.com/taataa/tapspace/blob/master/lib/components/Viewport/renderTransform.js)
 
@@ -5120,8 +5134,8 @@ Source: [setOrientation.js](https://github.com/taataa/tapspace/blob/master/lib/c
 
 Snap viewport position and angle to pixels when the angle is near
 a multitude of 90 degrees.
-Note that in perspective view mode the snapping is a lost cause,
-because almost nothing is exact.
+This does not modify the real position but only the appearance.
+See [Transformer:snapPixels](#tapspacecomponentstransformersnappixels) for details.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
