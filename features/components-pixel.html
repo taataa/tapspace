@@ -37,9 +37,7 @@
     // Setup the tapspace viewport and the default layer for content.
     const view = tapspace.createView('#tapspace').pannable()
     const space = tapspace.createSpace()
-    const plane = tapspace.createSpace()
     view.addChild(space)
-    space.addChild(plane)
 
     const createPixelElement = (color) => {
       const div = document.createElement('div')
@@ -61,9 +59,9 @@
 
     colors.forEach((color, i) => {
       for (let j = 0; j < 3; j += 1) {
-        const position = view.atMid().offset(10 * i - 10, 10 * j - 20)
+        const position = view.atMid().round().offset(10 * i - 10, 10 * j - 20)
         const pixel = createPixel(color)
-        plane.addChild(pixel, position)
+        space.addChild(pixel, position)
       }
     })
 

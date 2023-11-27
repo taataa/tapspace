@@ -1,96 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Minimal - Tapspace Example</title>
+  <title>Minimal - Tapspace.js Demo</title>
 
-  <!-- Disable user scalability to override native touch gestures. -->
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+  <!-- Your custom styles -->
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
     body {
-      background: gray;
-    }
-    .viewport {
-      width: 80%;
-      height: 20rem;
-      background: black;
-    }
-    .tile {
-      width: 10rem;
-      height: 10rem;
       background: white;
+      color: black;
+    }
+    .myspaceapp {
+      background: white;
+      height: 100%;
+    }
+    .hello {
+      font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", sans-serif;
     }
   </style>
-</head>
-<body>
-  <!-- Container element for viewing space -->
-  <div id="viewport" class="viewport">
-  </div>
 
   <!-- Import tapspace. -->
-  <script src="../dist/tapspace.min.js"></script>
+  <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.20/dist/tapspace.min.js"></script>
+</head>
+<body>
+  <!-- A Tapspace viewport -->
+  <div class="myspaceapp"></div>
 
   <!-- Your code -->
   <script>
-    // Tapspace setup
-    const t = tapspace
-    const viewEl = document.querySelector('#viewport')
-    const view = t.createView(viewEl) // or createViewport or viewport
+  // Start the app after the lib has loaded.
+  document.addEventListener('DOMContentLoaded', () => {
+    // Setup the viewport. Make it zoomable with pinch and mouse wheel.
+    const viewport = tapspace.createView('.myspaceapp')
+    viewport.zoomable()
 
-    // Plain vanilla JS
-    const tileEl = document.createElement('div')
-    tileEl.className = 'tile'
-    viewEl.appendChild(tileEl)
+    // Create a space container for your content.
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
 
-    // Next we move and scale the view so that the tile ends up magnified
-    // and at the middle of the view.
-
-    // Make tile a SpaceElement.
-    // It's style becomes controlled by tapspace.
-    const tile = t(tileEl)
-
-    // We translate the view so that the view middle moves to the tile middle.
-    const m = t.geom.move.translate(view.atMid(), tile.atMid())
-    // const m = t.move.between(view.atMid(), tile.atMid())
-    // const m = t.createMove(view.atMid(), tile.atMid())
-    view.move(m)
-
-    // Zoom the view closer to the SpacePixel.
-    // For this, create a Scaling. A Scaling is a Move.
-    // const s = t.createScaling(view.atMid(), 0.9) // or scaling()
-    // OR view.scale(view.atMid(), 0.9)
-    const s = t.geom.move.scale(view.atMid(), 0.9)
-    view.move(s)
-
-    // We make the tile movable by dragging.
-    const drag = tile.draggable()
-    // Drag behavior needs to be switched on.
-    // A drag can have multiple degrees of freedom,
-    // such as translation, scale and rotation.
-    // drag.start({ translate: true })
-    // drag.start({ freedom: 'T' })
-    // drag.start.translation()
-    // drag.enable.mode('T')
-    // drag.enable('T')
-    // drag.enable('T', opts)
-    drag.enable.translation()
-
-    // drag.disable.translation()
-    // drag.disable() .off()
-
-    // Limit element move within the view box
-    // drag.limit(view)
-    drag.limitBy(view)
-
-    // Allow scaling and rotating the view around the tile
-    const viewdrag = view.draggable()
-    // viewdrag.enable.rotation(tile.atMid())
-    // viewdrag.enable.scaling(tile.atMid()) // replaces the pivot
-    viewdrag.enable.scaleRotate(tile.atMid())
-    viewdrag.mode.scaleRotate(tile.atMid())
-    viewdrag.disable() // = viewdrag.enable.identity() ? or unbind?
-
+    // Add your content. Give a class to style it.
+    const item = tapspace.createItem('Hello World!')
+    item.addClass('hello')
+    const point = viewport.atCenter()
+    space.addChild(item, point)
+  })
   </script>
 </body>
 </html>
