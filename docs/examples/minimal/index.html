@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Minimal - Tapspace.js Demo</title>
+
+  <!-- Mobile-friendly width settings. Disables default browser zooming
+       features native gestures. -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Your custom styles -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: black;
+    }
+    .myspaceapp {
+      background: white;
+      height: 100%;
+    }
+    .hello {
+      font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", sans-serif;
+    }
+  </style>
+
+  <!-- Import tapspace. -->
+  <script defer src="https://unpkg.com/tapspace@2.0.0-alpha.20/dist/tapspace.min.js"></script>
+</head>
+<body>
+  <!-- A Tapspace viewport -->
+  <div class="myspaceapp"></div>
+
+  <!-- Your code -->
+  <script>
+  // Start the app after the lib has loaded.
+  document.addEventListener('DOMContentLoaded', () => {
+    // Setup the viewport. Make it zoomable with pinch and mouse wheel.
+    const viewport = tapspace.createView('.myspaceapp')
+    viewport.zoomable()
+
+    // Create a space container for your content.
+    const space = tapspace.createSpace()
+    viewport.addChild(space)
+
+    // Add your content. Give a class to style it.
+    const item = tapspace.createItem('Hello World!')
+    item.addClass('hello')
+    const point = viewport.atCenter()
+    space.addChild(item, point)
+  })
+  </script>
+</body>
+</html>
