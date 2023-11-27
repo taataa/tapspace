@@ -54,7 +54,6 @@
     "standard": "^17.1.0",
     "stream-browserify": "^3.0.0",
     "style-loader": "^3.3.3",
-    "tap-spec": "^5.0.0",
     "tape": "^5.7.2",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
