@@ -9,6 +9,7 @@ const units = {
   getBoundingBox: require('./getBoundingBox.test'),
   getBoundingCircle: require('./getBoundingCircle.test'),
   getBoundingSphere: require('./getBoundingSphere.test'),
+  getInnerSquare: require('./getInnerSquare.test'),
   getVolume: require('./getVolume.test'),
   normAt: require('./normAt.test'),
   projectTo: require('./projectTo.test'),
