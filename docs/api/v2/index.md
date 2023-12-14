@@ -1,12 +1,12 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.21
+# Tapspace API Documentation v2.0.0-alpha.22
 
 
 Welcome to Tapspace.js API documentation.
 Build your zoomable application with the tools documented here.
 For older versions, see [Tapspace.js API docs index](https://taataa.github.io/tapspace/api/)
 
-This document follows these naming conventions: `ClassName`, `namespace`, `.CONSTANT`, `.classMethod()`, `:instanceProperty`, `:instanceMethod()`, and `[optionalParameter]`.
+This document follows these naming conventions: `ClassName`, `namespace`, `.CONSTANT`, `.classMethod()`, `:instanceProperty`, `:instanceMethod()`, `[optionalParameter]`, and `optionalProperty?`.
 
 See also: [Introduction](https://taataa.github.io/tapspace/) – [Examples](https://taataa.github.io/tapspace/#examples) – [Tutorial](https://taataa.github.io/tapspace/tutorial/) - [Glossary](https://taataa.github.io/tapspace/glossary/v2/) - [GitHub](https://github.com/taataa/tapspace)
 
@@ -715,6 +715,7 @@ external CSS rules and page dimensions.
 - [tapspace.components.BlockComponent:getBoundingCircle](#tapspacecomponentsblockcomponentgetboundingcircle)
 - [tapspace.components.BlockComponent:getDiameter](#tapspacecomponentsblockcomponentgetdiameter)
 - [tapspace.components.BlockComponent:getHeight](#tapspacecomponentsblockcomponentgetheight)
+- [tapspace.components.BlockComponent:getInnerSquare](#tapspacecomponentsblockcomponentgetinnersquare)
 - [tapspace.components.BlockComponent:getNormalizedPoint](#tapspacecomponentsblockcomponentgetnormalizedpoint)
 - [tapspace.components.BlockComponent:getSize](#tapspacecomponentsblockcomponentgetsize)
 - [tapspace.components.BlockComponent:getWidth](#tapspacecomponentsblockcomponentgetwidth)
@@ -939,6 +940,18 @@ Get block height as a [Distance](#tapspacegeometrydistance).
 
 
 Source: [getHeight.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/getHeight.js)
+
+<a name="tapspacecomponentsblockcomponentgetinnersquare"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[getInnerSquare](#tapspacecomponentsblockcomponentgetinnersquare)()
+
+Get the largest square box inside the block that has the same center.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Box](#tapspacegeometrybox)
+
+
+Source: [getInnerSquare.js](https://github.com/taataa/tapspace/blob/master/lib/components/BlockComponent/getInnerSquare.js)
 
 <a name="tapspacecomponentsblockcomponentgetnormalizedpoint"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[BlockComponent](#tapspacecomponentsblockcomponent):[getNormalizedPoint](#tapspacecomponentsblockcomponentgetnormalizedpoint)
@@ -6317,6 +6330,7 @@ in any basis, not only those that have same orientation.
 - [tapspace.geometry.Box:getDepth](#tapspacegeometryboxgetdepth)
 - [tapspace.geometry.Box:getDiagonal](#tapspacegeometryboxgetdiagonal)
 - [tapspace.geometry.Box:getHeight](#tapspacegeometryboxgetheight)
+- [tapspace.geometry.Box:getInnerSquare](#tapspacegeometryboxgetinnersquare)
 - [tapspace.geometry.Box:getPoint](#tapspacegeometryboxgetpoint)
 - [tapspace.geometry.Box:getRaw](#tapspacegeometryboxgetraw)
 - [tapspace.geometry.Box:getSize](#tapspacegeometryboxgetsize)
@@ -6574,6 +6588,19 @@ Get box height as a distance.
 
 
 Source: [getHeight.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getHeight.js)
+
+<a name="tapspacegeometryboxgetinnersquare"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getInnerSquare](#tapspacegeometryboxgetinnersquare)()
+
+Get the largest square inside the box that has the same center point.
+Useful for computing areas based on the shortest box dimension.
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Box](#tapspacegeometrybox)
+
+
+Source: [getInnerSquare.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/getInnerSquare.js)
 
 <a name="tapspacegeometryboxgetpoint"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[getPoint](#tapspacegeometryboxgetpoint)
@@ -10137,7 +10164,7 @@ for adjacent spaces before their data are fetched.
 
 - *open*
   - when you should build a space and call loader.addSpace(...).
-  - Called with `{ id, data }`.
+  - Called with `{ id, data }`. Some opener methods such as [TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors) may add properties like `depth`, `childId`, and `parentId`.
 - *opened*
   - when a space has been added to the loader successfully.
   - Called with `{ id, space }`.
@@ -10268,6 +10295,7 @@ See examples.
 - [tapspace.loaders.TreeLoader:closeChildren](#tapspaceloaderstreeloaderclosechildren)
 - [tapspace.loaders.TreeLoader:closeNeighbors](#tapspaceloaderstreeloadercloseneighbors)
 - [tapspace.loaders.TreeLoader:closeParent](#tapspaceloaderstreeloadercloseparent)
+- [tapspace.loaders.TreeLoader:closeSpace](#tapspaceloaderstreeloaderclosespace)
 - [tapspace.loaders.TreeLoader:countSpaces](#tapspaceloaderstreeloadercountspaces)
 - [tapspace.loaders.TreeLoader:getFrontier](#tapspaceloaderstreeloadergetfrontier)
 - [tapspace.loaders.TreeLoader:getSpace](#tapspaceloaderstreeloadergetspace)
@@ -10390,6 +10418,24 @@ Close parent space, given that the given child space exists.
 
 
 Source: [closeParent.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeParent.js)
+
+<a name="tapspaceloaderstreeloaderclosespace"></a>
+## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[closeSpace](#tapspaceloaderstreeloaderclosespace)(id[, data])
+
+Close the space and all its children and successors.
+In other words, close the subtree where the space is the root.
+Makes the loader emit 'close'.
+The event should be handled by calling loader.removeSpace()
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *id*
+  - a string, the space ID.
+- *data*
+  - optional object, the context data passed to 'close' event.
+
+
+Source: [closeSpace.js](https://github.com/taataa/tapspace/blob/master/lib/loaders/TreeLoader/closeSpace.js)
 
 <a name="tapspaceloaderstreeloadercountspaces"></a>
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[countSpaces](#tapspaceloaderstreeloadercountspaces)()
@@ -10547,7 +10593,12 @@ Source: [openChildren.js](https://github.com/taataa/tapspace/blob/master/lib/loa
 ## [tapspace](#tapspace).[loaders](#tapspaceloaders).[TreeLoader](#tapspaceloaderstreeloader):[openNeighbors](#tapspaceloaderstreeloaderopenneighbors)(id, depth[, data])
 
 Open parents and children until max depth.
-Relies on an 'open' event handler calling [TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors).
+The recursive opening until the max depth requires that your
+event handler implementation for the 'open' event does
+call [TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors) method again and passes the depth property
+the loader attached to the 'open' event.
+However, you are free to stop or limit recursion by not calling
+the method or decreasing the depth.
 
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
@@ -10562,7 +10613,17 @@ Relies on an 'open' event handler calling [TreeLoader:openNeighbors](#tapspacelo
 <p style="margin-bottom: 0">Emits:</p>
 
 - *open*
-  - { id, depth, data }
+  - with `{ id, depth, childId?, parentId?, data }` where
+    - *id*
+      - a string, the space ID
+    - *depth*
+      - an integer indicating how many levels should be opened after this one. Pass this one to [TreeLoader:openNeighbors](#tapspaceloaderstreeloaderopenneighbors).
+    - *childId*
+      - optional string, available in the 'open' events of parent spaces if any.
+    - *parentId*
+      - optional string, available in the 'open' events of a child spaces if any.
+    - *data*
+      - an object, optional context data.
   - Loader emits this event for each child and the parent space.
 
 
