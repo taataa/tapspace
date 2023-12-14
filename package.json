@@ -1,6 +1,6 @@
 {
   "name": "tapspace",
-  "version": "2.0.0-alpha.21",
+  "version": "2.0.0-alpha.22",
   "description": "A zoomable user interface lib for web apps",
   "keywords": [
     "zoomable",
@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "affineplane": "^2.17.1",
+    "affineplane": "^2.18.0",
     "component-emitter": "^1.3.0",
     "loadimages": "^1.0.0",
     "nudged": "^2.0.0",
