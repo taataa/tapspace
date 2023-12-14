@@ -35,12 +35,25 @@
 
   <!-- Your code -->
   <script>
-    // Setup the tapspace viewport and the default layer for content.
+    // Setup the tapspace viewport
     const viewport = tapspace.createView('#tapspace')
-    viewport.pannable().zoomable().focusable()
-    viewport.on('pinchstart', () => { viewport.focus() })
-    // const space = tapspace.createSpace()
-    // viewport.addChild(space)
+    viewport.pannable().zoomable().focusable().tappable()
+
+    // Activate keyboard navigation by giving focus.
+    viewport.on('tap', () => { viewport.focus() })
+
+    // Zoom in and one-way navigation by tapping.
+    let tapWait = false
+    viewport.on('tap', (ev) => {
+      if (tapWait) return
+      viewport.animateOnce({ duration: 400 })
+      const r = ev.altKey ? 1.618 : 0.618
+      viewport.scaleBy(r, ev.mean)
+      tapWait = true
+      setTimeout(() => { tapWait = false }, 400)
+    })
+
+    // Create the default layer for content.
     const space = tapspace.createSpace().setParent(viewport)
 
     // Create some content for reference.
