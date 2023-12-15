@@ -41,6 +41,27 @@ See [taataa.github.io/tapspace](http://taataa.github.io/tapspace) for:
 - [API Reference](https://taataa.github.io/tapspace/api/v2/)
 - [Developer's Cheat Sheet](http://taataa.github.io/tapspace/dev)
 
+**In a nutshell**, Tapspace.js consists of component classes that each wrap an HTML element.
+These classes allow the elements to be positioned freely on a transformable and infinite space.
+A hierarchy of these components form a subtree in the browser DOM.
+This subtree, which we call the *affine subtree*, has a tensor matrix backbone that
+makes projecting points, vectors, and other geometry between the components
+**extremely easy**.
+
+Most of the methods in Tapspace, like Viewport:translateBy,
+take in tensor geometry objects, like Point, Distance, and Box.
+The tensor aspect makes the geometries exist in all coordinate spaces at the same time,
+practically freeing you from the need to think how to transit geometry from
+an HTML element coordinate space into another coordinate space like onto the viewport or another element.
+This comes handy with – and does enable – wild arrangements of components in various scales and angles,
+and dynamic interaction driven with multitouch, mouse, or other input devices.
+
+Under the hood Tapspace.js uses CSS 2D transforms. In comparison with CSS 3D transforms,
+2D offers unbeatable rendering speed, full browser compatibility, and ease of navigation.
+Even CSS 2D transforms can slow down under thousands of elements and break in deep depths.
+Large, deep, or infinite visualisations can use tapspace.loaders.TreeLoader
+to **escape the limits of browser rendering engine and floating point arithmetics.**
+
 ## Supporters
 
 We have developed Tapspace.js in collaboration with the following organizations.
