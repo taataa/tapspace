@@ -95,6 +95,7 @@ yamdog.generate({
       'dist3': affineplaneDocs + '#affineplanedist3',
       'helm2': affineplaneDocs + '#affineplanehelm2',
       'helm3': affineplaneDocs + '#affineplanehelm3',
+      'orient2': affineplaneDocs + '#affineplaneorient2',
       'path2': affineplaneDocs + '#affineplanepath2',
       'path3': affineplaneDocs + '#affineplanepath3',
       'plane2': affineplaneDocs + '#affineplaneplane2',
