@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.22
+# Tapspace API Documentation v2.0.0-alpha.23
 
 
 Choose version: [v1](https://taataa.github.io/tapspace/api/) – [v2](#)
@@ -1414,7 +1414,7 @@ Create an [Orientation](#tapspacegeometryorientation) on this basis.
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *angle*
-  - a number or orient2 object { a, b }
+  - a number or [orient2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneorient2) object { a, b }
 
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
@@ -7565,7 +7565,7 @@ space and therefore they need conversion when transited between bases.
 - *basis*
   - a [Component](#tapspacecomponentscomponent)
 - *orient*
-  - a orient2, or {a,b} relative to the basis.
+  - an [orient2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneorient2) relative to the basis.
 
 
 
@@ -7612,7 +7612,7 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 <a name="tapspacegeometryorientationgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Orientation](#tapspacegeometryorientation):[getRaw](#tapspacegeometryorientationgetraw)()
 
-**Returns:** plain orient2 object `{a,b}` without basis data.
+**Returns:** plain [orient2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneorient2) object `{a,b}` without basis data.
 
 Source: [getRaw.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/getRaw.js)
 
@@ -7637,7 +7637,7 @@ Unlike changeBasis, returns a plain object without basis data.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
-- a orient2, complex number
+- an [orient2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneorient2)
 
 
 Source: [transitRaw.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/transitRaw.js)
@@ -7657,7 +7657,7 @@ See [Point:transitRawOuter](#tapspacegeometrypointtransitrawouter) for details.
 
 <p style="margin-bottom: 0"><strong>Returns:</strong></p>
 
-- a orient2, complex number
+- an [orient2](https://axelpale.github.io/affineplane/docs/API.html#affineplaneorient2)
 
 
 Source: [transitRawOuter.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/transitRawOuter.js)
