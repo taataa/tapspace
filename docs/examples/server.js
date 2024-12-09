@@ -68,5 +68,6 @@ const server = http.createServer(function (req, res) {
 const url = 'http://' + getIpAddress() + ':' + PORT
 qrcode.generate(url)
 console.log(url)
+console.log('Press CTRL+C to stop and quit.')
 
 server.listen(PORT)
