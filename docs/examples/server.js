@@ -5,8 +5,6 @@
 // Resources:
 //   Print QR code in terminal
 //     https://www.npmjs.com/package/qrcode-terminal
-//   Get your IP address
-//     https://www.npmjs.com/package/ip
 //   Serve directory index
 //     https://github.com/expressjs/serve-index
 //   Static File Server
@@ -16,12 +14,32 @@ const PORT = 8000
 
 const path = require('path')
 const http = require('http')
+const os = require('os')
 const finalhandler = require('finalhandler')
 const serveIndex = require('serve-index')
 const serveStatic = require('serve-static')
 
-const ip = require('ip')
 const qrcode = require('qrcode-terminal')
+
+const getIpAddress = () => {
+  // Return current IP address as a string.
+  // See: https://stackoverflow.com/a/8440736/638546
+  const nets = os.networkInterfaces()
+  const results = Object.keys(nets).reduce((acc, netName) => {
+    nets[netName].forEach((entry) => {
+      const isPreNode18 = typeof entry.family === 'string'
+      const familyV4 = isPreNode18 ? 'IPv4' : 4
+      const isExternal = !entry.internal
+
+      if (entry.family === familyV4 && isExternal) {
+        acc.push(entry.address)
+      }
+    })
+    return acc
+  }, [])
+  // Pick first
+  return results[0]
+}
 
 const index = serveIndex(__dirname, {
   icons: true,
@@ -47,7 +65,7 @@ const server = http.createServer(function (req, res) {
 })
 
 // Output a URL to the server
-const url = 'http://' + ip.address() + ':' + PORT
+const url = 'http://' + getIpAddress() + ':' + PORT
 qrcode.generate(url)
 console.log(url)
 
