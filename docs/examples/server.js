@@ -1,3 +1,4 @@
+// Static web server for hosting examples locally.
 //
 // Start a static file server and output the root URL as a QR code.
 //
@@ -11,28 +12,28 @@
 //   Static File Server
 //     https://stackoverflow.com/a/24575241/638546
 
-var PORT = 8000
+const PORT = 8000
 
-var path = require('path')
-var http = require('http')
-var finalhandler = require('finalhandler')
-var serveIndex = require('serve-index')
-var serveStatic = require('serve-static')
+const path = require('path')
+const http = require('http')
+const finalhandler = require('finalhandler')
+const serveIndex = require('serve-index')
+const serveStatic = require('serve-static')
 
-var ip = require('ip')
-var qrcode = require('qrcode-terminal')
+const ip = require('ip')
+const qrcode = require('qrcode-terminal')
 
-var index = serveIndex(__dirname, {
+const index = serveIndex(__dirname, {
   icons: true,
   filter: function (fname) {
     return fname !== 'server.js' && fname !== 'assets'
   }
 })
-var serveExamples = serveStatic(__dirname)
-var serveBundle = serveStatic(path.resolve(__dirname, '../../dist'))
+const serveExamples = serveStatic(__dirname)
+const serveBundle = serveStatic(path.resolve(__dirname, '../../dist'))
 
-var server = http.createServer(function (req, res) {
-  var done = finalhandler(req, res)
+const server = http.createServer(function (req, res) {
+  const done = finalhandler(req, res)
 
   serveExamples(req, res, function (err) {
     if (err) return done(err)
@@ -46,7 +47,7 @@ var server = http.createServer(function (req, res) {
 })
 
 // Output a URL to the server
-var url = 'http://' + ip.address() + ':' + PORT
+const url = 'http://' + ip.address() + ':' + PORT
 qrcode.generate(url)
 console.log(url)
 
