@@ -55,7 +55,7 @@
     "stream-browserify": "^3.0.0",
     "style-loader": "^4.0.0",
     "tape": "^5.9.0",
-    "webpack": "^5.96.1",
+    "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4",
     "webpack-livereload-plugin": "^3.0.2",
     "yamdog": "^2.1.0"
