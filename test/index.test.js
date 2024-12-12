@@ -1,5 +1,5 @@
 const test = require('tape')
-const tapspace = require('../index')
+const tapspace = window.tapspace
 
 const units = {
   // General
@@ -28,3 +28,6 @@ const container = document.querySelector('#container')
 Object.keys(units).forEach((unitName) => {
   units[unitName](test, container, tapspace)
 })
+
+// Mark tests finished. Puppeteer runner reads this.
+window.done = true
