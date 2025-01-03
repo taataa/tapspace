@@ -31,7 +31,9 @@
       const basis = tapspace.createSpace()
       view.addChild(basis)
 
-      window.suite = { view }
+      window.suite = [
+        [view.getAspectRatio() === 2, 'should match viewport ratio']
+      ]
     </script>
   </body>
 </html>
