@@ -2,7 +2,7 @@ import { join } from 'path'
 
 const pageUrl = 'file:' + join(import.meta.dirname, 'measureGroup.test.html')
 
-export const run = (test, browser) => {
+export default function (test, browser) {
   test('Viewport:measureGroup', async (t) => {
     // Setup
     const page = await browser.newPage()
