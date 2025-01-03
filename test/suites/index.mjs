@@ -1,5 +1,5 @@
-import { run as runComponents } from './components/index.mjs'
+import testComponents from './components/index.mjs'
 
-export const run = (test, browser) => {
-  runComponents(test, browser)
+export default function (test, browser) {
+  testComponents(test, browser)
 }

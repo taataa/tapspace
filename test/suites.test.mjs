@@ -20,7 +20,7 @@ import test from 'tape'
 import { join } from 'path'
 
 // Suites
-import { run } from './suites/index.mjs'
+import testSuite from './suites/index.mjs'
 
 // Setup
 const browser = await puppeteer.launch()
@@ -28,7 +28,7 @@ const browser = await puppeteer.launch()
 // const browser = await puppeteer.launch({ headless: false })
 
 // Run tests
-run(test, browser)
+testSuite(test, browser)
 
 // Exit after all tests completed, success or not.
 // It is important to keep the browser open until that.

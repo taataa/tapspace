@@ -1,5 +1,5 @@
 import testViewport from './Viewport/index.mjs'
 
-export const run = (test, browser) => {
+export default function (test, browser) {
   testViewport(test, browser)
 }
