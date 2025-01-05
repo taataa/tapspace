@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Arc:getLength – Tapspace Test</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        background: gray;
+        width: 100%;
+        height: 100%;
+      }
+      #testspace {
+        width: 800px;
+        height: 500px;
+      }
+    </style>
+    <script src="../../../../dist/tapspace.min.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      window.suite = []
+
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create an arc, radius 50
+      const arc = tapspace.createArc(Math.PI, '1px solid black')
+      space.addChild(arc)
+      arc.setPoints(space.at(100, 100), space.at(200, 100))
+
+      // Compute arc length
+      const alen = arc.getLength().changeBasis(space)
+      // Reference
+      const blen = new tapspace.geometry.Distance(space, Math.PI * 50)
+
+      window.suite.push(
+        [alen.isAlmostEqual(blen), 'should have correct arc length']
+      )
+    </script>
+  </body>
+</html>

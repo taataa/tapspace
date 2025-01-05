@@ -1,3 +1,4 @@
+import testArc from './Arc/index.mjs'
 import testSpace from './Space/index.mjs'
 import testViewport from './Viewport/index.mjs'
 import { getFileUrl } from '../utils.mjs'
@@ -29,6 +30,7 @@ export default function (test, browser) {
     })
   }
 
+  testArc(testAllOk)
   testSpace(testAllOk)
   testViewport(testAllOk)
 }
