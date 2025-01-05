@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Space:getBoundingBox – Tapspace Test</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        background: gray;
+        width: 100%;
+        height: 100%;
+      }
+      #testspace {
+        width: 800px;
+        height: 500px;
+      }
+    </style>
+    <script src="../../../../dist/tapspace.min.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      window.suite = []
+
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create items for boundary
+      const foo = tapspace.createItem('<p>Foo</p>')
+      foo.setSize(200, 200)
+      foo.setAnchor(0, 0)
+      const bar = tapspace.createItem('<p>Bar</p>')
+      bar.setSize(200, 200)
+      bar.setAnchor(0, 0)
+
+      // Add items off the plane
+      space.addChild(foo, space.at(100, 100, 10))
+      space.addChild(bar, space.at(500, 300, -10))
+
+      // Take the box.
+      const bounds = space.getBoundingBox()
+      const size = bounds.getSize().getRaw()
+
+      window.suite.push(
+        [size.w === 600, 'should have correct width'],
+        [size.h === 400, 'should have correct height'],
+        [size.d === 20, 'should have correct depth']
+      )
+
+      // Take a custom orientation.
+      const orient = space.createOrientation(Math.PI / 4)
+      const orientedBounds = space.getBoundingBox(orient)
+
+      const b0 = orientedBounds.at(0, 0).changeBasis(space)
+      const s0 = space.at(300, -100, -10)
+      const b1 = orientedBounds.atNorm(1, 1).changeBasis(space)
+      const s1 = space.at(500, 700, -10)
+
+      window.suite.push(
+        [s0.almostEqual(b0), 'should have matching origin'],
+        [s1.almostEqual(b1), 'should have matching bottom right corner']
+      )
+    </script>
+  </body>
+</html>
