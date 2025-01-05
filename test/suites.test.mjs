@@ -17,7 +17,6 @@
 
 import puppeteer from 'puppeteer'
 import test from 'tape'
-import { join } from 'path'
 
 // Suites
 import testSuite from './suites/index.mjs'
@@ -27,35 +26,8 @@ const browser = await puppeteer.launch()
 // Switch to the commented line to show the browser.
 // const browser = await puppeteer.launch({ headless: false })
 
-const getFileUrl = (dirname, filename) => 'file:' + join(dirname, filename)
-
-// Custom test
-const customTest = async (unitName, dirname, filename) => {
-  test(unitName, async (t) => {
-    // Setup
-    const pageUrl = getFileUrl(dirname, filename)
-    const page = await browser.newPage()
-    await page.setViewport({ width: 1000, height: 500 })
-    await page.goto(pageUrl, { waitUntil: 'domcontentloaded' })
-
-    // Collect test results.
-    const suite = await page.evaluate(() => window.suite)
-
-    // Check test results.
-    for (let i = 0; i < suite.length; i += 1) {
-      const predicate = suite[i][0]
-      const message = suite[i][1]
-      t.ok(predicate, message)
-    }
-
-    // Exit
-    await page.close()
-    t.end()
-  })
-}
-
 // Run tests
-testSuite(customTest)
+testSuite(test, browser)
 
 // Exit after all tests completed, success or not.
 // It is important to keep the browser open until that.
