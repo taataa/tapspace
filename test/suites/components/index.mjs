@@ -15,13 +15,11 @@ export default function (test, browser) {
       await page.goto(pageUrl, { waitUntil: 'domcontentloaded' })
 
       // Collect test results.
-      const suite = await page.evaluate(() => window.suite)
+      const report = await page.evaluate(() => window.test.report())
 
       // Check test results.
-      for (let i = 0; i < suite.length; i += 1) {
-        const predicate = suite[i][0]
-        const message = suite[i][1]
-        t.ok(predicate, message)
+      for (let i = 0; i < report.length; i += 1) {
+        t.ok(report[i].result, report[i].message)
       }
 
       // Exit

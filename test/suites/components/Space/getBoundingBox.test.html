@@ -21,13 +21,14 @@
       }
     </style>
     <script src="../../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib/testlib.js"></script>
   </head>
   <body>
     <div id="container">
       <div id="testspace"></div>
     </div>
     <script>
-      window.suite = []
+      test.plan(5)
 
       const view = tapspace.createView('#testspace')
       const space = tapspace.createSpace()
@@ -49,11 +50,9 @@
       const bounds = space.getBoundingBox()
       const size = bounds.getSize().getRaw()
 
-      window.suite.push(
-        [size.w === 600, 'should have correct width'],
-        [size.h === 400, 'should have correct height'],
-        [size.d === 20, 'should have correct depth']
-      )
+      test.equal(size.w, 600, 'should have correct width')
+      test.equal(size.h, 400, 'should have correct height')
+      test.equal(size.d, 20, 'should have correct depth')
 
       // Take a custom orientation.
       const orient = space.createOrientation(Math.PI / 4)
@@ -64,10 +63,10 @@
       const b1 = orientedBounds.atNorm(1, 1).changeBasis(space)
       const s1 = space.at(500, 700, -10)
 
-      window.suite.push(
-        [s0.almostEqual(b0), 'should have matching origin'],
-        [s1.almostEqual(b1), 'should have matching bottom right corner']
-      )
+      test.ok(s0.almostEqual(b0), 'should have matching origin')
+      test.ok(s1.almostEqual(b1), 'should have matching bottom right corner')
+
+      test.end()
     </script>
   </body>
 </html>

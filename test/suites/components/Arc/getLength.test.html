@@ -21,13 +21,14 @@
       }
     </style>
     <script src="../../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib/testlib.js"></script>
   </head>
   <body>
     <div id="container">
       <div id="testspace"></div>
     </div>
     <script>
-      window.suite = []
+      test.plan(1)
 
       const view = tapspace.createView('#testspace')
       const space = tapspace.createSpace()
@@ -43,9 +44,9 @@
       // Reference
       const blen = new tapspace.geometry.Distance(space, Math.PI * 50)
 
-      window.suite.push(
-        [alen.isAlmostEqual(blen), 'should have correct arc length']
-      )
+      test.ok(alen.isAlmostEqual(blen), 'should have correct arc length')
+
+      test.end()
     </script>
   </body>
 </html>

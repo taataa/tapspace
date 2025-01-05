@@ -21,12 +21,15 @@
       }
     </style>
     <script src="../../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib/testlib.js"></script>
   </head>
   <body>
     <div id="container">
       <div id="testspace"></div>
     </div>
     <script>
+      test.plan(8)
+
       const view = tapspace.createView('#testspace')
 
       // Populate view
@@ -48,19 +51,18 @@
       const measures0 = view.measureGroup(space0)
       const measures1 = view.measureGroup(space1)
 
-      // Test
-      window.suite = [
-        // First measures
-        [measures0.length === 3, 'should have three measures'],
-        [measures0[0].target === space0, 'should have space as first'],
-        [measures0[1].target === item00, 'should have item as second'],
-        [measures0[1].dilation === 1, 'should have correct dilation'],
-        [measures0[1].areaPx === 400, 'should have correct area'],
-        // Second measure
-        [measures1.length === 2, 'should have two measurements'],
-        [measures1[1].dilation === 2, 'should have scaled dilation'],
-        [measures1[1].areaPx === 1600, 'should have scaled area']
-      ]
+      // Test first measures
+      test.equal(measures0.length, 3, 'should have three measures')
+      test.equal(measures0[0].target, space0, 'should have space as first')
+      test.equal(measures0[1].target, item00, 'should have item as second')
+      test.equal(measures0[1].dilation, 1, 'should have correct dilation')
+      test.equal(measures0[1].areaPx, 400, 'should have correct area')
+      // Test second measure
+      test.equal(measures1.length, 2, 'should have two measurements')
+      test.equal(measures1[1].dilation, 2, 'should have scaled dilation')
+      test.equal(measures1[1].areaPx, 1600, 'should have scaled area')
+
+      test.end()
     </script>
   </body>
 </html>

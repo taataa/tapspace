@@ -21,12 +21,15 @@
       }
     </style>
     <script src="../../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib/testlib.js"></script>
   </head>
   <body>
     <div id="container">
       <div id="testspace"></div>
     </div>
     <script>
+      test.plan(1)
+
       const view = tapspace.createView('#testspace')
       const space = tapspace.createSpace()
       view.addChild(space)
@@ -34,12 +37,12 @@
       // Take a point
       const p = space.at(1, 2)
 
-      window.suite = [
-        [
-          p.almostEqual({ basis: space, point: { x: 1, y: 2, z: 0 } }),
-          'should fill z'
-        ]
-      ]
+      test.ok(
+        p.almostEqual({ basis: space, point: { x: 1, y: 2, z: 0 } }),
+        'should fill z'
+      )
+
+      test.end()
     </script>
   </body>
 </html>
