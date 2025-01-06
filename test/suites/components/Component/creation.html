@@ -28,7 +28,7 @@
       <div id="testspace"></div>
     </div>
     <script>
-      test.plan(5)
+      test.plan(8)
 
       // Setup
       const view = tapspace.createView('#testspace')
@@ -38,7 +38,6 @@
       // Create Basis
       const b0 = space.getBasis()
       const b1 = space.createBasis(space.at(0, 0), 1, 0)
-
       // Test
       test.notOk(b0.almostEqual(null), 'should detect nullish')
       test.ok(b1.almostEqual(b0), 'should be almost identical with space basis')
@@ -47,10 +46,17 @@
       // Create Direction
       const dir1 = space.createDirection(Math.PI, Math.PI / 2)
       const dir0 = { basis: space, dir: { x: -1, y: 0, z: 0 } }
-
       // Test
       test.notOk(dir1.equal(dir0), 'should have floating point errors')
       test.ok(dir1.almostEqual(dir0), 'should be same direction within tolerance')
+
+      // Create Orientation
+      const orient1 = space.createOrientation(Math.PI)
+      const orient0 = { basis: space, orient: { a: -1, b: 0 } } // upside down
+      // Test
+      test.ok(orient1.equal(orient1), 'should equal self')
+      test.notOk(orient1.almostEqual(orient0.orient), 'should not take raw')
+      test.ok(orient1.almostEqual(orient0), 'should have same orientation')
     </script>
   </body>
 </html>
