@@ -32,6 +32,10 @@ const toPlain = (val) => {
     return val
   }
 
+  if (val === null) {
+    return null
+  }
+
   if (Array.isArray(val)) {
     return '[Array]'
   }
@@ -49,6 +53,10 @@ const toSerializable = (val) => {
 
   if (typeof val !== 'object') {
     return val
+  }
+
+  if (val === null) {
+    return null
   }
 
   // Convert array elements to plain values.
