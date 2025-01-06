@@ -3,6 +3,16 @@
 // The test report can be serialized so that it can be read
 // in the test runner outside the headless instances.
 //
+// Usage:
+// - Install with a script tag on a unit-test HTML page.
+// - Access via window.test object.
+// - Use test.plan(n) to start the test section and test.end() to stop.
+// - Assert with test.equal(), .almostEqual() and test.ok()
+// - Access results via test.report()
+//
+// Licence: MIT
+// Copyright: Akseli Palén, 2025
+//
 
 if (!window) {
   throw new Error('Browser environment is required.')
@@ -30,6 +40,9 @@ const toPlain = (val) => {
 }
 
 const toSerializable = (val) => {
+  // Simplify value to a serializable. Objects and arrays are preserved
+  // on top level but converted to strings below that.
+  //
   if (typeof val === 'undefined') {
     return 'undefined'
   }
