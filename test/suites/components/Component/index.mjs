@@ -1,3 +1,3 @@
 export default function (test) {
-  test('Component:createBasis', import.meta.dirname, 'createBasis.html')
+  test('Component: geometry creation', import.meta.dirname, 'creation.html')
 }

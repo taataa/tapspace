@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Component:createBasis – Tapspace Test</title>
+    <title>Component geometry creation - Tapspace Test</title>
     <style>
       html, body {
         margin: 0;
@@ -28,14 +28,14 @@
       <div id="testspace"></div>
     </div>
     <script>
-      test.plan(3)
+      test.plan(5)
 
       // Setup
       const view = tapspace.createView('#testspace')
       const space = tapspace.createSpace()
       view.addChild(space)
 
-      // Create
+      // Create Basis
       const b0 = space.getBasis()
       const b1 = space.createBasis(space.at(0, 0), 1, 0)
 
@@ -43,6 +43,14 @@
       test.notOk(b0.almostEqual(null), 'should detect nullish')
       test.ok(b1.almostEqual(b0), 'should be almost identical with space basis')
       test.ok(b0.almostEqual(b1), 'should be almost identical with space basis')
+
+      // Create Direction
+      const dir1 = space.createDirection(Math.PI, Math.PI / 2)
+      const dir0 = { basis: space, dir: { x: -1, y: 0, z: 0 } }
+
+      // Test
+      test.notOk(dir1.equal(dir0), 'should have floating point errors')
+      test.ok(dir1.almostEqual(dir0), 'should be same direction within tolerance')
     </script>
   </body>
 </html>
