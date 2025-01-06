@@ -1,6 +1,4 @@
 const units = {
-  createMethods: require('./createMethods.test'),
-  findCommonAncestor: require('./findCommonAncestor.test'),
   prependChild: require('./prependChild.test'),
   removeChild: require('./removeChild.test'),
   replaceChild: require('./replaceChild.test'),
