@@ -54,6 +54,7 @@ const toSerializable = (val) => {
   return obj
 }
 
+// Global simpleton test class.
 window.test = {
   planned: -1,
   results: [],
@@ -144,6 +145,20 @@ window.test = {
       message: message || 'proposition should be true',
       actual,
       expected: true
+    })
+  },
+
+  notOk: function (actual, message) {
+    let result = false
+    if (typeof actual === 'boolean') {
+      result = !actual
+    }
+    this.results.push({
+      result,
+      operator: 'notOk',
+      message: message || 'proposition should be false',
+      actual,
+      expected: false
     })
   }
 }
