@@ -79,12 +79,15 @@ window.test = {
     this.planned = num
   },
 
-  end: function () {
+  report: function () {
+    // Export results in a serializable format.
+    // Convert complex objects into strings if necessary.
+    //
+
     // Check that correct number of tests were performed.
     // If not, add a failed test result.
     const actual = this.results.length
     const expected = this.planned
-
     if (expected >= 0) {
       if (actual !== expected) {
         this.results.push({
@@ -96,12 +99,7 @@ window.test = {
         })
       }
     }
-  },
 
-  report: function () {
-    // Export results in a serializable format.
-    // Convert complex objects into strings if necessary.
-    //
     return this.results.map(r => {
       return {
         result: r.result,
