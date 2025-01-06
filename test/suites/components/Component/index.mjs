@@ -1,3 +1,4 @@
 export default function (test) {
-  test('Component: geometry creation', import.meta.dirname, 'creation.html')
+  test('Component: findCommonAncestor', import.meta.dirname, 'findCommonAncestor.html')
+  test('Component: geometry creation', import.meta.dirname, 'geometryCreation.html')
 }
