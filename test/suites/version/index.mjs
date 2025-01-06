@@ -8,7 +8,7 @@ const pjson = JSON.parse(
 export default function (test, browser) {
   test('tapspace.version', async (t) => {
     // Setup
-    const pageUrl = getFileUrl(import.meta.dirname, 'version.test.html')
+    const pageUrl = getFileUrl(import.meta.dirname, 'version.html')
     const page = await browser.newPage()
     await page.goto(pageUrl, { waitUntil: 'domcontentloaded' })
 

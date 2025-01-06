@@ -1,3 +1,3 @@
 export default function (test) {
-  test('Arc:getLength', import.meta.dirname, 'getLength.test.html')
+  test('Arc:getLength', import.meta.dirname, 'getLength.html')
 }
