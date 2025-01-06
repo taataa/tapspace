@@ -1,5 +1,6 @@
 import { getFileUrl } from '../utils.mjs'
 import { readFile } from 'fs/promises'
+import semver from 'semver'
 
 const pjson = JSON.parse(
   await readFile(new URL('../../../package.json', import.meta.url))
@@ -18,6 +19,7 @@ export default function (test, browser) {
     // Assertions
     t.equal(typeof v, 'string', 'should be available')
     t.equal(v, pjson.version, 'should equal package version')
+    t.ok(semver.valid(v), 'semantically valid version')
 
     // Exit
     await page.close()

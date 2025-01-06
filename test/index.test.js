@@ -2,8 +2,6 @@ const test = require('tape')
 const tapspace = window.tapspace
 
 const units = {
-  // General
-  version: require('./version.test'),
   // Geometry
   geometry: require('./geometry.test'),
   // Components
