@@ -20,7 +20,12 @@ export default function (test, browser) {
 
       // Check test results.
       for (let i = 0; i < report.length; i += 1) {
-        t.ok(report[i].result, report[i].message)
+        t._assert(report[i].result, {
+          message: report[i].message,
+          operator: report[i].operator,
+          actual: report[i].actual,
+          expected: report[i].expected
+        })
       }
 
       // Exit
