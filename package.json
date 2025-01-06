@@ -70,6 +70,7 @@
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "lint:lib": "standard 'lib/**/*.js'",
     "test": "npm run lint",
+    "test:headless": "npm run lint && npm run build && node test/headless/run.mjs",
     "test:browser": "npm run test:browser:build && npm run test:browser:open",
     "test:browser:open": "open -a \"Google Chrome\" test/browser.html",
     "test:browser:build": "webpack --config test/webpack.browser.config.js",
