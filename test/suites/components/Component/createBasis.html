@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Component:createBasis – Tapspace Test</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        background: gray;
+        width: 100%;
+        height: 100%;
+      }
+      #testspace {
+        width: 800px;
+        height: 500px;
+      }
+    </style>
+    <script src="../../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib/testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(3)
+
+      // Setup
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create
+      const b0 = space.getBasis()
+      const b1 = space.createBasis(space.at(0, 0), 1, 0)
+
+      // Test
+      test.notOk(b0.almostEqual(null), 'should detect nullish')
+      test.ok(b1.almostEqual(b0), 'should be almost identical with space basis')
+      test.ok(b0.almostEqual(b1), 'should be almost identical with space basis')
+    </script>
+  </body>
+</html>
