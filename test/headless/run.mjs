@@ -19,7 +19,7 @@ import puppeteer from 'puppeteer'
 import test from 'tape'
 
 // Suites
-import testSuite from './suites/index.mjs'
+import testSuite from './suites.mjs'
 
 // Setup
 const browser = await puppeteer.launch()
