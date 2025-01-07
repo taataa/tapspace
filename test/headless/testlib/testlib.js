@@ -75,6 +75,53 @@ const toSerializable = (val) => {
   return obj
 }
 
+const deepEqual = (x, y) => {
+  if (x === y) {
+    return true
+  }
+  // Not strictly equal.
+  if (!x || !y) {
+    return false
+  }
+  // Values not nullish.
+  if (typeof x !== 'object' || typeof y !== 'object') {
+    return false
+  }
+  // Values are objects. Arrays?
+  if (Array.isArray(x) && Array.isArray(y)) {
+    if (x.length !== y.length) {
+      return false
+    }
+    // Arrays equal length.
+    let every = true
+    for (let i = 0; every && i < x.length; i += 1) {
+      every = every && deepEqual(x[i], y[i])
+    }
+    // Array elements deeply equal.
+    return every
+  }
+  // Not both arrays, maybe separately?
+  if (Array.isArray(x) || Array.isArray(y)) {
+    return false
+  }
+  // Not nullish, not arrays, are objects.
+  // Note that key order must not matter.
+  const xkeys = Object.keys(x)
+  const ykeys = Object.keys(y)
+  if (xkeys.length !== ykeys.length) {
+    return false
+  }
+  let every = true
+  for (let i = 0; every && i < xkeys.length; i += 1) {
+    const key = xkeys[i]
+    const xval = x[key]
+    const yval = y[key]
+    every = every && deepEqual(xval, yval)
+  }
+  // Every property deeply equal.
+  return every
+}
+
 // Global simpleton test class.
 window.test = {
   planned: -1,
@@ -143,12 +190,34 @@ window.test = {
     })
   },
 
+  deepEqual: function (actual, expected, message) {
+    const isDeepEqual = deepEqual(actual, expected)
+    this.results.push({
+      result: isDeepEqual,
+      operator: 'deepEqual',
+      message: message || 'values should be deeply equal',
+      actual,
+      expected
+    })
+  },
+
   equal: function (actual, expected, message) {
     const isEqual = actual === expected
     this.results.push({
       result: isEqual,
       operator: 'equal',
       message: message || 'values should be strictly equal',
+      actual,
+      expected
+    })
+  },
+
+  notEqual: function (actual, expected, message) {
+    const isNotEqual = actual !== expected
+    this.results.push({
+      result: isNotEqual,
+      operator: 'notEqual',
+      message: message || 'values should not be strictly equal',
       actual,
       expected
     })
