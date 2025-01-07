@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Component:findCommonAncestor - Tapspace Test</title>
+    <title>Component:removeChild - Tapspace Test</title>
     <style>
       html, body {
         margin: 0;
@@ -28,15 +28,15 @@
       <div id="testspace"></div>
     </div>
     <script>
-      test.plan(5)
+      test.plan(4)
 
       // Setup
       const view = tapspace.createView('#testspace')
-      const basis = tapspace.createSpace()
-      view.addChild(basis)
+      const space = tapspace.createSpace()
+      view.addChild(space)
 
       // Construct a hierarchy of nodes
-      basis.element.innerHTML = '' +
+      space.element.innerHTML = '' +
         '<div id="affine-a" class="affine-element">\n' +
         ' <div id="affine-aa" class="affine-element">\n' +
         '  <div id="affine-aaa" class="affine-element">\n' +
@@ -48,48 +48,42 @@
         ' </div>\n' +
         '</div>'
 
-      // Promote Elements into Components.
       const Component = tapspace.components.Component
-      const na = new Component(basis.element.querySelector('#affine-a'))
-      const naa = new Component(basis.element.querySelector('#affine-aa'))
-      const naaa = new Component(basis.element.querySelector('#affine-aaa'))
-      const naab = new Component(basis.element.querySelector('#affine-aab'))
-      const naac = document.querySelector('#nonaffine-aac')
+      const na = new Component(space.element.querySelector('#affine-a'))
+      const naa = new Component(space.element.querySelector('#affine-aa'))
+      const naaa = new Component(space.element.querySelector('#affine-aaa'))
+      const naab = new Component(space.element.querySelector('#affine-aab'))
+      // const naac = document.querySelector('#nonaffine-aac')
       // naac is not affine
 
-      // Common with self
+      // Ensure connected
       test.equal(
-        na.findCommonAncestor(na),
-        na,
-        'closest common with self'
+        naab.getViewport(),
+        view,
+        'should be connected to view'
       )
 
-      // Common ancestor of non-affine
+      // Remove leaf
+      naab.remove()
       test.equal(
-        na.findCommonAncestor(naac),
+        naab.getViewport(),
         null,
-        'non-affine cannot have common'
+        'should be disconnected via remove'
       )
 
-      // Parent-child
+      // Ensure connected
       test.equal(
-        na.findCommonAncestor(naa),
-        na,
-        'parent itself is the closest common'
+        naaa.getViewport(),
+        view,
+        'should be connected to view'
       )
 
-      // Ancestor
+      // Remove child
+      naa.removeChild(naaa)
       test.equal(
-        na.findCommonAncestor(naaa),
-        na,
-        'ancestor is the closest common'
-      )
-
-      // Common parent
-      test.equal(
-        naaa.findCommonAncestor(naab),
-        naa,
-        'common parent is the closest common'
+        naaa.getViewport(),
+        null,
+        'should be disconnected via removeChild'
       )
     </script>
   </body>
