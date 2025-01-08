@@ -1,5 +1,4 @@
 const units = {
-  FrameComponent: require('./FrameComponent.test'),
   Item: require('./Item.test')
 }
 
