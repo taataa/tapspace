@@ -10,6 +10,12 @@
 // - Assert with test.equal(), .almostEqual() and test.ok()
 // - Access results via test.report()
 //
+// Developer note:
+// - Keep everything in this single file to avoid need
+//   to deal with module import statements and
+//   browsers' CORS requirements for modules or any
+//   bundle build setup.
+//
 // Licence: MIT
 // Copyright: Akseli Palén, 2025
 //
