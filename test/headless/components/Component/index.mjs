@@ -5,4 +5,6 @@ export default function (test) {
   test('Component: removeChild', import.meta.dirname, 'removeChild.html')
   test('Component: replaceChild', import.meta.dirname, 'replaceChild.html')
   test('Component: replaceParent', import.meta.dirname, 'replaceParent.html')
+  test('Component: setId', import.meta.dirname, 'setId.html')
+  test('Component: setParent', import.meta.dirname, 'setParent.html')
 }
