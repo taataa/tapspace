@@ -248,5 +248,23 @@ window.test = {
       actual,
       expected: false
     })
+  },
+
+  throws: function (fn, message) {
+    let result = false
+    // let exception = null
+    try {
+      fn()
+    } catch (e) {
+      result = true
+      // exception = e
+    }
+    this.results.push({
+      result,
+      operator: 'throws',
+      message: message || 'function should throw an exception',
+      actual: result,
+      expected: true
+    })
   }
 }
