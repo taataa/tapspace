@@ -3,9 +3,7 @@ const tapspace = window.tapspace
 
 const units = {
   // Geometry
-  geometry: require('./geometry.test'),
-  // Components
-  components: require('./components.test')
+  geometry: require('./geometry.test')
 }
 
 // Custom assertations

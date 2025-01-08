@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Item:rotateBy - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+
+    const item = tapspace.createItem('<h1>Hello</h1>')
+    item.setSize(400, 200)
+    basis.addChild(item)
+
+    item.rotateBy(Math.PI / 2, item.atTopLeft())
+    // Bring back to visible area
+    item.matchPoint(item.atBottomLeft(), view.at(0, 0))
+
+    setTimeout(() => {
+      t.notEqual(document.elementFromPoint(300, 100),
+        item.element, 'item not at 300,100')
+      t.equal(document.elementFromPoint(100, 300),
+        item.element, 'item at 100,300')
+    }, 10)
+  </script>
+</body>
+</html>

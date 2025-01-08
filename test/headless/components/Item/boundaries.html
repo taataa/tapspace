@@ -1,10 +1,37 @@
-const template = require('./template.ejs')
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Item boundaries - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(6)
 
-module.exports = function (test, container, tapspace) {
-  //
-  test('Item :getBoundingBox', (t) => {
     // Setup
-    container.innerHTML = template()
     const view = tapspace.createView('#testspace')
     const space = tapspace.createSpace()
     view.addChild(space)
@@ -14,6 +41,7 @@ module.exports = function (test, container, tapspace) {
     item.setSize(100, 100)
     item.translateBy({ x: 10, y: 6 })
 
+    // Test: getBoundingBox
     const bbox = item.getBoundingBox()
 
     t.equal(
@@ -28,21 +56,7 @@ module.exports = function (test, container, tapspace) {
       'should have correct props'
     )
 
-    t.end()
-  })
-
-  test('Item :getBoundingCircle', (t) => {
-    // Setup
-    container.innerHTML = template()
-    const view = tapspace.createView('#testspace')
-    const space = tapspace.createSpace()
-    view.addChild(space)
-
-    const item = tapspace.createItem('<h1>Hello</h1>')
-    space.addChild(item)
-    item.setSize(100, 100)
-    item.translateBy({ x: 10, y: 6 })
-
+    // Test: getBoundingCircle
     const bsphere = item.getBoundingCircle()
 
     t.equal(
@@ -57,21 +71,8 @@ module.exports = function (test, container, tapspace) {
       'should have correct radius'
     )
 
-    t.end()
-  })
-
-  test('Item :getInnerSquare', (t) => {
-    // Setup
-    container.innerHTML = template()
-    const view = tapspace.createView('#testspace')
-    const space = tapspace.createSpace()
-    view.addChild(space)
-
-    const item = tapspace.createItem('<h1>Hello</h1>')
-    space.addChild(item)
+    // Test: getInnerSquare
     item.setSize(200, 100)
-    item.translateBy({ x: 10, y: 6 })
-
     const square = item.getInnerSquare()
 
     t.equal(square.basis, item, 'should have correct basis')
@@ -81,7 +82,6 @@ module.exports = function (test, container, tapspace) {
       { a: 1, b: 0, x: 60, y: 6, z: 0, w: 100, h: 100, d: 0 },
       'should have correct offset'
     )
-
-    t.end()
-  })
-}
+  </script>
+</body>
+</html>

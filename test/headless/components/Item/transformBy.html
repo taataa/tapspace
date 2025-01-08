@@ -1,10 +1,37 @@
-const template = require('./template.ejs')
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Item:transformBy - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
 
-module.exports = function (test, container, tapspace) {
-  //
-  test('Item:transformBy', (t) => {
     // Setup
-    container.innerHTML = template()
     const view = tapspace.createView('#testspace')
     const basis = tapspace.createSpace()
     view.addChild(basis)
@@ -29,9 +56,8 @@ module.exports = function (test, container, tapspace) {
       setTimeout(() => {
         t.notEqual(document.elementFromPoint(100, 100),
           item.element, 'item not at 100,100')
-
-        t.end()
       }, 0)
     }, 0)
-  })
-}
+  </script>
+</body>
+</html>

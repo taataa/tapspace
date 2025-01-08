@@ -1,6 +1,7 @@
 import testArc from './Arc/index.mjs'
 import testComponent from './Component/index.mjs'
 import testFrameComponent from './FrameComponent/index.mjs'
+import testItem from './Item/index.mjs'
 import testSpace from './Space/index.mjs'
 import testViewport from './Viewport/index.mjs'
 import { getFileUrl } from '../utils.mjs'
@@ -16,6 +17,8 @@ export default function (test, browser) {
       await page.setViewport({ width: 1000, height: 500 })
       await page.goto(pageUrl, { waitUntil: 'domcontentloaded' })
 
+      // Wait max 5 sec for an async test to finish.
+      await page.waitForFunction('window.test.finished === true', { timeout: 5000 })
       // Collect test results.
       const report = await page.evaluate(() => window.test.report())
 
@@ -38,6 +41,7 @@ export default function (test, browser) {
   testArc(testAllOk)
   testComponent(testAllOk)
   testFrameComponent(testAllOk)
+  testItem(testAllOk)
   testSpace(testAllOk)
   testViewport(testAllOk)
 }

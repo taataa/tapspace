@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Item:setScale - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const ref = tapspace.createItem('<h1>Hello</h1>')
+    ref.setSize(200, 200)
+    ref.setAnchor(0, 0)
+    space.addChild(ref)
+    ref.setScale(2)
+
+    const item = tapspace.createItem('<h1>World</h1>')
+    item.setSize(200, 200)
+    item.setAnchor(0, 0)
+    space.addChild(item)
+
+    // Match scale
+    item.setScale(ref.getScale(), item.atBottomRight())
+
+    const p = item.at(0, 0).changeBasis(space)
+    const p0 = space.at(-200, -200)
+    t.ok(p.almostEqual(p0), 'should have doubled about corner')
+
+    t.equal(
+      item.getScale().transitRaw(space),
+      2,
+      'should have correct scale'
+    )
+  </script>
+</body>
+</html>

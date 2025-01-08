@@ -132,6 +132,15 @@ const deepEqual = (x, y) => {
 window.test = {
   planned: -1,
   results: [],
+  finished: false,
+
+  assert: function (assertion) {
+    this.results.push(assertion)
+
+    if (this.results.length >= this.planned) {
+      this.finished = true
+    }
+  },
 
   plan: function (num) {
     if (typeof num !== 'number' || isNaN(num) || num < 0) {
@@ -151,7 +160,7 @@ window.test = {
     const expected = this.planned
     if (expected >= 0) {
       if (actual !== expected) {
-        this.results.push({
+        this.assert({
           result: false,
           operator: 'plan',
           message: `Unexpected number of tests: ${actual}, should be ${expected}`,
@@ -187,7 +196,7 @@ window.test = {
       }
     }
 
-    this.results.push({
+    this.assert({
       result,
       operator: 'almostEqual',
       message: message || 'values should be equal or almost equal',
@@ -198,7 +207,7 @@ window.test = {
 
   deepEqual: function (actual, expected, message) {
     const isDeepEqual = deepEqual(actual, expected)
-    this.results.push({
+    this.assert({
       result: isDeepEqual,
       operator: 'deepEqual',
       message: message || 'values should be deeply equal',
@@ -209,7 +218,7 @@ window.test = {
 
   equal: function (actual, expected, message) {
     const isEqual = actual === expected
-    this.results.push({
+    this.assert({
       result: isEqual,
       operator: 'equal',
       message: message || 'values should be strictly equal',
@@ -220,7 +229,7 @@ window.test = {
 
   notEqual: function (actual, expected, message) {
     const isNotEqual = actual !== expected
-    this.results.push({
+    this.assert({
       result: isNotEqual,
       operator: 'notEqual',
       message: message || 'values should not be strictly equal',
@@ -233,7 +242,7 @@ window.test = {
     if (typeof actual !== 'boolean') {
       actual = false
     }
-    this.results.push({
+    this.assert({
       result: actual,
       operator: 'ok',
       message: message || 'proposition should be true',
@@ -247,7 +256,7 @@ window.test = {
     if (typeof actual === 'boolean') {
       result = !actual
     }
-    this.results.push({
+    this.assert({
       result,
       operator: 'notOk',
       message: message || 'proposition should be false',
@@ -265,7 +274,7 @@ window.test = {
       result = true
       // exception = e
     }
-    this.results.push({
+    this.assert({
       result,
       operator: 'throws',
       message: message || 'function should throw an exception',
