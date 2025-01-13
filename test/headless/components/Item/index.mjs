@@ -1,4 +1,5 @@
 export default function (test) {
+  const namespace = 'Item'
   const methods = [
     'at',
     'boundaries',
@@ -16,6 +17,6 @@ export default function (test) {
   let i, m
   for (i = 0; i < methods.length; i += 1) {
     m = methods[i]
-    test('Item:' + m, import.meta.dirname, m + '.html')
+    test(namespace + ':' + m, import.meta.dirname, m + '.html')
   }
 }
