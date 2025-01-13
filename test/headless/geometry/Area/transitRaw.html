@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Area:transitRaw - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    space.scaleBy(2, space.at(0, 0))
+
+    // Create an element
+    const hello = tapspace.createItem('hello')
+    hello.setSize({ w: 20, h: 20 })
+    space.addChild(hello, space.at(10, 10, 10))
+
+    // Create area
+    const area = hello.getArea()
+
+    t.equal(area.getRaw(), 400, 'should have correct area')
+    t.equal(area.transitRaw(view), 1600, 'should scale as area')
+  </script>
+</body>
+</html>
