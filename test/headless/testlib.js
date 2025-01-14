@@ -227,6 +227,11 @@ window.test = {
     })
   },
 
+  false: function (actual, message) {
+    // Alias for notOk
+    this.notOk(actual, message)
+  },
+
   notEqual: function (actual, expected, message) {
     const isNotEqual = actual !== expected
     this.assert({
@@ -281,5 +286,10 @@ window.test = {
       actual: result,
       expected: true
     })
+  },
+
+  true: function (actual, message) {
+    // Alias for ok.
+    this.ok(actual, message)
   }
 }
