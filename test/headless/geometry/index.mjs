@@ -1,4 +1,5 @@
 import testArea from './Area/index.mjs'
+import testBasis from './Basis/index.mjs'
 import { makeTestAllOk } from '../utils.mjs'
 
 export default function (test, browser) {
@@ -7,4 +8,5 @@ export default function (test, browser) {
   const testAllOk = makeTestAllOk(test, browser)
 
   testArea(testAllOk)
+  testBasis(testAllOk)
 }

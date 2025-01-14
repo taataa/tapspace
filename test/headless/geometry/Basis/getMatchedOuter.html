@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Basis:getMatchedOuter - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // A target in space
+    const target = tapspace.createItem('Hello')
+    space.addChild(target)
+    target.translateBy({ x: 100, y: 50 }).scaleBy(0.5, space.at(50, 50))
+
+    // An item not in space.
+    const loose = tapspace.createItem('World')
+    const looseBasis = loose.getBasis()
+      .translateBy({ x: 100, y: 50 })
+      .scaleBy(0.5, loose.at(50, 50))
+
+    // Find basis for the loose item
+    const outerBasis = looseBasis.getMatchedOuter(target.getBasis())
+
+    t.deepEqual(
+      outerBasis.changeBasis(space).getRaw(),
+      space.getBasis().getRaw(),
+      'should match space basis'
+    )
+  </script>
+</body>
+</html>
