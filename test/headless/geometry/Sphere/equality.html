@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sphere equality - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(11)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const sphere = new tapspace.geometry.Sphere(space, plain)
+    let s0
+
+    // Test almostEqual
+
+    s0 = new tapspace.geometry.Sphere(space, plain)
+    t.ok(sphere.almostEqual(s0), 'should allow identical coordinates')
+    t.ok(sphere.almostEqual(s0, 0), 'should allow under zero tolerance')
+    t.ok(sphere.almostEqual(sphere), 'should allow same object')
+
+    s0 = new tapspace.geometry.Sphere(view, plain)
+    t.notOk(sphere.almostEqual(s0), 'should detect different basis')
+
+    s0 = new tapspace.geometry.Sphere(space, { x: 1, y: 1, z: 1, r: 2 })
+    t.notOk(sphere.almostEqual(s0, 0.5), 'should detect over tolerance')
+    t.ok(sphere.almostEqual(s0, 1), 'should allow under tolerance')
+
+    // Test equal
+
+    s0 = new tapspace.geometry.Sphere(space, plain)
+    t.ok(sphere.equal(s0), 'should allow equal coordinates')
+    t.ok(sphere.equal(sphere), 'same object should be equal')
+
+    s0 = new tapspace.geometry.Sphere(view, plain)
+    t.notOk(sphere.equal(s0), 'should detect different basis')
+
+    s0 = new tapspace.geometry.Sphere(space, { x: 1, y: 1, z: 1, r: 2 })
+    t.notOk(sphere.equal(s0), 'should detect difference in r')
+    s0 = new tapspace.geometry.Sphere(space, { x: 1.0000001, y: 1, z: 1, r: 1 })
+    t.notOk(sphere.equal(s0), 'should detect slight difference in x')
+  </script>
+</body>
+</html>
