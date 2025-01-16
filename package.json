@@ -71,10 +71,6 @@
     "lint:lib": "standard 'lib/**/*.js'",
     "test": "npm run lint",
     "test:headless": "npm run lint && npm run build && node test/headless/run.mjs",
-    "test:browser": "npm run test:browser:build && npm run test:browser:open",
-    "test:browser:open": "open -a \"Google Chrome\" test/browser.html",
-    "test:browser:build": "webpack --config test/webpack.browser.config.js",
-    "test:browser:watch": "webpack --watch --config test/webpack.browser.config.js",
     "release": "npm run lint && npm run gv && npm run build:production && npm run build:docs && npm publish --tag alpha",
     "gv": "genversion lib/version.js"
   }
