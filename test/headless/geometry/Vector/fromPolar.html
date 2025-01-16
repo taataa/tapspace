@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vector:fromPolar - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+    // Create a vector
+    const radius = 2
+    const d90 = Math.PI / 2
+    const vec = tapspace.geometry.Vector.fromPolar(basis, radius, d90, 3)
+
+    const v0 = new tapspace.geometry.Vector(basis, { x: 0, y: 2, z: 3 })
+    t.ok(vec.almostEqual(v0), 'should point back down')
+  </script>
+</body>
+</html>
