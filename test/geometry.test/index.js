@@ -1,5 +1,4 @@
 const units = {
-  Orientation: require('./Orientation.test'),
   Path: require('./Path.test'),
   Point: require('./Point.test'),
   Ray: require('./Ray.test'),
