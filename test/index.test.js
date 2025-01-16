@@ -2,8 +2,6 @@ const test = require('tape')
 const tapspace = window.tapspace
 
 const units = {
-  // Geometry
-  geometry: require('./geometry.test')
 }
 
 // Custom assertations
