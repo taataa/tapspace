@@ -11,6 +11,7 @@ import testRay from './Ray/index.mjs'
 import testScale from './Scale/index.mjs'
 import testSize from './Size/index.mjs'
 import testSphere from './Sphere/index.mjs'
+import testTransform from './Transform/index.mjs'
 import { makeTestAllOk } from '../utils.mjs'
 
 export default function (test, browser) {
@@ -31,4 +32,5 @@ export default function (test, browser) {
   testScale(testAllOk)
   testSize(testAllOk)
   testSphere(testAllOk)
+  testTransform(testAllOk)
 }
