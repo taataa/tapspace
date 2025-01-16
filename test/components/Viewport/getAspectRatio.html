@@ -3,23 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Viewport:getAspectRatio – Tapspace Test</title>
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-      }
-      #container {
-        background: gray;
-        width: 100%;
-        height: 100%;
-      }
-      #testspace {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+    <link rel="stylesheet" href="../default.css" />
     <script src="../../../dist/tapspace.min.js"></script>
     <script src="../../testlib.js"></script>
   </head>
@@ -28,13 +12,15 @@
       <div id="testspace"></div>
     </div>
     <script>
-      test.plan(1)
+      const t = test
+      t.plan(1)
 
       const view = tapspace.createView('#testspace')
       const basis = tapspace.createSpace()
       view.addChild(basis)
 
-      test.equal(view.getAspectRatio(), 2, 'should match viewport ratio')
+      const r0 = 4 / 3
+      t.almostEqual(view.getAspectRatio(), r0, 'should match viewport ratio')
     </script>
   </body>
 </html>

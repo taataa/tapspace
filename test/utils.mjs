@@ -22,7 +22,7 @@ export const makeTestAllOk = (test, browser) => {
       // Setup
       const pageUrl = getFileUrl(dirname, filename)
       const page = await browser.newPage()
-      await page.setViewport({ width: 1000, height: 500 })
+      await page.setViewport({ width: 800, height: 500 })
       await page.goto(pageUrl, { waitUntil: 'domcontentloaded' })
 
       // Wait max 5 sec for an async test to finish.
