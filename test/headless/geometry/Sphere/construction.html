@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sphere construction - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const Sphere = tapspace.geometry.Sphere
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Test fromPoints
+    // Extreme case: halved cube
+    const points = [
+      space.at(0, 0, 0),
+      space.at(0, 0, 1),
+      space.at(0, 1, 0),
+      space.at(1, 0, 0)
+    ]
+
+    t.deepEqual(
+      Sphere.fromPoints(space, points).getRaw(),
+      { x: 0.5, y: 0.5, z: 0.5, r: Math.sqrt(3) / 2 },
+      'should be centered to bounding box'
+    )
+  </script>
+</body>
+</html>
