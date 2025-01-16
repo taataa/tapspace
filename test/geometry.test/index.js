@@ -1,5 +1,4 @@
 const units = {
-  Distance: require('./Distance.test'),
   Orientation: require('./Orientation.test'),
   Path: require('./Path.test'),
   Point: require('./Point.test'),

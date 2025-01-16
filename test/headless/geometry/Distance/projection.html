@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Distance projection - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace().setParent(view)
+
+    // Virtual camera
+    const camDist = 300
+    const camera = view.atCenter().offset(0, 0, -camDist)
+
+    // Move the space by the default cam distance for nice half scale
+    space.translateBy({ x: 0, y: 0, z: camDist })
+
+    // Test projectTo
+
+    const dist = new tapspace.geometry.Distance(space, 100)
+    const distProj = dist.projectTo(view, camera)
+
+    t.equal(distProj.getNumber(), 50, 'shrinks to half due to perspective')
+  </script>
+</body>
+</html>

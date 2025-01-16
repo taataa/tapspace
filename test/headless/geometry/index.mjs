@@ -3,6 +3,7 @@ import testBasis from './Basis/index.mjs'
 import testBox from './Box/index.mjs'
 import testCircle from './Circle/index.mjs'
 import testDirection from './Direction/index.mjs'
+import testDistance from './Distance/index.mjs'
 import testSphere from './Sphere/index.mjs'
 import { makeTestAllOk } from '../utils.mjs'
 
@@ -16,5 +17,6 @@ export default function (test, browser) {
   testBox(testAllOk)
   testCircle(testAllOk)
   testDirection(testAllOk)
+  testDistance(testAllOk)
   testSphere(testAllOk)
 }
