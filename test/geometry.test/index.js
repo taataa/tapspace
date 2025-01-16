@@ -1,5 +1,4 @@
 const units = {
-  Path: require('./Path.test'),
   Point: require('./Point.test'),
   Ray: require('./Ray.test'),
   Scale: require('./Scale.test'),

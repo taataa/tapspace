@@ -5,6 +5,7 @@ import testCircle from './Circle/index.mjs'
 import testDirection from './Direction/index.mjs'
 import testDistance from './Distance/index.mjs'
 import testOrientation from './Orientation/index.mjs'
+import testPath from './Path/index.mjs'
 import testSphere from './Sphere/index.mjs'
 import { makeTestAllOk } from '../utils.mjs'
 
@@ -20,5 +21,6 @@ export default function (test, browser) {
   testDirection(testAllOk)
   testDistance(testAllOk)
   testOrientation(testAllOk)
+  testPath(testAllOk)
   testSphere(testAllOk)
 }

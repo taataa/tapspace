@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Path :getRaw - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace().setParent(view)
+
+    // Create a Path
+    const path = [
+      { x: 1, y: 2, z: 3 },
+      { x: 2, y: 3, z: 4 },
+      { x: 3, y: 4, z: 5 }
+    ]
+    const ps = new tapspace.geometry.Path(basis, path)
+
+    t.deepEqual(
+      ps.getRaw(),
+      path,
+      'should convert to path3'
+    )
+  </script>
+</body>
+</html>
