@@ -67,7 +67,7 @@ To repeat the build every time you make a change, use `npm run build:watch` inst
 
 ## Building
 
-Tapspace is a package and thus needs to be packed with a build tool. Tapspace uses [webpack](https://webpack.js.org/) for this. We have separate builds for testing and production purposes. Each build has a script in package.json. The builds output files into `dist/` directory, standalone bundle at `dist/tapspace.min.js` and source maps at `dist/tapspace.min.js.map`.
+Tapspace.js is a package and thus needs to be packed with a build tool. Tapspace uses [webpack](https://webpack.js.org/) for this. We have separate builds for testing and production purposes. Each build has a script in package.json. The builds output files into `dist/` directory, standalone bundle at `dist/tapspace.min.js` and source maps at `dist/tapspace.min.js.map`.
 
 Minified bundle for production:
 
@@ -90,7 +90,7 @@ A build is necessary before running tests.
 
 ## Testing
 
-Tapspace is a user interface library and therefore its test suite must be run in a web browser. Static code checking, linting, can be done without. Tests are built on [tape](https://github.com/substack/tape).
+Tapspace.js is a user interface library. Therefore its test suite runs in a headless web browser. Use command line to run the test suite. The test suite hosts unit tests for each Tapspace component and geometry. You can open a particular unit in a web browser for deeper inspection.
 
 To check the code syntax and style against [standardJS](https://standardjs.com/):
 
@@ -102,18 +102,9 @@ To fix common lint issues automatically:
 
 To run the test suite:
 
-    $ npm run test:browser
+    $ npm test
 
-A browser tab opens. The test report is available through browser developer console.
-
-To automatically rebuild the test suite upon file change:
-
-    $ npm run test:browser:watch
-
-The runner `test/index.html` uses `webpack-livereload-plugin` so expect automatic page refresh at each webpack rebuild.
-
-**Headless testing** would be great but suitable tools lack maintenance. Therefore
-tests must be observed via the browser. Additionally, debugging is usually much easier via the browser.
+Unit tests are built on [tape](https://github.com/substack/tape) framework and run in a headless chromium via [puppeteer](https://github.com/puppeteer/puppeteer). Each test unit has the tests written in one or multiple HTML pages. Each page loads the current tapspace build bundle in `/dist`, loads a tape-like test tool `testlib.js`, and executes a small test script. The test pages are executed in mass by puppeteer and results output to terminal in tape format. Pages can be opened manully in a normal web browser for deeper debug.
 
 
 ## Release
