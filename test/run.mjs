@@ -27,10 +27,12 @@ const browser = await puppeteer.launch()
 // const browser = await puppeteer.launch({ headless: false })
 
 // Run tests
+console.time('# runtime')
 testSuite(test, browser)
 
 // Exit after all tests completed, success or not.
 // It is important to keep the browser open until that.
 test.onFinish(async () => {
   await browser.close()
+  console.timeEnd('# runtime')
 })
