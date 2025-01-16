@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:getBoundingCircle - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(10, 20, 30))
+
+    // Get a box
+    const box = item.getBoundingBox()
+
+    // Get circle boundary
+    const circle = box.getBoundingCircle()
+
+    const c = circle.changeBasis(view)
+    const c0 = new tapspace.geometry.Circle(view, {
+      x: 10,
+      y: 20,
+      z: 30,
+      r: Math.sqrt(200)
+    })
+    t.ok(c.almostEqual(c0), 'should have larger circle')
+  </script>
+</body>
+</html>

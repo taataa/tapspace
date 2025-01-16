@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:detectCollision - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(6)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { a: 1, b: 0, x: 0, y: 0, z: 0, w: 1, h: 1, d: 1 }
+    const box = new tapspace.geometry.Box(space, plain)
+
+    t.true(
+      box.detectCollision(space.at(0.5, 0.5, 0.5)),
+      'point should hit box inside'
+    )
+    t.true(
+      box.detectCollision(space.at(1, 1, 1)),
+      'point should hit box corner'
+    )
+    t.false(
+      box.detectCollision(space.at(0, 2)),
+      'point should be outside the box'
+    )
+
+    t.throws(() => {
+      box.detectCollision(space.createVector(1, 0, 0))
+    }, 'should detect unsupported geometry')
+
+    const plainn = { a: 1, b: 0, x: -1, y: -1, z: 0, w: 1, h: 1, d: 1 }
+    const boxAlt = new tapspace.geometry.Box(view, plainn)
+
+    t.true(
+      box.detectCollision(boxAlt),
+      'boxes should touch at edge'
+    )
+
+    const boxRot = boxAlt.rotateBy(0.1, boxAlt.atNorm(0.5, 0.5))
+
+    t.false(
+      box.detectCollision(boxRot),
+      'boxes should not touch'
+    )
+  </script>
+</body>
+</html>

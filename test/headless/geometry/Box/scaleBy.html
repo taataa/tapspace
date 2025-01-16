@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:scaleBy - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(10, 10, 30))
+
+    // Get a box
+    const box = item.getBoundingBox()
+    const scaledBox = box.scaleBy(2, item.atAnchor())
+
+    t.equal(
+      scaledBox.getWidth().getNumber(),
+      40,
+      'box size has doubled'
+    )
+
+    const p = scaledBox.at(0, 0, 0).changeBasis(space)
+    const p0 = space.at(-10, -10, 30)
+    t.ok(p.almostEqual(p0), 'left top corner has moved')
+  </script>
+</body>
+</html>

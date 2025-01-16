@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:translateBy - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createItem('hello')
+    item.setSize(20, 10)
+    item.setAnchor(0, 0)
+    space.addChild(item, space.at(10, 10, 30))
+
+    // Get a box
+    const box = item.getBoundingBox()
+
+    const p = box.translateBy({ x: 1, y: 2, z: 3 }).at(0, 0).changeBasis(view)
+    const p0 = new tapspace.geometry.Point(view, { x: 11, y: 12, z: 33 })
+    t.ok(p.almostEqual(p0), 'should move the corner')
+  </script>
+</body>
+</html>
