@@ -5,7 +5,7 @@ export default function (test) {
     'collisions',
     'construction',
     'dimensions',
-    // 'equality', TODO
+    'equality',
     'points',
     'transformations',
     'transitions',
