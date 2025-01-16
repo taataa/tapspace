@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:equal - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item)
+
+    // Get a box
+    const box = item.getBoundingBox()
+    const b0 = new tapspace.geometry.Box(item, {
+      a: 1, b: 0,
+      x: 0, y: 0, z: 0,
+      w: 20, h: 20, d: 0
+    })
+
+    t.ok(box.equal(box), 'same box should be equal')
+    t.ok(box.equal(b0), 'similar boxes should be equal')
+
+    const b1 = new tapspace.geometry.Box(item, {
+      a: 1, b: 0,
+      x: 0, y: 2, z: 0,
+      w: 20, h: 20, d: 0
+    })
+    const b2 = new tapspace.geometry.Box(item, {
+      a: 1, b: 0,
+      x: 0, y: 0, z: 0,
+      w: 20, h: 20, d: 0.0000001
+    })
+
+    t.notOk(box.equal(b1), 'should not be equal on y')
+    t.notOk(box.equal(b2), 'should not be equal on d')
+  </script>
+</body>
+</html>

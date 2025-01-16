@@ -1,12 +1,12 @@
 export default function (test) {
   const namespace = 'Box'
   const methods = [
-    // 'almostEqual', TODO
+    'almostEqual',
     'at',
     'atNorm',
     'changeBasis',
     'detectCollision',
-    // 'equal', TODO
+    'equal',
     'fromBoxes',
     'fromPoints',
     'getArea',

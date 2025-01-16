@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Box:almostEqual - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item)
+
+    // Get a box
+    const box = item.getBoundingBox()
+    const b0 = new tapspace.geometry.Box(item, {
+      a: 1, b: 0,
+      x: 0, y: 0, z: 0,
+      w: 20, h: 20, d: 0
+    })
+
+    t.ok(box.almostEqual(box), 'same box should be almost equal')
+    t.ok(box.almostEqual(b0), 'similar boxes should be almost equal')
+
+    const b1 = new tapspace.geometry.Box(item, {
+      a: 1, b: 0,
+      x: 0, y: 2, z: 0,
+      w: 20, h: 20, d: 0
+    })
+
+    t.notOk(box.almostEqual(b1, 1), 'should be over tolerance')
+    t.ok(box.almostEqual(b1, 2), 'should be at tolerance')
+  </script>
+</body>
+</html>
