@@ -69,8 +69,8 @@
     "lint": "standard 'lib/**/*.js' 'test/**/*.js' && echo 'OK'",
     "lint:fix": "standard --fix 'lib/**/*.js' 'test/**/*.js'",
     "lint:lib": "standard 'lib/**/*.js'",
-    "test": "npm run lint",
-    "test:headless": "npm run lint && npm run build && node test/headless/run.mjs",
+    "test": "npm run lint && npm run build && npm run test:headless",
+    "test:headless": "node test/run.mjs",
     "release": "npm run lint && npm run gv && npm run build:production && npm run build:docs && npm publish --tag alpha",
     "gv": "genversion lib/version.js"
   }

@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import semver from 'semver'
 
 const pjson = JSON.parse(
-  await readFile(new URL('../../../package.json', import.meta.url))
+  await readFile(new URL('../../package.json', import.meta.url))
 )
 
 export default function (test, browser) {
