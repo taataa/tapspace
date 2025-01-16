@@ -6,6 +6,7 @@ import testDirection from './Direction/index.mjs'
 import testDistance from './Distance/index.mjs'
 import testOrientation from './Orientation/index.mjs'
 import testPath from './Path/index.mjs'
+import testRay from './Ray/index.mjs'
 import testSphere from './Sphere/index.mjs'
 import { makeTestAllOk } from '../utils.mjs'
 
@@ -22,5 +23,6 @@ export default function (test, browser) {
   testDistance(testAllOk)
   testOrientation(testAllOk)
   testPath(testAllOk)
+  testRay(testAllOk)
   testSphere(testAllOk)
 }

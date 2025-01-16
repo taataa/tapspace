@@ -1,6 +1,5 @@
 const units = {
   Point: require('./Point.test'),
-  Ray: require('./Ray.test'),
   Scale: require('./Scale.test'),
   Size: require('./Size.test'),
   Transform: require('./Transform.test'),
