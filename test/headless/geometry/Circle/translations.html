@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Circle translations - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const circle = new tapspace.geometry.Circle(space, plain)
+
+    // Test translateBy
+
+    t.deepEqual(
+      circle.translateBy({ x: 1, y: 1, z: 1 }).getRaw(),
+      { x: 2, y: 2, z: 2, r: 1 },
+      'should translate'
+    )
+
+    // Test offset, getRaw
+
+    t.deepEqual(
+      circle.offset(1, 1, 1).getRaw(),
+      { x: 2, y: 2, z: 2, r: 1 },
+      'should offset'
+    )
+  </script>
+</body>
+</html>

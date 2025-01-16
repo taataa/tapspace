@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Circle transitions - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(20, 20, 20))
+    // item zero at 10 10 20
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const circle = new tapspace.geometry.Circle(space, plain)
+
+    // Test changeBasis
+
+    const sphereOnItem = circle.changeBasis(item)
+
+    t.equal(
+      circle.basis,
+      space,
+      'should still have old basis'
+    )
+
+    t.equal(
+      sphereOnItem.basis,
+      item,
+      'should have new basis'
+    )
+
+    const p = sphereOnItem.atCenter()
+    const p0 = new tapspace.geometry.Point(item, { x: -9, y: -9, z: -19 })
+    t.ok(p.almostEqual(p0), 'should be relative to item')
+
+    // Test transitRaw
+
+    t.deepEqual(
+      circle.transitRaw(item),
+      { x: -9, y: -9, z: -19, r: 1 },
+      'should transit to item'
+    )
+  </script>
+</body>
+</html>

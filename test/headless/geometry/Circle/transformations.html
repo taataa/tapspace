@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Circle transformations - Tapspace Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      background: gray;
+      width: 100%;
+      height: 100%;
+    }
+    #testspace {
+      width: 800px;
+      height: 600px;
+    }
+  </style>
+  <script src="../../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const circle = new tapspace.geometry.Circle(space, plain)
+
+    t.deepEqual(
+      circle.scaleBy(2).getRaw(),
+      { x: 1, y: 1, z: 1, r: 2 },
+      'should scale around center'
+    )
+
+    t.deepEqual(
+      circle.scaleBy(2, space.at(0, 0, 0)).getRaw(),
+      { x: 2, y: 2, z: 2, r: 2 },
+      'should scale around space origin'
+    )
+
+    // TODO rotateAroundLine
+    // TODO rotateBy
+  </script>
+</body>
+</html>
