@@ -133,6 +133,7 @@ window.test = {
   planned: -1,
   results: [],
   finished: false,
+  planChecked: false,
 
   assert: function (assertion) {
     this.results.push(assertion)
@@ -156,17 +157,21 @@ window.test = {
 
     // Check that correct number of tests were performed.
     // If not, add a failed test result.
-    const actual = this.results.length
-    const expected = this.planned
-    if (expected >= 0) {
-      if (actual !== expected) {
-        this.assert({
-          result: false,
-          operator: 'plan',
-          message: `Unexpected number of tests: ${actual}, should be ${expected}`,
-          actual,
-          expected
-        })
+    // Do this only once to prevent duplicate assertions upon additional calls.
+    if (!this.planChecked) {
+      this.planChecked = true
+      const actual = this.results.length
+      const expected = this.planned
+      if (expected >= 0) {
+        if (actual !== expected) {
+          this.assert({
+            result: false,
+            operator: 'plan',
+            message: `Unexpected number of tests: ${actual}, should be ${expected}`,
+            actual,
+            expected
+          })
+        }
       }
     }
 
