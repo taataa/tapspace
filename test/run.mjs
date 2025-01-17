@@ -22,9 +22,10 @@ import test from 'tape'
 import testSuite from './suites.mjs'
 
 // Setup
-const browser = await puppeteer.launch()
-// Switch to the commented line to show the browser.
-// const browser = await puppeteer.launch({ headless: false })
+const browser = await puppeteer.launch({
+  headless: true,
+  args: ['--no-sandbox']
+})
 
 // Run tests
 console.time('# runtime')
