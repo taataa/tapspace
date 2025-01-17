@@ -1,5 +1,5 @@
 <a name="top"></a>
-# Tapspace API Documentation v2.0.0-alpha.23
+# Tapspace API Documentation v2.0.0-alpha.24
 
 
 Choose version: [v1](https://taataa.github.io/tapspace/api/) – [v2](#)
