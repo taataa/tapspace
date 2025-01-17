@@ -7,8 +7,8 @@
 // - Install with a script tag on a unit-test HTML page.
 // - Access via window.test object.
 // - Use test.plan(n) to start the test section and test.end() to stop.
-// - Assert with test.equal(), .almostEqual() and test.ok()
-// - Access results via test.report()
+// - Assert with test.equal(), test.almostEqual() and test.ok()
+// - Access results via test.report() or test.print()
 //
 // Developer note:
 // - Keep everything in this single file to avoid need
@@ -179,6 +179,37 @@ window.test = {
         expected: toSerializable(r.expected)
       }
     })
+  },
+
+  print: function () {
+    // Print results in TAP format.
+    // See https://testanything.org/tap-version-14-specification.html
+    //
+    const report = this.report()
+    const version = 'TAP version 14'
+    const plan = '1..' + report.length
+    const lines = report.map((point, i) => {
+      const num = i + 1
+      if (point.result) {
+        return 'ok ' + num + ' - ' + point.message
+      }
+      const fail = 'not ok ' + num + ' - ' + point.message
+      const diagnostics = '  ---\n' +
+        '    operator: ' + point.operator + '\n' +
+        '    expected: ' + point.expected + '\n' +
+        '    actual:   ' + point.actual + '\n' +
+        '  ...'
+      return fail + '\n' + diagnostics
+    })
+    const body = lines.join('\n')
+    const numPassed = report.filter(r => r.result).length
+    const numFailed = report.length - numPassed
+    const stats = '\n' +
+      '# tests ' + report.length + '\n' +
+      '# pass  ' + numPassed + '\n' +
+      '# fail  ' + numFailed + '\n'
+    const tap = version + '\n' + plan + '\n' + body + '\n' + stats
+    console.log(tap)
   },
 
   almostEqual: function (actual, expected, message) {
