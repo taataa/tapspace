@@ -1,6 +1,7 @@
 export default function (test) {
   const namespace = 'Orientation'
   const methods = [
+    'equality',
     'getRaw'
   ]
 
