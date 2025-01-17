@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>FrameComponent:resizeTo - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    test.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createItem('<h1>Hello</h1>')
+    item.setSize(400, 200)
+    item.setAnchor(200, 100)
+    space.addChild(item, space.at(200, 100))
+
+    // Ensure setup
+    let pa, pb
+    pa = item.at(0, 0).changeBasis(view)
+    pb = view.at(0, 0)
+    test.ok(pa.almostEqual(pb), 'should match viewport')
+
+    // Resize operation
+    item.resizeTo({ w: 300, h: 100 }, item.atBottomRight())
+
+    // Test
+    pa = item.at(0, 0).changeBasis(view)
+    pb = view.at(100, 100)
+    test.ok(pa.almostEqual(pb), 'should have moved')
+
+    pa = item.atBottomRight().changeBasis(view)
+    pb = view.at(400, 200)
+    test.ok(pa.almostEqual(pb), 'should have preserved corner position')
+
+    pa = item.atAnchor().changeBasis(view)
+    pb = view.at(250, 150)
+    test.ok(pa.almostEqual(pb), 'should have preserved origin at middle')
+  </script>
+</body>
+</html>

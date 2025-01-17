@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Component geometry creation - Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      const t = test
+      t.plan(10)
+
+      // Setup
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Test createBasis
+
+      const b0 = space.getBasis()
+      const b1 = space.createBasis(space.at(0, 0), 1, 0)
+      t.notOk(b0.almostEqual(null), 'should detect nullish')
+      t.ok(b1.almostEqual(b0), 'should be almost identical with space basis')
+      t.ok(b0.almostEqual(b1), 'should be almost identical with space basis')
+
+      // Test createDirection
+
+      const dir1 = space.createDirection(Math.PI, Math.PI / 2)
+      const dir0 = { basis: space, dir: { x: -1, y: 0, z: 0 } }
+      t.notOk(dir1.equal(dir0), 'should have floating point errors')
+      t.ok(dir1.almostEqual(dir0), 'should be same direction within tolerance')
+
+      // Test createDistance
+
+      const dist1 = space.createDistance(2)
+      const dist0 = view.createDistance(2).changeBasis(space)
+      t.equal(dist1.dist, 2, 'should have correct number')
+      t.ok(dist1.equal(dist0), 'should be equal')
+
+      // Test createOrientation
+
+      const orient1 = space.createOrientation(Math.PI)
+      const orient0 = { basis: space, orient: { a: -1, b: 0 } } // upside down
+      t.ok(orient1.equal(orient1), 'should equal self')
+      t.notOk(orient1.almostEqual(orient0.orient), 'should not take raw')
+      t.ok(orient1.almostEqual(orient0), 'should have same orientation')
+    </script>
+  </body>
+</html>

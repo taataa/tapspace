@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Item boundaries - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(6)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createItem('<h1>Hello</h1>')
+    space.addChild(item)
+    item.setSize(100, 100)
+    item.translateBy({ x: 10, y: 6 })
+
+    // Test: getBoundingBox
+    const bbox = item.getBoundingBox()
+
+    t.equal(
+      bbox.basis,
+      item,
+      'should have correct basis'
+    )
+
+    t.deepEqual(
+      bbox.transitRaw(space),
+      { a: 1, b: 0, x: 10, y: 6, z: 0, w: 100, h: 100, d: 0 },
+      'should have correct props'
+    )
+
+    // Test: getBoundingCircle
+    const bsphere = item.getBoundingCircle()
+
+    t.equal(
+      bsphere.basis,
+      item,
+      'should have correct basis'
+    )
+
+    t.deepEqual(
+      bsphere.transitRaw(space),
+      { x: 60, y: 56, z: 0, r: Math.sqrt(50 * 50 * 2) },
+      'should have correct radius'
+    )
+
+    // Test: getInnerSquare
+    item.setSize(200, 100)
+    const square = item.getInnerSquare()
+
+    t.equal(square.basis, item, 'should have correct basis')
+
+    t.deepEqual(
+      square.transitRaw(space),
+      { a: 1, b: 0, x: 60, y: 6, z: 0, w: 100, h: 100, d: 0 },
+      'should have correct offset'
+    )
+  </script>
+</body>
+</html>

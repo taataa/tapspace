@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Basis:transitRaw - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(20, 20))
+
+    const basis = item.getBasis()
+
+    t.deepEqual(
+      basis.transitRaw(item),
+      { a: 1, b: 0, x: 0, y: 0, z: 0 },
+      'should be default'
+    )
+
+    t.deepEqual(
+      basis.transitRaw(space),
+      { a: 1, b: 0, x: 10, y: 10, z: 0 },
+      'should be in space'
+    )
+  </script>
+</body>
+</html>

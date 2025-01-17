@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Sphere points - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const sphere = new tapspace.geometry.Sphere(space, plain)
+
+    let p, p0
+
+    // Test atCenter
+
+    p = sphere.atCenter()
+    p0 = space.at(1, 1, 1)
+    t.ok(p.almostEqual(p0), 'should match point')
+  </script>
+</body>
+</html>

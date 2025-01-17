@@ -1,7 +1,7 @@
 # ![tapspace.js](docs/tapspace-banner-2023.png?raw=true)
 
 [![NPM Version](https://img.shields.io/npm/v/tapspace/alpha?color=7FCD0F)](https://www.npmjs.com/package/tapspace)
-[![Build Status](https://img.shields.io/travis/com/taataa/tapspace)](https://travis-ci.com/github/taataa/tapspace)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/taataa/tapspace/tapspace-ci.yml)](https://github.com/taataa/tapspace/actions/workflows/tapspace-ci.yml)
 
 We believe **zoomable user interfaces** to be the best way for humans to explore and manipulate two-dimensional content. Therefore we built **Tapspace.js**, a **JavaScript** library dedicated for building such **dynamic front-ends**. It provides an **infinite, scalable, and rotatable space** for you to represent **HTML content** and for your users to play with. Tapspace.js uses **pure CSS3 and DOM** instead of Canvas or WebGL and therefore is able to handle any HTML content you throw at it, including iframes and SVG, and also Canvas- and WebGL-rendered elements. And of course, we provide a clean, documented API for you to **build your best**.
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Item:matchBasis - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(7)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const foo = tapspace.createItem('<p>Foo</p>')
+    foo.setSize(400, 200)
+    space.addChild(foo)
+
+    const bar = tapspace.createItem('<p>Bar</p>')
+    bar.setSize(200, 200)
+    space.addChild(bar)
+
+    t.deepEqual(
+      bar.tran,
+      { a: 1, b: 0, x: 0, y: 0, z: 0 },
+      'correct init basis'
+    )
+
+    // Match basis
+    const sourceBasis = bar.getBasis().offset(300, 0)
+    const targetBasis = foo.getBasis().offset(400, 0).rotateByDegrees(90)
+    bar.matchBasis(sourceBasis, targetBasis)
+
+    t.almostEqual(bar.tran.a, 0, 'correct scale a')
+    t.almostEqual(bar.tran.b, 1, 'correct scale b')
+    t.almostEqual(bar.tran.x, 400, 'correct translation x')
+    t.almostEqual(bar.tran.y, -300, 'correct translation y')
+    t.almostEqual(bar.tran.z, 0, 'correct translation z')
+
+    const b = bar.getBasis().changeBasis(space)
+    const b0 = space.getBasis().offset(400, -300).rotateByDegrees(90)
+    t.ok(b.almostEqual(b0), 'should have correct basis')
+  </script>
+</body>
+</html>

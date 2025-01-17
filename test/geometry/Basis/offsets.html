@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Basis offsets - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(20, 20))
+    // Item origin at (10, 10)
+    // Item center at (20, 20)
+
+    const itemBasis = item.getBasis()
+    const rotBasis = itemBasis.rotateBy(Math.PI / 2)
+    const scarotBasis = rotBasis.scaleBy(2)
+    // Item basis and tge scaled and rotated basis have origin at (10, 10)
+
+    let p, p0
+
+    const innerOffsetBasis = scarotBasis.innerOffset(5, 2, 1)
+    // Item x-axis points down and is 2 units long.
+    // Item y-axis points left and is 2 units long.
+    // Dx of 5 is therefore 10 units long.
+    // Dy of 2 is therefore 4 units long.
+    // Dz of 1 is therefore 2 units long.
+    // Dx' is -Dy is -4 units.
+    // Dy' is Dx is 10 units.
+    // Dz' is Dz is 2 units.
+    // Item origin at (10, 10, 0) in space
+    // scarotBasis origin at (10, 10, 0) in space
+    p = innerOffsetBasis.at(0, 0).changeBasis(space)
+    p0 = space.at(6, 20, 2)
+    t.ok(p.almostEqual(p0), 'should rotate and scale')
+
+    const outerOffsetBasis = scarotBasis.outerOffset(5, 2, 1)
+    // scarotBasis origin at (10, 10, 0) in space
+    p = outerOffsetBasis.at(0, 0).changeBasis(space)
+    p0 = space.at(15, 12, 1)
+    t.ok(p.almostEqual(p0), 'should translate in outer basis')
+
+    // Polar offset
+    const geo = tapspace.geometry
+    const distance = new geo.Distance(space, 20)
+    const direction = new geo.Direction(space, { x: 0, y: 1, z: 0 })
+    const polarBasis = scarotBasis.polarOffset(distance, direction)
+    const rawBasis = scarotBasis.polarOffset(10, 0)
+
+    p = polarBasis.at(0, 0).changeBasis(space)
+    p0 = space.at(10, 30)
+    t.ok(p.almostEqual(p0), 'should do polar offset')
+
+    p = rawBasis.at(0, 0).changeBasis(space)
+    p0 = polarBasis.at(0, 0).changeBasis(space)
+    t.ok(p.almostEqual(p0), 'should match raw')
+
+  </script>
+</body>
+</html>

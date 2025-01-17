@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Component:setId - Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(2)
+
+      // Setup
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Test precondition
+      test.notEqual(space.element.id, 'hero', 'should not be new element id')
+
+      // Set space id
+      space.setId('hero')
+
+      // Common with self
+      test.equal(space.element.id, 'hero', 'should be new element id')
+    </script>
+  </body>
+</html>

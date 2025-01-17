@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Point:addVector - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+    // Create a Point
+    const p = basis.at(10, 6)
+    // Create a Vector
+    const v = new tapspace.geometry.Vector(basis, { x: 2, y: 3, z: 4 })
+
+    t.deepEqual(
+      p.addVector(v).getRaw(),
+      { x: 12, y: 9, z: 4 },
+      'should increase properties'
+    )
+  </script>
+</body>
+</html>

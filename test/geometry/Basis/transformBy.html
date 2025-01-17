@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Basis:transformBy - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(20, 20))
+
+    const tr = tapspace.geometry.Transform.fromFeatures({
+      basis: space,
+      scale: 2 // TODO dilation
+    })
+    const basis = item.getBasis().transformBy(tr, item.atCenter())
+
+    t.deepEqual(
+      basis.getRaw(),
+      { a: 2, b: 0, x: -10, y: -10, z: 0 },
+      'should be scaled'
+    )
+  </script>
+</body>
+</html>

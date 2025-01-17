@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Component:prependChild - Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(2)
+
+      // Setup
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Construct a hierarchy of nodes
+      space.element.innerHTML = '' +
+        '<div id="affine-a" class="affine-element">\n' +
+        ' <div id="affine-aa" class="affine-element">\n' +
+        '  <div id="affine-aaa" class="affine-element">\n' +
+        '  </div>\n' +
+        '  <div id="affine-aab" class="affine-element">\n' +
+        '  </div>\n' +
+        '  <div id="nonaffine-aac">\n' +
+        '  </div>\n' +
+        ' </div>\n' +
+        '</div>'
+
+      const Component = tapspace.components.Component
+      const na = new Component(space.element.querySelector('#affine-a'))
+      const naa = new Component(space.element.querySelector('#affine-aa'))
+      const naaa = new Component(space.element.querySelector('#affine-aaa'))
+      const naab = new Component(space.element.querySelector('#affine-aab'))
+      // const naac = document.querySelector('#nonaffine-aac')
+      // naac is not affine
+
+      test.equal(
+        naa.getElement().firstElementChild,
+        naaa.getElement(),
+        'should be first'
+      )
+
+      // Move naab to first
+      naa.prependChild(naab)
+
+      test.equal(
+        naa.getElement().firstElementChild,
+        naab.getElement(),
+        'should have moved first'
+      )
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Sphere measures - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const sphere = new tapspace.geometry.Sphere(space, plain)
+
+    t.equal(
+      sphere.getVolume().getRaw(),
+      4 * Math.PI / 3,
+      'should have correct volume'
+    )
+  </script>
+</body>
+</html>

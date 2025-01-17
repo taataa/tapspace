@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Basis:createVector - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(20, 20, 20))
+
+    const itemBasis = item.getBasis()
+
+    const v = itemBasis.createVector(10, 20).changeBasis(space)
+    const v0 = new tapspace.geometry.Vector(space, { x: 10, y: 20, z: 0 })
+    t.ok(v.almostEqual(v0), 'should not be affected on basis translation')
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Point:getRaw - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+    // Create a Point
+    const p = basis.at(10, 6)
+
+    t.deepEqual(
+      p.getRaw(),
+      { x: 10, y: 6, z: 0 },
+      'should convert to point3'
+    )
+  </script>
+</body>
+</html>

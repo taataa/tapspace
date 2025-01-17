@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Box:changeBasis - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(10, 20, 30))
+
+    // Get a box
+    const boxOnItem = item.getBoundingBox()
+    const boxOnSpace = boxOnItem.changeBasis(space)
+
+    const p = boxOnItem.at(10, 10, 20).changeBasis(view)
+    const p0 = boxOnSpace.at(10, 10, 20).changeBasis(view)
+    t.ok(p.almostEqual(p0), 'should be same box')
+
+    t.notEqual(
+      boxOnItem.basis,
+      boxOnSpace.basis,
+      'different basis'
+    )
+  </script>
+</body>
+</html>

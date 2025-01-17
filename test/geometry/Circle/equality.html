@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Circle equality - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(11)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const circle = new tapspace.geometry.Circle(space, plain)
+    let c0
+
+    // Test almostEqual
+
+    c0 = new tapspace.geometry.Circle(space, plain)
+    t.ok(circle.almostEqual(c0), 'should allow identical coordinates')
+    t.ok(circle.almostEqual(c0, 0), 'should allow under zero tolerance')
+    t.ok(circle.almostEqual(circle), 'should allow same object')
+
+    c0 = new tapspace.geometry.Circle(view, plain)
+    t.notOk(circle.almostEqual(c0), 'should detect different basis')
+
+    c0 = new tapspace.geometry.Circle(space, { x: 1, y: 1, z: 1, r: 2 })
+    t.notOk(circle.almostEqual(c0, 0.5), 'should detect over tolerance')
+    t.ok(circle.almostEqual(c0, 1), 'should allow under tolerance')
+
+    // Test equal
+
+    c0 = new tapspace.geometry.Circle(space, plain)
+    t.ok(circle.equal(c0), 'should allow equal coordinates')
+    t.ok(circle.equal(circle), 'same object should be equal')
+
+    c0 = new tapspace.geometry.Circle(view, plain)
+    t.notOk(circle.equal(c0), 'should detect different basis')
+
+    c0 = new tapspace.geometry.Circle(space, { x: 1, y: 1, z: 1, r: 2 })
+    t.notOk(circle.equal(c0), 'should detect difference in r')
+    c0 = new tapspace.geometry.Circle(space, { x: 1.0000001, y: 1, z: 1, r: 1 })
+    t.notOk(circle.equal(c0), 'should detect slight difference in x')
+  </script>
+</body>
+</html>

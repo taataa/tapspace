@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Transform:getRaw - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+    // Create a Transformation
+    const helm = { a: 1, b: 2, x: 3, y: 4, z: 5 }
+    const tr = new tapspace.geometry.Transform(basis, helm)
+
+    t.deepEqual(
+      tr.getRaw(),
+      helm,
+      'should convert to helm3'
+    )
+  </script>
+</body>
+</html>

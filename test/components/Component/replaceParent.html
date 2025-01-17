@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Component:replaceParent - Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(2)
+
+      // Setup
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space, view.at(100, 50))
+      const backyard = tapspace.createSpace()
+      view.addChild(backyard, view.at(200, 100))
+
+      const item = tapspace.createItem('<h1>Hello</h1>')
+      item.setSize(400, 200)
+      space.addChild(item, space.at(300, 150))
+
+      // Store a point
+      const before = item.atCenter().transitRaw(view)
+
+      // Reparent
+      item.replaceParent(backyard)
+
+      // Sample the point again
+      const after = item.atCenter().transitRaw(view)
+
+      test.notEqual(item.getParent(), space, 'should have new parent')
+
+      test.deepEqual(
+        after,
+        before,
+        'points should match'
+      )
+    </script>
+  </body>
+</html>

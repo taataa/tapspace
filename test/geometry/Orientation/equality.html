@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Orientation equality - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(10)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    // Create an element
+    const item = tapspace.createItem('hello')
+    item.setSize({ w: 200, h: 200 })
+    space.addChild(item)
+    // Get its orientation
+    const orientation = item.getOrientation()
+
+    // Test almostEqual
+
+    const ori = orientation.changeBasis(space)
+    const ori0 = space.getOrientation()
+
+    t.notOk(orientation.almostEqual(ori0), 'should detect different basis')
+    t.ok(ori.almostEqual(ori), 'should allow same object')
+    t.ok(ori.almostEqual(ori0), 'should allow similar object')
+    t.notOk(ori.almostEqual(null), 'should detect nullish value')
+
+    item.rotateBy(0.1)
+    const ori1 = orientation.changeBasis(space)
+
+    t.notOk(ori.almostEqual(ori1), 'should detect different orientation')
+    t.ok(ori.almostEqual(ori1, 0.2), 'should tolerate difference')
+
+    // Test equal
+
+    t.ok(ori.equal(ori), 'should be equal to self')
+    t.notOk(ori.equal(null), 'should detect nullish value')
+    t.notOk(orientation.equal(ori1), 'should detect difference in basis')
+    t.notOk(ori.equal(ori1), 'should detect difference in value')
+  </script>
+</body>
+</html>

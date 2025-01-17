@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Point:transformBy - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(4)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Create a Point
+    const p = space.at(10, 6)
+
+    // Create a Transformation
+    const traw = { a: 2, b: 0, x: 0, y: 0, z: 0 }
+    const tr = new tapspace.geometry.Transform(space, traw)
+
+    t.deepEqual(
+      p.transformBy(tr, p).getRaw(),
+      p.getRaw(),
+      'should not scale same origin'
+    )
+
+    t.deepEqual(
+      p.transformBy(tr, space.at(10, 10)).getRaw(),
+      space.at(10, 2).getRaw(),
+      'should scale about the point'
+    )
+
+    // Create a transformation with translation
+    const traw2 = { a: 2, b: 0, x: 10, y: 10, z: 10 }
+    const tr2 = new tapspace.geometry.Transform(space, traw2)
+
+    t.deepEqual(
+      p.transformBy(tr2, p).getRaw(),
+      space.at(20, 16, 10).getRaw(),
+      'should translate regardless the same origin'
+    )
+
+    t.deepEqual(
+      p.transformBy(tr2, space.at(10, 10)).getRaw(),
+      space.at(20, 12, 10).getRaw(),
+      'should scale and translate'
+    )
+  </script>
+</body>
+</html>

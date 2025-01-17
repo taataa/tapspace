@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Circle dimensions - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(6)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const plain = { x: 1, y: 1, z: 1, r: 1 }
+    const circle = new tapspace.geometry.Circle(space, plain)
+
+    // Test getSize
+    t.deepEqual(
+      circle.getSize().getRaw(),
+      { w: 2, h: 2, d: 0 },
+      'should have correct size'
+    )
+
+    // Test getDiameter
+    t.deepEqual(
+      circle.getDiameter().getRaw(),
+      2,
+      'should have correct diameter'
+    )
+
+    // Test getRadius
+    t.deepEqual(
+      circle.getRadius().getRaw(),
+      1,
+      'should have correct radius'
+    )
+
+    // Test getWidth
+    t.deepEqual(
+      circle.getWidth().getRaw(),
+      2,
+      'should have correct width'
+    )
+
+    // Test getHeight
+    t.deepEqual(
+      circle.getHeight().getRaw(),
+      2,
+      'should have correct height'
+    )
+
+    // Test getArea
+    t.equal(
+      circle.getArea().getRaw(),
+      Math.PI, // πr²
+      'should have correct area'
+    )
+  </script>
+</body>
+</html>

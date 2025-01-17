@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Item:setBasis - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(3)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const foo = tapspace.createItem('<p>Foo</p>')
+    foo.setSize(400, 200)
+    space.addChild(foo)
+    foo.rotateBy(Math.PI / 2) // 90 deg
+
+    const bar = tapspace.createItem('<p>Bar</p>')
+    bar.setSize(200, 200)
+    space.addChild(bar)
+
+    // Match basis
+    bar.setBasis(foo.getBasis())
+
+    let p, p0
+    p = foo.at(100, 100).changeBasis(space)
+    p0 = space.at(-100, 100)
+    t.ok(p.almostEqual(p0), 'should have correct basis')
+
+    p = bar.at(0, 0).changeBasis(view)
+    p0 = foo.at(0, 0).changeBasis(view)
+    t.ok(p.almostEqual(p0), 'should match bases at origin')
+
+    p = bar.at(10, 10).changeBasis(view)
+    p0 = foo.at(10, 10).changeBasis(view)
+    t.ok(p.almostEqual(p0), 'should match bases at point')
+  </script>
+</body>
+</html>

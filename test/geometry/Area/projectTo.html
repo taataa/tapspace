@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Area:projectTo - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Virtual camera
+    const camDist = 300
+    const camera = view.atCenter().offset(0, 0, -camDist)
+
+    // Create an element
+    const hello = tapspace.createItem('hello')
+    hello.setSize({ w: 20, h: 20 })
+    space.addChild(hello, space.at(10, 10, camDist))
+
+    // Create area
+    const area = hello.getArea()
+
+    // Original area: 400
+    t.equal(
+      area.projectTo(view, camera).getNumber(),
+      100,
+      'should have quarter of original area'
+    )
+  </script>
+</body>
+</html>

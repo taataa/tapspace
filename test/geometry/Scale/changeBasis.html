@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Scale:changeBasis - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    // Create two bases
+    const ba = tapspace.createSpace().setParent(view)
+    const bb = tapspace.createSpace().setParent(view)
+    // Scale another
+    bb.scaleBy(4)
+    const scale = bb.getScale()
+
+    // Test getRaw
+
+    t.equal(
+      scale.getRaw(),
+      1,
+      'should convert scale to number'
+    )
+
+    // Test changeBasis
+
+    t.equal(
+      scale.changeBasis(ba).getRaw(),
+      4,
+      'should convert scale to number'
+    )
+  </script>
+</body>
+</html>

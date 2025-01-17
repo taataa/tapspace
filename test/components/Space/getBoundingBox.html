@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Space:getBoundingBox – Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(5)
+
+      const view = tapspace.createView('#testspace')
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create items for boundary
+      const foo = tapspace.createItem('<p>Foo</p>')
+      foo.setSize(200, 200)
+      foo.setAnchor(0, 0)
+      const bar = tapspace.createItem('<p>Bar</p>')
+      bar.setSize(200, 200)
+      bar.setAnchor(0, 0)
+
+      // Add items off the plane
+      space.addChild(foo, space.at(100, 100, 10))
+      space.addChild(bar, space.at(500, 300, -10))
+
+      // Take the box.
+      const bounds = space.getBoundingBox()
+      const size = bounds.getSize().getRaw()
+
+      test.equal(size.w, 600, 'should have correct width')
+      test.equal(size.h, 400, 'should have correct height')
+      test.equal(size.d, 20, 'should have correct depth')
+
+      // Take a custom orientation.
+      const orient = space.createOrientation(Math.PI / 4)
+      const orientedBounds = space.getBoundingBox(orient)
+
+      const b0 = orientedBounds.at(0, 0).changeBasis(space)
+      const s0 = space.at(300, -100, -10)
+      const b1 = orientedBounds.atNorm(1, 1).changeBasis(space)
+      const s1 = space.at(500, 700, -10)
+
+      test.ok(s0.almostEqual(b0), 'should have matching origin')
+      test.ok(s1.almostEqual(b1), 'should have matching bottom right corner')
+    </script>
+  </body>
+</html>

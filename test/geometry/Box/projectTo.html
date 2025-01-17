@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Box:projectTo - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(3)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    // Virtual camera
+    const camDist = 300
+    const camera = view.at(0, 0, -camDist)
+
+    const item = tapspace.createNode(10, 'black')
+    space.addChild(item, space.at(10, 10, camDist))
+    // Get a box. It should be at space (0, 0, 300) and have size (20, 20, 0)
+    const box = item.getBoundingBox()
+
+    const projectedBox = box.projectTo(view, camera)
+
+    t.equal(
+      projectedBox.getWidth().getNumber(),
+      10,
+      'box size halved'
+    )
+
+    t.equal(
+      projectedBox.getDepth().getNumber(),
+      0,
+      'box has valid zero depth'
+    )
+
+    const p = projectedBox.at(0, 0, 0).changeBasis(space)
+    const p0 = space.at(0, 0, 0)
+    t.ok(p.almostEqual(p0), 'should stay near viewport zero')
+  </script>
+</body>
+</html>

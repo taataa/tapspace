@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Item:createVector - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(2)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const item = tapspace.createItem('<h1>Hello</h1>')
+    space.addChild(item)
+    item.translateBy({ x: 10, y: 6 })
+
+    t.deepEqual(
+      item.createVector(1, 2).transitRaw(space),
+      { x: 1, y: 2, z: 0 },
+      'translation should not affect'
+    )
+
+    t.deepEqual(
+      item.createVector(1, 2, 3).transitRaw(space),
+      { x: 1, y: 2, z: 3 },
+      'allow z coordinate'
+    )
+  </script>
+</body>
+</html>

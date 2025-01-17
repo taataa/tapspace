@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Item:setOrientation - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+
+    const foo = tapspace.createItem('<p>Foo</p>')
+    foo.setSize(400, 200)
+    space.addChild(foo)
+    foo.rotateBy(Math.PI / 2) // 90 deg
+
+    const bar = tapspace.createItem('<p>Bar</p>')
+    bar.setSize(200, 200)
+    space.addChild(bar)
+
+    // Match orientation
+    bar.setOrientation(foo.getOrientation(), bar.atBottomRight())
+
+    const p = bar.at(0, 0).changeBasis(space)
+    const p0 = space.at(400, 0)
+    t.ok(p.almostEqual(p0), 'should have rotated around corner')
+  </script>
+</body>
+</html>

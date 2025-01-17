@@ -1,8 +1,6 @@
 # Bundle builds
 /dist/*
 !/dist/.gitkeep
-/test/dist/*
-!/test/dist/.gitkeep
 
 # Logs
 logs

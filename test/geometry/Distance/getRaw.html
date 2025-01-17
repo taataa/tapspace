@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Distance :getRaw - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(1)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const space = tapspace.createSpace()
+    view.addChild(space)
+    // Create two Points
+    const pa = space.at(10, 6)
+    const pb = space.at(14, 9)
+    // Get a Distance between them
+    const d = pa.getDistanceTo(pb)
+
+    t.equal(
+      d.getRaw(),
+      5,
+      'should convert to dist3 number'
+    )
+  </script>
+</body>
+</html>
