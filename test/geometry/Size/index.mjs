@@ -1,6 +1,7 @@
 export default function (test) {
   const namespace = 'Size'
   const methods = [
+    'equality',
     'getRaw',
     'scaleBy'
   ]

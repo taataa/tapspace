@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Size equality - Tapspace Test</title>
+  <link rel="stylesheet" href="../default.css" />
+  <script src="../../../dist/tapspace.min.js"></script>
+  <script src="../../testlib.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="testspace"></div>
+  </div>
+  <script>
+    const t = test
+    t.plan(8)
+
+    // Setup
+    const view = tapspace.createView('#testspace')
+    const basis = tapspace.createSpace()
+    view.addChild(basis)
+    // Create an element
+    const hel = tapspace.createItem('hello')
+    hel.setSize({ w: 200, h: 200 })
+    basis.addChild(hel)
+    // Get its size
+    const size = hel.getSize()
+
+    // Test almostEqual
+
+    const s0 = new tapspace.geometry.Size(hel, { w: 200, h: 199, d: 0 })
+
+    t.ok(size.almostEqual(size), 'should allow same object')
+    t.notOk(size.almostEqual(null), 'should detect nullish value')
+    t.notOk(size.almostEqual(s0), 'should detect difference')
+    t.ok(size.almostEqual(s0, 1), 'should tolerate difference')
+
+    // Test equal
+
+    t.ok(size.equal(size), 'should be equal to self')
+    t.notOk(size.equal(null), 'should detect nullish value')
+    t.notOk(size.equal(s0), 'should detect difference')
+
+    const s1 = new tapspace.geometry.Size(hel, { w: 200, h: 200.000000001, d: 0 })
+    t.notOk(size.equal(s1), 'should detect small difference')
+  </script>
+</body>
+</html>
