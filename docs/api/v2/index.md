@@ -1161,6 +1161,7 @@ Nested components form an *affine subtree* in DOM.
 - [tapspace.components.Component:bringToFront](#tapspacecomponentscomponentbringtofront)
 - [tapspace.components.Component:createBasis](#tapspacecomponentscomponentcreatebasis)
 - [tapspace.components.Component:createDirection](#tapspacecomponentscomponentcreatedirection)
+- [tapspace.components.Component:createDistance](#tapspacecomponentscomponentcreatedistance)
 - [tapspace.components.Component:createOrientation](#tapspacecomponentscomponentcreateorientation)
 - [tapspace.components.Component:createVector](#tapspacecomponentscomponentcreatevector)
 - [tapspace.components.Component:findCommonAncestor](#tapspacecomponentscomponentfindcommonancestor)
@@ -1405,6 +1406,24 @@ relative to the component.
 
 
 Source: [createDirection.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/createDirection.js)
+
+<a name="tapspacecomponentscomponentcreatedistance"></a>
+## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[createDistance](#tapspacecomponentscomponentcreatedistance)(dist)
+
+Create a [Distance](#tapspacegeometrydistance) relative to the component.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dist*
+  - a number, a distance in the coordinate space of the component.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a [Distance](#tapspacegeometrydistance)
+
+
+Source: [createDistance.js](https://github.com/taataa/tapspace/blob/master/lib/components/Component/createDistance.js)
 
 <a name="tapspacecomponentscomponentcreateorientation"></a>
 ## [tapspace](#tapspace).[components](#tapspacecomponents).[Component](#tapspacecomponentscomponent):[createOrientation](#tapspacecomponentscomponentcreateorientation)(angle)
@@ -2754,7 +2773,7 @@ the space position of the top left corner, see [FrameComponent:setSize](#tapspac
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *newSize*
-  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
+  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). The dimensions must be numbers. CSS length strings are not supported.
 - *pivot*
   - optional [Point](#tapspacegeometrypoint), default is the transform origin.
 
@@ -2801,7 +2820,7 @@ To preserve the relative anchor position, see [FrameComponent:resizeTo](#tapspac
 <p style="margin-bottom: 0"><strong>Parameters:</strong></p>
 
 - *newSize*
-  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). If {w,h} or {width,height} format is used, the dimensions can be either number of pixels or CSS length strings. Note that if the component is not yet in DOM, relative length units might not work.
+  - a {w,h}, a {width,height}, or a [Size](#tapspacegeometrysize). Note that the dimensions must be numbers. CSS length strings are not supported.
 
 
 <p style="margin-bottom: 0"><strong>Parameters (alternative):</strong></p>
@@ -5829,11 +5848,13 @@ the scale, orientation, and position of a virtual basis.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Basis:almostEqual](#tapspacegeometrybasisalmostequal)
 - [tapspace.geometry.Basis:at](#tapspacegeometrybasisat)
 - [tapspace.geometry.Basis:changeBasis](#tapspacegeometrybasischangebasis)
 - [tapspace.geometry.Basis:createDirection](#tapspacegeometrybasiscreatedirection)
 - [tapspace.geometry.Basis:createDistance](#tapspacegeometrybasiscreatedistance)
 - [tapspace.geometry.Basis:createVector](#tapspacegeometrybasiscreatevector)
+- [tapspace.geometry.Basis:equal](#tapspacegeometrybasisequal)
 - [tapspace.geometry.Basis:getMatchedOuter](#tapspacegeometrybasisgetmatchedouter)
 - [tapspace.geometry.Basis:getOrientation](#tapspacegeometrybasisgetorientation)
 - [tapspace.geometry.Basis:getPoint](#tapspacegeometrybasisgetpoint)
@@ -5855,6 +5876,28 @@ the scale, orientation, and position of a virtual basis.
 
 
 Source: [Basis/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/index.js)
+
+<a name="tapspacegeometrybasisalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[almostEqual](#tapspacegeometrybasisalmostequal)(b[, tolerance])
+
+Test if this is equal to the given basis b within tolerance.
+Almost equality requires identical basis' basis
+and that coordinates are equal within tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *b*
+  - a [Basis](#tapspacegeometrybasis)
+- *tolerance*
+  - optional number. Maximum tolerated distance between coordinates.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/almostEqual.js)
 
 <a name="tapspacegeometrybasisat"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[at](#tapspacegeometrybasisat)(x, y, z)
@@ -5960,6 +6003,26 @@ Create a vector using coordinate system of this basis.
 
 
 Source: [createVector.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/createVector.js)
+
+<a name="tapspacegeometrybasisequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[equal](#tapspacegeometrybasisequal)(b)
+
+Test if the value b is a [Basis](#tapspacegeometrybasis) and strictly equal.
+Strict equality requires the same basis' basis
+and identical coordinates.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *b*
+  - a [Basis](#tapspacegeometrybasis)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Basis/equal.js)
 
 <a name="tapspacegeometrybasisgetmatchedouter"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Basis](#tapspacegeometrybasis):[getMatchedOuter](#tapspacegeometrybasisgetmatchedouter)(targetBasis)
@@ -6321,12 +6384,14 @@ in any basis, not only those that have same orientation.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Box:almostEqual](#tapspacegeometryboxalmostequal)
 - [tapspace.geometry.Box:at](#tapspacegeometryboxat)
 - [tapspace.geometry.Box:atCenter](#tapspacegeometryboxatcenter)
 - [tapspace.geometry.Box:atMid](#tapspacegeometryboxatmid)
 - [tapspace.geometry.Box:atNorm](#tapspacegeometryboxatnorm)
 - [tapspace.geometry.Box:changeBasis](#tapspacegeometryboxchangebasis)
 - [tapspace.geometry.Box:detectCollision](#tapspacegeometryboxdetectcollision)
+- [tapspace.geometry.Box:equal](#tapspacegeometryboxequal)
 - [tapspace.geometry.Box:fromBoxes](#tapspacegeometryboxfromboxes)
 - [tapspace.geometry.Box:fromPoints](#tapspacegeometryboxfrompoints)
 - [tapspace.geometry.Box:getArea](#tapspacegeometryboxgetarea)
@@ -6352,6 +6417,28 @@ in any basis, not only those that have same orientation.
 
 
 Source: [Box/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/index.js)
+
+<a name="tapspacegeometryboxalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[almostEqual](#tapspacegeometryboxalmostequal)(b[, tolerance])
+
+Test if this box is equal to the given box b within tolerance.
+Almost equality requires identical basis
+and that box size, position, and orientation are equal within tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *b*
+  - a [Box](#tapspacegeometrybox)
+- *tolerance*
+  - optional number. Maximum tolerated distance between values.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/almostEqual.js)
 
 <a name="tapspacegeometryboxat"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[at](#tapspacegeometryboxat)(x, y[, z])
@@ -6457,6 +6544,26 @@ Note that not all geometries are supported, see below.
 
 
 Source: [detectCollision.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/detectCollision.js)
+
+<a name="tapspacegeometryboxequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[equal](#tapspacegeometryboxequal)(b)
+
+Test if this box is strictly equal with the given box b.
+Strict equality requires that the boxes are on the same basis
+and have strictly equal size, position, and orientation.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *b*
+  - a [Box](#tapspacegeometrybox)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Box/equal.js)
 
 <a name="tapspacegeometryboxfromboxes"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Box](#tapspacegeometrybox):[fromBoxes](#tapspacegeometryboxfromboxes)(basis, boxes)
@@ -6820,11 +6927,13 @@ A circle tensor. The circle is a flat round shape in 3D space.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Circle:almostEqual](#tapspacegeometrycirclealmostequal)
 - [tapspace.geometry.Circle:atArc](#tapspacegeometrycircleatarc)
 - [tapspace.geometry.Circle:atCenter](#tapspacegeometrycircleatcenter)
 - [tapspace.geometry.Circle:atMid](#tapspacegeometrycircleatmid)
 - [tapspace.geometry.Circle:changeBasis](#tapspacegeometrycirclechangebasis)
 - [tapspace.geometry.Circle:detectCollision](#tapspacegeometrycircledetectcollision)
+- [tapspace.geometry.Circle:equal](#tapspacegeometrycircleequal)
 - [tapspace.geometry.Circle:fromPoints](#tapspacegeometrycirclefrompoints)
 - [tapspace.geometry.Circle:getArea](#tapspacegeometrycirclegetarea)
 - [tapspace.geometry.Circle:getBoundingBox](#tapspacegeometrycirclegetboundingbox)
@@ -6842,6 +6951,28 @@ A circle tensor. The circle is a flat round shape in 3D space.
 
 
 Source: [Circle/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/index.js)
+
+<a name="tapspacegeometrycirclealmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[almostEqual](#tapspacegeometrycirclealmostequal)(c[, tolerance])
+
+Test if this circle is equal to the given circle c within tolerance.
+Almost equality requires identical basis
+and that circle radius and position are equal within tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *c*
+  - a [Circle](#tapspacegeometrycircle)
+- *tolerance*
+  - optional number. Maximum tolerated distance between values.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/almostEqual.js)
 
 <a name="tapspacegeometrycircleatarc"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[atArc](#tapspacegeometrycircleatarc)(dir)
@@ -6918,6 +7049,26 @@ Note that not all geometries are supported, see below.
 
 
 Source: [detectCollision.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/detectCollision.js)
+
+<a name="tapspacegeometrycircleequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[equal](#tapspacegeometrycircleequal)(c)
+
+Test if this circle is strictly equal with the given circle c.
+Strict equality requires that the circles are on the same basis
+and have strictly equal radius and position.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *c*
+  - a [Circle](#tapspacegeometrycircle)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Circle/equal.js)
 
 <a name="tapspacegeometrycirclefrompoints"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Circle](#tapspacegeometrycircle):[fromPoints](#tapspacegeometrycirclefrompoints)(basis, points)
@@ -7148,9 +7299,11 @@ space and therefore they need conversion when transited between planes.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Direction:almostEqual](#tapspacegeometrydirectionalmostequal)
 - [tapspace.geometry.Direction:basis](#tapspacegeometrydirectionbasis)
 - [tapspace.geometry.Direction:changeBasis](#tapspacegeometrydirectionchangebasis)
 - [tapspace.geometry.Direction:dir](#tapspacegeometrydirectiondir)
+- [tapspace.geometry.Direction:equal](#tapspacegeometrydirectionequal)
 - [tapspace.geometry.Direction:fromSpherical](#tapspacegeometrydirectionfromspherical)
 - [tapspace.geometry.Direction:fromVector](#tapspacegeometrydirectionfromvector)
 - [tapspace.geometry.Direction:getRaw](#tapspacegeometrydirectiongetraw)
@@ -7159,6 +7312,28 @@ space and therefore they need conversion when transited between planes.
 
 
 Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Direction/index.js)
+
+<a name="tapspacegeometrydirectionalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[almostEqual](#tapspacegeometrydirectionalmostequal)(dir[, tolerance])
+
+Test if this direction is equal to a given direction within tolerance.
+Equality requires strictly equal basis and that the distance between coordinates
+is within the tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dir*
+  - a [Direction](#tapspacegeometrydirection)
+- *tolerance*
+  - optional number
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Direction/almostEqual.js)
 
 <a name="tapspacegeometrydirectionbasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[basis](#tapspacegeometrydirectionbasis)
@@ -7189,6 +7364,25 @@ Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geom
 Property for the unit vector, affineplane.dir3. Usage: `dir.dir`.
 
 Source: [Direction/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Direction/index.js)
+
+<a name="tapspacegeometrydirectionequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[equal](#tapspacegeometrydirectionequal)(dir)
+
+Test if this direction is strictly equal to a given direction.
+Strict equality requires strictly equal basis and coordinates.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dir*
+  - a [Direction](#tapspacegeometrydirection)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Direction/equal.js)
 
 <a name="tapspacegeometrydirectionfromspherical"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Direction](#tapspacegeometrydirection):[fromSpherical](#tapspacegeometrydirectionfromspherical)(basis, theta, phi)
@@ -7304,6 +7498,7 @@ not affect the distance. Only the scale does.
 
 
 - [tapspace.geometry.Distance:changeBasis](#tapspacegeometrydistancechangebasis)
+- [tapspace.geometry.Distance:equal](#tapspacegeometrydistanceequal)
 - [tapspace.geometry.Distance:getNumber](#tapspacegeometrydistancegetnumber)
 - [tapspace.geometry.Distance:getRaw](#tapspacegeometrydistancegetraw)
 - [tapspace.geometry.Distance:getVector](#tapspacegeometrydistancegetvector)
@@ -7335,6 +7530,25 @@ Source: [Distance/index.js](https://github.com/taataa/tapspace/blob/master/lib/g
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Distance/changeBasis.js)
+
+<a name="tapspacegeometrydistanceequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[equal](#tapspacegeometrydistanceequal)(dist)
+
+Test if this distance is strictly equal to the given distance.
+Strict equality requires strictly equal basis and numerical distance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *dist*
+  - a [Distance](#tapspacegeometrydistance)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Distance/equal.js)
 
 <a name="tapspacegeometrydistancegetnumber"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Distance](#tapspacegeometrydistance):[getNumber](#tapspacegeometrydistancegetnumber)()
@@ -7572,8 +7786,10 @@ space and therefore they need conversion when transited between bases.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Orientation:almostEqual](#tapspacegeometryorientationalmostequal)
 - [tapspace.geometry.Orientation:basis](#tapspacegeometryorientationbasis)
 - [tapspace.geometry.Orientation:changeBasis](#tapspacegeometryorientationchangebasis)
+- [tapspace.geometry.Orientation:equal](#tapspacegeometryorientationequal)
 - [tapspace.geometry.Orientation:getRaw](#tapspacegeometryorientationgetraw)
 - [tapspace.geometry.Orientation:orient](#tapspacegeometryorientationorient)
 - [tapspace.geometry.Orientation:transitRaw](#tapspacegeometryorientationtransitraw)
@@ -7585,6 +7801,28 @@ space and therefore they need conversion when transited between bases.
 
 
 Source: [Orientation/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/index.js)
+
+<a name="tapspacegeometryorientationalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Orientation](#tapspacegeometryorientation):[almostEqual](#tapspacegeometryorientationalmostequal)(orient[, tolerance])
+
+Test if this orientation is equal to a given orientation within tolerance.
+Equality requires strictly equal basis and that the difference in orientation
+is within the tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *orient*
+  - an [Orientation](#tapspacegeometryorientation)
+- *tolerance*
+  - optional number
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/almostEqual.js)
 
 <a name="tapspacegeometryorientationbasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Orientation](#tapspacegeometryorientation):[basis](#tapspacegeometryorientationbasis)
@@ -7608,6 +7846,25 @@ Source: [Orientation/index.js](https://github.com/taataa/tapspace/blob/master/li
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/changeBasis.js)
+
+<a name="tapspacegeometryorientationequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Orientation](#tapspacegeometryorientation):[equal](#tapspacegeometryorientationequal)(orient)
+
+Test if this orientation is strictly equal to a given orientation.
+Strict equality requires identical basis and orientation values.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *orient*
+  - an [Orientation](#tapspacegeometryorientation)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Orientation/equal.js)
 
 <a name="tapspacegeometryorientationgetraw"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Orientation](#tapspacegeometryorientation):[getRaw](#tapspacegeometryorientationgetraw)()
@@ -7819,7 +8076,9 @@ let p = new tapspace.geometry.Point(basis, { x: 1, y: 2, z: 3 })
 
 
 - [tapspace.geometry.Point:addVector](#tapspacegeometrypointaddvector)
+- [tapspace.geometry.Point:almostEqual](#tapspacegeometrypointalmostequal)
 - [tapspace.geometry.Point:changeBasis](#tapspacegeometrypointchangebasis)
+- [tapspace.geometry.Point:equal](#tapspacegeometrypointequal)
 - [tapspace.geometry.Point:getDirectionTo](#tapspacegeometrypointgetdirectionto)
 - [tapspace.geometry.Point:getDistanceTo](#tapspacegeometrypointgetdistanceto)
 - [tapspace.geometry.Point:getRaw](#tapspacegeometrypointgetraw)
@@ -7857,6 +8116,29 @@ Translate the point by a vector.
 
 Source: [addVector.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/addVector.js)
 
+<a name="tapspacegeometrypointalmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[almostEqual](#tapspacegeometrypointalmostequal)(p[, tolerance])
+
+Test if the point is almost equal to p.
+Almost equal requires strictly equal basis and
+that coordinates are equal within tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *p*
+  - a [Point](#tapspacegeometrypoint)
+- *tolerance*
+  - optional number. Maximum Manhattan distance between this and p.
+  - Default is affineplane.epsilon
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/almostEqual.js)
+
 <a name="tapspacegeometrypointchangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[changeBasis](#tapspacegeometrypointchangebasis)(newBasis)
 
@@ -7872,6 +8154,25 @@ Source: [addVector.js](https://github.com/taataa/tapspace/blob/master/lib/geomet
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/changeBasis.js)
+
+<a name="tapspacegeometrypointequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[equal](#tapspacegeometrypointequal)(p)
+
+Test if the point is strictly equal to p.
+Strict equality requires strictly equal basis and coordinates.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *p*
+  - a [Point](#tapspacegeometrypoint)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Point/equal.js)
 
 <a name="tapspacegeometrypointgetdirectionto"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Point](#tapspacegeometrypoint):[getDirectionTo](#tapspacegeometrypointgetdirectionto)(p)
@@ -8373,7 +8674,9 @@ between bases.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Size:almostEqual](#tapspacegeometrysizealmostequal)
 - [tapspace.geometry.Size:changeBasis](#tapspacegeometrysizechangebasis)
+- [tapspace.geometry.Size:equal](#tapspacegeometrysizeequal)
 - [tapspace.geometry.Size:getArea](#tapspacegeometrysizegetarea)
 - [tapspace.geometry.Size:getRaw](#tapspacegeometrysizegetraw)
 - [tapspace.geometry.Size:normAt](#tapspacegeometrysizenormat)
@@ -8382,6 +8685,28 @@ between bases.
 
 
 Source: [Size/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Size/index.js)
+
+<a name="tapspacegeometrysizealmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Size](#tapspacegeometrysize):[almostEqual](#tapspacegeometrysizealmostequal)(s[, tolerance])
+
+Test if this size is equal to the given size s within tolerance.
+Equality requires strictly equal basis and that the difference in size
+is within the tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *s*
+  - a [Size](#tapspacegeometrysize)
+- *tolerance*
+  - optional number
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Size/almostEqual.js)
 
 <a name="tapspacegeometrysizechangebasis"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Size](#tapspacegeometrysize):[changeBasis](#tapspacegeometrysizechangebasis)(newBasis)
@@ -8401,6 +8726,26 @@ when the bases have same orientation. Rotation cannot be applied to size.
 
 
 Source: [changeBasis.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Size/changeBasis.js)
+
+<a name="tapspacegeometrysizeequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Size](#tapspacegeometrysize):[equal](#tapspacegeometrysizeequal)(s)
+
+Test if this size is strictly equal to the given size s.
+Strict equality requires identical basis and size properties.
+Additional properties are allowed.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *s*
+  - a [Size](#tapspacegeometrysize)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Size/equal.js)
 
 <a name="tapspacegeometrysizegetarea"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Size](#tapspacegeometrysize):[getArea](#tapspacegeometrysizegetarea)()
@@ -8501,10 +8846,12 @@ the at() method for example.
 <p style="margin-bottom: 0"><strong>Contents:</strong></p>
 
 
+- [tapspace.geometry.Sphere:almostEqual](#tapspacegeometryspherealmostequal)
 - [tapspace.geometry.Sphere:atCenter](#tapspacegeometrysphereatcenter)
 - [tapspace.geometry.Sphere:atMid](#tapspacegeometrysphereatmid)
 - [tapspace.geometry.Sphere:changeBasis](#tapspacegeometryspherechangebasis)
 - [tapspace.geometry.Sphere:detectCollision](#tapspacegeometryspheredetectcollision)
+- [tapspace.geometry.Sphere:equal](#tapspacegeometrysphereequal)
 - [tapspace.geometry.Sphere:fromPoints](#tapspacegeometryspherefrompoints)
 - [tapspace.geometry.Sphere:getBoundingBox](#tapspacegeometryspheregetboundingbox)
 - [tapspace.geometry.Sphere:getDepth](#tapspacegeometryspheregetdepth)
@@ -8522,6 +8869,28 @@ the at() method for example.
 
 
 Source: [Sphere/index.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/index.js)
+
+<a name="tapspacegeometryspherealmostequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[almostEqual](#tapspacegeometryspherealmostequal)(s[, tolerance])
+
+Test if this sphere is equal to the given sphere s within tolerance.
+Almost equality requires identical basis
+and that radius and position of the spheres are equal within tolerance.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *s*
+  - a [Sphere](#tapspacegeometrysphere)
+- *tolerance*
+  - optional number. Maximum tolerated distance between values.
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [almostEqual.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/almostEqual.js)
 
 <a name="tapspacegeometrysphereatcenter"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[atCenter](#tapspacegeometrysphereatcenter)()
@@ -8579,6 +8948,26 @@ Note that not all geometries are supported, see below.
 
 
 Source: [detectCollision.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/detectCollision.js)
+
+<a name="tapspacegeometrysphereequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[equal](#tapspacegeometrysphereequal)(s)
+
+Test if this sphere is strictly equal with the given sphere s.
+Strict equality requires that the spheres are on the same basis
+and have strictly equal radius and position.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *s*
+  - a [Sphere](#tapspacegeometrysphere)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Sphere/equal.js)
 
 <a name="tapspacegeometryspherefrompoints"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Sphere](#tapspacegeometrysphere):[fromPoints](#tapspacegeometryspherefrompoints)(basis, points)
@@ -8965,6 +9354,7 @@ The vector has length and direction but no position.
 - [tapspace.geometry.Vector:cross](#tapspacegeometryvectorcross)
 - [tapspace.geometry.Vector:difference](#tapspacegeometryvectordifference)
 - [tapspace.geometry.Vector:dot](#tapspacegeometryvectordot)
+- [tapspace.geometry.Vector:equal](#tapspacegeometryvectorequal)
 - [tapspace.geometry.Vector:getDirection](#tapspacegeometryvectorgetdirection)
 - [tapspace.geometry.Vector:getDistance](#tapspacegeometryvectorgetdistance)
 - [tapspace.geometry.Vector:getRaw](#tapspacegeometryvectorgetraw)
@@ -9109,6 +9499,25 @@ Get dot product with another vector.
 
 
 Source: [dot.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Vector/dot.js)
+
+<a name="tapspacegeometryvectorequal"></a>
+## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[equal](#tapspacegeometryvectorequal)(v)
+
+Test if the vector is strictly equal to v.
+Strict equality requires strictly equal basis and numerical components.
+
+<p style="margin-bottom: 0"><strong>Parameters:</strong></p>
+
+- *v*
+  - a [Vector](#tapspacegeometryvector)
+
+
+<p style="margin-bottom: 0"><strong>Returns:</strong></p>
+
+- a boolean
+
+
+Source: [equal.js](https://github.com/taataa/tapspace/blob/master/lib/geometry/Vector/equal.js)
 
 <a name="tapspacegeometryvectorgetdirection"></a>
 ## [tapspace](#tapspace).[geometry](#tapspacegeometry).[Vector](#tapspacegeometryvector):[getDirection](#tapspacegeometryvectorgetdirection)()
