@@ -1,9 +1,12 @@
+/.github
 
 /dist/.gitkeep
 /docs
 /test
 /features
 
-.DS_Store
+.editorconfig
 .gitignore
+
+.DS_Store
 package-lock.json
