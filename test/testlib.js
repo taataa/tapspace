@@ -24,6 +24,11 @@ if (!window) {
   throw new Error('Browser environment is required.')
 }
 
+// Usage instructions for manual testing via browser.
+const instructions = 'Call test.print() to see TAP formatted report ' +
+  'or test.report() for unformatted report.'
+console.log(instructions)
+
 // Tolerance for almost equality.
 const TOLERANCE = 1e-10
 
