@@ -1,5 +1,5 @@
 name: Tapspace.js CI
-run-name: tapspace test run by ${{ github.actor }}
+run-name: tapspace headless test suite run by ${{ github.actor }}
 
 on: [push]
 
