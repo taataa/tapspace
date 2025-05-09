@@ -133,7 +133,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.0.3] – 2013-11-28 – Taaspace v0.0.3
 
+### Added
+
+- Link to the basic example app.
+- New methods `Space:box` and `Viewport:focusTo`.
+- Scaling of text via dynamic font size.
+- explicit exceptions from unimplemented functions.
+- "Thanks to" section in README.
+- placeholders for methods `visibilityRatio`, `distanceRatio`, `focusRatio`.
+- support for animation in `moveBy` and `Viewport:movable`.
+- new method `movable`. Replaces `draggable`.
+- ability to patch Taaspace API.
+- `id` to Viewport and `_identify` method.
+- a standalone build bundle.
+
+### Changed
+
+- allow HTML in `Text` component.
+- display the use of `focusTo` in the basic example app.
+- use `p` instead of `div` in `Text` component to follow the HTML standard.
+- use `pivot` instead of `origo`
+- simplify source file structure.
+- rename `index.js` to `space.js` for consistent class-based naming.
+- use `px` units instead of `em` to solve compatibility issues.
+- simplify the basic example app.
+
+### Fixed
+
+- arrow key navigation to respect scale level.
+
+
 ## [0.0.0.2] – 2013-11-15 – Taaspace v0.0.2
+
+### Added
+
+- Support for multiple viewports.
+- An example app for multiple viewports.
+- `options` parameter to `Space:createViewport`.
+
+### Changed
+
+- Rename the panning example as `basic`.
+
+### Removed
+
+- Unnecessary style rules from the panning example.
 
 ## [0.0.0.1] – 2013-11-15 – Taaspace v0.0.1
 
