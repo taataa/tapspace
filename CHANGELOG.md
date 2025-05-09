@@ -136,3 +136,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.0.2] – 2013-11-15 – Taaspace v0.0.2
 
 ## [0.0.0.1] – 2013-11-15 – Taaspace v0.0.1
+
+### Added
+
+- Example app about viewport and element panning.
+- New class `Taaspace` and method `create`.
+- New class `Taaspace.Element` and methods `moveBy`, `size`.
+- New class `Taaspace.Group`.
+- New class `Taaspace.Image`.
+- New class `Taaspace.Viewport` and methods `fromSpace`, `origo`, `moveBy`, `on`, `off`, `scalable`, `draggable`, `toSpaceDistance`.
+- New class `Space` and methods `createViewport`, `select`.
+- New class `Taaspace.Network`.
+- New class `Taaspace.Text` and methods `_domAppend`, `_domMove`.
+- New class `Taaspace.KeyboardManager` and methods `select`, `isSelected`, `deselect`, `on`, `off`, `clean`.
+- Initial documentation `README.md` with sections `Features`, `TODO`, `Dependencies`, `License`.
+- Third-party libraries `hammer`, `jquery`, `move-js`, `underscore`, `modernizr`, `jquery.mousewheel.js`, `jwerty`.
+- Initial `.gitignore` and `LICENSE`.
+- Initial `package.json`.
+- Initial `Gruntfile.js`.
+- New development dependencies `grunt`, `grunt-contrib-concat`, `grunt-contrib-uglify`, `grunt-contrib-jshint`.
