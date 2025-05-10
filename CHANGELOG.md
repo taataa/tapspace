@@ -81,6 +81,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] – 2018-02-10
 
+Rebranding. Package and library name changed from Taaspace to Tapspace.
+
 ## [0.5.0.0] – 2018-02-09 – Taaspace v5.0.0
 
 ## [0.4.0.1] – 2018-02-01 – Taaspace v4.0.1
@@ -129,7 +131,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.0.5] – 2013-11-30 – Taaspace v0.0.5
 
+### Added
+
+- example app "Animation Chain" to exhibit animation `end` callback.
+- link from README to contributor examples repository.
+- link from README to the Animation Chain app.
+- element class names `taaspace-element`, `taaspace-text`, `taaspace-image`.
+
+### Changed
+
+- improve feature docs.
+
 ## [0.0.0.4] – 2013-11-28 – Taaspace v0.0.4
+
+### Added
+
+- a version property `Taaspace.version`.
+- a grunt-replace task to set version in the source code.
+- optional property `end` to bind a callback function to animation end event.
 
 ## [0.0.0.3] – 2013-11-28 – Taaspace v0.0.3
 
