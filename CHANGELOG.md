@@ -147,11 +147,44 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.2.9] – 2014-01-13 – Taaspace v2.9.0
 
+### Added
+
+- New component `Taaspace.Grid` with the methods `center`, `northWest`, `northEast`, `southWest`, `southEast`, `box`, `size`, `width`, `height`, `moveTo`, `moveBy`.
+- New example app to exhibit `Grid`.
+
+### Changed
+
+- Improve argument validation in `Network`.
+- Clean up code in `Network`.
+
+### Fixed
+
+- Repair parameter handling in `SpaceElement:size`.
+
 
 ## [0.2.8] – 2013-12-21 – Taaspace v2.8.0
 
+### Added
+
+- New example to exhibit SpaceElement movability.
+- Implement `SpaceElement:movable`.
+
+### Changed
+
+- Deprecate `SpaceElement:draggable`.
+
 
 ## [0.2.7] – 2013-12-21 – Taaspace v2.7.0
+
+### Added
+
+- New geometry methods `util.boxArea`, `util.intersectionArea`.
+- Implement `Viewport:visibilityRatioOf`.
+- Implement `SpaceElement:emit`.
+
+### Changed
+
+- Improve image sizing and styling in the network example app.
 
 
 ## [0.2.6.4] – 2013-12-21 – Taaspace v2.6.4
