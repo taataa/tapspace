@@ -127,6 +127,52 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 ## [0.4.1] – 2018-02-01 – Taaspace v4.0.1
 
 
+## [0.4.0] – 2018-01-28 – Taaspace v4.0.0
+
+
+## [0.4.0-alpha.20] – 2018-01-16 – Taaspace v4.0.0-alpha.20
+
+### Added
+
+- New example `multiview` to exhibit multiple views for the same space.
+- Implement `SpaceNode.addChild`.
+
+### Changed
+
+- Override `fitScale` for `SpaceViewHTML`.
+- BREAKING Rename `InvariantScalar` to `IScalar`.
+- BREAKING Rename `InvariantVector` to `IVector`.
+- BREAKING Rename `InvariantPath` to `IPath`.
+- BREAKING Rename `InvariantTransform` to `ITransform`.
+- BREAKING Rename `InvariantGrid` to `IGrid`.
+
+
+## [0.4.0-alpha.19] – 2018-01-22 – Taaspace v4.0.0-alpha.19
+
+### Added
+
+- New `InvariantPath` methods `atMid`, `almostEqual`, `equal`.
+- Viewport representations for `Viewport` itself and `SpaceGroup`.
+- New method `SpaceViewHTML:isMounted`.
+- New `Space` method `atMid`.
+- New `SpaceGroup` method `atMid`.
+- Test for `getHull`.
+- New class `SpacePlane` that replaces `SpaceTransformer` and `SpaceTransform`.
+
+### Changed
+
+- BREAKING Emit `contentAdded` and `contentRemoved` only from immediate parent SpaceNode.
+- Use DOM hierarchy instead of internal node lists in `SpaceViewHTML`.
+- Improve `SpaceNode`, `SpaceViewHTML` source code structure.
+- Improve the minimal example.
+- Improve the `SpaceHTML` example.
+- Calling `SpaceRectangle:atNorm(x, y)` without `y` throws an error.
+
+### Removed
+
+- BREAKING Remove classes `SpaceTransform`, `SpaceTransformer`, `SpacePoint`.
+
+
 ## [0.4.0-alpha.18] – 2018-01-16 – Taaspace v4.0.0-alpha.18
 
 ### Added
