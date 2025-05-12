@@ -156,32 +156,108 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.2.6.4] – 2013-12-21 – Taaspace v2.6.4
 
+### Added
+
+- Check double removal attempt in `SpaceElement`.
+
+### Fixed
+
+- Bugs in the network example app.
+
 
 ## [0.2.6.3] – 2013-12-18 – Taaspace v2.6.3
+
+### Added
+
+- Square images to be used in example apps.
+- A `callback` parameter to `Network:spreadFrom`.
+
+### Changed
+
+- Improve `Network` example.
 
 
 ## [0.2.6.2] – 2013-12-18 – Taaspace v2.6.2
 
+### Fixed
+
+- Another depth limit bug in `Network`.
+
 
 ## [0.2.6.1] – 2013-12-18 – Taaspace v2.6.1
+
+### Changed
+
+- Improve error handling in `graph` and `Network`.
+
+### Fixed
+
+- Depth limit handling in `Network`.
 
 
 ## [0.2.6.0] – 2013-12-18 – Taaspace v2.6.0
 
+### Added
+
+- New example to exhibit `Network`.
+- New methods of `Network`: `createNetwork`, `spreadFrom`, `remove`, `_each`, `_asyncEach`.
+
+### Changed
+
+- Combine `Taaspace.Network` constructor parameters `root` and `options` to `kwargs`.
+
+### Fixed
+
+- Repair the example app for `mapReduce`.
+
 
 ## [0.2.5] – 2013-12-17 – Taaspace v2.5.0
+
+### Added
+
+- Implement async helper function `Taaspace.util.mapReduce`.
+- Implement async graph traversal function `Taaspace.graph.bfs`.
+- New example to test and exhibit `Taaspace.graph.bfs` and `Taaspace.util.mapReduce`.
 
 
 ## [0.2.4] – 2013-12-17 – Taaspace v2.4.0
 
+### Added
+
+- Implement `SpaceElement` positioning methods `northwest`, `northeast`, `southwest`, `southeast`.
+- Implement `Space` positioning methods `width`, `height`, `center`, `northwest`, `northeast`, `southwest`, `southeast`.
+- Implement `Viewport` positioning methods `northwest`, `northeast`, `southwest`, `southeast`.
+- New example to exhibit positioning methods.
+
 
 ## [0.2.3] – 2013-12-08 – Taaspace v2.3.0
+
+### Added
+
+- Implement `SpaceElement:moveTo`.
 
 
 ## [0.2.2] – 2013-12-07 – Taaspace v2.2.0
 
+### Added
+
+- Link the new examples in `README.md`.
+- Support for animation properties in `SpaceElement:scale`, `Viewport:scalable`.
+
 
 ## [0.2.1] – 2013-12-05 – Taaspace v2.1.0
+
+### Added
+
+- New Grunt task `build-basic` to build a bundle without third-party dependencies.
+- New methods that proxy some jQuery methods: `data`, `removeData`, `attr`, `css`, `prop`, `removeAttr`, `removeProp`, `addClass`, `hasClass`, `removeClass`, `hide`, `show`, `toggle`, `fadeIn`, `fadeOut`, `fadeTo`, `fadeToggle`, `finish`, `queue`, `stop`.
+- New example to display some jQuery methods like `css`, `data`, `show`: `jquery.html`.
+- New example to exhibit scaling: `scale.html`.
+
+### Changed
+
+- Grunt `build` task builds the standalone bundle.
+- Bind Hammer gestures to `Text` at construction.
 
 
 ## [0.2.0] – 2013-12-01 – Taaspace v2.0.0
