@@ -132,11 +132,83 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.3.2] – 2016-04-26 – Taaspace v3.0.2
 
+### Changed
+
+- Switch from `mocha-phantomjs` to `mocha-phantomjs-core`.
+
 
 ## [0.3.1] – 2016-04-26 – Taaspace v3.0.1
 
+### Added
+
+- Install instructions to `README.md`.
+
+### Changed
+
+- Improve package description.
+
+### Fixed
+
+- Correct package main script (#31).
+
 
 ## [0.3.0] – 2016-04-26 – Taaspace v3.0.0
+
+### Added
+
+- Dedicated module for the version tag at `src/version.js`.
+- Temporarily install dependency `kld-affine`,
+- Install dependencies `seqid`, `move-js`, `nudged`, `loadimages`, `component-emitter` (#30).
+- New `SpacePoint` methods `projectTo`, `normalize`, `normalizeXY`.
+- New class `Taaspace.Taa` with method `remove`.
+- New class `SpaceTaa`.
+- New class `SpaceTransformer` with methods `transformTo`, `transformBy`, `getSpacePoint`, `translate`, `translateTo`, `rotate`, `translateScaleRotate`, `setLocalTransform`, `setGlobalTransform`, `getLocalTransform`, `getGlobalTransform`.
+- New class `SpacePlane` with method `at`.
+- New methods `Space:has`.
+- New class `SpacePixel`.
+- New class `SpaceRectangle`.
+- New class `SpaceTransform` with methods `scale`, `rotate`, `translateScale`, `translateRotate`, `scaleRotate`, `translateScaleRotate`, `estimate`, `switchTo` (#13, #19, #21, #22, #24).
+- New class `SpaceNode` with methods `getChildren`, `hasDescendants`, `getParent`, `getRootParent`, `hasChild`, `hasDescendant`, `remove`, `setParent` (#7, #23).
+- Temporary proxy classes from `kld-affine`: `Taaspace.Vector2D`, `Taaspace.Matrix2D`.
+- Install dev dependencies `jshint`, `mocha`, `browserify`, `mocha-phantomjs`, `phantomjs`, `chai`, `chai-jquery`, `jquery`, `minifyify`, `semver`.
+- New build script `build:dev`.
+- Set up a phantom.js test suite.
+- Test for `Matrix2D` transformations.
+- Tests for `SpaceTaa`, `Taa`, `SpacePlane`, `SpaceTransformer`, `SpaceTransform`, `SpaceNode`.
+- Show IP address while serving examples locally.
+- New example app "Play" (#24).
+- Set up TravisCI continuous integration tool and add a build status badge.
+- Test that package version tag is correct semantic version.
+- New example app for Hammer.js integration.
+- New example app for Canvas.
+
+### Changed
+
+- Automatically update the version tag in README.
+- Improve structure in `.gitignore`.
+- BREAKING Rename `Point` to `SpacePoint`.
+- BREAKING Rename `Viewport` to `HTMLSpaceView`.
+- Rename `test` dir to `tests`.
+- Simplify the basic example app.
+- Change `SpacePoint:offset` to take separate `dx` and `dy` instead of a vector.
+- BREAKING Rename `SpacePoint:projectTo` to `SpacePoint:transformBy`.
+- Make reference plane the first parameter (#17).
+- Ensure that `Space` is the root (#18).
+- BREAKING Make view transformable instead of space.
+
+### Fixed
+
+- Logo image URL.
+- MIT license to match SPDX style.
+
+### Removed
+
+- BREAKING Remove third-party dependencies from version control.
+- Remove large image assets.
+- BREAKING Remove classes `Box`, `Custom`, `Graph`, `Grid`, `Group`, `Image`, `KeyboardManager`, `Network`, `Text`.
+- BREAKING Remove namespace `util`.
+- Remove examples `chain.html`, `changeContent.html`, `grid.html`, `jquery.html`, `movable.html`, `network.html`, `scale.html`.
+- Remove test apps `taaspace.box.html`, `taaspace.graph.html`, `taaspace.point.html`, `taaspace.util.html`.
 
 
 ## [0.2.10.1] – 2014-02-25 – Taaspace v2.10.1
