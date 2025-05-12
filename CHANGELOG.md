@@ -127,7 +127,156 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 ## [0.4.1] – 2018-02-01 – Taaspace v4.0.1
 
 
-## [0.4.0] – 2018-01-28 – Taaspace v4.0.0
+## [0.4.0-alpha.18] – 2018-01-16 – Taaspace v4.0.0-alpha.18
+
+### Added
+
+- Implement `InvariantTransform` methods `almostEqual`, `almostEquals`, `equal`.
+- Implement `Vector` methods `changeBasis`, `equal`, `translate`, `createFromPolar`, `almostEqual`, `changeFromBasis`, `getRotation`, `getMagnitude`, `isIndependent`.
+- New `Grid` parameters `xRotation`, `yRotation`.
+- New `Grid` methods `almostEqual`, `getHullOf`, `at`.
+- New `Path` methods `almostEqual`, `equal`, `atMid`.
+- New `InvariantGrid` methods `almostEqual`, `equal`, `getHullOf`, `getOrigin`, `at`.
+- New `InvariantVector` method `almostEqual`.
+
+### Changed
+
+- Upgrade to `nudged` 1.4.0.
+- BREAKING The method `InvariantGrid:snap` requires `pivot`.
+- BREAKING The method `SpaceTransformer:snap` requires `pivot`.
+
+### Fixed
+
+- Fix scale bug in `Grid`.
+
+
+## [0.4.0-alpha.11] – 2018-01-11 – Taaspace v4.0.0-alpha.11
+
+### Added
+
+- New geometry class `Rectangle` with methods `equals`, `scale`, `getDiagonal`, `toArray`, `atMid`, `atNorm`, `atMidTop`, `atMidLeft`, `atMidRight`, `atMidBottom`, `atLeftTop`, `atRightTop`, `atLeftBottom`, `atRightBottom`.
+- Check that parent parameter is given in `SpaceNode:setParent`.
+- New geometry class `Grid` with methods `snap`, `equals`, `toArray`, `transform`.
+- New geometry class `InvariantGrid` with methods `snap`, `equals`, `to`, `toSpace`, `transform`.
+- New `SpaceTransformer` method `snap`.
+
+### Changed
+
+- Improved `.npmignore`.
+- Simplify the `simple` example.
+
+### Fixed
+
+- Correct API docs of `InvariantPath:toSpace`, `SpaceTransformer:transformBy`.
+
+
+## [0.4.0-alpha.9] – 2018-01-10 – Taaspace v4.0.0-alpha.9
+
+### Added
+
+- New `SpaceRectangle` methods `fitScale`, `fitSize`.
+- New property `Path:length`.
+- New `Space` method `getHull`.
+
+### Changed
+
+- Upgrade to latest `nudged`.
+- BREAKING Change point order in `Path:getBounds`.
+
+### Removed
+
+- BREAKING Remove method `SpaceRectangle:fit`.
+- BREAKING Remove `SpaceGroup` methods `atMid`, `fit`. Use hull methods instead.
+
+
+## [0.4.0-alpha.7] – 2018-01-07 – Taaspace v4.0.0-alpha.7
+
+### Added
+
+- New geometry classes `Path`, `InvariantPath` with methods including `add`, `bottom`, `get`, `getBounds`, `equals`, `getHull`, `last`, `left`, `right`, `toArray`, `top`, `transform`.
+- Chainable transform methods for `SpaceTransformer`.
+- New `SpaceGroup` methods `fit`, `getHull`.
+- New `SpaceRectangle` methods `fit`, `getHull`.
+- Install dependency `monotone-convex-hull-2d`.
+- Allow `InvariantTransform:estimate` to take `InvariantPath` for the domain and range.
+
+
+## [0.4.0-alpha.5] – 2018-01-05 – Taaspace v4.0.0-alpha.5
+
+### Added
+
+- New `Vector` methods `opposite`, `max`, `min`, `subtract`.
+- Unit test suite for `Vector`.
+- New `SpaceGroup` method `atMid`.
+
+### Changed
+
+- Improve README introduction.
+- Improve `pixels` example.
+- Update `SpaceViewHTML:getElementBySpaceNode` to return the container element when called with the view itself.
+
+### Fixed
+
+- Repair `InvariantTransform:inverse`.
+
+### Removed
+
+- Remove `taaspace.css` and use scripted styles instead.
+
+
+## [0.4.0-alpha.2] – 2017-12-30 – Taaspace v4.0.0-alpha.2
+
+### Added
+
+- Add `.npmignore` file.
+- Install dependency `extend`.
+- Install development dependencies `standard`, `tape`, `tape-run`, `tap-spec`, `webpack`, `webpack-tape-run`, `genversion`, `async`, `css-loader`, `file-loader`, `style-loader`, `url-loader`, `webpack-livereload-plugin`, `npm-watch`.
+- Set up webpack configs for package build and test suite build.
+- Set up headless test suite and a runner.
+- Use live reload in in-browser tests.
+- Test window resize behavior.
+- New test script `test:watch`.
+- New build scripts `build:watch`, `watch`, `gv`.
+- New lint script `lintfix`.
+- New parameter in `SpacePixel` constructor: `color`.
+- New methods `SpaceViewHTML:mount`, `SpacePoint:toPointOn`.
+- New `SpaceNode` methods `isRoot`, `getAncestors`.
+- New `SpacePlane` method `getGlobalLocalTransform`.
+- New `SpaceRectangle` methods `setSize`, `setLocalSize`.
+- New geometry classes `InvariantTransform`, `InvariantVector`, `Vector`, `InvariantScalar`.
+- New class `SpaceGroup`.
+- Tests for `SpaceHTML`, `SpaceViewHTML`.
+- New example apps `minimal`, `pixels`.
+
+### Changed
+
+- Change repository title heading from `tapspace.js` to `tapspace`.
+- Move developer notes to Wiki (#32).
+- Improve introduction chapter.
+- Improve logo image resolution.
+- Build to `/dist` directory which is gitignored.
+- Rename `/tests` to `/test`.
+- Rename `/src` to `/lib`.
+- Migrate code style from `jshint` to `standard`.
+- Migrate from `python` to `python3` to run the local static example server.
+- Migrate test suites from `mocha` to `tape`.
+- Migrate builds from `browserify` to `webpack`.
+- Write test suites for `HTMLSpaceView`, `Space`, `SpaceHTML`, `SpaceNode`, `SpacePlane`, `SpacePoint`, `SpaceRectangle`, `SpaceTransform`, `SpaceTransformer`.
+- Rename `HTMLSpaceView` to `SpaceViewHTML`.
+- Move package main script from `src/index.js` to `index.js`.
+- Configure `genversion` to handle and update the module version property.
+- Improve use of prototypal inheritance.
+- Split `SpaceViewHTML` to submodules.
+- Rename `SpaceRectangle:resize` to `setLocalSize`.
+
+### Removed
+
+- Remove unnecessary directories from release packages by npmignoring `/doc`, `/examples`, `/tests`, and development-related config files.
+- Remove built bundles from version control.
+- Remove TravisCI integration.
+- Remove unused dev dependencies `browserify`, `chai`, `chai-jquery`, `chai-shallow-deep-almost-equal`, `jshint`, `minifyify`, `mocha`, `mocha-phantomjs-core`, `phantomjs-prebuilt`.
+- Remove package scripts `build:dev`, `build:debug`, `build:test-deps`, `build:semver`, `build:examples-play`, `build:examples-canvas`, `test:examples-canvas`, `test:examples-play`.
+- Remove deprecated classes `SpaceTransform`, `SpacePoint`, `Taa`, `SpaceTaa`.
 
 
 ## [0.3.2] – 2016-04-26 – Taaspace v3.0.2
