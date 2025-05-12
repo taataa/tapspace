@@ -121,22 +121,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 
-## [0.5.0.0] – 2018-02-09 – Taaspace v5.0.0
+## [0.5.0] – 2018-02-09 – Taaspace v5.0.0
 
 
-## [0.4.0.1] – 2018-02-01 – Taaspace v4.0.1
+## [0.4.1] – 2018-02-01 – Taaspace v4.0.1
 
 
-## [0.4.0.0] – 2018-01-28 – Taaspace v4.0.0
+## [0.4.0] – 2018-01-28 – Taaspace v4.0.0
 
 
-## [0.3.0.2] – 2016-04-26 – Taaspace v3.0.2
+## [0.3.2] – 2016-04-26 – Taaspace v3.0.2
 
 
-## [0.3.0.1] – 2016-04-26 – Taaspace v3.0.1
+## [0.3.1] – 2016-04-26 – Taaspace v3.0.1
 
 
-## [0.3.0.0] – 2016-04-26 – Taaspace v3.0.0
+## [0.3.0] – 2016-04-26 – Taaspace v3.0.0
 
 
 ## [0.2.10.1] – 2014-02-25 – Taaspace v2.10.1
@@ -145,13 +145,13 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 ## [0.2.10.0] – 2014-02-24 – Taaspace v2.10.0
 
 
-## [0.2.9.0] – 2014-01-13 – Taaspace v2.9.0
+## [0.2.9] – 2014-01-13 – Taaspace v2.9.0
 
 
-## [0.2.8.0] – 2013-12-21 – Taaspace v2.8.0
+## [0.2.8] – 2013-12-21 – Taaspace v2.8.0
 
 
-## [0.2.7.0] – 2013-12-21 – Taaspace v2.7.0
+## [0.2.7] – 2013-12-21 – Taaspace v2.7.0
 
 
 ## [0.2.6.4] – 2013-12-21 – Taaspace v2.6.4
@@ -169,22 +169,22 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 ## [0.2.6.0] – 2013-12-18 – Taaspace v2.6.0
 
 
-## [0.2.5.0] – 2013-12-17 – Taaspace v2.5.0
+## [0.2.5] – 2013-12-17 – Taaspace v2.5.0
 
 
-## [0.2.4.0] – 2013-12-17 – Taaspace v2.4.0
+## [0.2.4] – 2013-12-17 – Taaspace v2.4.0
 
 
-## [0.2.3.0] – 2013-12-08 – Taaspace v2.3.0
+## [0.2.3] – 2013-12-08 – Taaspace v2.3.0
 
 
-## [0.2.2.0] – 2013-12-07 – Taaspace v2.2.0
+## [0.2.2] – 2013-12-07 – Taaspace v2.2.0
 
 
-## [0.2.1.0] – 2013-12-05 – Taaspace v2.1.0
+## [0.2.1] – 2013-12-05 – Taaspace v2.1.0
 
 
-## [0.2.0.0] – 2013-12-01 – Taaspace v2.0.0
+## [0.2.0] – 2013-12-01 – Taaspace v2.0.0
 
 ### Added
 
@@ -202,7 +202,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - BREAKING Remove `Space:select`, `Space:deselect`.
 
 
-## [0.1.0.0] – 2013-12-01 – Taaspace v1.0.0
+## [0.1.0] – 2013-12-01 – Taaspace v1.0.0
 
 ### Added
 
@@ -223,7 +223,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - BREAKING Removed support for multiple viewports.
 
 
-## [0.0.0.5] – 2013-11-30 – Taaspace v0.0.5
+## [0.0.5] – 2013-11-30 – Taaspace v0.0.5
 
 ### Added
 
@@ -237,7 +237,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - improve feature docs.
 
 
-## [0.0.0.4] – 2013-11-28 – Taaspace v0.0.4
+## [0.0.4] – 2013-11-28 – Taaspace v0.0.4
 
 ### Added
 
@@ -246,7 +246,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - optional property `end` to bind a callback function to animation end event.
 
 
-## [0.0.0.3] – 2013-11-28 – Taaspace v0.0.3
+## [0.0.3] – 2013-11-28 – Taaspace v0.0.3
 
 ### Added
 
@@ -278,7 +278,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - arrow key navigation to respect scale level.
 
 
-## [0.0.0.2] – 2013-11-15 – Taaspace v0.0.2
+## [0.0.2] – 2013-11-15 – Taaspace v0.0.2
 
 ### Added
 
@@ -295,7 +295,7 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 - Unnecessary style rules from the panning example.
 
 
-## [0.0.0.1] – 2013-11-15 – Taaspace v0.0.1
+## [0.0.1] – 2013-11-15 – Taaspace v0.0.1
 
 ### Added
 
