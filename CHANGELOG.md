@@ -141,8 +141,38 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.2.10.1] – 2014-02-25 – Taaspace v2.10.1
 
+### Added
+
+- New class `Taaspace.Point` with methods `offset`, `copy`, `equals`, `moveTo`, `moveBy`.
+- Default grunt task `availabletasks` that lists available tasks.
+- Install dev dependency `grunt-available-tasks`.
+
+### Fixed
+
+- Grunt version replace task to support multi-digit version parts.
+
 
 ## [0.2.10.0] – 2014-02-24 – Taaspace v2.10.0
+
+### Added
+
+- Link to `Grid` example app.
+- Set up `QUnit` test suite.
+- New class `Taaspace.Box` with methods `center`, `northWest`, `northEast`, `southWest`, `southEast`, `width`, `height`, `area`, `moveTo`, `moveBy`.
+- New methods `Image:sourceImage` and `Text:text`.
+- New example app to exhibit `Box`.
+- New example app to exhibit dynamic `Text` content.
+- Logo image in docs.
+
+### Changed
+
+- Improve docs for `Grid`.
+- Improve synopsis and todos in `README.md`.
+- Make `height` parameter optional in `SpaceElement:size`.
+
+### Fixed
+
+- Ignore `.DS_Store` files.
 
 
 ## [0.2.9] – 2014-01-13 – Taaspace v2.9.0
