@@ -126,6 +126,27 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.4.1] – 2018-02-01 – Taaspace v4.0.1
 
+### Added
+
+- New `SpaceImage` method `getImage`.
+- New `SpacePixel` method `getColor`.
+- New `IVector` method alias `equal`.
+- New `IPath` methods `first`, `get`, `last`.
+- Write API docs for items and space items.
+- Write API docs for `Grid`, `IGrid`.
+- Write API docs for `Path`, `IPath`.
+- Write API docs for `Rectangle`.
+- Write API docs for `Vector`.
+- Write API docs for `IScalar`.
+- Write API docs for `ITransform`.
+
+### Changed
+
+- Improve documentation structure.
+- Move maintainer docs to `/docs/dev/index.md`.
+- Reorder methods alphabetically.
+- Deprecate `IPath` methods `bottom`, `getBounds`, `left`, `right`, `top`.
+
 
 ## [0.4.0] – 2018-01-28 – Taaspace v4.0.0
 
