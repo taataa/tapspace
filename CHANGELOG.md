@@ -129,6 +129,34 @@ Rebranding. Package and library name changed from Taaspace to Tapspace.
 
 ## [0.4.0] – 2018-01-28 – Taaspace v4.0.0
 
+### Added
+
+- Install new dependency `taach`.
+- New interaction class `Touchable` to proxy `taach`.
+- Version controlled bundle for example apps: `/dist/taaspace.min.js`.
+- Link from README to the example of multiple views.
+
+### Changed
+
+- BREAKING Rename `SpaceNode` to `AbstractNode`.
+- BREAKING Rename `SpacePlane` to `AbstractPlane`.
+- BREAKING Rename `SpaceRectangle` to `AbstractRectangle`.
+- BREAKING Rename `SpaceViewHTML` to `SpaceView`.
+- BREAKING Move all geometry classes to `/lib/geom` directory and `taaspace.geom` namespace: `Grid`, `IGrid`, `Path`, `IPath`, `IScalar`, `Transform`, `ITransform`, `Vector`, `IVector`, `Rectangle`, `IRectangle`.
+- BREAKING Rename `SpaceView` methods:
+  - `getElementBySpaceNode` to `getElementBySpaceItem`.
+  - `getHtmlContainer` to `getContainer`.
+  - `getSpaceNodeByElementId` to `getSpaceItemByElementId`.
+- Move all component classes to `/lib/item` directory: `AbstractNode`, `AbstractPlane`, `AbstractRectangle`, `Group`
+- Improve package description.
+- Restructure tests.
+- Divide API docs at `/docs/api.md`: `/docs/api/index.md`, `/docs/api/geom.md`.
+- Convert `/docs/thanks.md` to `/docs/index.md`.
+
+### Removed
+
+- Remove old documentation `/docs/api.md`, `/docs/ideas.md`, `/docs/thanks.md`.
+
 
 ## [0.4.0-alpha.20] – 2018-01-16 – Taaspace v4.0.0-alpha.20
 
