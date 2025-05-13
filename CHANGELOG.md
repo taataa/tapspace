@@ -112,13 +112,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] – 2018-02-12
 
+### Added
+
+- New example app "Play Go!" at `/examples/go`. Exhibits a game board with grid snapping and direct manipulation of stone pieces.
+- Test to ensure package.json version tag and version property value match (#66).
+
+### Changed
+
+- Improve mouse support with `MouseConverter` and synthetic `rat*` events (#70).
+
+### Fixed
+
+- Use correct build script in `release` script.
+- Use correct property `item` in `Touchable/Manager` (#65).
+- Correct class name in documentation of `Touchable/Manager`.
+- Document that `Touchable` requires a mounted view.
+
 
 ## [1.0.1] – 2018-02-10
+
+### Added
+
+- Links from README to all main example apps.
+- Link from docs to Tapspace GitHub.
+
+### Fixed
+
+- Correct version property.
+- Use unpkg CDN bundle URL in the example apps to enable public usage.
+- Note that tutorial may be out of date.
 
 
 ## [1.0.0] – 2018-02-10
 
 Rebranding. Package and library name changed from Taaspace to Tapspace.
+
+### Added
+
+- Use unpkg to distribute built bundles.
+- Add `package-lock.json`.
+- New package scripts `release`, `test`.
+- Write docs for release process at `/docs/dev/index.md`.
+
+### Changed
+
+- BREAKING Rename package, library, and repository from `taaspace` to `tapspace` for more descriptive name.
+- BREAKING Rename pointer interaction events like `transformstart` to `gesturestart` (#50).
+- Simplify the canvas example. Thanks to [minimalisti](https://github.com/minimalisti) (#57).
+- Rename the package script `lintfix` to `lint:fix`.
+- Improve docs for building example apps.
+- Move docs in wiki to `/docs/dev/index.md`.
+
+### Removed
+
+- Remove package scripts `build:min`, `lintfix`.
+
 
 ## [0.5.0-rc] – 2018-02-09 – Taaspace v5.0.0-rc
 
