@@ -120,8 +120,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Rebranding. Package and library name changed from Taaspace to Tapspace.
 
+## [0.5.0-rc] – 2018-02-09 – Taaspace v5.0.0-rc
 
-## [0.5.0] – 2018-02-09 – Taaspace v5.0.0
+### Added
+
+- New element ordering methods for `AbstractNode`: `getFirstChild`, `getLastChild`, `getPreviousSibling`, `getNextSibling`, `bringAbove`, `bringToFront`, `sendBelow`, `sendToBack`.
+- Additional property `i` in `AbstractNode` methods `addChild`, `setParent`.
+- Write API docs for `Touchable`.
+- Write brief docs for project architecture.
+- Write a tutorial `/docs/tutorial/index.md`.
+- Help mobile debugging with `ghoulog.js`.
+- Help mobile debugging with a static file server at `examples/server.js`.
+- New example app `tiles` that uses stone tile images.
+- New example app `view` for minimal viewport setup.
+- New package tags.
+
+### Changed
+
+- Move some example assets to be shared among example apps.
+- Improve the grid example.
+- Divide `Touchable` into submodules `index`, `Manager`, `Recognizer`, `utils` instead of external dependency `taach` (#47).
+- BREAKING Event payloads of `added`, `contentAdded`, `removed`, `contentRemoved` events are objects instead of argument lists.
+
+### Fixed
+
+- Repair headless test with `style-loader`.
+- Gitignore source maps under `/dist`.
+
+### Removed
+
+- Remove old examples `play`, `simple`.
+
+
+## [0.5.0-alpha.3] – 2018-02-07 – Taaspace v5.0.0-alpha.3
+
+### Added
+
+- New property `taaspace.geom.EPSILON`.
+- New geometry class `ISize` with methods `almostEqual`, `equal`, `getHeight`, `getWidth`, `to`, `toSpace`.
+- New geometry class `Size` with methods `almostEqual`, `equal`, `getHeight`, `getWidth`, `transform`.
+- Write API docs for `Size` and `ISize`.
+
+### Changed
+
+- Use `Size` instead of `Vector` where a size is needed.
+- Use `setSize` instead of `setLocalSize`.
+
+### Removed
+
+- BREAKING Remove geometry class `Rectangle`.
+
+
+## [0.5.0-alpha.1] – 2018-02-03 – Taaspace v5.0.0-alpha.1
+
+### Added
+
+- New package tags.
+- New banner logo image with hands and colorful squares.
+- New `AbstractPlane` methods `getGlobalITransform`, `getLocalITransform`, `setGlobalITransform`, `setLocalITransform` (#42).
+
+### Changed
+
+- BREAKING Make parent item optional in constructors and flip the parameter order in `SpaceHTML`, `SpaceImage`, `SpacePixel`.
+- BREAKING Rename `AbstractPlane:getGlobalLocalTransform` to `getGlobalITransform`.
+- BREAKING Return `Transform` instead of `ITransform` in `AbstractPlane:getLocalTransform` and `AbstractPlane:getGlobalTransform`.
+- Merge `/docs/api/geom.md` to `/docs/api/index.md`.
+- Improve documentation style at `/docs/index.md`.
+- Improve introduction at `README.md`.
+
+### Removed
+
+- Remove `/docs/api/geom.md`.
 
 
 ## [0.4.1] – 2018-02-01 – Taaspace v4.0.1
