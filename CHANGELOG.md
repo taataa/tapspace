@@ -103,6 +103,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] – 2018-02-25
 
+### Added
+
+- New section in `README` titled "Features".
+- Implement method `copy` for `SpaceGroup`, `SpaceHTML`, `SpaceImage`, `SpacePixel`.
+- Implement `SpaceView` methods `refreshSize`, `setSize`, `setISize` (#55).
+- Add info text to examples `grid`, `pixels`, `tiles`.
+- Define "Hull order" in API docs (#45).
+- Link to `tapspace` at `yarn`.
+- Implement new interaction class `Scrollable` (#89) and later rename it `Wheelable`.
+- New mode property `preventDefault` in `Touchable`.
+
+### Changed
+
+- Improve "Architecture" docs in `docs/dev/index.md`.
+- Improve badges in `README`.
+- Refactor interaction classes `Manager` into classes `Recognizer` and `Sensor` (#97).
+- Improve `tiles` example to exhibit `Wheelable`.
+- Improve handling of input event propagation and default action prevention (#98).
+- Improve touch event handling by filtering the pointers (#87).
+- Upgrade example apps `canvas`, `gears`, `go`, `grid`, `modes`, `multiview` to v1.2.0.
+
+### Fixed
+
+- Write missing `SpaceGroup` API docs for `atMid`, `getHull`.
+
+### Removed
+
+- Remove unnecessary example app `view`.
+
+
+## [0.5.0] – 2018-02-18 – Taaspace v5.0.0
+
+### Changed
+
+- Deprecate old `taaspace` package.
+- Make `taaspace` package v5 to follow `tapspace`
+
+### Removed
+
+- Remove all source code, docs, and examples that were in `taaspace@5.0.0-rc`.
+- Replace all dependencies in favour of single `tapspace` dependency.
+
 
 ## [1.1.1] – 2018-02-17
 
