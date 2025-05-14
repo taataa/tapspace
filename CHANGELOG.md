@@ -106,8 +106,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.1] – 2018-02-17
 
+### Changed
+
+- Improve docs and test `Touchable` parameter validation.
+- Simplify `transformed` event handling. Use `setLocalTransform` all over `AbstractPlane` and `Touchable`.
+- Improve `ghoulog` panel position and show line numbers.
+- Improve `gears` example. Add handles.
+- Upgrade `canvas` example to v1.1.0.
+- Improve `go` example.
+- Improve package tags.
+- Make `multiview` example interactive. Demonstrate scene tree event system. (#83)
+- Improve `html` example navigation (#84).
+- Improve `modes` example app.
+- Use `setElementTransform` instead of `_transformElementOf`.
+- Test that `package-lock.json` version matches version property.
+
+### Fixed
+
+- Add a missing link from `README` to `gears` example.
+- Support iframe handling in iOS Safari (#84).
+
+### Removed
+
+- Uninstall unused dependency `move-js`.
+
 
 ## [1.1.0] – 2018-02-14
+
+### Added
+
+- Emit `transformed` with payload `{ source, newTransform, oldTransform }` (#74).
+- Emit `childAdded`  from `AbstractNode` when a descendant is added (#75).
+- Emit `childRemoved` from `AbstractNode` when a descendant is removed (#75).
+- Document the `AbstractNode` event API (#75).
+- Emit `resized` from `AbstractRectangle` with payload `{ source, newSize, oldSize }` (#76).
+- Optional parameter `targetItem` to `Touchable` constructor. Enables gesture effect redirection. (#72)
+- New example app "Gears" to demonstrate `targetItem` parameter (#72).
+
+### Changed
+
+- Feature documentation separated from Tutorial. New file `docs/features/index.md`.
+- Improve Features docs.
+- Improve `Size` docs and type checking (#76).
+- Improve package tags.
+
+### Removed
+
+- BREAKING Remove events `contentAdded`, `contentRemoved` in `AbstractNode` and `SpaceView` (#75).
 
 
 ## [1.0.2] – 2018-02-12
