@@ -91,11 +91,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.2] – 2018-08-06
 
+### Changed
+
+- Upgrade dev dependencies `css-loader`, `file-loader`, `semver`, `style-loader`, `tap-spec`, `tape-run`.
+- Upgrade `webpack` to v4 and migrate build config.
+
+### Removed
+
+- Uninstall dev dependency `npm`.
+
 
 ## [1.4.1] – 2018-03-22
 
+### Changed
+
+- Move example app files under `/docs`.
+- Npmignore `/docs` directory.
+- Improve "Architecture" docs with links to Jazz, Scene2D and DOM (#120).
+
 
 ## [1.4.0] – 2018-03-22
+
+### Added
+
+- Support for data URLs in `SpaceImage` (#112).
+- Add `ghoulog` to `canvas` example.
+- Add preview images for example apps (#115).
+- Sketch `videograph` example and move it to a separate branch (#113).
+- Implement `IScalar` methods `multiply`, `subtract`.
+- Allow `IVector:polarOffset` to take `IScalar` (#116).
+- Emit `gesture*` events from `Wheelable` in addition to `wheel` event (#118).
+- Implement `Size` method `toArray` (#122).
+
+### Changed
+
+- Update links to examples to point to `master` instead of `development` branch (#114).
+- Move features and examples from `README` to `docs/index.md` (#115).
+- Convert the license badge to a "License" section at the end of `README`.
+- Improve `IVector:distance` docs.
+- Upgrade `infinity` example to tapspace v1.4.0.
+
+### Fixed
+
+- Detect attempt to transform root node (#104).
+- Repair `hammerjs` example (#52).
 
 
 ## [1.3.0] – 2018-03-04
