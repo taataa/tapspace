@@ -100,6 +100,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.0] – 2018-03-04
 
+### Added
+
+- New example `infinity` to explore what is needed to overcome floating point limitations (#105).
+- Allow parameter `targetItem` in `Touchable` to be a function (#101).
+- Emit `wheel` event from a `Wheelable` item (#106).
+- Set up TravisCI integration for headless testing (#67).
+- New development dependency `npm` to allow Travis publish to npm repository after successful build.
+
+### Changed
+
+- Rename parameter `item` to `sourceItem` in `Touchable` (#101).
+- Improve mobile support in `minimal` example.
+- Improve example app link readability and styling in `README.md`.
+
+### Fixed
+
+- Correct API docs of `bringToFront` and `sendToBack` (#103).
+- Define `touchstart` and `touchmove` event listeners as `passive` (#80).
+- Correct code inspection version in "Thanks to" section.
+
+### Removed
+
+- Undocument private properties in `Touchable` (#102).
+
 
 ## [1.2.0] – 2018-02-25
 
