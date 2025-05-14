@@ -82,11 +82,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.2] – 2019-02-12
 
+### Added
+
+- New example app `book`.
+
+### Changed
+
+- Upgrade dev dependencies `css-loader`, `file-loader`, `genversion`, `npm-watch`, `style-loader`, `tape`, `tape-run`, `webpack`, `webpack-cli`, `webpack-livereload-plugin`.
+
+### Removed
+
+- Remove `package-lock.json` from version control.
+
 
 ## [1.5.1] – 2018-11-01
 
+### Changed
+
+- Improve `setSize` API docs.
+- Improve `IGrid` API docs.
+- Upgrade dependency `extend`.
+- Upgrade dev dependencies.
+
 
 ## [1.5.0] – 2018-08-07
+
+### Added
+
+- Provide space coordinates in the `tap` event (#1).
+- Implement `IVector` class function `mean`.
+- Implement `Vector` class function `mean`.
+
+### Changed
+
+- Improve tap navigation in `infinity` example.
 
 
 ## [1.4.2] – 2018-08-06
