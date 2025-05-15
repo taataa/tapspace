@@ -79,6 +79,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.0] – 2020-10-30
 
+### Added
+
+- New example app `password` about zoomable fractal password with depth-limited recursion.
+- Import a food and drink related OpenMoji emoji palette to `/docs/examples/assets/`.
+- New `Size` methods `min`, `max`.
+- New `AbstractPlane` method `setLocal3d`.
+- New example app `tunnel` about a 3D-ish tunnel of foods.
+- Ability to `Vector:rotate` about a `pivot` point.
+- New `Vector` method `scale`.
+- New geometry class `Vector3` with methods `add`, `subtract`, `toVector`.
+- Sketch new class `Fractal`.
+- New example app `semanticzoom` to exhibit distance-triggered behavior.
+
+### Changed
+
+- Improve tile graphics in `tiles` example.
+- Use `Object.prototype.hasOwnProperty` or its `hasProp` shorthand instead of `obj.hasOwnProperty`.
+- Upgrade TravisCI config.
+- Stabilize dev dependency `standard` version.
+
+### Fixed
+
+- Correct line width in the `book` example.
+- Correctly handle `SpaceView` constructed with an invalid `Space`.
+
+### Removed
+
+- Remove `package-lock.json` test.
+- Remove `npm` api key from `.travis.yml` config.
+
 
 ## [1.5.2] – 2019-02-12
 
