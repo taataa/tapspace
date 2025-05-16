@@ -76,6 +76,165 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.1] – 2022-09-19
 
+### Added
+
+- Sketch v2 API documentation.
+- Add package scripts `lint:lib`, `audit`.
+- Set up `.editorconfig`.
+- Install new depencency `affineplane` for affine geometry.
+- Install dep dependencies `path-browserify`, `process`, `stream-browserify`, `ejs-loader` to enable in-browser tape tests.
+- Create `features` directory for sketchy code used to sketch v2 API and to conduct readability and other tests. The directory was temporarily named `scaffold`.
+- Implement `AbstractNode` component class with:
+  - inherit properties and methods from `Emitter`.
+  - constructor parameters `element`.
+  - properties `element`.
+  - methods `getAncestors`, `getChildren`, `getParent`, `getRoot`, `findCommonAncestor`, `isRoot`, `isLeaf`.
+- Implement `AbstractPlane` component class with:
+  - inherited properties and methods from `AbstractNode`.
+  - constructor parameters `element`, `opts`, `opts.anchor`.
+  - properties `el`, `anchor`, `proj`.
+  - content methods `add(component, placement)`, `replaceBy`.
+  - geometry methods `at`, `atAnchor`, `getDirection`, `getPosition`, `getProjectionTo`, `getProjectionToParent`, `getProjectionToParentOf`, `getScale`.
+  - manipulation methods `moveTo`, `rotateBy`, `setAnchor`, `scaleBy`, `match`, `transformBy`, `translateBy`.
+  - rendering method `renderCss` that calls one of the CSS transform utility methods:
+    - `applyTransform` for 2D CSS transforms (is a refurbished and renamed version of `setElementTransform`).
+    - `applyTransition` for animated CSS transforms.
+    - `applyTransform3d` for 3D transforms.
+  - event `transformed`.
+- Implement `AbstractFrame` component class with:
+  - inherited properties and methods from `AbstractPlane`.
+  - constructor options `size`.
+  - two-directional references via `rectangle.el.affine`.
+  - positioning methods `atNorm`, `atTopLeft`, `atTopMid`, `atTopRight`, `atMidLeft`, `atCenter`, `atMidMid`, `atMid`, `atMidRight`, `atBottomLeft`, `atBottomMid`, `atBottomRight`.
+  - dimension methods `getSize`.
+- Implement `AbstractActive` component class with:
+  - properties `capturers`, `converters`.
+  - methods `capturer`.
+- Implement `AbstractItem` component class with:
+  - constructor parameters `element`, `opts`.
+  - `draggable`, `pannable`, `resizable`, `slidable`, `slideable`, `tappable`.
+- Implement component `AffineLayer` with
+  - inherited properties and methods from `AbstractPlane`.
+- Implement `AbstractView` component class with:
+  - inherited properties and methods from `AbstractFrame`.
+  - coordinate methods `atPage`.
+  - transforming methods `scaleBy`, `transformBy`, `translateBy`, `transformLayersBy`.
+  - content methods `addControl`, `addLayer`, `findLayer`, `getControls`, `getLayers`.
+  - override methods `atNorm`.
+  - sketched methods `layer`.
+- Implement `Viewport` component class with:
+  - inherited properties and methods from `AbstractView`, `AbstractActive`.
+  - class function `create`.
+  - constructor parameters `element`, `options`, `options.size`, `options.interaction`, `options.projection`.
+  - methods `navigable`, `pannable`, `zoomable`, `rotatable`.
+  - override method `renderCss`
+- Implement `Component` component class with:
+  - inherited properties and methods from `AbstractFrame`, `AbstractItem`.
+  - class function `create`.
+  - constructor parameters `content`, `opts`, `opts.id`, `opts.className`, `opts.anchor`, `opts.size`.
+- Implement `Group` component class with:
+  - inherited properties and methods from `AbstractPlane`.
+- Implement `Layer` component class with:
+  - inherited properties and methods from `AbstractPlane`.
+  - property `z` for depth.
+- Implement `Space` component class with:
+  - inherited properties and methods from `AbstractPlane`.
+- Implement `Controls` component class with:
+  - inherited properties and methods from `AbstractPlane`.
+- Implement `Pixel` component class with:
+  - inherited properties and methods from `AbstractFrame`.
+- Sketch component classes `Circle`, `AbstractControl`, `TextBlock`, `Image`, `ZoomControl`, `Edge`.
+- Implement an input capturer class `GestureCapturer` with:
+  - constructor parameters `component`, `options`, `options.freedom`, `options.preventDefault`.
+  - events `gesturestart`, `gesturemove`, `gesturecancel`, `gestureend` with payload `{ travel, duration, component, transform, delta }`.
+  - helper functions `projectPointers`.
+  - methods `unbind`.
+  - subclass `Sensor` that records `pointer` events.
+- Implement an input capturer class `WheelCapturer` with:
+  - methods `update`, `unbind`.
+- Sketch input capturer classes `KeyboardCapturer`.
+- Implement interaction class `Drag`
+  - methods `bind`, `setSource`, `setTarget`, `unbind`.
+  - events `dragstart`, `dragmove`, `dragend`, `dragcancel`, `drag`.
+- Implement interaction class `Tap` with:
+  - methods `bind`, `setSource`, `setTarget`, `unbind`.
+  - events `tapstart`, `tapcancel`, `tapend`.
+- Implement interaction class `PanLayers` with:
+  - methods `bind`, `unbind`.
+  - events `panstart`, `panmove`, `pancancel`, `panend`, `pan`.
+- Implement interaction class `PinchLayers` with:
+  - constructor parameters `viewport`, `options`, `options.freedom`, `options.center`, `options.angle`.
+  - methods `bind`, `getOptions`, `unbind`.
+- Implement interaction class `WheelZoom` with:
+  - methods `bind`, `unbind`.
+- Sketch interaction classes `Hold`, `Pinch`, `Resize`, `Rigid`, `Rotate`, `Scale`, `Slide`, `WheelPan`.
+- Implement `Direction` geometry class with:
+  - constructor parameters `basis`, `angle`.
+  - properties `basis`, `r`.
+- Implement `Distance` geometry class with:
+  - constructor parameters `basis`, `d`.
+  - properties `basis`, `d`
+  - methods `projectTo`, `scaleBy`.
+- Implement `Point` geometry class with:
+  - constructor parameters `basis`, `x`, `y`.
+  - properties `basis`, `x`, `y`.
+  - method `distanceTo`, `projectTo`, `round`.
+- Implement `Scale` geometry class with:
+  - constructor parameters `basis`, `multiplier`.
+- Implement `Size` geometry class with:
+  - constructor parameters `basis`, `width`, `height`.
+  - method `projectTo`.
+- Implement `Transform` geometry class with:
+  - constructor parameters `basis`, `a`, `b`, `x`, `y`.
+  - properties `basis`, `a`, `b`, `x`, `y`.
+  - class functions `createFromParams`, `estimate`.
+  - methods `getTranslation`, `transformBy`, `projectTo`, `inverse`.
+- Implement `Vector` geometry class with:
+  - constructor parameters `basis`, `x`, `y`.
+  - properties `basis`, `x`, `y`.
+  - methods `projectTo`.
+- Sketch geometry classes `Path`, `Tunnel`.
+- Implement directory `effects` and `press` effect.
+- New example app `visjs` to exhibit Vis.js integration.
+- Implement main component creation functions `component`, `element`, `viewport`, `plane`.
+- Implement the main stylesheet `tapspace.css` with:
+  - classes `affine-element`, `affine-layer`, `affine-group`, `affine-plane`, `affine-viewport`, `affine-controls`.
+  - rules `display:block; box-sizing: border-box; position: absolute`.
+
+### Changed
+
+- Upgrade dependencies `component-emitter@1.3`, `nudged@2`.
+- Upgrade to `webpack@5`.
+- Upgrade dev dependencies `async`, `css-loader`, `genversion`, `finalhandler`, `jquery`, `semver`, `serve-static`, `standard@16`, `style-loader`, `tape`.
+- Improve `minimal` example sketch.
+- Convert package index to a callable function that creates `SpaceElement` from `HTMLElement`.
+- BREAKING Rename `SpaceElement:delta` method to `projectionTo`.
+- BREAKING Rename `SpaceElement` to `Element`.
+- Read `Element` width and height from HTML dataset.
+- BREAKING Use geometry structures and modules `point2`, `vector2`, `tran2`, `proj2` from `affineplane`.
+- Use `gendocs` to generate API documentation from source code comments.
+- Prefer `https` prefixed URLs in documentation links.
+- Improve introduction at the documentation page `docs/index.md`.
+- Group all geometry classes under `lib/geometry/`.
+- Group all component classes under `lib/components/`.
+- Group all interaction classes under `lib/interaction/`.
+
+### Fixed
+
+- Override possible `el` styles `bottom`, `right`.
+
+### Removed
+
+- Discard v1 tutorial.
+- Uninstall dependencies `extend`, `seqid`.
+- Uninstall dev dependencies `file-loader`, `npm-watch`, `url-loader`, `watch`, `webpack-livereload-plugin`, `webpack-tape-run`.
+- Remove package script `watch` and its configuration.
+- Discard example apps `hammerjs`, `multiview`.
+- Discard v1 test suite.
+- Sketch but discard a component `Fractal` with methods `create`, `movable`, `touchable`, `addTemplate`, `init`, `removeTemplate`.
+- Remove geometry classes `dtran`, `delta2`, `delta4`, `ptran`, `pointtran4`, `tran4`, `point4`, `vector4`.
+- Temporarily use library name `affinedom` but reverted back to `tapspace`.
+
 
 ## [2.0.0-alpha.0] – 2022-05-17
 
