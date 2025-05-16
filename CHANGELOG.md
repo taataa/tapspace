@@ -77,6 +77,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0-alpha.1] – 2022-09-19
 
 
+## [2.0.0-alpha.0] – 2022-05-17
+
+### Added
+
+- Sketch v2 geometry modules `delta2`, `delta4`, `dtran`, `point2`, `point4`, `ptran`.
+- Sketch v2 component `SpaceElement` that can be initilized with `HTMLElement` or `querySelector` string.
+- Sketch `minimal` example for v2 API.
+
+### Changed
+
+- Update Travis badge.
+- Improve Travis config.
+- Bring developer docs up-to-date.
+- Upgrade dependency `nudged` to v1.5.0.
+- Upgrade dev dependencies `npm-watch`.
+- Update license year.
+
+### Removed
+
+- Uninstall dev dependency `tape-run`.
+- BREAKING Discard v1 component classes `AbstractNode`, `AbstractPlane`, `AbstractRectangle`, `Space`, `SpaceGroup`, `SpaceHTML`, `SpaceImage`, `SpacePixel`, `SpaceView`, `Touchable`, `Wheelable`.
+- BREAKING Discard v1 geometry classes `Grid`, `IGrid`, `Path`, `IPath`, `IScalar`, `ISize`, `Transform`, `ITransform`, `Vector`, `IVector`, `Vector3`, `Size`, `ISize`, `epsilon`.
+- Discard v1 API docs.
+
+
 ## [1.6.0] – 2020-10-30
 
 ### Added
