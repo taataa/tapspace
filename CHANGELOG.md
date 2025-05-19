@@ -78,12 +78,115 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Sketch v2 API documentation.
+- Alias `space` for `viewport`.
+- New `Element` method `html`.
+- New `AbstractNode` method `copy` and its alias `clone`.
+- New `AbstractNode` methods `findAffineAncestor`, `getElement`.
+- New `AbstractPlane` methods `getTransitionFrom`, `translateTo`.
+- New `AbstractPlane` utility function `counterTransformOrigin`.
+- Implement `Space` component class with:
+  - constructor parameters `element`, `options`, `options.size`.
+  - property `view`.
+  - method `createPlane` alias `plane` alias `group`.
+  - method `getView` alias `viewport` alias `getViewport`.
+- Implement `Plane` component class with:
+  - properties and methods from `AffineElement`.
+  - methods `add`.
+- Implement `AbstractControl` component class with:
+  - inherited properties and methods from `AbstractFrame`.
+- Implement `ZoomControl` component class with:
+  - inherited properties and methods from `AbstractControl`.
+  - constructor parameters `options`, `options.scaleStep`.
+  - methods `bind`, `unbind`.
+- New `AbstractView` property `cameraDistance`.
+- New `AbstractView` methods `approach`, `atCamera`, `getElementAt`, `getSpace`, `orthogonal`, `perspective`, `isPerspective`.
+- New `AbstractFrame` methods `getHeight`, `getWidth`.
+- Sketch `AbstractPlane` method `snapGrid`.
+- Sketch `AbstractFrame` methods `fitScale`, `fitSize`, `getHull`.
+- Sketch new component `Line`.
+- Add new property `target` in `wheel` event payload.
+- New `Point` methods:
+  - New alias `fromMean` for `fromAverage`.
+  - New method `projectTo(basis, camera)`.
+  - Sketch `connect`.
+- New `Vector` methods `add`, `almostEqual`, `copy`, `cross`, `difference`, `dot`, `getDirection`, `getDistance`, `multiply`, `negate`, `norm`, `normalize`, `rotateBy`, `scaleBy`, `subtract`, `transformBy`.
+- Sketch new geometries `Grid`, `Polygon`.
+- Write down design principles in the architecture documentation at `docs/api2.md`.
+- New feature demo `geometry-3d.html`.
+- Add link to `v1.x` branch in `README.md`.
+- Write tutorial for `v2`.
+- Introduce `loaders` and sketch `loadImages` and `Fractal`.
+
+### Changed
+
+- Upgrade dependency `affineplane` to v2.5.1.
+- Upgrade dev dependency `yamdog` to v1.4.0.
+- Changes to geometry classes:
+  - Upgrade `Point` geometry to 3D with new `z` parameter and property.
+  - Upgrade `Vector` geometry to 3D with new `z` parameter and property.
+  - Rename `Direction` method `projectTo` to `changeBasis`.
+  - Rename `Distance` method `projectTo` to `changeBasis`.
+  - Rename `Point` method `projectTo` to `changeBasis`.
+  - Rename `Scale` method `projectTo` to `changeBasis`.
+  - Rename `Size` method `projectTo` to `changeBasis`.
+  - Rename `Transform` method `projectTo` to `changeBasis`.
+  - Rename `Transform` class function `createFromParams` to `fromFeatures`.
+  - Rename `Vector` method `projectTo` to `changeBasis`.
+- Changes to component classes:
+  - Rename `Component` class to `Element`.
+  - Rename `component` creation method to `element`.
+  - Upgrade `AbstractPlane` property `proj` to have `z` property.
+  - Rename `AbstractPlane` methods:
+    - `add` to `addChild`.
+    - `getProjectionTo` to `getTransitionTo`.
+  - Rename `AbstractPlane` property `proj` or `plane` to `tran`.
+  - Upgrade `AbstractFrame:atNorm` method to 3D with `rz` parameter.
+  - Upgrade `AbstractView:atNorm` method to 3D with `rz` parameter.
+  - Replace parameter `opts` with `center` in `AbstractPlane` and `AbstractView` transform methods `rotateBy`, `scaleBy`, `transformBy`, `translateBy`.
+- Changes to interaction classes:
+  - Rename `PinchLayers` to `PinchView`.
+  - Rename `Drag`, `PinchView` property `initialPlane` to `initialTran`.
+  - Update `WheelZoom` and `PinchView` to use intelligent perspective transform.
+  - Update `GestureCapturer` to find affine target and provide event payload with the property `target`.
+  - Cancel gestures on `contextmenu` event.
+- Changes to style rules:
+  - set `perspective: 300px` for `affine-viewport`.
+  - set `transform-style: preserve-3d` for `affine-layer` and `affine-controls`.
+- Update API docs of many geometry and component classes.
+- Replace documentation banner image.
+- Convert API docs root to select version and provide API docs for both v1.6.0 and v2.0.0-alpha.1.
+
+### Fixed
+
+- Add missing installation docs about `tapspace.css`.
+- Set pointer capture on original target in `GestureCapturer`.
+
+### Removed
+
+- Remove `Layer` component
+- Remove `AbstractView` methods `addLayer`, `findLayer`, `getLayers`.
+- Remove creation method `layer`.
+- Remove component sketch `Tunnel`.
+- Discard reference files set aside from `v1.6.0`.
+- Remove old package script `replaceliburl`.
+
+
+## [2.0.0-alpha.1a] – 2022-07-26 – Before 3D
+
+### Added
+
+- Sketchy v2 API documentation.
+- Add "Contribute" section to `README`.
 - Add package scripts `lint:lib`, `audit`.
 - Set up `.editorconfig`.
-- Install new depencency `affineplane` for affine geometry.
-- Install dep dependencies `path-browserify`, `process`, `stream-browserify`, `ejs-loader` to enable in-browser tape tests.
+- Install new depencencies:
+  - `affineplane` for affine geometry
+  - `to-px` for CSS unit conversion.
+- Install dep dependencies:
+  - `path-browserify`, `process`, `stream-browserify`, `ejs-loader` to enable in-browser tape tests.
+  - `yamdog` for API docs generation.
 - Create `features` directory for sketchy code used to sketch v2 API and to conduct readability and other tests. The directory was temporarily named `scaffold`.
+- New example app `visjs` to exhibit Vis.js integration.
 - Implement `AbstractNode` component class with:
   - inherit properties and methods from `Emitter`.
   - constructor parameters `element`.
@@ -94,18 +197,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - constructor parameters `element`, `opts`, `opts.anchor`.
   - properties `el`, `anchor`, `proj`.
   - content methods `add(component, placement)`, `replaceBy`.
-  - geometry methods `at`, `atAnchor`, `getDirection`, `getPosition`, `getProjectionTo`, `getProjectionToParent`, `getProjectionToParentOf`, `getScale`.
-  - manipulation methods `moveTo`, `rotateBy`, `setAnchor`, `scaleBy`, `match`, `transformBy`, `translateBy`.
-  - rendering method `renderCss` that calls one of the CSS transform utility methods:
+  - geometry methods `at`, `atAnchor`, `getDirection`, `getPosition`, `getProjectionTo`, `getProjectionToParent`, `getProjectionToParentOf`, `getRotation`, `getScale`.
+  - manipulation methods `match`, `moveTo`, `rotateBy`, `setAnchor`, `scaleBy`, `snapPixels`, `transformBy`, `translateBy`.
+  - animation methods `animate`.
+  - rendering method `renderTransform` that calls one of the CSS transform utility methods:
     - `applyTransform` for 2D CSS transforms (is a refurbished and renamed version of `setElementTransform`).
     - `applyTransition` for animated CSS transforms.
     - `applyTransform3d` for 3D transforms.
+    - `applyTransformOrigin` for origin change.
   - event `transformed`.
 - Implement `AbstractFrame` component class with:
   - inherited properties and methods from `AbstractPlane`.
   - constructor options `size`.
   - two-directional references via `rectangle.el.affine`.
-  - positioning methods `atNorm`, `atTopLeft`, `atTopMid`, `atTopRight`, `atMidLeft`, `atCenter`, `atMidMid`, `atMid`, `atMidRight`, `atBottomLeft`, `atBottomMid`, `atBottomRight`.
+  - coordinate methods `atNorm`, `atToNorm`, `atTopLeft`, `atTopMid`, `atTopRight`, `atMidLeft`, `atCenter`, `atMidMid`, `atMid`, `atMidRight`, `atBottomLeft`, `atBottomMid`, `atBottomRight`.
+  - transformation methods `centerTo`.
   - dimension methods `getSize`.
 - Implement `AbstractActive` component class with:
   - properties `capturers`, `converters`.
@@ -117,17 +223,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - inherited properties and methods from `AbstractPlane`.
 - Implement `AbstractView` component class with:
   - inherited properties and methods from `AbstractFrame`.
-  - coordinate methods `atPage`.
-  - transforming methods `scaleBy`, `transformBy`, `translateBy`, `transformLayersBy`.
+  - geometry methods `atPage`, `atPageFn`, `toPage`.
+  - transforming methods `rotateBy`, `scaleBy`, `transformBy`, `translateBy`, `transformLayersBy`.
   - content methods `addControl`, `addLayer`, `findLayer`, `getControls`, `getLayers`.
-  - override methods `atNorm`.
+  - override methods `atNorm`, `getSize`, `renderTransform`, `setSize`.
   - sketched methods `layer`.
 - Implement `Viewport` component class with:
   - inherited properties and methods from `AbstractView`, `AbstractActive`.
   - class function `create`.
   - constructor parameters `element`, `options`, `options.size`, `options.interaction`, `options.projection`.
-  - methods `navigable`, `pannable`, `zoomable`, `rotatable`.
-  - override method `renderCss`
+  - methods `navigable`, `pannable`, `responsive`, `rotatable`, `rotateable`, `scalable`, `zoomable`.
+  - override method `renderCss`.
+  - sketch methods `pinchable`.
 - Implement `Component` component class with:
   - inherited properties and methods from `AbstractFrame`, `AbstractItem`.
   - class function `create`.
@@ -143,7 +250,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - inherited properties and methods from `AbstractPlane`.
 - Implement `Pixel` component class with:
   - inherited properties and methods from `AbstractFrame`.
-- Sketch component classes `Circle`, `AbstractControl`, `TextBlock`, `Image`, `ZoomControl`, `Edge`.
+- Implement `Circle` component class with:
+  - inherited properties and methods from `AbstractFrame`.
+- Implement `Edge` component class with:
+  - inherited properties and methods from `AbstractFrame`.
+  - helper function `cssBorder`, `completeBorderOptions`.
+  - methods `atEnd`, `atStart`, `getLength`, `setPoints`.
+- Sketch component classes `AbstractControl`, `TextBlock`, `Image`, `ZoomControl`.
 - Implement an input capturer class `GestureCapturer` with:
   - constructor parameters `component`, `options`, `options.freedom`, `options.preventDefault`.
   - events `gesturestart`, `gesturemove`, `gesturecancel`, `gestureend` with payload `{ travel, duration, component, transform, delta }`.
@@ -152,8 +265,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - subclass `Sensor` that records `pointer` events.
 - Implement an input capturer class `WheelCapturer` with:
   - methods `update`, `unbind`.
+  - event `wheel` with payload `{ center, component, deltaX, deltaY }`.
+- Implement `ResizeCapturer` input capturer class with:
+  - methods `update`, `unbind`.
+  - event `resize`.
 - Sketch input capturer classes `KeyboardCapturer`.
-- Implement interaction class `Drag`
+- Implement interaction class `Drag` with:
   - methods `bind`, `setSource`, `setTarget`, `unbind`.
   - events `dragstart`, `dragmove`, `dragend`, `dragcancel`, `drag`.
 - Implement interaction class `Tap` with:
@@ -165,8 +282,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implement interaction class `PinchLayers` with:
   - constructor parameters `viewport`, `options`, `options.freedom`, `options.center`, `options.angle`.
   - methods `bind`, `getOptions`, `unbind`.
+  - style class `active-pinch`.
 - Implement interaction class `WheelZoom` with:
   - methods `bind`, `unbind`.
+- Implement interaction class `WheelRotate` with:
+  - methods `bind`, `unbind`.
+- Implement `ResizeAlign` interaction class with:
+  - methods `bind`, `unbind`.
+  - automatic midpoint re-aligning upon resize.
+  - event `resize`.
 - Sketch interaction classes `Hold`, `Pinch`, `Resize`, `Rigid`, `Rotate`, `Scale`, `Slide`, `WheelPan`.
 - Implement `Direction` geometry class with:
   - constructor parameters `basis`, `angle`.
@@ -178,12 +302,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implement `Point` geometry class with:
   - constructor parameters `basis`, `x`, `y`.
   - properties `basis`, `x`, `y`.
-  - method `distanceTo`, `projectTo`, `round`.
+  - class functions `average`.
+  - method `distanceTo`, `offset`, `plain`, `polarOffset`, `projectTo`, `round`, `vectorTo`.
 - Implement `Scale` geometry class with:
   - constructor parameters `basis`, `multiplier`.
+  - properties `basis`, `s`.
 - Implement `Size` geometry class with:
   - constructor parameters `basis`, `width`, `height`.
-  - method `projectTo`.
+  - methods `at`, `atNorm`, `atToNorm`, `projectTo`.
 - Implement `Transform` geometry class with:
   - constructor parameters `basis`, `a`, `b`, `x`, `y`.
   - properties `basis`, `a`, `b`, `x`, `y`.
@@ -195,11 +321,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - methods `projectTo`.
 - Sketch geometry classes `Path`, `Tunnel`.
 - Implement directory `effects` and `press` effect.
-- New example app `visjs` to exhibit Vis.js integration.
-- Implement main component creation functions `component`, `element`, `viewport`, `plane`.
+- Implement main component creation functions `circle`, `component`, `edge`, `layer`, `pixel`, `viewport`.
 - Implement the main stylesheet `tapspace.css` with:
   - classes `affine-element`, `affine-layer`, `affine-group`, `affine-plane`, `affine-viewport`, `affine-controls`.
   - rules `display:block; box-sizing: border-box; position: absolute`.
+  - rules for viewport `position: relative; overflow: hidden; touch-action: none;`.
 
 ### Changed
 
@@ -212,9 +338,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BREAKING Rename `SpaceElement` to `Element`.
 - Read `Element` width and height from HTML dataset.
 - BREAKING Use geometry structures and modules `point2`, `vector2`, `tran2`, `proj2` from `affineplane`.
-- Use `gendocs` to generate API documentation from source code comments.
 - Prefer `https` prefixed URLs in documentation links.
 - Improve introduction at the documentation page `docs/index.md`.
+- Improve introduction at `README.md`.
 - Group all geometry classes under `lib/geometry/`.
 - Group all component classes under `lib/components/`.
 - Group all interaction classes under `lib/interaction/`.
@@ -234,6 +360,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sketch but discard a component `Fractal` with methods `create`, `movable`, `touchable`, `addTemplate`, `init`, `removeTemplate`.
 - Remove geometry classes `dtran`, `delta2`, `delta4`, `ptran`, `pointtran4`, `tran4`, `point4`, `vector4`.
 - Temporarily use library name `affinedom` but reverted back to `tapspace`.
+- Temporarily use in-repo module `gendocs` to generate API documentation from source code comments but remove it later for `yamdog`.
 
 
 ## [2.0.0-alpha.0] – 2022-05-17
