@@ -70,6 +70,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.3] – 2023-01-16
 
+### Added
+
+- New `Distance` methods `isAlmostEqual`, `isGreaterThan`, `isLessThan`, `projectTo`.
+- Alias `createGroup` for `tapspace.createBasis`.
+- Alias `appendChild` for `Basis:addChild`.
+- New `Basis` methods `getSpace`, `getViewport`, `prependChild`, `setId`.
+- New `Plane` methods `animateOnce`.
+- New `Viewport` methods `animate`, `animateOnce`, `findWithinDistance`, `focus`, `focusTo`, `getCameraDistance`, `measurePlanes`, `setMeasureMode`.
+- New component `Arc` for curved edges.
+- New `Interactive` methods `focusable`, `getCapturer`, `hasCapturer`, `removeAllInteractions`, `requestIdle`, `setContentInput`, `startCapturer`, `stopCapturer`, `updateCapturer`.
+- New `Item` methods `approachable`, `disable`, `focus`.
+- Ability to chain `Item` methods `draggable`, `holdable`, `rotatable`, `scalable`, `slidable`, `tappable`.
+- New capturer class `CameraCapturer` for semantic zooming. Emits `cameraenter`, `cameraleave`.
+- New capturer class `Capturer` for common capturer logic.
+- New capturer class `KeyboardCapturer` for keyboard navigation.
+- New `WheelCapturer` helper function `isEventAffine`.
+- New interaction class `Approach` for semantic zooming.
+- New interaction classes `KeyboardPan`, `KeyboardZoom`.
+- New CSS class names `affine-proxy-pointer`, `affine-proxy-wheel` to control input delegation.
+- New options parameter `preventDefault` in `Item:tappable` and `Tap` constructor.
+- Toggle CSS class `active-tap` during tap gesture.
+- New feature example apps `interaction-approach`, `interaction-content`, `components-arc`, `viewport-focus`.
+- New informative chart for interaction logic.
+
+### Changed
+
+- Improve `Basis:addClass` to take three optional class names.
+- Improve `Circle` to inherit `Item`.
+- Make `Circle` constructor parameter `color` optional.
+- Change `Viewport:atCamera` to return viewport middle instead of anchor in orthogonal mode.
+- Improve `GestureCapturer` to find viewport automatically.
+- Change `CameraCapturer`, `GestureCapturer`, `ResizeCapturer`, `WheelCapturer` to inherit from `Capturer`.
+- Prevent double `bind` in capturers.
+- Upgrade dev dependencies `css-loader`.
+
+### Fixed
+
+- Detect undefined class name arguments in `Basis:addClass`.
+
+### Removed
+
+- Remove alias `add` of `Basis:addChild`.
+- Uninstall dev dependency `jquery`.
+- Remove deprecated `GestureCapturer` helper class `CompatibilitySensor`.
+
 
 ## [2.0.0-alpha.2] – 2022-12-05
 
