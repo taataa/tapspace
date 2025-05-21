@@ -73,6 +73,158 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.2] – 2022-12-05
 
+### Added
+
+- New components `Block` and `Frame` from `AbstractFrame`.
+- Document the documentation style guide at `docs/dev/docstyle.md`.
+- Draw class inheritance chart.
+- New `tapspace` functions `createCircle`, `createEdge`.
+- New dependency `throttle-debounce@5`.
+- New interaction event `idle` emitting from captured planes.
+
+### Changed
+
+- BREAKING Rename `AbstractNode` to `Basis`.
+- BREAKING Combine and rename `AbstractPlane` to `Plane`.
+- BREAKING Divide `AbstractFrame` to `Block` and `Frame`.
+- Move methods `add`, `addChild` from `Plane` to `Basis`.
+- Prevent calls to `AbstractView` methods `add`, `addChild`.
+- BREAKING Emit interaction events from `source` instead of `target`.
+- Change `AbstractView` to inherit from `Block` instead of `Plane`.
+- BREAKING Rename `AbstractActive` to `Interactive`.
+- BREAKING Rename `AbstractControl` to `Control`.
+- BREAKING Rename `AbstractItem` to `Item`.
+- BREAKING Merge `Element` into `Item`.
+- BREAKING Merge `AbstractView` into `Viewport`.
+- BREAKING Change `Item:html` behavior to replace the content instead of appending.
+- BREAKING Rename `Viewport` method `getElementAt` to `getItemAt`.
+- Lift `capturers` outside `Interactive`.
+- Rename capturer freedom parameter `freedom.center` to `freedom.pivot`.
+- Refactor `GestureCapturer` event handlers.
+- BREAKING Rename CSS class name `affine-element` to `affine-frame`.
+- Change `tapspace.createBasis` to create a `Group` instead of a `Plane`.
+- Upgrade dependencies `affineplane@2.9.0`.
+- Upgrade dev dependencies `css-loader`, `semver`, `tape`, `webpack`, `yamdog`.
+- Simplify API documentation markup.
+- Improve API docs in various places.
+- Update tutorial.
+- Update license year.
+
+### Fixed
+
+- Correct CSS class ordering in component class names and in the stylesheet.
+
+### Removed
+
+- Remove `options` from `Item:create` method parameters.
+- BREAKING Remove `tapspace.circle` in favour of `tapspace.createCircle`.
+- BREAKING Remove `tapspace.edge` in favour of `tapspace.createEdge`.
+- BREAKING Remove `tapspace.space` in favour of `tapspace.createSpace`.
+- BREAKING Remove `tapspace.element` in favour of `tapspace.createItem`.
+- BREAKING Remove `Pixel` component.
+
+
+## [2.0.0-alpha.2a] – 2022-11-24
+
+Including commits up to 6253dcb2b064492464b482ec2b728de72fb7b31a.
+
+### Added
+
+- New feature examples `components-basis`, `components-edge-3d`, `components-element`, `components-network-3d`, `interaction-hold`, `interaction-rotate`, `interaction-slide`, `loaders-fractal`.
+- Alias `tapspace.element` function with `createElement`.
+- Alias `tapspace.create` function with `createSpace`.
+- Alias `tapspace.circle` function with `createCircle`.
+- New namespace `tapspace.utils` with function `isAffine`.
+- New `AbstractNode` methods `addClass`, `getDescendants`, `getLeaves`, `isLeaf`, `removeClass`, `setParent`.
+- New `AbstractPlane` methods `getDirection`, `getDistanceTo`, `getVectorTo`, `matchOrientation`, `matchPoints`, `matchPosition`, `matchScale`, `rotateByDegrees`, `setScale`.
+- New parameter `center` in `AbstractPlane:transformBy`.
+- New `AbstractFrame` methods `matchSize`, `matchPixelSize`, `resize`.
+- Alias `AbstractFrame` method `atMid` with `atMiddle`.
+- New `AbstractView` methods `findMostDistant`, `moveCenterTo`.
+- New overriding `AbstractView` methods `atBottomLeft`, `atBottomMid`, `atBottomRight`, `atMidLeft`, `atMidMid`, `atMidRight`, `atTopLeft`, `atTopMid`, `atTopRight`, `getHeight`, `getWidth`.
+- New parameter `center`in `AbstractView:transformBy`.
+- New `AbstractActive` methods `addInteraction`, `getInteraction`, `removeInteraction`.
+- New `AbstractItem` methods `holdable`, `rotatable`, `scalable`, `translatable`.
+- New `Space` methods `add`, `addBasis`, `addPlane`, `transformBy`, `translateBy`.
+- Render `Edge` components in 3D with the aid of `renderTrackingTransform`, `renderOrthogonalTransform`.
+- Alias `Viewport` method `scalable` with `scaleable`.
+- New `Plane` class function `create`.
+- New `GestureCapturer` methods `convertToActive`, `getCenter`, `getFreedom`.
+- New interaction classes `Hold`, `Pinch`, `Slide`.
+- New `Direction` methods `getRaw`, `getVector`, `toVector`, `transit`, `transitRaw`.
+- New `Direction` class function `fromSpherical`.
+- New `Distance` methods `getNumber`, `getRaw`, `getVector`, `transit`, `transitRaw`.
+- New `Distance` class function `fromVector`.
+- New `Path` methods `changeBasis`, `getRaw`, `transit`, `transitRaw`.
+- New `Point` methods `addVector`, `getDirectionTo`, `transit`, `transitRaw`.
+- New `Scale` methods `getRaw`, `scaleBy`, `transit`, `transitRaw`.
+- New `Size` methods `getRaw`, `scaleBy`, `transit`, `transitRaw`.
+- New `Transform` methods `getRaw`, `getRotation`, `getVector`, `transit`, `transitRaw`.
+- New `Vector` methods `getRaw`, `transit`, `transitRaw`.
+- New `Vector` class function `fromAverage`, `fromPolar`, `fromSpherical`.
+- Write guidelines for coding style.
+- New package build scripts `test:browser`, `test:browser:open`, `test:browser:build`.
+- New test assertions `almostEqualPoint`, `almostEqualVector`.
+
+### Changed
+
+- Improve tutorial.
+- Improve developer docs.
+- Move v2 API docs to `/docs/api/v2`.
+- Improve API docs of various classes.
+- Upgrade dependencies `affineplane@2.7.0`.
+- Upgrade dev dependencies `yamdog@1.5.0`.
+- Use most distant item as default target in `Pinch`, `WheelZoom`.
+- Rename `ResizeAlign` interaction to `RealignView`.
+- BREAKING Replace `Direction` constructor parameter `angle` with `vec`.
+- Upgrade `Distance` internals to use 3D distance.
+- Upgrade `Point` internals to use 3D points.
+- BREAKING Rename `Point` methods:
+  - Rename `distanceTo` to `getDistanceTo`.
+  - Rename `plain` to `getRaw`.
+  - Rename `vectorTo` to `getVectorTo`.
+- BREAKING Rename `Scale` property `s` to `m`.
+- Upgrade `Transform` internals to use 3D transforms.
+- Upgrade `Vector` internals to use 3D vectors.
+- Change `Vector:dot` to return a `Distance`.
+- Move `AbstractPlane` property `tran` to `AbstractNode`.
+- Move `AbstractPlane` transition methods to `AbstractNode`: `getTransitionFrom`, `getTransitionTo`, `getTransitionToParent`, `getTransitionToParentOf`.
+- Upgrade `AbstractPlane` internals to use 3D planes.
+- BREAKING Reduce `AbstractPlane` method `moveTo` to be alias of `translateTo`.
+- BREAKING Replace `AbstractPlane` method `snapPixels` parameter `options` with `anchor`.
+- Improve `AbstractPlane:setAnchor` method: allow numeric coordinate arguments.
+- BREAKING Replace `AbstractPlane` method `renderTransform` parameter `opts.projection` with `alt`.
+- BREAKING Rename `AbstractFrame` methods:
+  - Rename `centerTo` to `moveCenterTo`.
+  - Rename `fitScale` to `fitShape`.
+- Improve `AbstractFrame:setSize` method: allow numeric width and height arguments.
+- BREAKING Rename `AbstractView` methods:
+  - Rename `transformPlanesBy` to `transformSpaceBy`.
+- BREAKING Prevent `AbstractView`, `Space`, `Viewport` resizing via tapspace API.
+- BREAKING Rename `Space` method `createPlane` to `addBasis` with alias `addPlane`.
+- BREAKING Convert `Space` to inherit from `AbstractNode` instead of `AbstractPlane`. Selectively reuse methods from `AbstractPlane`.
+- Set minimum `Viewport` height to `min-height: 200px`.
+- Include `tapspace.css` stylesheet in the prebuilt bundle.
+- Render CSS transforms only with `applyTransform3d`.
+- Revive and improve test suite.
+- Separate test suites of `version`, `geometry`, and `components` to dedicated subdirectories.
+
+### Fixed
+
+- Use `toFixed` in `Edge:renderTransform` to prevent scientific notation messing up the CSS transform.
+- Use `persective` style rule value `none` instead of `unset` when using `orthogonal projection`.
+
+### Removed
+
+- BREAKING Remove `AbstractPlane` method `getDirection`.
+- BREAKING Remove `Viewport` method `pinchable`.
+- BREAKING Remove `options` parameter from constructors of `AbstractControl`, `AbstractFrame`, `AbstractItem`, `AbstractPlane`, `AbstractView`.
+- BREAKING Remove `options` parameter from constructors of `Circle`, `Edge`, `Element`, `Pixel`.
+- BREAKING Remove interaction classes `Drag`, `Rigid`, `Rotate`, `Scale` in favour of `Pinch`.
+- BREAKING Remove interaction class `PinchView` in favour of `Pinch` with a viewport applicator.
+- Remove component sketches `Image`, `Line`, `Text`.
+- Remove package scripts `test:headless`, `test:headless:watch`.
+
 
 ## [2.0.0-alpha.1] – 2022-09-19
 
