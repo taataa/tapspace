@@ -67,6 +67,89 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.4] – 2023-02-10
 
+### Added
+
+- New component class `Hyperspace` that will stand between the viewport and spaces/planes.
+- New component class `Transformer` that adopts most methods from `Plane`.
+- New component class `CustomControl` with:
+  - inherited properties and methods from `Control`.
+  - method `html`.
+- New `Basis` method `at`. Replaces `Transformer:at` (was `Plane:at`).
+- New `Basis` methods `getOrientation`, `isPlanar`, `remove`, `removeChild`.
+- New `Plane` creation methods `Plane.create`, `Plane:createPlane` and `tapspace.createPlane`.
+- New `Plane` methods `addChild`, `createPlane` for child plane creation.
+- New `Plane` methods `getBoundingBox`.
+- New `Space` methods `createPlane`, `createSpace` alias `createSubspace`, `getBoundingBox`.
+- New `Viewport` creation method `createViewport` alias `createView`.
+- New `Viewport` methods `addChild`, `addPlane`, `addSpace`, `createPlane`, `createSpace`, `fit`, `removeControl`.
+- Component type flag for each component for fast and easy check. For example `Item:isItem`.
+- Add depth property `Frame:size.d`. By default d=0.
+- New `Block` method `getBoundingBox`, `scaleToWidth`, `scaleToHeight`, `scaleToFill`, `scaleToFit`.
+- New `Frame` methods `setHeight`, `setWidth`.
+- New `Transformer` methods `setOrientation`, `setScale`.
+- New `Circle` methods `getRadius`.
+- New `Arc` methods `getLength`, `getRadius`.
+- New `Edge` methods `getBoundingBox`, `trimPoints`.
+- New geometry class `Box` with:
+  - constructor parameters `basis`, `box`.
+  - properties `basis`, `box`.
+  - class functions `fromBoxes`, `fromPoints`.
+  - methods `at`, `atCenter`, `atNorm`, `atToNorm`, `getBox`, `getBoundingBox`, `getRaw`, `getSize`, `getWidth`, `getHeight`, `getDepth`, `rotateBy`, `scaleBy`, `transitRaw`.
+- New geometry class `Orientation` with:
+  - class functions `fromVectorBasis`.
+  - methods `changeBasis`, `getRaw`, `getUnitX`, `getUnitY`, `getUnitZ`, `transitRaw`, `transitRawOuter`.
+- New `Point` methods `transitRawOuter`.
+- New `Scale` methods `transitRawOuter`.
+- Add depth property `Size:size.d`.
+- Add a note to the tutorial about the tapspace version that was used for the tutorial.
+- New feature examples `geometry-background`, `geometry-uniform-scaling`, `viewport-controls`.
+- New test assertions `almostEqual`, `almostEqualOrientation`.
+- Document "Orthogonal Language Design".
+
+### Changed
+
+- Repurpose `Space` to be 3D variant of `Plane`.
+- Make `Space` inherit from `Transformer` instead of `Basis`.
+- Make `Block` inherit from `Transformer` instead of `Plane`.
+- Refactor `Viewport`, `WheelZoom` to use `Hyperspace` instead of a `Space`.
+- Make CSS class `affine-plane` flat by `transform-style: flat`.
+- Move most `Plane` methods to `Transformer` and make `Plane` inherit `Transformer`.
+- Update feature demos `components-basis`, `component-arc`, `components-edge-3d`, `components-edge`, `components-element`, `components-network-3d`, `components-pixel`, `effects-press`, `geometry-3d`, `geometry-animate`, `geometry-matching`, `interaction-approach`, `interaction-content`, `interaction-drag`, `interaction-hold`, `interaction-rotate`, `interaction-slide`, `interaction-tap`, `loaders-fractal`, `viewport-controls`, `viewport-focus`, `viewport-pannable`, `viewport-perspective`, `viewport-responsive`, `viewport-rotatable`, `viewport-zoomable`.
+- Merge feature demos `components-arc`, `components-edge` and rename to `components-edges`.
+- Rename feature demo `geometry-3d` to `geometry-3d-cards`.
+- Rename feature demo `viewport-controls` to `viewport-navigation-3d`.
+- BREAKING Rename `resize` event payload property `prevSize` to `previousSize`.
+- BREAKING Replace `Frame:resize` parameter `options` with a `pivot` point.
+- BREAKING Replace `Transformer` method `matchScale` with `setScale`.
+- BREAKING Rename `Transformer` method `matchPoints` with `matchPoint`.
+- Rename `Transformer` helper function `applyTransform` to `applyTransform2d`.
+- Improve `Transformer:match` to allow 3D translation.
+- Rename `Edge` method `renderTrackingTransform` to `renderNormalTransform` and use attractor point instead of a view.
+- Update the tutorial to `2.0.0-alpha.3`.
+- Update the class chart to `2.0.0-alpha.4`.
+- Upgrade dependencies `affineplane@2.10.0`.
+- Upgrade dev dependencies `yamdog@2.0.0`, `tape`.
+- Improve package script `audit` to omit dev dependencies.
+
+### Fixed
+
+- Prevent accidental `npm publish` without an alpha tag.
+- Detect nullish point argument in `Transformer:translateTo`.
+
+### Removed
+
+- Remove duplicate `Space` method `getViewport` and its aliases `getView`, `viewport`.
+- Remove `Basis:getSpace` as unnecessary.
+- Remove `Basis:appendTo` as dangerously similar to `appendChild`.
+- BREAKING Remove `Basis` methods `copy`, `clone` as being too high level to be useful.
+- BREAKING Remove `Transformer` method `matchPosition` in favour of `matchPoint` and `match`.
+- Remove temporary method `Viewport:setRollingBackground`.
+- Uninstall dependency `monotone-convex-hull-2d`.
+- Remove sketchy `Point` method `connect`.
+- Remove sketchy `Frame` method `getHull`.
+- BREAKING Remove `Size` methods `at`, `atNorm`, `atToNorm`. Use `Box` methods instead.
+- Remove feature demo `components-edge-3d` in favour of `components-edges`.
+
 
 ## [2.0.0-alpha.3] – 2023-01-16
 
