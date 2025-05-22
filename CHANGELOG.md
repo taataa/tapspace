@@ -61,6 +61,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.6] – 2023-04-27
 
+### Added
+
+- New `Area` methods `projectTo`.
+- New `Basis` methods `createDirection`, `createVector`, `rotateByDegrees`.
+- New `Distance` methods `min`, `max`.
+- New `FrameComponent` methods `isSolid`, `setSolidity`.
+- New `Viewport` methods `getAspectRatio`, `measureGroup`.
+- New `InteractiveComponent` methods `hasInteraction`.
+- New class `Measurement`.
+- New test assertion `almostEqualDirection`.
+
+### Changed
+
+- BREAKING Rename `tapspace.createCustomControl` to `tapspace.createControl`.
+- Alias `Viewport` method `setPerspective` to `setCameraDistance`.
+- Improve `Edge:trimPoints` with `trimStart`, `trimEnd` parameters.
+- Improve `loaders-fractal` demo with `squareText`.
+- Upgrade dependencies `affineplane@2.15.0`.
+- Upgrade dev dependencies `semver`.
+- Improve glossary.
+
 
 ## [2.0.0-alpha.5] – 2023-04-12
 
