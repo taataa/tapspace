@@ -64,6 +64,89 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.5] – 2023-04-12
 
+### Added
+
+- Export `affineplane` library as `tapspace.math`.
+- New geometry class `Area` with:
+  - properties `basis`, `area`.
+  - methods `getRaw`, `changeBasis`, `transitRaw`.
+- New geometry class `Basis` (the component class was renamed to `BasisComponent`) with:
+  - properties `basis`, `tran`.
+  - methods `at`, `changeBasis`, `createDistance`, `getOrientation`, `getRaw`, `getScale`, `innerOffset`, `offset`, `outerOffset`, `polarOffset`, `rotateBy`, `scaleBy`, `transformBy`, `transitRaw`, `transitRawOuter`, `translateBy`.
+- New geometry class `Volume` with:
+  - properties `basis`, `volume`.
+  - methods `getRaw`, `changeBasis`, `transitRaw`.
+- New geometry class `Sphere` with:
+  - properties `basis`, `sphere`.
+  - class functions `fromPoints`.
+  - methods `atCenter`, `changeBasis`, `detectCollision`, `getBoundingBox`, `getDiameter`, `getRadius`, `getRaw`, `getSize`, `getVolume`, `offset`, `scaleBy`, `transitRaw`, `translateBy`.
+- New `Box` methods `detectCollision`, `getArea`, `getBoundingSphere`, `getDiagonal`, `getVolume`, `resizeTo`, `translateBy`.
+- Alias `Box` method `at` with `getPoint`.
+- New `Point` methods `homothety`, `transformBy`.
+- New `Size` methods `getArea`.
+- Add type flags to geometries `Area`, `Box`, `Direction`, `Distance`, `Orientation`, `Path`, `Point`, `Scale`, `Size`, `Sphere`, `Transform`, `Vector`, `Volume`.
+- New `BasisComponent` (was `Basis`) methods `getBasis`, `getVector`, `replaceChild`, `replaceParent`.
+- Alias `BasisComponent` method `at` with `getPoint`.
+- New `TransformerComponent` (was `Transformer`) methods `setBasis`.
+- New `Plane` methods `getBoundingSphere`.
+- New `Space` methods `atNorm`, `getBoundingSphere`, `getSize`.
+- Alias `FrameComponent` (was `Frame`) method `atNorm` with `getNormalizedPoint`.
+- New `BlockComponent` (was `Block`) methods `getArea`, `getBoundingSphere`.
+- Alias `BlockComponent` method `atNorm` with `getNormalizedPoint`.
+- New `CircleItem` (was `Circle`) method `getDiameter`.
+- New `Viewport` methods `measureOne`, `reorient`, `rescale`, `setOrientation`, `setPerspective`, `zoomToFill`, `zoomToFit`.
+- Add measurement properties `depthPx`, `areaPx`, `areaRatio`, `dilation`, `distanceToViewportPlanePx`, `distanceToViewportCenterPx`, `target`, `visible` into `Viewport` measurements.
+- New `Hyperspace` methods `atNorm`, `getBoundingBox`, `getBoundingSphere`, `renderTransform`, `scaleBy`.
+- Make `CameraCapturer` emit `camerain` and `cameraout` events.
+- New loader class `FractalLoader` with:
+  - methods `cardinality`, `closeNode`, `getChildren`, `getSpace`, `getSiblings`, `growAndPrune`, `isNodeAlive`, `isNodeOpen`, `openChildren`, `openParent`, `openSiblings`, `removeNode`, `retireNode`, `reuniteNode`.
+  - events `initiated`.
+- Add "Glossary" section in v2 docs.
+- New features demos `geometry-measuring`.
+- New test assertions `almostEqualBasis`, `almostEqualSphere`.
+- Sketch example apps `logo`, `tutorial`.
+- Sketch new component class `Fractal`.
+
+### Changed
+
+- BREAKING Rename `tapspace.createCustomControl` to `tapspace.createControl`.
+- BREAKING Rename `Controls` to `ViewportControls`.
+- BREAKING Rename `Control` to `ControlComponent`.
+- BREAKING Make `Viewport` perspective by default with distance of `300px`.
+- BREAKING Init `Viewport` anchor at the viewport middle.
+- BREAKING Rename `Viewport` method `measurePlanes` to `measureAll`.
+- BREAKING Rename `Block` to `BlockComponent`.
+- BREAKING Rename `Frame` to `FrameComponent`.
+- BREAKING Rename `FrameComponent` method `resize` to `resizeTo`.
+- BREAKING Rename `Circle` to `CircleItem`.
+- BREAKING Rename `Basis` to `BasisComponent`.
+- Improve `BasisComponent:setParent` with additional `position` parameter.
+- BREAKING Rename `Block` to `BlockComponent`.
+- BREAKING Rename method `atToNorm` to `normAt` in `BlockComponent`, `FrameComponent`, `Box`.
+- BREAKING Rename `Interactive` to `InteractiveComponent`.
+- BREAKING Event `contextmenu` cancels all gestures.
+- Migrate tutorial to `tapspace@2.0.0-alpha.4` API.
+- Upgrade dependencies `affineplane@2.13.0`.
+- Improve feature demos `loaders-fractal`, `components-pixel`, `interaction-approach`, `viewport-zoomable`.
+- Improve API docs.
+- Improve design docs.
+- Update class hierarchy chart.
+
+### Fixed
+
+- Repair `Basis:setParent` behavior when the parent is `Viewport`.
+- Repair `Basis:getParent` behavior when there is no parent.
+- Improve Firefox-compatibility with style rule `.affine-frame { ... backface-visibility: hidden; }`.
+
+### Removed
+
+- BREAKING Remove confusing `Plane` methods `createPlane` in favour of `addChild`.
+- BREAKING Remove confusing `Space` methods `createPlane`, `createSpace` in favour of `addChild`.
+- BREAKING Remove confusing `Viewport` methods `addPlane`, `addSpace`, `createPlane`, `createSpace` in favour of `addChild`.
+- BREAKING Remove orthogonal mode from `Viewport` and remove methods `isPerspective`, `orthogonal`, `perspective`.
+- BREAKING Remove `Viewport` measurement properties `distance`, `vector`.
+- Remove sketchy `BasisComponent` (was `Basis`) method `replaceBy`.
+
 
 ## [2.0.0-alpha.4] – 2023-02-10
 
@@ -74,6 +157,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New component class `CustomControl` with:
   - inherited properties and methods from `Control`.
   - method `html`.
+  - creation function `tapspace.createCustomControl`.
 - New `Basis` method `at`. Replaces `Transformer:at` (was `Plane:at`).
 - New `Basis` methods `getOrientation`, `isPlanar`, `remove`, `removeChild`.
 - New `Plane` creation methods `Plane.create`, `Plane:createPlane` and `tapspace.createPlane`.
