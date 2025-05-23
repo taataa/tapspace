@@ -46,6 +46,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.11] – 2023-06-13
 
+### Added
+
+- New `Node` methods `getBoundingCircle`.
+- New `TreeLoader` methods `countSpaces`.
+
+### Changed
+
+- BREAKING Rename `TreeLoader` methods:
+  - rename `open` to `addSpace`.
+  - rename `placeholder` to `addPlaceholder`.
+- BREAKING Custom event payload in `TreeLoader` events `open`, `close`, `closed`.
+- Improve example app listing in `README.md` and `docs/index.md`.
+- Update library logo banner image.
+
 
 ## [2.0.0-alpha.10] – 2023-06-07
 
@@ -63,7 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New `Hyperspace` methods `animateOnce`, `commit`.
 - New `Hyperspace` property `viewport`.
 - Add `Measurement` properties `connected`, `circle`.
-- New `TreeLoader` methods `open`, `remapChildren`.
+- New `TreeLoader` methods `open`, `remapChildren`, `removeSpace`.
 - New `TreeLoader` utility functions `findTreeDistances`.
 - New example app `cielab`.
 
