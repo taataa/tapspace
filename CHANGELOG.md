@@ -40,6 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.13] – 2023-06-27
 
+### Added
+
+- New `Component` methods `bringAbove`, `bringToFront`, `sendBelow`, `sendToBack`, `sortByDepth`.
+- New `Viewport` method `prependChild`.
+- New `TreeLoader` methods `hasSpace`.
+- New feature demos `loaders-nearest`, `loaders-nested`.
+
+### Changed
+
+- Improve `TreeLoader` recursion detection and DOM insertion order.
+- Improve `Viewport` methods `measureNearest`.
+
 
 ## [2.0.0-alpha.12] – 2023-06-21
 
