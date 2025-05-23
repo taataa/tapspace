@@ -34,6 +34,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.15] – 2023-06-29
 
+### Added
+
+- New `KeyboardPan` option `wasd` and method `update`.
+
+### Changed
+
+- Improve `TreeLoader`.
+- Make `Viewport:responsive` idempotent i.e. duplicate calls causes the effect only once.
+- Improve docs intro.
+- Simplify `Circle:detectCollision` to 2D.
+- Improve API docs.
+- Update the class inheritance chart to `2.0.0-alpha.15`.
+
+### Fixed
+
+- Repair Measurement circle boundary bug and related example apps.
+
 
 ## [2.0.0-alpha.14] – 2023-06-28
 
