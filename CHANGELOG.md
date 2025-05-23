@@ -49,6 +49,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.10] – 2023-06-07
 
+### Added
+
+- New `Basis` method `getMatchedOuter`.
+- New `Circle` methods `atCenter`, `changeBasis`, `detectCollision`, `getArea`, `getBoundingBox`, `getDiameter`, `getRadius`, `getRaw`, `getSize`, `offset`, `scaleBy`, `transitRaw`, `translateBy`.
+- New `Point` methods `translateBy`.
+- New abstract component class `Animatable` with:
+  - methods `animate`, `animateOnce`, `cancelAnimation`.
+  - utility functions `applyTransition` with parameters `delay`, `duration`, `easing`.
+- New `Component` method `requestIdle` and property `idleTimeout`.
+- Add `silent` parameter in `Component:getTransitionFrom`.
+- New `Viewport` methods `adapt`, `findSingular`, `getSpaces`, `limitTo`, `measureNearest`.
+- New `Hyperspace` methods `animateOnce`, `commit`.
+- New `Hyperspace` property `viewport`.
+- Add `Measurement` properties `connected`, `circle`.
+- New `TreeLoader` methods `open`, `remapChildren`.
+- New `TreeLoader` utility functions `findTreeDistances`.
+- New example app `cielab`.
+
+### Changed
+
+- BREAKING Rename `CircleItem` to `Node`.
+- Improve `Viewport` methods `measureMany`.
+- Improve `TransformerComponent` method `animateOnce` to end animation on cancel.
+- Inherit `Animatable` in `Viewport`, `Hyperspace`, `Item` and remove their animation methods.
+- Delay `idle` event until animation (if any) has ended.
+- Simplify `Hyperspace` method `renderTransform` to use only 2D.
+- BREAKING Rewrite `TreeLoader` to be event based. Emit `close`, `closed`, `opened`, `replaced`.
+- Improve example app `treeloader` graphics, controls, and navigation logic.
+
+### Removed
+
+- BREAKING Remove custom data management features from `TreeLoader`.
+- Uninstall dependency `throttle-debounce`.
+
 
 ## [2.0.0-alpha.9] – 2023-05-26
 
