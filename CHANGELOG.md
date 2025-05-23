@@ -52,6 +52,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.9] – 2023-05-26
 
+This release removes 3D features developed since 2.0.0-alpha.1. The removal is because of the ten-fold increase in complexity the 3D features have caused both in usability and development of the library. One of the main culprits is the navigation contradiction between zooming by scaling and zooming by moving along z-axis. Supporting both made navigation logic too complex and fragile.
+
+### Added
+
+- New `Basis` methods `getTransformTo`.
+- New `Basis` class function `fromPoints`.
+- New `Component` (was `BasisComponent`) methods `atAnchor`, `getBasisAt`, `hasClass`.
+- Sketch `Component` methods `addLink`, `followLink`, `hasLink`, `removeLink`, `removeLinks`.
+- New `TransformerComponent` methods `matchBasis`.
+- New `BlockComponent` methods `getDiameter`.
+- New `Hyperspace` methods `atAnchor`.
+- New `Viewport` methods `measureMany`, `removeChild`.
+- New `Tap` method `update`.
+- New loader class `TreeLoader` with:
+  - methods `closeChildren`, `closeNeighbors`, `closeParent`, `openChild`, `openChildren`, `openParent`, `openNeighbors`, `registerCallbacks`, `resolveCallbacks`.
+  - utility functions `findBacktier`, `findFrontier`, `treeDistance`.
+- New example app `fruitfractal`.
+- New example app `treeloader`.
+
+### Change
+
+- Improve argument handling in `Basis` methods `rotateBy`, `rotateByDegrees`.
+- BREAKING Rename `Box` method `getBoundingSphere` to `getBoundingCircle`.
+- BREAKING Rename `BasisComponent` to `Component`.
+- BREAKING Rename `Viewport` method `focusTo` to `zoomTo` and simplify for 2D.
+- BREAKING Simplify `Viewport` methods `measureDilation`, `measureGroup`, `measureOne` to work only in 2D.
+- Improve singular inversion detection in `Viewport:scaleBy`.
+- BREAKING Rename `BlockComponent` method `getBoundingSphere` to `getBoundingCircle`.
+- BREAKING Simplify `TransformerComponent` method `renderTransform` to render only in 2D.
+- BREAKING Simplify `Edge:renderTransform` to render only 2D edges.
+- BREAKING Rename `Plane` method `getBoundingSphere` to `getBoundingCircle`.
+- BREAKING Use `Plane` instead of `Space` in `Hyperspace` methods `atNorm`, `getBoundingBox`, `getBoundingCircle`.
+- BREAKING Simplify `ZoomControl` to work only in 2D.
+- Discourage use of `color` parameter in `CircleItem`.
+- BREAKING Simplify interactions `KeyboardZoom`, `Pinch`, `WheelZoom` to work only in 2D.
+- BREAKING Simplify `Measurement` to work only in 2D and without `camera` argument.
+- BREAKING Use CSS transform `matrix` instead of `matrix3d`.
+- Flatten and rename feature demos:
+  - flat `geometry-background`.
+  - rename `geometry-3d-cards` to `geometry-cards`.
+  - rename `viewport-navigation-3d` to `geometry-infinity`.
+- Improve tutorial.
+
+### Fixed
+
+- Allow `WheelCapturer` to capture only when a viewport is present. This prevents race conditions when a captured element is remove from DOM.
+
+### Removed
+
+- BREAKING Remove component class `Space`.
+- BREAKING Remove `Basis` methods `isPlanar`.
+- BREAKING Remove `FrameComponent` methods `getMass`, `isSolid`, `setSolidity`, `setMass`.
+- BREAKING Remove `Hyperspace` methods `getBoundingSphere`.
+- BREAKING Remove `Viewport` properties `proj`, `cameraDistance`, `navigationBasis`.
+- BREAKING Remove `Viewport` methods `approach`, `atCamera`, `balanceScale`, `findNearestProjected`, `findNearRay`, `fit`, `getCameraBasis`, `getCameraDistance`, `getFieldOfView`, `measureDepth`, `projection`, `setCameraDistance`, `setPerspective`, `setProjection`, `translateTowards`, `navigable`.
+- Remove feature demos `viewport-perspective`.
+
 
 ## [2.0.0-alpha.8] – 2023-05-05
 
@@ -509,6 +566,8 @@ Including commits up to 6253dcb2b064492464b482ec2b728de72fb7b31a.
 
 
 ## [2.0.0-alpha.1] – 2022-09-19
+
+This release introduces the first 3D rendering and 3D navigation features.
 
 ### Added
 
