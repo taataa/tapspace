@@ -43,6 +43,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.12] – 2023-06-21
 
+### Added
+
+- New `FrameComponent` methods `transformToFill`, `transformToFit`.
+- New `Viewport` methods `zoomToFill`, `zoomToFit`.
+- New `TreeLoader` methods `getFrontier`, `remapParent`.
+- New feature demos `loaders-async`, `loaders-backward`.
+
+### Changed
+
+- BREAKING Require `close` event to be handled in `TreeLoader`.
+- BREAKING Track bases and loading inside `TreeLoader`.
+- Improve `TreeLoader:addSpace` to update space if it already exists.
+- Improve example apps `cielab`.
+
+### Removed
+
+- Remove `TreeLoader` utility functions `findBacktier`, `findFrontier`, `findTreeDistances`.
+
 
 ## [2.0.0-alpha.11] – 2023-06-13
 
