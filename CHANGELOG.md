@@ -37,6 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.14] – 2023-06-28
 
+### Added
+
+- New `Box` method `getBoundingCircle`.
+- New `Circle` class function `fromPoints`.
+
+### Changed
+
+- Allow `TreeLoader` mappers to return `null`.
+- Migrate example app `cielab` to `2.0.0-alpha.14` API.
+
 
 ## [2.0.0-alpha.13] – 2023-06-27
 
