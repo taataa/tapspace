@@ -55,6 +55,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.8] – 2023-05-05
 
+### Added
+
+- New `Viewport` method `getNavigationBasis`.
+- List organizations that have supported the development over the years.
+
+### Changed
+
+- Prefer `tapspace.js` over `tapspace` in documentation titles.
+- Add a link to feature demos.
+- Improve API docs intro.
+- Update copyright year.
+
 
 ## [2.0.0-alpha.7] – 2023-05-02
 
