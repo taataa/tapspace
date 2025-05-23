@@ -58,6 +58,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.7] – 2023-05-02
 
+### Added
+
+- New geometry class `Circle` with:
+  - properties `basis`, `circle`.
+  - distiction to `CircleItem` component.
+- New geometry class `Line` with:
+  - properties `basis`, `line`.
+- New geometry class `Ray`.
+  - properties `basis`, `ray`.
+  - class functions `create`.
+  - methods `at`, `getDistanceToPoint`.
+- New `Box` method `projectTo`.
+- New `Size` method `normAt`.
+- New `FrameComponent` property `mass` and methods `getMass`, `setMass`.
+- New `Viewport` methods `findNearRay`, `findNearestProjected`, `getCameraBasis`, `getFieldOfView`, `measureDepth`, `measureDilation`, `normAt`, `setNavigationBasis`, `tappable`.
+- New `Viewport:measureGroup` parameter `filter` to enable filtering measurement targets.
+- New feature demo `viewport-navigation-scalefree`.
+
+### Changed
+
+- BREAKING Replace `FrameComponent` property `solid` with `mass`.
+- BREAKING Replace a parameter in `Viewport:responsive` from `opts` object to `enable` flag.
+- Make `Viewport` responsive by default.
+- BREAKING Rename `Viewport` method `rescale` to `balanceScale`.
+- BREAKING Rename `Viewport` method `reorient` to `balanceOrientation`.
+- BREAKING Improve measurement properties:
+  - rename `area` to `areaPx`.
+  - split `depth` to `depthOnCamera` and `depthOnViewport`.
+  - split `distance` to `distanceToCamera` and `distanceToViewport`.
+  - add new property `dilation`.
+- Improve `Pinch` and `WheelZoom` by applying `findNearRay` to find a target.
+- Upgrade dependencies `affineplane@2.16.0`.
+
+### Fixed
+
+- Repair `Arc` navigation bug caused by nested elements.
+
 
 ## [2.0.0-alpha.6] – 2023-04-27
 
