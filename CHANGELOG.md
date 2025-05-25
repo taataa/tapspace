@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.23] – 2023-12-22
 
+### Changed
+
+- Improve argument validation of methods `rotateBy`, `scaleBy` in `Hyperspace`, `Box`, `Basis`, `Transformer`.
+- Improve API docs of `Viewport:measureDilation`, `Orientation`.
+- Improve technical overview in `README.md`.
+
+### Fixed
+
+- Repair orientation bug in `Node:getBoundingBox`.
+
 
 ## [2.0.0-alpha.22] – 2023-12-14
 
