@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.22] – 2023-12-14
 
+### Added
+
+- New `Box` method `getInnerSquare`.
+- New `BlockComponent` method `getInnerSquare`.
+- New `TreeLoader` method `closeSpace`.
+
+### Changed
+
+- Improve `GestureCapture` to capture modifier keys.
+- Improve example app `minimal`.
+- Improve feature demo `viewport-controls`.
+- Upgrade dependencies `affineplane@2.18.0`.
+- Improve API docs of `TreeLoader`.
+
 
 ## [2.0.0-alpha.21] – 2023-11-27
 
