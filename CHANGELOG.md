@@ -22,6 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.19] – 2023-10-16
 
+### Added
+
+- Allow `Node:getBoundingBox` to take in a `Basis` and `Component`.
+
+### Changed
+
+- Improve orientation handling in `Viewport` methods `zoomToFill`, `zoomToFit`.
+
 
 ## [2.0.0-alpha.18] – 2023-10-16
 
