@@ -28,6 +28,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.17] – 2023-08-10
 
+### Added
+
+- New `Component` method `getDirection`.
+- New `Circle` method `atArc`.
+- New `TreeLoader` methods `closeAll`, `getSpace`, `getSpaces`.
+
+### Changed
+
+- BREAKING Compute and render `Edge` as a rectangle with `background-color` instead of line with `border`.
+- BREAKING Rename `TreeLoader` method `init` to `initSpace`.
+- BREAKING Require `depth` parameter in `TreeLoader` method `initSpace`.
+- Improve `Hyperspace`, `TreeLoader` API docs.
+- Improve feature demos `loaders-async`, `loaders-backward`.
+
+### Fixed
+
+- Prevent `KeyboardPan`, `KeyboardZoom` if a modifier key is pressed.
+
 
 ## [2.0.0-alpha.16] – 2023-07-05
 
