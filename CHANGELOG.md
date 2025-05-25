@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.20] – 2023-10-16
 
+### Added
+
+- Allow `Box:getBoundingBox` to take in a `Basis` and `Component`.
+
 
 ## [2.0.0-alpha.19] – 2023-10-16
 
