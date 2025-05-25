@@ -25,6 +25,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.18] – 2023-10-16
 
+### Added
+
+- New component class `Composite` with:
+  - replacement for `Group`.
+  - many methods adopted from `Hyperspace`, `Space` (was `Plane`).
+- New `Hyperspace` method `rotateBy`.
+- Add interactivity to `Arc` and `Edge` by inheriting from `Item`.
+- New `Component` methods `createBasis`, `createOrientation`.
+- New `Node` method `getBoundingBox`.
+- New `Circle` method `getCollisionArea`.
+- New `Measurement` property to `areaVisible`.
+- New test assertion `almostEqualBox`.
+- Allow `Composite` method `getBoundingBox` to take in an `Orientation`.
+
+### Changed
+
+- BREAKING Rename `TransformerComponent` back to `Transformer`.
+- BREAKING Rename `InteractiveComponent` to `Interactive`.
+- BREAKING Rename `ControlComponent` to `ViewportControl`.
+- BREAKING Rename `Plane` to `Space`.
+- BREAKING Rename `Component` methods:
+  - rename `getVector` to `createVector`.
+  - rename `getPoint` to `createPoint`.
+  - rename `getDirection` to `createDirection`.
+- BREAKING Rename `tapspace.createCircle` to `tapspace.createNode`.
+- Make `Hyperspace` transformation methods request `idle` event when called.
+- Improve `Box.fromBoxes` to take in `Basis` as an alternative to `Component`.
+- Move `getScale` method from `Transformer` to `Component`.
+- Improve `Transformer`, `FrameComponent` API docs.
+- Upgrade dependencies `affineplane@2.17.1`.
+- Upgrade dev dependencies `yamdog@2.1.0`.
+- Update class inheritance chart to `2.0.0-alpha.18`.
+
+### Fixed
+
+- Remove hardcoded background color from `ZoomControl`.
+- Prevent flicker when reordering DOM elements via `bringAbove`, `bringToFront`, `sendBelow`, `sendToBack`.
+- Handle zero-size targets in `Viewport` methods `limitTo`, `zoomToFill`, `zoomToFit`.
+- Correct `KeyboardZoom` zoom direction.
+- Correct `Viewport:setOrientation` rotation direction.
+
+### Removed
+
+- BREAKING Remove `tapspace.math` in order to tree-shake unused `affineplane` functions.
+- BREAKING Remove `Group` component in favour of `Composite`.
+- BREAKING Remove `affine-group` class name in favour of `affine-composite`.
+- BREAKING Remove `Component` method `getRotation`.
+- Remove duplicate `Space:addChild` (was `Plane:addChild`) in favour of inherited `Component:addChild`.
+- Remove duplicate `Transformer:getDirection` in favour of inherited `Component:createDirection`.
+- Remove temporary `BlockComponent:getBoundingBox` parameter `orientation`.
+
 
 ## [2.0.0-alpha.17] – 2023-08-10
 
