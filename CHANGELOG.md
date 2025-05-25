@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.21] – 2023-11-27
 
+### Changed
+
+- Improve API docs of `Animatable`, `Component`, `Transformer`, `Viewport`.
+- Improve feature demos `components-pixel`.
+- Upgrade dev dependencies `async`, `tape`, `semver`, `webpack`.
+- Rewrite example app `minimal`.
+
+### Fixed
+
+- Skip bubbling transition events that mess up animations (#172)
+- Detect unexpected calls to `Viewport:renderTransform`.
+
+### Removed
+
+- Uninstall unused dev dependency `tap-spec`.
+
 
 ## [2.0.0-alpha.20] – 2023-10-16
 
