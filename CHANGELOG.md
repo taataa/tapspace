@@ -31,6 +31,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.16] – 2023-07-05
 
+### Added
+
+- New feature demo `viewport-limits`.
+
+### Changed
+
+- Rewrite `Viewport:limitTo` logic.
+- Rewrite feature demo `loaders-fractal`.
+- Improve API docs of `TreeLoader`.
+- Improve list of associated people.
+- Upgrade dev dependencies `css-loader`, `semver`, `standard@17`, `style-loader`, `tape`, `webpack`, `webpack-cli`.
+
+### Fixed
+
+- Repair root handling in `TreeLoader:closeNeighbors`.
+
+### Removed
+
+- Remove `FractalLoader` class in favour of `TreeLoader`.
+- Remove deprecated `Viewport` methods `findMostDistant`, `findWithinDistance`.
+
 
 ## [2.0.0-alpha.15] – 2023-06-29
 
