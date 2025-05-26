@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-alpha.25] – 2025-05-26
+
+### Added
+
+- Write `CHANGELOG.md` for the whole revision-controlled history of the project (#183).
+
+### Changed
+
+- Upgrade dev dependencies `puppeteer`, `webpack`, `webpack-cli`.
+- Improve GitHub Actions runner title.
+
+
 ## [2.0.0-alpha.24] – 2025-01-17
 
 ### Added
