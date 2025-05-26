@@ -9,14 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New `Component` method `hasChild` (see #178).
-- Write `CHANGELOG.md` for the whole revision-controlled history of the project (#183).
+- New `Component` method `hasChild` (#178).
+- New `Viewport` method `hasControl` (#178).
+- Write `CHANGELOG.md` for the full revision-controlled history of the project (#183).
 - New test assertion `doesNotThrow` (#189).
 
 ### Changed
 
+- Duplicate and nullish `Viewport:removeControl` calls fail silently (#178).
 - Upgrade dev dependencies `puppeteer`, `webpack`, `webpack-cli`.
 - Improve GitHub Actions runner title.
+- Improve design documentation regarding idempotency.
 
 
 ## [2.0.0-alpha.24] – 2025-01-17

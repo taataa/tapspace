@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Viewport:removeControl – Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(3)
+
+      const view = tapspace.createView('#testspace')
+
+      // Populate view
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create a control.
+      const zoomCtrl = new tapspace.components.ZoomControl()
+      view.addControl(zoomCtrl)
+
+      // Check precondition.
+      test.ok(
+        view.hasControl(zoomCtrl),
+        'should have the control available'
+      )
+
+      // Removal
+      view.removeControl(zoomCtrl)
+
+      test.notOk(
+        view.hasControl(zoomCtrl),
+        'should not anymore have the control available'
+      )
+
+      // Idempotent removal of an already removed control.
+      test.doesNotThrow(
+        () => {
+          view.removeControl(zoomCtrl)
+        },
+        'should not error when removing already removed component'
+      )
+    </script>
+  </body>
+</html>
