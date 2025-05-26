@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Viewport:hasControl – Tapspace Test</title>
+    <link rel="stylesheet" href="../default.css" />
+    <script src="../../../dist/tapspace.min.js"></script>
+    <script src="../../testlib.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="testspace"></div>
+    </div>
+    <script>
+      test.plan(5)
+
+      const view = tapspace.createView('#testspace')
+
+      // Populate view
+      const space = tapspace.createSpace()
+      view.addChild(space)
+
+      // Create a control.
+      const zoomCtrl = new tapspace.components.ZoomControl()
+
+      // Test before addition.
+      test.notOk(
+        view.hasControl(zoomCtrl),
+        'should not yet have the control available'
+      )
+
+      // Addition
+      view.addControl(zoomCtrl)
+      test.ok(
+        view.hasControl(zoomCtrl),
+        'should have the control available'
+      )
+
+      // Removal
+      view.removeControl(zoomCtrl)
+      test.notOk(
+        view.hasControl(zoomCtrl),
+        'should not anymore have the control available'
+      )
+
+      // Nullish
+      test.notOk(
+        view.hasControl(),
+        'should not have undefined controls available'
+      )
+      test.notOk(
+        view.hasControl(null),
+        'should not have null controls available'
+      )
+
+    </script>
+  </body>
+</html>
