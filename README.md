@@ -86,6 +86,10 @@ Run only linter:
 
 See [testing docs](https://taataa.github.io/tapspace/dev/#testing) for details.
 
+## Versioning
+
+The package follows [Semantic Versioning 2.0.0](https://semver.org/) specification. The package keeps a [Changelog](CHANGELOG.md) to document changes introduced in each release.
+
 ## License
 
 [MIT](LICENSE)

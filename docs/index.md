@@ -8,6 +8,8 @@ We believe **zoomable touch user interfaces** to be the best way for humans to e
 
 [**API Reference**](api/v2/) comes handy when coding.
 
+[**Changelog**](https://github.com/taataa/tapspace/blob/master/CHANGELOG.md) for changes introduced in latest releases.
+
 [**Developer's Cheat Sheet**](dev/) for hard-core folks who want to take Tapspace to a next level.
 
 [**GitHub**](https://github.com/taataa/tapspace) for the source code and [bug reports](https://github.com/taataa/tapspace/issues).
