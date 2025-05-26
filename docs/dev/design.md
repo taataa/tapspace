@@ -13,6 +13,7 @@ API design problems:
 - one vs multiple ways to do things
 - state vs parameters
 - modularity vs consistency
+- robustness vs optimization
 
 Separation of concerns
 - transformation construction vs moving the element
@@ -50,6 +51,22 @@ Orthogonal language design:
 - Remember, we are building a toolbox to build features to applications,
   not the features themselves.
 - Maximal expressiveness with minimal set of building blocks.
+
+Embrace the idempotency:
+- Identical calls should cause side effects only once, regardless of the number of consequent calls. In other words, allow duplicate calls when they would cause no issues.
+- For example, duplicate removal of a component should remove the component once and let the unnecessary removal pass silently.
+  - Downside: the extra removal may indicate a problem in the app code, which a warning or exception could help to solve.
+  - Upside: in asynchronous setting common in web apps, the execution order and frequency can be difficult to observe and control. If duplicate calls threw exceptions, the app would always need to set checks that the operation can be performed. Often the need for such checks is recognized only after a hard session of debugging. Therefore it is better to design functions to be idempotent when there is no strong reasons agaist it.
+- Examples of situations where idempotency is great:
+  - component removal
+  - component addition
+  - value setting over increments: provide setSomething instead of increaseSomething.
+  - storing a value.
+  - wherever implementing idempotency is only matter of replacing an exception with silence. However, care must be taken to still throw an exception if the argument is clearly malformed and should not allow calling even once.
+- Examples here idempotency should not be applied:
+  - transformations, because they are designed to work incrementally.
+  - where implementing it would require extra state logic, for example flags like `didCall` or `handled`.
+
 
 ## Construction
 
