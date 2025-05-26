@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-alpha.24] – 2025-01-17
 
+### Added
+
+- New `Basis` methods `equal`, `almostEqual`.
+- New `Box` methods `equal`, `almostEqual`.
+- New `Circle` methods `equal`, `almostEqual`.
+- New `Direction` methods `equal`, `almostEqual`.
+- New `Distance` methods `equal`, `almostEqual` (alias `isAlmostEqual`).
+- New `Point` methods `equal`, `almostEqual`.
+- New `Orientation` methods `equal`, `almostEqual`.
+- New `Size` methods `equal`, `almostEqual`.
+- New `Sphere` methods `equal`, `almostEqual`.
+- New `Vector` method `equal`.
+- New `Component` method `createDistance`.
+- Install new dev dependencies `puppeteer`.
+- Set up continuous integration with GitHub Actions.
+- Build a `tape` based test framework `testlib` that replicates `tape` API and allows assertions to be defined in HTML pages while the actual assertions are counted server-side by `tape` along `puppeteer` code.
+- Write a default stylesheet for headless tests `test/components/default.css`.
+- New package script `test:headless`.
+
+### Changed
+
+- BREAKING Convert `tapspace.css` stylesheet to `style.js` script so that package can be installed without `style-loader` nor `webpack` (#184).
+- Migrate `tape` test suites to be compatible with the headless `puppeteer`.
+- Replace dev dependency `ip` with an independent code snippet.
+- Upgrade dependencies `affineplane@2.20.0`, `nudged@2.1.1`.
+- Upgrade dev dependencies `finalhandler`, `genversion`, `semver`, `serve-static`, `standard`, `tape`, `webpack`.
+- Improve static example server code style and instructions.
+- Rewrite unit testing docs at `docs/dev/index.md`.
+- Replace Travis build status badge with GitHub Actions badge.
+- Clean up package release by npm-ignoring `.github` and `.editorconfig`.
+- Update copyright year.
+
+### Fixed
+
+- Repair key modifier handling of `contextmenu` event in `GestureCapturer/Sensor` (#185).
+
+### Removed
+
+- BREAKING Simplify parameters of `FrameComponent` methods `resizeTo`, `setSize` to only take in number of pixels instead of CSS strings. The string to px conversion offered by `to-px` library is too complex to handle at this point.
+- Uninstall dependency `to-px`.
+- Uninstall dev dependencies `async`, `css-loader`, `ejs-loader`, `ip`, `path-browserify`, `process`, `stream-browserify`, `style-loader`, `webpack-livereload-plugin`.
+- Remove package scripts `test:browser`, `test:browser:open`, `test:browser:build`, `test:browser:watch` of the old test framework.
+- Remove deprecated custom test assertions `almostEqual`, `almostEqualBasis`, `almostEqualBox`, `almostEqualDirection`, `almostEqualDistance`, `almostEqualOrientation`, `almostEqualPoint`, `almostEqualSphere`, `almostEqualVector`.
+- Remove Travis CI integration and `travis.yml`.
+
 
 ## [2.0.0-alpha.23] – 2023-12-22
 
