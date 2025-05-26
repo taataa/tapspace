@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New `Component` method `hasChild` (see #178).
 - Write `CHANGELOG.md` for the whole revision-controlled history of the project (#183).
 
 ### Changed
