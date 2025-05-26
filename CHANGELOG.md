@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New `Component` method `hasChild` (see #178).
 - Write `CHANGELOG.md` for the whole revision-controlled history of the project (#183).
+- New test assertion `doesNotThrow` (#189).
 
 ### Changed
 

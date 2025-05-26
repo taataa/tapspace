@@ -257,6 +257,24 @@ window.test = {
     })
   },
 
+  doesNotThrow: function (fn, message) {
+    let result = true
+    // let exception = null
+    try {
+      fn()
+    } catch (e) {
+      result = false
+      // exception = e
+    }
+    this.assert({
+      result,
+      operator: 'doesNotThrow',
+      message: message || 'function should not throw an exception',
+      actual: result,
+      expected: true
+    })
+  },
+
   equal: function (actual, expected, message) {
     const isEqual = actual === expected
     this.assert({
