@@ -336,7 +336,10 @@ aelem.rotateByDegrees()
 
 ### Estimate moves
 
+In order to transform HTML elements with pointers, we need to compute a transformation that can be applied to the element. Given a set of points such as the finger tips on a multitouch screen and their movements, this transformation can be difficult to compute. Fortunately there is a package for that: Nudged. Under the hood, Tapspace uses Nudged to compute a transformation that simulates the movement of points as well as possible.
+
 affine.transform.estimate({ sourcePoints, targetPoints })
+
 All points must be in same system
 sourcePoints.map(affine.point.changeBasis())
 
@@ -345,7 +348,7 @@ component.match({ source, target })
 
 ### Movement coordinate system
 
-Pointer events provide the pointer position in various coordinate systems.
+Pointer events web API provide the pointer position in various coordinate systems.
 
 We can use pageX/Y, but the coords are relative to the page and
 not relative to our viewport.
@@ -359,7 +362,7 @@ change if the user moves windows.
 Also, they are not relative to our viewport.
 
 We cannot use offsetX/Y because they are relative to the target element and
-the target can be outside of the space, for example a button inside a form
+the target can be outside of the affine space, for example a drag handle button inside a form
 that floats in the space.
 
 There are ways to compute pageX/Y for elements by using getBoundingClientRect()
