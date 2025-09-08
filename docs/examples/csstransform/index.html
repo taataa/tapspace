@@ -24,6 +24,28 @@
     .form-group {
       margin-bottom: 0.62em;
     }
+
+    .transformation-controls label {
+      display: inline-block;
+      width: 8em;
+      text-align: right;
+    }
+
+    .space {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      background: white;
+    }
+
+    .space-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background: black;
+    }
   </style>
 </head>
 <body>
@@ -33,7 +55,7 @@
   <h1>CSS Transform Lab – <a style="color: lightgray" href="https://taataa.github.io/tapspace/">Tapspace.js</a></h1>
   <p>This app is for the development of transformation animations in Tapspace. It allows developers to ensure browser behavior is as expected.</p>
 
-  <form>
+  <form class="transformation-controls">
     <div class="form-group">
       <div>
         <label for="helm_a">A</label>
@@ -55,8 +77,14 @@
 
     <div class="form-group">
       <div>
-        <label for="easing">Easing</label>
-        <input type="text" name="easing" required value="default" />
+        <label for="easing">Timing Function</label>
+        <select name="easing" id="easing">
+          <option value="linear" selected>linear</option>
+          <option value="ease">ease</option>
+          <option value="ease-in">ease-in</option>
+          <option value="ease-out">ease-out</option>
+          <option value="ease-in-out">ease-in-out</option>
+        </select>
       </div>
       <div>
         <label for="delay">Delay (ms)</label>
@@ -88,7 +116,14 @@
     </div>
   </form>
 
+  <div class="space">
+    <div id="space-item" class="space-item">
+    </div>
+  </div>
+
   <script>
+    const item = document.getElementById('space-item')
+    item.style.transform = 'matrix(1, 0, 0, 1, 10, 20)'
   </script>
 </body>
 </html>
