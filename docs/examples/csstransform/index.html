@@ -42,16 +42,24 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100px;
-      height: 100px;
-      background: black;
       transition-property: transform;
     }
+
+    #space-item {
+      width: 256px;
+      height: 256px;
+      background-image: url("../assets/chellah_star.jpg");
+    }
+
+    #origin-item {
+      width: 11px;
+      height: 11px;
+      background-image: url("../assets/crosshair.png");
+    }
+
   </style>
 </head>
 <body>
-  <div id="space"></div>
-
   <!-- Heading -->
   <h1>CSS Transform Lab – <a style="color: lightgray" href="https://taataa.github.io/tapspace/">Tapspace.js</a></h1>
   <p>This app is for the development of transformation animations in Tapspace. It allows developers to ensure browser behavior is as expected.</p>
@@ -68,11 +76,11 @@
       </div>
       <div>
         <label for="trans-x">Transform X</label>
-        <input id="trans-x" type="number" name="trans-x" required value="0" step="10" />
+        <input id="trans-x" type="number" name="trans-x" required value="40" step="10" />
       </div>
       <div>
         <label for="trans-y">Transform Y</label>
-        <input id="trans-y" type="number" name="trans-y" required value="0" step="10" />
+        <input id="trans-y" type="number" name="trans-y" required value="60" step="10" />
       </div>
     </div>
 
@@ -118,8 +126,8 @@
   </form>
 
   <div id="space" class="space">
-    <div id="space-item" class="space-item">
-    </div>
+    <div id="space-item" class="space-item"></div>
+    <div id="origin-item" class="space-item"></div>
   </div>
 
   <script>
@@ -142,6 +150,7 @@
 
     const space = document.getElementById('space')
     const item = document.getElementById('space-item')
+    const originItem = document.getElementById('origin-item')
 
     // Store defaults for resets
     const DEFAULT_TR_A = parseFloat(inputTrA.value)
@@ -179,7 +188,8 @@
       inputOriginY.value = DEFAULT_ORIGIN_Y
     }
 
-    const resetSpace = () => {
+    const resetItem = () => {
+      // Temporarily use immediate transition
       item.style.transitionTimingFunction = DEFAULT_EASING
       item.style.transitionDuration = '0ms'
       item.style.transitionDelay = '0ms'
@@ -194,7 +204,21 @@
       }, 50)
     }
 
-    const go = () => {
+    const renderOrigin = () => {
+      const ox = parseInt(inputOriginX.value)
+      const oy = parseInt(inputOriginY.value)
+
+      const SIZE = 11
+      const OFFSET = Math.floor(SIZE / 2)
+
+      const offx = ox - OFFSET
+      const offy = oy - OFFSET
+
+      originItem.style.left = `${offx}px`
+      originItem.style.top = `${offy}px`
+    }
+
+    const renderItem = () => {
       item.style.transitionTimingFunction = inputEasing.value
       item.style.transitionDelay = parseInt(inputDelay.value) + 'ms'
       item.style.transitionDuration = parseInt(inputDuration.value) + 'ms'
@@ -211,16 +235,32 @@
       item.style.transform = matrix(trA, trB, trX, trY)
     }
 
+    const go = () => {
+      renderItem()
+      renderOrigin()
+    }
+
     // Bind
     inputBtnGo.addEventListener('click', () => {
       go()
     })
     inputBtnReset.addEventListener('click', () => {
-      resetSpace()
+      resetItem()
     })
     inputBtnResetForm.addEventListener('click', () => {
       resetForm()
     })
+    // Refresh origin live
+    inputOriginX.addEventListener('input', () => {
+      renderOrigin()
+    })
+    inputOriginY.addEventListener('input', () => {
+      renderOrigin()
+    })
+
+    // Init space to match the form defaults.
+    resetItem()
+    renderOrigin()
 
   </script>
 </body>
