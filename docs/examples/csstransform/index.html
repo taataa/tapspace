@@ -152,87 +152,105 @@
     const item = document.getElementById('space-item')
     const originItem = document.getElementById('origin-item')
 
-    // Store defaults for resets
-    const DEFAULT_TR_A = parseFloat(inputTrA.value)
-    const DEFAULT_TR_B = parseFloat(inputTrB.value)
-    const DEFAULT_TR_X = parseFloat(inputTrX.value)
-    const DEFAULT_TR_Y = parseFloat(inputTrY.value)
-
-    const DEFAULT_EASING = inputEasing.value
-    const DEFAULT_DELAY = parseInt(inputDelay.value)
-    const DEFAULT_DURATION = parseInt(inputDuration.value)
-
-    const DEFAULT_ORIGIN_X = parseInt(inputOriginX.value)
-    const DEFAULT_ORIGIN_Y = parseInt(inputOriginY.value)
-
-    const matrix = (a, b, x, y) => {
-      const mb = -b
-      return `matrix(${a}, ${mb}, ${b}, ${a}, ${x}, ${y})`
+    // Functions to read form state.
+    const readTransform = () => {
+      const a = parseFloat(inputTrA.value)
+      const b = parseFloat(inputTrB.value)
+      const x = parseFloat(inputTrX.value)
+      const y = parseFloat(inputTrY.value)
+      return { a, b, x, y }
     }
 
-    const origin = (x, y) => {
-      return `${x}px ${y}px`
+    const readTransition = () => {
+      const easing = inputEasing.value
+      const delay = parseInt(inputDelay.value)
+      const duration = parseInt(inputDuration.value)
+      return { easing, delay, duration }
+    }
+
+    const readOrigin = () => {
+      const x = parseInt(inputOriginX.value)
+      const y = parseInt(inputOriginY.value)
+      return { x, y }
+    }
+
+    // Store defaults for resets
+    const DEFAULT_TRANSFORM = readTransform()
+    const DEFAULT_TRANSITION = readTransition()
+    const DEFAULT_ORIGIN = readOrigin()
+
+    const cssMatrix = (tr) => {
+      const a = tr.a
+      const b = -tr.b
+      const c = tr.b
+      const d = tr.a
+      const x = tr.x
+      const y = tr.y
+      return `matrix(${a}, ${b}, ${c}, ${d}, ${x}, ${y})`
+    }
+
+    const cssOrigin = (p) => {
+      return `${p.x}px ${p.y}px`
+    }
+
+    const applyTransition = (anim) => {
+      item.style.transitionTimingFunction = anim.easing
+      item.style.transitionDelay = anim.delay + 'ms'
+      item.style.transitionDuration = anim.duration + 'ms'
     }
 
     const resetForm = () => {
-      inputTrA.value = DEFAULT_TR_A
-      inputTrB.value = DEFAULT_TR_B
-      inputTrX.value = DEFAULT_TR_X
-      inputTrY.value = DEFAULT_TR_Y
+      inputTrA.value = DEFAULT_TRANSFORM.a
+      inputTrB.value = DEFAULT_TRANSFORM.b
+      inputTrX.value = DEFAULT_TRANSFORM.x
+      inputTrY.value = DEFAULT_TRANSFORM.y
 
-      inputEasing.value = DEFAULT_EASING
-      inputDelay.value = DEFAULT_DELAY
-      inputDuration.value = DEFAULT_DURATION
+      inputEasing.value = DEFAULT_TRANSITION.easing
+      inputDelay.value = DEFAULT_TRANSITION.delay
+      inputDuration.value = DEFAULT_TRANSITION.duration
 
-      inputOriginX.value = DEFAULT_ORIGIN_X
-      inputOriginY.value = DEFAULT_ORIGIN_Y
+      inputOriginX.value = DEFAULT_ORIGIN.x
+      inputOriginY.value = DEFAULT_ORIGIN.y
     }
 
     const resetItem = () => {
       // Temporarily use immediate transition
-      item.style.transitionTimingFunction = DEFAULT_EASING
-      item.style.transitionDuration = '0ms'
-      item.style.transitionDelay = '0ms'
+      applyTransition({
+        easing: DEFAULT_TRANSITION.easing,
+        delay: 0,
+        duration: 0
+      })
 
-      item.style.transformOrigin = origin(DEFAULT_ORIGIN_X, DEFAULT_ORIGIN_Y)
-      item.style.transform = matrix(DEFAULT_TR_A, DEFAULT_TR_B, DEFAULT_TR_X, DEFAULT_TR_Y)
+      item.style.transformOrigin = cssOrigin(DEFAULT_ORIGIN)
+      item.style.transform = cssMatrix(DEFAULT_TRANSFORM)
 
       // Wait for immediate item position reset, then set to defaults.
       setTimeout(() => {
-        item.style.transitionDelay = DEFAULT_DELAY + 'ms'
-        item.style.transitionDuration = DEFAULT_DURATION + 'ms'
+        applyTransition(DEFAULT_TRANSITION)
       }, 50)
     }
 
     const renderOrigin = () => {
-      const ox = parseInt(inputOriginX.value)
-      const oy = parseInt(inputOriginY.value)
+      const op = readOrigin()
 
       const SIZE = 11
       const OFFSET = Math.floor(SIZE / 2)
 
-      const offx = ox - OFFSET
-      const offy = oy - OFFSET
+      const offx = op.x - OFFSET
+      const offy = op.y - OFFSET
 
       originItem.style.left = `${offx}px`
       originItem.style.top = `${offy}px`
     }
 
     const renderItem = () => {
-      item.style.transitionTimingFunction = inputEasing.value
-      item.style.transitionDelay = parseInt(inputDelay.value) + 'ms'
-      item.style.transitionDuration = parseInt(inputDuration.value) + 'ms'
+      const anim = readTransition()
+      const op = readOrigin()
+      const tr = readTransform()
 
-      const originX = parseInt(inputOriginX.value)
-      const originY = parseInt(inputOriginY.value)
-
-      const trA = parseFloat(inputTrA.value)
-      const trB = parseFloat(inputTrB.value)
-      const trX = parseFloat(inputTrX.value)
-      const trY = parseFloat(inputTrY.value)
-
-      item.style.transformOrigin = origin(originX, originY)
-      item.style.transform = matrix(trA, trB, trX, trY)
+      applyTransition(anim)
+      item.style.transformOrigin = cssOrigin(op)
+      item.style.transform = cssMatrix(tr)
     }
 
     const go = () => {
