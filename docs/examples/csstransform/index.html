@@ -142,7 +142,6 @@
       <div>
         <button id="btn-go" type="button">Go</button>
         <button id="btn-reset" type="button">Reset Space</button>
-        <button id="btn-reset-form" type="button">Reset Form</button>
       </div>
     </div>
   </form>
@@ -173,7 +172,6 @@
 
     const inputBtnGo = document.getElementById('btn-go')
     const inputBtnReset = document.getElementById('btn-reset')
-    const inputBtnResetForm = document.getElementById('btn-reset-form')
 
     const space = document.getElementById('space')
     const item = document.getElementById('space-item')
@@ -301,9 +299,6 @@
     inputBtnReset.addEventListener('click', () => {
       resetItem()
       renderOrigin()
-    })
-    inputBtnResetForm.addEventListener('click', () => {
-      resetForm()
     })
     // Refresh origin live
     inputOriginX.addEventListener('input', () => {
