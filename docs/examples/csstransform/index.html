@@ -232,12 +232,19 @@
 
     const renderOrigin = () => {
       const op = readOrigin()
+      const tr = readTransform()
 
+
+      // Origin is given in item coordinates.
+      // Transform to space coordinates.
+      const sx = tr.a * op.x + tr.b * op.y + tr.x
+      const sy = -tr.b * op.x + tr.a * op.y + tr.y
+
+      // The center of the crosshair image should be at the point
       const SIZE = 11
       const OFFSET = Math.floor(SIZE / 2)
-
-      const offx = op.x - OFFSET
-      const offy = op.y - OFFSET
+      const offx = sx - OFFSET
+      const offy = sy - OFFSET
 
       originItem.style.left = `${offx}px`
       originItem.style.top = `${offy}px`
@@ -253,17 +260,14 @@
       item.style.transform = cssMatrix(tr)
     }
 
-    const go = () => {
-      renderItem()
-      renderOrigin()
-    }
-
     // Bind
     inputBtnGo.addEventListener('click', () => {
-      go()
+      renderItem()
+      renderOrigin()
     })
     inputBtnReset.addEventListener('click', () => {
       resetItem()
+      renderOrigin()
     })
     inputBtnResetForm.addEventListener('click', () => {
       resetForm()
