@@ -66,6 +66,27 @@
 
   <form class="transformation-controls">
     <div class="form-group">
+      <h4>Initial Basis</h4>
+      <div>
+        <label for="basis-a">Basis A</label>
+        <input id="basis-a" type="number" name="basis-a" required value="1.0" step="0.1" />
+      </div>
+      <div>
+        <label for="basis-b">Basis B</label>
+        <input id="basis-b" type="number" name="basis-b" required value="0.0" step="0.1" />
+      </div>
+      <div>
+        <label for="basis-x">Basis X</label>
+        <input id="basis-x" type="number" name="basis-x" required value="10" step="10" />
+      </div>
+      <div>
+        <label for="basis-y">Basis Y</label>
+        <input id="basis-y" type="number" name="basis-y" required value="10" step="10" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h4>Transformation</h4>
       <div>
         <label for="trans-a">Transform A</label>
         <input id="trans-a" type="number" name="trans-a" required value="1.0" step="0.1" />
@@ -85,6 +106,7 @@
     </div>
 
     <div class="form-group">
+      <h4>Transition</h4>
       <div>
         <label for="easing">Timing Function</label>
         <select id="easing" name="easing">
@@ -132,6 +154,11 @@
 
   <script>
     // Elements
+    const inputBasisA = document.getElementById('basis-a')
+    const inputBasisB = document.getElementById('basis-b')
+    const inputBasisX = document.getElementById('basis-x')
+    const inputBasisY = document.getElementById('basis-y')
+
     const inputTrA = document.getElementById('trans-a')
     const inputTrB = document.getElementById('trans-b')
     const inputTrX = document.getElementById('trans-x')
@@ -153,6 +180,14 @@
     const originItem = document.getElementById('origin-item')
 
     // Functions to read form state.
+    const readBasis = () => {
+      const a = parseFloat(inputBasisA.value)
+      const b = parseFloat(inputBasisB.value)
+      const x = parseFloat(inputBasisX.value)
+      const y = parseFloat(inputBasisY.value)
+      return { a, b, x, y }
+    }
+
     const readTransform = () => {
       const a = parseFloat(inputTrA.value)
       const b = parseFloat(inputTrB.value)
@@ -174,10 +209,13 @@
       return { x, y }
     }
 
-    // Store defaults for resets
-    const DEFAULT_TRANSFORM = readTransform()
-    const DEFAULT_TRANSITION = readTransition()
-    const DEFAULT_ORIGIN = readOrigin()
+    const multiply = (ta, tb) => {
+      const a = ta.a * tb.a - ta.b * tb.b
+      const b = ta.a * tb.b + ta.b * tb.a
+      const x = ta.a * tb.x + ta.b * tb.y + ta.x
+      const y = -ta.b * tb.x + ta.a * tb.y + ta.y
+      return { a, b, x, y }
+    }
 
     const cssMatrix = (tr) => {
       const a = tr.a
@@ -199,46 +237,38 @@
       item.style.transitionDuration = anim.duration + 'ms'
     }
 
-    const resetForm = () => {
-      inputTrA.value = DEFAULT_TRANSFORM.a
-      inputTrB.value = DEFAULT_TRANSFORM.b
-      inputTrX.value = DEFAULT_TRANSFORM.x
-      inputTrY.value = DEFAULT_TRANSFORM.y
-
-      inputEasing.value = DEFAULT_TRANSITION.easing
-      inputDelay.value = DEFAULT_TRANSITION.delay
-      inputDuration.value = DEFAULT_TRANSITION.duration
-
-      inputOriginX.value = DEFAULT_ORIGIN.x
-      inputOriginY.value = DEFAULT_ORIGIN.y
-    }
-
     const resetItem = () => {
       // Temporarily use immediate transition
       applyTransition({
-        easing: DEFAULT_TRANSITION.easing,
+        easing: 'linear',
         delay: 0,
         duration: 0
       })
 
-      item.style.transformOrigin = cssOrigin(DEFAULT_ORIGIN)
-      item.style.transform = cssMatrix(DEFAULT_TRANSFORM)
+      const bt = readBasis()
+      const op = readOrigin()
+
+      item.style.transformOrigin = cssOrigin(op)
+      item.style.transform = cssMatrix(bt)
 
       // Wait for immediate item position reset, then set to defaults.
       setTimeout(() => {
-        applyTransition(DEFAULT_TRANSITION)
+        const anim = readTransition()
+        applyTransition(anim)
       }, 50)
     }
 
     const renderOrigin = () => {
       const op = readOrigin()
+      const bt = readBasis()
       const tr = readTransform()
 
+      const tt = multiply(tr, bt)
 
       // Origin is given in item coordinates.
-      // Transform to space coordinates.
-      const sx = tr.a * op.x + tr.b * op.y + tr.x
-      const sy = -tr.b * op.x + tr.a * op.y + tr.y
+      // Convert to space coordinates.
+      const sx = tt.a * op.x + tt.b * op.y + tt.x
+      const sy = -tt.b * op.x + tt.a * op.y + tt.y
 
       // The center of the crosshair image should be at the point
       const SIZE = 11
@@ -253,11 +283,14 @@
     const renderItem = () => {
       const anim = readTransition()
       const op = readOrigin()
+      const bt = readBasis()
       const tr = readTransform()
+
+      const tt = multiply(tr, bt)
 
       applyTransition(anim)
       item.style.transformOrigin = cssOrigin(op)
-      item.style.transform = cssMatrix(tr)
+      item.style.transform = cssMatrix(tt)
     }
 
     // Bind
