@@ -66,7 +66,8 @@
 
   <form class="transformation-controls">
     <div class="form-group">
-      <h4>Initial Basis</h4>
+      <h3>Initial Basis</h3>
+      <p>The basis of the item in relation to the space. The basis is in space coordinates.</p>
       <div>
         <label for="basis-a">Basis A</label>
         <input id="basis-a" type="number" name="basis-a" required value="1.0" step="0.1" />
@@ -86,7 +87,8 @@
     </div>
 
     <div class="form-group">
-      <h4>Transformation</h4>
+      <h3>Transformation</h3>
+      <p>The transformation to apply to the item. The transformation is in space coordinates and applied at space (0, 0).</p>
       <div>
         <label for="trans-a">Transform A</label>
         <input id="trans-a" type="number" name="trans-a" required value="1.0" step="0.1" />
@@ -106,7 +108,8 @@
     </div>
 
     <div class="form-group">
-      <h4>Transition</h4>
+      <h3>Transition</h3>
+      <p>The CSS rules for the animated transition of the transformation. Transform origin is represented in the item coordinates.</p>
       <div>
         <label for="easing">Timing Function</label>
         <select id="easing" name="easing">
