@@ -25,6 +25,11 @@
       margin-bottom: 0.62em;
     }
 
+    .display-code {
+      font-family: 'Courier New', monospace;
+      margin: 1em;
+    }
+
     .transformation-controls label {
       display: inline-block;
       width: 9em;
@@ -33,8 +38,8 @@
 
     .space {
       position: relative;
-      width: 400px;
-      height: 400px;
+      width: 500px;
+      height: 600px;
       background: white;
     }
 
@@ -45,16 +50,24 @@
       transition-property: transform;
     }
 
-    #space-item {
+    #origin-item {
+      width: 11px;
+      height: 11px;
+      background-image: url("../assets/crosshair.png");
+    }
+
+    #space-item-domain {
       width: 256px;
       height: 256px;
       background-image: url("../assets/chellah_star.jpg");
     }
 
-    #origin-item {
-      width: 11px;
-      height: 11px;
-      background-image: url("../assets/crosshair.png");
+    #space-item-range {
+      width: 256px;
+      height: 256px;
+      border: 2px dashed black;
+      box-sizing: border-box;
+      background: transparent;
     }
 
   </style>
@@ -67,49 +80,72 @@
   <form class="transformation-controls">
     <div class="form-group">
       <h3>Initial Basis</h3>
-      <p>The basis of the item in relation to the space. The basis is in space coordinates.</p>
+      <p>The initial basis is the position of the item in relation to the space. The basis is given in space coordinates.</p>
       <div>
+        <label for="basis-scale">Scale</label>
+        <input id="basis-scale" type="number" name="basis-scale" value="1.0" step="0.1" required />
+      </div>
+      <div>
+        <label for="basis-orient">Orientation</label>
+        <input id="basis-orient" type="number" name="basis-orient" value="0" step="10" required />
+        deg
+      </div>
+      <!--div>
         <label for="basis-a">Basis A</label>
-        <input id="basis-a" type="number" name="basis-a" required value="1.0" step="0.1" />
+        <input id="basis-a" type="number" name="basis-a" required value="0.0" step="0.1" />
       </div>
       <div>
         <label for="basis-b">Basis B</label>
         <input id="basis-b" type="number" name="basis-b" required value="0.0" step="0.1" />
+      </div-->
+      <div>
+        <label for="basis-x">X</label>
+        <input id="basis-x" type="number" name="basis-x" required value="60" step="10" />
       </div>
       <div>
-        <label for="basis-x">Basis X</label>
-        <input id="basis-x" type="number" name="basis-x" required value="10" step="10" />
+        <label for="basis-y">Y</label>
+        <input id="basis-y" type="number" name="basis-y" required value="40" step="10" />
       </div>
-      <div>
-        <label for="basis-y">Basis Y</label>
-        <input id="basis-y" type="number" name="basis-y" required value="10" step="10" />
-      </div>
+
+      <div id="display-basis-json" class="display-code"></div>
     </div>
 
     <div class="form-group">
       <h3>Transformation</h3>
-      <p>The transformation to apply to the item. The transformation is in space coordinates and applied at space (0, 0).</p>
+      <p>Give the transformation to apply to the item. The transformation is in space coordinates and applied at space (0, 0).</p>
       <div>
+        <label for="trans-dil">Dilation</label>
+        <input id="trans-dil" type="number" name="trans-dil" value="1.0" step="0.1" required />
+      </div>
+      <div>
+        <label for="trans-rot">Rotation</label>
+        <input id="trans-rot" type="number" name="trans-rot" value="0" step="10" required />
+        deg
+      </div>
+      <!--div>
         <label for="trans-a">Transform A</label>
         <input id="trans-a" type="number" name="trans-a" required value="1.0" step="0.1" />
       </div>
       <div>
         <label for="trans-b">Transform B</label>
         <input id="trans-b" type="number" name="trans-b" required value="0.0" step="0.1" />
+      </div-->
+      <div>
+        <label for="trans-x">dX</label>
+        <input id="trans-x" type="number" name="trans-x" required value="100" step="10" />
       </div>
       <div>
-        <label for="trans-x">Transform X</label>
-        <input id="trans-x" type="number" name="trans-x" required value="0" step="10" />
+        <label for="trans-y">dY</label>
+        <input id="trans-y" type="number" name="trans-y" required value="62" step="10" />
       </div>
-      <div>
-        <label for="trans-y">Transform Y</label>
-        <input id="trans-y" type="number" name="trans-y" required value="0" step="10" />
-      </div>
+
+      <div id="display-transform-json" class="display-code"></div>
+      <div id="display-target-basis-json" class="display-code"></div>
     </div>
 
     <div class="form-group">
       <h3>Transition</h3>
-      <p>The CSS rules for the animated transition of the transformation. Transform origin is represented in the item coordinates.</p>
+      <p>The CSS rules for the animated transition of the transformation.</p>
       <div>
         <label for="easing">Timing Function</label>
         <select id="easing" name="easing">
@@ -128,9 +164,13 @@
         <label for="duration">Duration (ms)</label>
         <input id="duration" type="number" name="duration" required value="1000" step="1" />
       </div>
+
+      <div id="display-transition-css" class="display-code"></div>
     </div>
 
     <div class="form-group">
+      <h3>Transform Origin</h3>
+      <p>The CSS rule for the transform origin. Transform origin is represented in the item coordinates.</p>
       <div>
         <label for="origin-x">Transform Origin X</label>
         <input id="origin-x" type="number" name="origin-x" required value="0" step="10" />
@@ -139,32 +179,47 @@
         <label for="origin-y">Transform Origin Y</label>
         <input id="origin-y" type="number" name="origin-y" required value="0" step="10" />
       </div>
+
+      <div id="display-origin-css" class="display-code"></div>
     </div>
 
     <div class="form-group">
       <div>
-        <button id="btn-go" type="button">Go</button>
-        <button id="btn-reset" type="button">Reset Space</button>
+        <button id="btn-go" type="button">Transform</button>
+        <button id="btn-reset" type="button">Reset Items</button>
       </div>
     </div>
   </form>
 
   <div id="space" class="space">
-    <div id="space-item" class="space-item"></div>
-    <div id="origin-item" class="space-item"></div>
+    <div id="space-item-domain" class="space-item init-position"></div>
+    <div id="space-item-range" class="space-item target-position"></div>
+    <div id="origin-item" class="space-item pivot-crosshair"></div>
   </div>
 
   <script>
     // Elements
+    const transformationControls = document.querySelector('form.transformation-controls')
+
+    const inputBasisScale = document.getElementById('basis-scale')
+    const inputBasisOrient = document.getElementById('basis-orient')
     const inputBasisA = document.getElementById('basis-a')
     const inputBasisB = document.getElementById('basis-b')
     const inputBasisX = document.getElementById('basis-x')
     const inputBasisY = document.getElementById('basis-y')
 
+    const inputTrDil = document.getElementById('trans-dil')
+    const inputTrRot = document.getElementById('trans-rot')
     const inputTrA = document.getElementById('trans-a')
     const inputTrB = document.getElementById('trans-b')
     const inputTrX = document.getElementById('trans-x')
     const inputTrY = document.getElementById('trans-y')
+
+    const inputBasisDisplay = document.getElementById('display-basis-json')
+    const inputTransformDisplay = document.getElementById('display-transform-json')
+    const inputTargetBasisDisplay = document.getElementById('display-target-basis-json')
+    const inputTransitionDisplay = document.getElementById('display-transition-css')
+    const inputOriginDisplay = document.getElementById('display-origin-css')
 
     const inputEasing = document.getElementById('easing')
     const inputDelay = document.getElementById('delay')
@@ -177,27 +232,34 @@
     const inputBtnReset = document.getElementById('btn-reset')
 
     const space = document.getElementById('space')
-    const item = document.getElementById('space-item')
     const originItem = document.getElementById('origin-item')
+    const domainItem = document.getElementById('space-item-domain')
+    const rangeItem = document.getElementById('space-item-range')
 
     // Functions to read form state.
-    const readBasis = () => {
-      const a = parseFloat(inputBasisA.value)
-      const b = parseFloat(inputBasisB.value)
+    const readBasisForm = () => {
+      const s = parseFloat(inputBasisScale.value)
+      const deg = parseFloat(inputBasisOrient.value)
+      const r = Math.PI * deg / 180
+      const a = s * Math.cos(r)
+      const b = -s * Math.sin(r)
       const x = parseFloat(inputBasisX.value)
       const y = parseFloat(inputBasisY.value)
       return { a, b, x, y }
     }
 
-    const readTransform = () => {
-      const a = parseFloat(inputTrA.value)
-      const b = parseFloat(inputTrB.value)
+    const readTransformForm = () => {
+      const s = parseFloat(inputTrDil.value)
+      const deg = parseFloat(inputTrRot.value)
+      const r = Math.PI * deg / 180
+      const a = s * Math.cos(r)
+      const b = -s * Math.sin(r)
       const x = parseFloat(inputTrX.value)
       const y = parseFloat(inputTrY.value)
       return { a, b, x, y }
     }
 
-    const readTransition = () => {
+    const readTransitionForm = () => {
       const easing = inputEasing.value
       const delay = parseInt(inputDelay.value)
       const duration = parseInt(inputDuration.value)
@@ -232,44 +294,29 @@
       return `${p.x}px ${p.y}px`
     }
 
-    const applyTransition = (anim) => {
-      item.style.transitionTimingFunction = anim.easing
-      item.style.transitionDelay = anim.delay + 'ms'
-      item.style.transitionDuration = anim.duration + 'ms'
+    const cssTransition = (anim) => {
+      return `transform ${anim.duration}ms ${anim.delay}ms ${anim.easing};`
     }
 
-    const resetItem = () => {
-      // Temporarily use immediate transition
-      applyTransition({
-        easing: 'linear',
-        delay: 0,
-        duration: 0
-      })
+    const applyTransition = (targetEl, anim) => {
+      targetEl.style.transitionTimingFunction = anim.easing
+      targetEl.style.transitionDelay = anim.delay + 'ms'
+      targetEl.style.transitionDuration = anim.duration + 'ms'
+    }
 
-      const bt = readBasis()
-      const op = readOrigin()
-
-      item.style.transformOrigin = cssOrigin(op)
-      item.style.transform = cssMatrix(bt)
-
-      // Wait for immediate item position reset, then set to defaults.
-      setTimeout(() => {
-        const anim = readTransition()
-        applyTransition(anim)
-      }, 50)
+    const applyTransform = (targetEl, origin, tr) => {
+      targetEl.style.transformOrigin = cssOrigin(origin)
+      targetEl.style.transform = cssMatrix(tr)
     }
 
     const renderOrigin = () => {
       const op = readOrigin()
-      const bt = readBasis()
-      const tr = readTransform()
-
-      const tt = multiply(tr, bt)
+      const bt = readBasisForm()
 
       // Origin is given in item coordinates.
       // Convert to space coordinates.
-      const sx = tt.a * op.x + tt.b * op.y + tt.x
-      const sy = -tt.b * op.x + tt.a * op.y + tt.y
+      const sx = bt.a * op.x + bt.b * op.y + bt.x
+      const sy = -bt.b * op.x + bt.a * op.y + bt.y
 
       // The center of the crosshair image should be at the point
       const SIZE = 11
@@ -281,26 +328,62 @@
       originItem.style.top = `${offy}px`
     }
 
-    const renderItem = () => {
-      const anim = readTransition()
-      const op = readOrigin()
-      const bt = readBasis()
-      const tr = readTransform()
+    const resetItems = () => {
+      // Temporarily use immediate transition
+      applyTransition(domainItem, {
+        easing: 'linear',
+        delay: 0,
+        duration: 0
+      })
 
+      const bt = readBasisForm()
+      const tr = readTransformForm()
+      const op = readOrigin()
       const tt = multiply(tr, bt)
 
-      applyTransition(anim)
-      item.style.transformOrigin = cssOrigin(op)
-      item.style.transform = cssMatrix(tt)
+      applyTransform(domainItem, op, bt)
+      applyTransform(rangeItem, op, tt)
+
+      // Wait for immediate item position reset, then set to defaults.
+      setTimeout(() => {
+        const anim = readTransitionForm()
+        applyTransition(domainItem, anim)
+      }, 50)
+    }
+
+    const renderItems = () => {
+      const op = readOrigin()
+      const bt = readBasisForm()
+      const tr = readTransformForm()
+      const anim = readTransitionForm()
+      const tt = multiply(tr, bt)
+
+      applyTransition(domainItem, anim)
+      applyTransform(domainItem, op, tt)
+      applyTransform(rangeItem, op, tt)
+    }
+
+    const renderCodeDisplays = () => {
+      const op = readOrigin()
+      const bt = readBasisForm()
+      const tr = readTransformForm()
+      const anim = readTransitionForm()
+      const tt = multiply(tr, bt)
+
+      inputBasisDisplay.innerHTML = JSON.stringify(bt)
+      inputTransformDisplay.innerHTML = JSON.stringify(tr)
+      inputTargetBasisDisplay.innerHTML = JSON.stringify(tt)
+      inputTransitionDisplay.innerHTML = 'transition: ' + cssTransition(anim)
+      inputOriginDisplay.innerHTML = 'transform-origin: ' + cssOrigin(op)
     }
 
     // Bind
     inputBtnGo.addEventListener('click', () => {
-      renderItem()
+      renderItems()
       renderOrigin()
     })
     inputBtnReset.addEventListener('click', () => {
-      resetItem()
+      resetItems()
       renderOrigin()
     })
     // Refresh origin live
@@ -311,9 +394,16 @@
       renderOrigin()
     })
 
+    transformationControls.addEventListener('input', () => {
+      renderCodeDisplays()
+      resetItems()
+      renderOrigin()
+    })
+
     // Init space to match the form defaults.
-    resetItem()
+    resetItems()
     renderOrigin()
+    renderCodeDisplays()
 
   </script>
 </body>
