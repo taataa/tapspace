@@ -295,7 +295,7 @@
     }
 
     const cssTransition = (anim) => {
-      return `transform ${anim.duration}ms ${anim.delay}ms ${anim.easing};`
+      return `transform ${anim.duration}ms ${anim.delay}ms ${anim.easing}`
     }
 
     const applyTransition = (targetEl, anim) => {
@@ -370,11 +370,11 @@
       const anim = readTransitionForm()
       const tt = multiply(tr, bt)
 
-      inputBasisDisplay.innerHTML = JSON.stringify(bt)
-      inputTransformDisplay.innerHTML = JSON.stringify(tr)
-      inputTargetBasisDisplay.innerHTML = JSON.stringify(tt)
-      inputTransitionDisplay.innerHTML = 'transition: ' + cssTransition(anim)
-      inputOriginDisplay.innerHTML = 'transform-origin: ' + cssOrigin(op)
+      inputBasisDisplay.innerHTML = 'br = ' + JSON.stringify(bt)
+      inputTransformDisplay.innerHTML = 'tr = ' + JSON.stringify(tr)
+      inputTargetBasisDisplay.innerHTML = 'tt = ' + JSON.stringify(tt)
+      inputTransitionDisplay.innerHTML = 'transition: ' + cssTransition(anim) + ';'
+      inputOriginDisplay.innerHTML = 'transform-origin: ' + cssOrigin(op) + ';'
     }
 
     // Bind
