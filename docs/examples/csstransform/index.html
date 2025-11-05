@@ -145,7 +145,7 @@
 
     <div class="form-group">
       <h3>Transition</h3>
-      <p>The CSS rules for the animated transition of the transformation.</p>
+      <p>Select CSS transition rules to control the animation.</p>
       <div>
         <label for="easing">Timing Function</label>
         <select id="easing" name="easing">
@@ -170,7 +170,7 @@
 
     <div class="form-group">
       <h3>Transform Origin</h3>
-      <p>The CSS rule for the transform origin. Transform origin is represented in the item coordinates.</p>
+      <p>The CSS rule for the transform origin. Transform origin is represented in the item coordinates. Transform origin points the image pixel coordinate that moves linearly during the transformation.</p>
       <div>
         <label for="origin-x">Transform Origin X</label>
         <input id="origin-x" type="number" name="origin-x" required value="0" step="10" />
@@ -370,9 +370,9 @@
       const anim = readTransitionForm()
       const tt = multiply(tr, bt)
 
-      inputBasisDisplay.innerHTML = 'br = ' + JSON.stringify(bt)
-      inputTransformDisplay.innerHTML = 'tr = ' + JSON.stringify(tr)
-      inputTargetBasisDisplay.innerHTML = 'tt = ' + JSON.stringify(tt)
+      inputBasisDisplay.innerHTML = 'const br = ' + JSON.stringify(bt)
+      inputTransformDisplay.innerHTML = 'const tr = ' + JSON.stringify(tr)
+      inputTargetBasisDisplay.innerHTML = 'const tt = ' + JSON.stringify(tt)
       inputTransitionDisplay.innerHTML = 'transition: ' + cssTransition(anim) + ';'
       inputOriginDisplay.innerHTML = 'transform-origin: ' + cssOrigin(op) + ';'
     }
