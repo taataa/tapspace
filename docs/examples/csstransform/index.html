@@ -75,7 +75,7 @@
 <body>
   <!-- Heading -->
   <h1>CSS Transform Lab – <a style="color: lightgray" href="https://taataa.github.io/tapspace/">Tapspace.js</a></h1>
-  <p>This app is for the development of transformation animations in Tapspace. It allows developers to ensure browser behavior is as expected.</p>
+  <p>This app is for the development of transformation animations in Tapspace. It allows developers to ensure browser behavior is as expected. For readability, the numbers are truncated to a low decimal precision.</p>
 
   <form class="transformation-controls">
     <div class="form-group">
@@ -363,6 +363,27 @@
       applyTransform(rangeItem, op, tt)
     }
 
+    const vectorStringify = (a, precision) => {
+      if (typeof precision !== 'number') {
+        precision = 3
+      }
+      let s = '{ '
+      const keys = Object.keys(a)
+      const len = keys.length
+      keys.forEach((key, i) => {
+        let value = a[key]
+        if (typeof value === 'number') {
+          let numStr = a[key].toFixed(precision)
+          s += key + ': ' + numStr
+          if (i < len - 1) {
+            s += ', '
+          }
+        }
+      })
+      s += ' }'
+      return s
+    }
+
     const renderCodeDisplays = () => {
       const op = readOrigin()
       const bt = readBasisForm()
@@ -370,9 +391,9 @@
       const anim = readTransitionForm()
       const tt = multiply(tr, bt)
 
-      inputBasisDisplay.innerHTML = 'const br = ' + JSON.stringify(bt)
-      inputTransformDisplay.innerHTML = 'const tr = ' + JSON.stringify(tr)
-      inputTargetBasisDisplay.innerHTML = 'const tt = ' + JSON.stringify(tt)
+      inputBasisDisplay.innerHTML = 'const br = ' + vectorStringify(bt)
+      inputTransformDisplay.innerHTML = 'const tr = ' + vectorStringify(tr)
+      inputTargetBasisDisplay.innerHTML = 'const tt = ' + vectorStringify(tt)
       inputTransitionDisplay.innerHTML = 'transition: ' + cssTransition(anim) + ';'
       inputOriginDisplay.innerHTML = 'transform-origin: ' + cssOrigin(op) + ';'
     }
