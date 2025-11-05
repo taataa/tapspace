@@ -158,11 +158,11 @@
       </div>
       <div>
         <label for="delay">Delay (ms)</label>
-        <input id="delay" type="number" name="delay" required value="0" step="1" />
+        <input id="delay" type="number" name="delay" required value="0" step="50" />
       </div>
       <div>
         <label for="duration">Duration (ms)</label>
-        <input id="duration" type="number" name="duration" required value="1000" step="1" />
+        <input id="duration" type="number" name="duration" required value="1000" step="50" />
       </div>
 
       <div id="display-transition-css" class="display-code"></div>
@@ -261,8 +261,8 @@
 
     const readTransitionForm = () => {
       const easing = inputEasing.value
-      const delay = parseInt(inputDelay.value)
-      const duration = parseInt(inputDuration.value)
+      const delay = parseInt(inputDelay.value) || 0
+      const duration = parseInt(inputDuration.value) || 0
       return { easing, delay, duration }
     }
 
